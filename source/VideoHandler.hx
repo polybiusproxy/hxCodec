@@ -79,15 +79,17 @@ class VideoHandler
 	}
 
 	#if desktop
-	public function playMP4(path:String, callback:FlxState, ?isWindow:Bool = false, ?isFullscreen:Bool = true):Void
+	public function playMP4(path:String, ?repeat:Bool = false, ?isWindow:Bool = false, ?isFullscreen:Bool = false):Void
 	{
-		finishCallback = callback;
-
 		vlcBitmap = new VlcBitmap();
 		vlcBitmap.onVideoReady = onVLCVideoReady;
 		vlcBitmap.onComplete = onVLCComplete;
-		vlcBitmap.volume = 1;
-		vlcBitmap.repeat = 0;
+		vlcBitmap.volume = FlxG.sound.volume;
+
+		if (repeat)
+			vlcBitmap.repeat = -1;
+		else
+			vlcBitmap.repeat = 0;
 
 		vlcBitmap.inWindow = isWindow;
 		vlcBitmap.fullscreen = isFullscreen;
