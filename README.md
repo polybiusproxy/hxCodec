@@ -15,6 +15,9 @@ Put
 ```xml
 <assets path="assets/videos" exclude="*.mp3" if="web"/>
 <assets path="assets/videos" exclude="*.ogg" unless="web"/>
+
+<assets path="plugins/" rename='' if="windows"/>
+<assets path="dlls/" rename='' if="windows"/>
 ```
 
 ### 3. Setting up the paths
@@ -53,6 +56,6 @@ video.playWebMP4(Paths.video('nameofyourvideohere'), new MainMenuState());
 If you are targeting windows, your code will be
 
 ```haxe
-var video:VideoHandler = new VideoHandler();
+var video:VideoHandlerMP4 = new VideoHandlerMP4();
 video.playMP4(Paths.video('nameofyourvideohere'), new MainMenuState(), false, false, false);
 ```
