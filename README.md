@@ -5,32 +5,32 @@
 
 After
 
-```js
+```xml
 <assets path="assets/week6"    library="week6"    exclude="*.ogg" if="web"/>
 <assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/>
 ```
 
 Put
 
-```js
+```xml
 <assets path="assets/videos" exclude="*.mp3" if="web"/>
 <assets path="assets/videos" exclude="*.ogg" unless="web"/>
 ```
 
-### 3. Edit `Paths.hx`
+### 3. Setting up the paths
 
-You can really put this code wherever
+In `Paths.hx`, put this code:
 
-After
-```js	
+After:
+```haxe	
 inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
 {
 	return sound(key + FlxG.random.int(min, max), library);
 }
 ```
 
-Put
-```js
+Put:
+```haxe
 inline static public function video(key:String, ?library:String)
 {
 	trace('assets/videos/$key.mp4');
@@ -38,20 +38,21 @@ inline static public function video(key:String, ?library:String)
 }
 ```
 
-### 4. Using the video play command
+### 4. Playing videos
 
-Put your video in assets/videos (1280x720 resolution is recommended)
+Put your video in assets/videos.
+WARNING: IT MUST BE IN 1280x720px.
 
 If you are targeting HTML5, your code will be
 
-```js
+```haxe
 var video:VideoHandler = new VideoHandler();
 video.playWebMP4(Paths.video('nameofyourvideohere'), new MainMenuState());
 ```
 
 If you are targeting windows, your code will be
 
-```js
+```haxe
 var video:VideoHandler = new VideoHandler();
 video.playMP4(Paths.video('nameofyourvideohere'), new MainMenuState(), false, false, false);
 ```
