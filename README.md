@@ -38,7 +38,7 @@ inline static public function video(key:String, ?library:String)
 }
 ```
 
-### Using the video play command
+### 4. Using the video play command
 
 Put your video in assets/videos (1280x720 resolution is recommended)
 
