@@ -49,13 +49,13 @@ WARNING: IT MUST BE IN 1280x720px.
 If you are targeting HTML5, your code will be
 
 ```haxe
-var video:VideoHandler = new VideoHandler();
-video.playWebMP4(Paths.video('nameofyourvideohere'), new MainMenuState());
+var video:VideoHandlerMP4 = new VideoHandlerMP4();
+video.playWebMP4(Paths.video('nameofyourvideohere'), new PlayState());
 ```
 
 If you are targeting windows, your code will be
 
 ```haxe
 var video:VideoHandlerMP4 = new VideoHandlerMP4();
-video.playMP4(Paths.video('nameofyourvideohere'), new MainMenuState(), false, false, false);
+video.playMP4(Paths.video('nameofyourvideohere'), new PlayState(), false, false, false);
 ```
