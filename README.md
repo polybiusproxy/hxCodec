@@ -1,8 +1,8 @@
 # PolybiusProxy FNF MP4 Video Code
 # How To Setup
   
-1. Download the zip of this repository and copy paste the files inside your root project folder
-2. Edit `Project.xml`
+## 1. Download the zip of this repository and copy paste the files inside your root project folder
+## 2. Edit `Project.xml`
 
 After
 
@@ -18,7 +18,7 @@ Put
 <assets path="assets/videos" exclude="*.ogg" unless="web"/>
 ```
 
-3. Edit `Paths.hx`
+## 3. Edit `Paths.hx`
 
 You can really put this code wherever
 
