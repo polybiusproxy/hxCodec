@@ -1,6 +1,6 @@
 # PolybiusProxy FNF MP4 Video Code Installation
   
-### 1. Download the zip of this repository and copy paste the files inside your root project folder
+### 1. Download the zip of this repository and copy paste the files inside your root project folder (except for README.md and .gitattributes)
 ### 2. Edit `Project.xml`
 
 After
