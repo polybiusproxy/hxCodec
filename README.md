@@ -41,6 +41,7 @@ inline static public function video(key:String, ?library:String)
 ### Using the video play command
 
 Put your video in assets/videos (1280x720 resolution is recommended)
+
 If you are targeting HTML5, your code will be
 
 ```js
@@ -49,6 +50,7 @@ video.playWebMP4(Paths.video('nameofyourvideohere'), new MainMenuState());
 ```
 
 If you are targeting windows, your code will be
+
 ```js
 var video:VideoHandler = new VideoHandler();
 video.playMP4(Paths.video('nameofyourvideohere'), new MainMenuState(), false, false, false);
