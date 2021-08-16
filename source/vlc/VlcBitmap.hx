@@ -514,7 +514,7 @@ class VlcBitmap extends Bitmap
 		return _width;
 	}
 
-	private override function set_width(value:Float):Float
+	public override function set_width(value:Float):Float
 	{
 		_width = value;
 		return super.set_width(value);
@@ -525,7 +525,7 @@ class VlcBitmap extends Bitmap
 		return _height;
 	}
 
-	private override function set_height(value:Float):Float
+	public override function set_height(value:Float):Float
 	{
 		_height = value;
 		return super.set_height(value);
