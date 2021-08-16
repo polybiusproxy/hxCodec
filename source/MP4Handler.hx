@@ -37,7 +37,12 @@ class MP4Handler
 
                 #if desktop
 		vlcBitmap = new VlcBitmap();
-		vlcBitmap.onVideoReady = onVLCVideoReady;
+        vlcBitmap.set_height(FlxG.stage.stageHeight);
+        vlcBitmap.set_width(FlxG.stage.stageHeight * (16 / 9));
+        trace("Setting width to " + FlxG.stage.stageHeight * (16 / 9));
+                trace("Setting height to " + FlxG.stage.stageHeight);
+        
+        vlcBitmap.onVideoReady = onVLCVideoReady;
 		vlcBitmap.onComplete = onVLCComplete;
 		vlcBitmap.volume = FlxG.sound.volume;
 
@@ -91,7 +96,7 @@ class MP4Handler
 		trace("video loaded!");
 	}
 
-	function onVLCComplete()
+	public function onVLCComplete()
 	{
 		vlcBitmap.stop();
 
@@ -107,7 +112,7 @@ class MP4Handler
 
 		if (finishCallback != null)
 		{
-			FlxG.switchState(finishCallback);
+			LoadingState.loadAndSwitchState(finishCallback);
 		}
 	}
 	#end
@@ -139,11 +144,9 @@ class MP4Handler
 			FlxG.game.removeChild(video);
 		}
 
-		FlxG.autoPause = true;
-
 		if (finishCallback != null)
 		{
-			FlxG.switchState(finishCallback);
+			LoadingState.loadAndSwitchState(finishCallback);
 		}
 		else
 			FlxG.switchState(new MainMenuState());
