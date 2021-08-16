@@ -130,7 +130,7 @@ class MP4Handler
 
 	function onVLCError()
 	{
-		Dialogs.message("PolyEngine", "An error has occured while trying to load the video.\nPlease, check if the file you're loading exists.", true);
+		Dialogs.message("MP4", "An error has occured while trying to load the video.\nPlease, check if the file you're loading exists.", true);
 
 		if (finishCallback != null)
 		{
