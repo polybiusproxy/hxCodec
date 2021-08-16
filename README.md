@@ -52,7 +52,15 @@ inline static public function video(key:String, ?library:String)
 Put your video in assets/videos.
 **WARNING: IT MUST BE IN 1280x720px.**
 
-To play a video at the beginning of a week in Story Mode, replace the following code in `StoryMenuState.hx`
+To play a video at the beginning of a week in Story Mode, add the following code in `StoryMenuState.hx`:
+
+First, add a variable called `isCutscene`:
+
+```haxe
+var isCutscene:Bool = false;
+```
+
+Then replace these lines:
 
 ```haxe 
 new FlxTimer().start(1, function(tmr:FlxTimer)
