@@ -70,7 +70,6 @@ class MP4Handler
 
 		vlcBitmap.onVideoReady = onVLCVideoReady;
 		vlcBitmap.onComplete = onVLCComplete;
-		vlcBitmap.onError = onVLCError;
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
@@ -121,16 +120,6 @@ class MP4Handler
 		}
 
 		trace("Big, Big Chungus, Big Chungus!");
-
-		if (finishCallback != null)
-		{
-			LoadingState.loadAndSwitchState(finishCallback);
-		}
-	}
-
-	function onVLCError()
-	{
-		Dialogs.message("MP4", "An error has occured while trying to load the video.\nPlease, check if the file you're loading exists.", true);
 
 		if (finishCallback != null)
 		{
