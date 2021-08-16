@@ -171,6 +171,8 @@ class VideoHandler
 			FlxG.game.removeChild(video);
 		}
 
+		FlxG.autoPause = true;
+
 		if (finishCallback != null)
 		{
 			LoadingState.loadAndSwitchState(finishCallback);
