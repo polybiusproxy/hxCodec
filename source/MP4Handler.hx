@@ -10,7 +10,7 @@ import vlc.VlcBitmap;
 
 // THIS IS FOR TESTING
 // DONT STEAL MY CODE >:(
-class MP4Handler
+class VideoHandler
 {
 	public static var video:Video;
 	public static var netStream:NetStream;
@@ -69,6 +69,7 @@ class MP4Handler
 
 		vlcBitmap.onVideoReady = onVLCVideoReady;
 		vlcBitmap.onComplete = onVLCComplete;
+		vlcBitmap.onError = onVLCError;
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
@@ -126,6 +127,14 @@ class MP4Handler
 		}
 	}
 
+	function onVLCError()
+	{
+		if (finishCallback != null)
+		{
+			LoadingState.loadAndSwitchState(finishCallback);
+		}
+	}
+
 	function update(e:Event)
 	{
 		vlcBitmap.volume = FlxG.sound.volume; // shitty volume fix
@@ -158,8 +167,6 @@ class MP4Handler
 		{
 			FlxG.game.removeChild(video);
 		}
-
-		FlxG.autoPause = true;
 
 		if (finishCallback != null)
 		{
