@@ -52,24 +52,27 @@ inline static public function video(key:String, ?library:String)
 Put your video in assets/videos.
 **WARNING: IT MUST BE IN 1280x720px.**
 
-To play a video at the beginning of a Week 1 in Story Mode, replace the following code in `StoryMenuState.hx`
+To play a video at the beginning of a week in Story Mode, replace the following code in `StoryMenuState.hx`
 
 ```haxe 
 new FlxTimer().start(1, function(tmr:FlxTimer)
-			{
-				LoadingState.loadAndSwitchState(new PlayState(), true);
-			});
-
+{
+	LoadingState.loadAndSwitchState(new PlayState(), true);
+});
 ```
 
 with:
 
 ```haxe
 var video:MP4Handler = new MP4Handler();
-if (curWeek == 0 && !isCutscene) {
+
+if (curWeek == 0 && !isCutscene) // Checks if the current week is Tutorial.
+{
     video.playMP4(Paths.video('yourvideonamehere'), new PlayState()); 
     isCutscene = true;
-} else {
+}
+else
+{
     new FlxTimer().start(1, function(tmr:FlxTimer)
     {
         video.onVLCComplete();
@@ -80,7 +83,7 @@ if (curWeek == 0 && !isCutscene) {
 
 To play a cutscene before another week, replace `curWeek == 0` with the number of the week of your choice (-1, because arrays start from 0).
 
-To play a cutscene after an individual song, place the following code before the line `prevCamFollow = camFollow;` in the `endsong()` function. You can wrap it in an "if" statement if you'd like to restrict it to a specific song.
+To play a cutscene after an individual song, place the following code in `PlayState.hx` before the line `prevCamFollow = camFollow;` in the `endSong()` function. You can wrap it in an "if" statement if you'd like to restrict it to a specific song.
 
 ```haxe
 var video:MP4Handler = new MP4Handler();
