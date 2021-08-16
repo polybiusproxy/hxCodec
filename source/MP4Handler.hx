@@ -11,7 +11,7 @@ import vlc.VlcBitmap;
 
 // THIS IS FOR TESTING
 // DONT STEAL MY CODE >:(
-class VideoHandlerMP4
+class MP4Handler
 {
 	public static var video:Video;
 	public static var netStream:NetStream;
@@ -31,58 +31,11 @@ class VideoHandlerMP4
 		}
 	}
 
-	public function playWebMP4(videoPath:String, callback:FlxState)
-	{
-		/*
-			var nc:NetConnection = new NetConnection();
-			nc.connect(null);
-
-			var ns:NetStream = new NetStream(nc);
-
-			var myVideo:Video = new Video();
-
-			myVideo.width = FlxG.width;
-			myVideo.height = FlxG.height;
-			myVideo.attachNetStream(ns);
-
-			ns.play(path);
-
-			return myVideo;
-
-			ns.close();
-		 */
-
-		FlxG.autoPause = false;
-
-		if (FlxG.sound.music != null)
-		{
-			FlxG.sound.music.stop();
-		}
-
-		finishCallback = callback;
-
-		video = new Video();
-		video.x = 0;
-		video.y = 0;
-
-		FlxG.addChildBelowMouse(video);
-
-		var nc = new NetConnection();
-		nc.connect(null);
-
-		netStream = new NetStream(nc);
-		netStream.client = {onMetaData: client_onMetaData};
-
-		nc.addEventListener("netStatus", netConnection_onNetStatus);
-
-		netStream.play(videoPath);
-	}
-
-	#if desktop
 	public function playMP4(path:String, callback:FlxState, ?repeat:Bool = false, ?isWindow:Bool = false, ?isFullscreen:Bool = false):Void
 	{
 		finishCallback = callback;
 
+                #if desktop
 		vlcBitmap = new VlcBitmap();
 		vlcBitmap.onVideoReady = onVLCVideoReady;
 		vlcBitmap.onComplete = onVLCComplete;
@@ -98,8 +51,27 @@ class VideoHandlerMP4
 
 		FlxG.addChildBelowMouse(vlcBitmap);
 		vlcBitmap.play(checkFile(path));
+                #elseif html5
+                video = new Video();
+		video.x = 0;
+		video.y = 0;
+
+		FlxG.addChildBelowMouse(video);
+
+		var nc = new NetConnection();
+		nc.connect(null);
+
+		netStream = new NetStream(nc);
+		netStream.client = {onMetaData: client_onMetaData};
+
+		nc.addEventListener("netStatus", netConnection_onNetStatus);
+
+		netStream.play(videoPath);
+                #end
+    
 	}
 
+        #if desktop
 	function checkFile(fileName:String):String
 	{
 		var pDir = "";
