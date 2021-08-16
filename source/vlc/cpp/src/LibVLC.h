@@ -44,7 +44,7 @@ class LibVLC
 		void setVolume(float volume);
 		float getVolume();
 		//void setCallback(cpp::Function<void (String)> callback, int cbIndex);
-		libvlc_time_t getTime();
+		libvlc_time_t getTime(); // This caused building issues.
 		void setTime(libvlc_time_t time);
 		float getPosition();
 		void setPosition(float pos);
@@ -59,7 +59,7 @@ class LibVLC
 		void openMedia(const char* mediaPathName);
 		int flags[16]={-1};
 		void setFormat(char* chroma, unsigned* width, unsigned* height, unsigned* pitches, unsigned* lines);
-		void setInitProps();
+		void setInitProps(); // This caused building issues.
 		t_ctx ctx;
 		
 	private:
@@ -72,7 +72,7 @@ class LibVLC
 		int repeat;
 		int callbackIndex;
 		cpp::Function<Void (String)> vlcCallbackMth;
-		float vol = 1.0;
+		// float vol = 1.0; -- why was this made??? wtf
 };
 
 #endif
