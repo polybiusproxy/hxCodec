@@ -53,7 +53,7 @@ Put your video in assets/videos.
 **WARNING: IT MUST BE IN 1280x720px.**
 
 Now, place this code, where you want to.
-It can be `StoryMenuState.hx` or in `PlayState.hx`.
+It can be in `PlayState.hx`.
 
 ```haxe
 var video:MP4Handler = new MP4Handler();
