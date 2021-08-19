@@ -1,4 +1,4 @@
-# PolybiusProxy FNF MP4 Video Code Installation
+# HaxeFlixel - MP4 support
 *Made by PolybiusProxy.*
 
 Original Repository - `https://github.com/polybiusproxy/PolyEngine`
