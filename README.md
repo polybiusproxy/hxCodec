@@ -83,7 +83,9 @@ else
 {
     new FlxTimer().start(1, function(tmr:FlxTimer)
     {
-        video.onVLCComplete();
+        if (isCutscene)
+            video.onVLCComplete();
+
         LoadingState.loadAndSwitchState(new PlayState(), true);
     });
 }
