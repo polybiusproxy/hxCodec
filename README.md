@@ -106,3 +106,19 @@ Then, comment out or delete the following lines immediately next to the code you
 FlxTransitionableState.skipNextTransIn = true;
 FlxTransitionableState.skipNextTransOut = true;
 ```
+
+## Outputting to a FlxSprite
+
+There are many reasons to do this, as with a FlxSprite you can do layering in play state. or where ever else.
+
+To do this simply make a FlxSprite and do a playMP4 call with the argument. Then just add the sprite, and you're done!
+
+
+```haxe
+var sprite:FlxSprite = new FlxSprite(0,0);
+
+var video:MP4Handler = new MP4Handler();
+video.playMP4(Paths.video('yourvideonamehere'), null, sprite); // make the transition null so it doesn't take you out of this state
+
+add(sprite);
+```
