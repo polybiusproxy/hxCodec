@@ -1,7 +1,9 @@
-# HaxeFlixel - MP4 support
+# hxCodec - Native video support for HaxeFlixel/OpenFL
 *Made by PolybiusProxy.*
 
-Original Repository - `https://github.com/polybiusproxy/PolyEngine`
+Original Repository - `https://github.com/polybiusproxy/PolyEngine`.
+
+[Click here to check the roadmap of hxCodec here](https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/projects/1)
   
 ### 1. Download the repository:
 You can either download it as a ZIP,
@@ -122,3 +124,11 @@ video.playMP4(Paths.video('yourvideonamehere'), null, sprite); // make the trans
 
 add(sprite);
 ```
+
+# Credits
+
+- [PolybiusProxy (me)](https://github.com/polybiusproxy) - Creator of hxCodec.
+- [datee]() - Creator of HaxeVLC.
+- [BrightFyre](https://github.com/brightfyregit) - Creator of repository.
+- [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
+- The contributors
