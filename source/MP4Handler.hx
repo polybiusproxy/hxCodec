@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxState;
 import openfl.events.Event;
@@ -7,22 +8,25 @@ import openfl.media.Video;
 import openfl.net.NetConnection;
 import openfl.net.NetStream;
 import vlc.VlcBitmap;
-import flixel.FlxSprite;
+import Controls.Control;
+import flixel.util.FlxTimer;
 
 // THIS IS FOR TESTING
 // DONT STEAL MY CODE >:(
+// Cutscene skipping and audio fixes are made by CryBit :troll:
 class MP4Handler
 {
 	public static var video:Video;
 	public static var netStream:NetStream;
 	public static var finishCallback:FlxState;
-	public var sprite:FlxSprite;
+
 	#if desktop
 	public static var vlcBitmap:VlcBitmap;
 	#end
 
 	public function new()
 	{
+
 		FlxG.autoPause = false;
 
 		if (FlxG.sound.music != null)
@@ -31,7 +35,7 @@ class MP4Handler
 		}
 	}
 
-	public function playMP4(path:String, callback:FlxState, ?outputTo:FlxSprite = null, ?repeat:Bool = false, ?isWindow:Bool = false, ?isFullscreen:Bool = false):Void
+	public function playMP4(path:String, callback:FlxState, ?repeat:Bool = false, ?isWindow:Bool = false, ?isFullscreen:Bool = false):Void
 	{
 		#if html5
 		FlxG.autoPause = false;
@@ -84,13 +88,6 @@ class MP4Handler
 
 		FlxG.addChildBelowMouse(vlcBitmap);
 		vlcBitmap.play(checkFile(path));
-		if (outputTo != null)
-		{
-			// lol this is bad kek
-			vlcBitmap.alpha = 0;
-
-			sprite = outputTo;
-		}
 		#end
 	}
 
@@ -113,28 +110,34 @@ class MP4Handler
 	function onVLCVideoReady()
 	{
 		trace("video loaded!");
-		if (sprite != null)
-			sprite.loadGraphic(vlcBitmap.bitmapData);	
 	}
 
 	public function onVLCComplete()
 	{
 		vlcBitmap.stop();
 
-		// Clean player, just in case!
-		vlcBitmap.dispose();
+		// Clean player, just in case! Actually no.
 
-		if (FlxG.game.contains(vlcBitmap))
-		{
-			FlxG.game.removeChild(vlcBitmap);
-		}
+		FlxG.camera.fade(FlxColor.BLACK, 0, false);
+
 
 		trace("Big, Big Chungus, Big Chungus!");
 
-		if (finishCallback != null)
+		new FlxTimer().start(0.3, function (tmr:FlxTimer)
 		{
-			LoadingState.loadAndSwitchState(finishCallback);
-		}
+			if (finishCallback != null)
+			{
+				LoadingState.loadAndSwitchState(finishCallback);
+			}
+			vlcBitmap.dispose();
+
+			if (FlxG.game.contains(vlcBitmap))
+			{
+				FlxG.game.removeChild(vlcBitmap);
+			}	
+		});
+		
+
 	}
 
 	function onVLCError()
@@ -147,7 +150,15 @@ class MP4Handler
 
 	function update(e:Event)
 	{
-		vlcBitmap.volume = FlxG.sound.volume; // shitty volume fix
+		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)
+		{
+			if (vlcBitmap.isPlaying)
+			{
+				onVLCComplete();
+			}
+		}
+		vlcBitmap.volume = FlxG.sound.volume + 0.3; // shitty volume fix. then make it louder.
+		if (FlxG.sound.volume <= 0.1) vlcBitmap.volume = 0;
 	}
 	#end
 
