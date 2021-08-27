@@ -118,7 +118,7 @@ To do this simply make a FlxSprite and do a playMP4 call with the argument. Then
 var sprite:FlxSprite = new FlxSprite(0,0);
 
 var video:MP4Handler = new MP4Handler();
-video.playMP4(Paths.video('yourvideonamehere'), new PlayState(), sprite);
+video.playMP4(Paths.video('yourvideonamehere'), null, sprite); // make the transition null so it doesn't take you out of this state
 
 add(sprite);
 ```
