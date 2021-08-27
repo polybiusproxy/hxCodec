@@ -10,16 +10,17 @@ import openfl.net.NetStream;
 import vlc.VlcBitmap;
 import Controls.Control;
 import flixel.util.FlxTimer;
+import flixel.FlxSprite;
 
 // THIS IS FOR TESTING
 // DONT STEAL MY CODE >:(
-// Cutscene skipping and audio fixes are made by CryBit :troll:
+
 class MP4Handler
 {
 	public static var video:Video;
 	public static var netStream:NetStream;
 	public static var finishCallback:FlxState;
-
+	public var sprite:FlxSprite;
 	#if desktop
 	public static var vlcBitmap:VlcBitmap;
 	#end
@@ -35,7 +36,7 @@ class MP4Handler
 		}
 	}
 
-	public function playMP4(path:String, callback:FlxState, ?repeat:Bool = false, ?isWindow:Bool = false, ?isFullscreen:Bool = false):Void
+	public function playMP4(path:String, callback:FlxState, ?outputTo:FlxSprite = null, ?repeat:Bool = false, ?isWindow:Bool = false, ?isFullscreen:Bool = false):Void
 	{
 		#if html5
 		FlxG.autoPause = false;
@@ -88,6 +89,13 @@ class MP4Handler
 
 		FlxG.addChildBelowMouse(vlcBitmap);
 		vlcBitmap.play(checkFile(path));
+		if (outputTo != null)
+			{
+				// lol this is bad kek
+				vlcBitmap.alpha = 0;
+	
+				sprite = outputTo;
+			}
 		#end
 	}
 
@@ -110,6 +118,8 @@ class MP4Handler
 	function onVLCVideoReady()
 	{
 		trace("video loaded!");
+		if (sprite != null)
+			sprite.loadGraphic(vlcBitmap.bitmapData);	
 	}
 
 	public function onVLCComplete()
