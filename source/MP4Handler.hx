@@ -89,13 +89,14 @@ class MP4Handler
 
 		FlxG.addChildBelowMouse(vlcBitmap);
 		vlcBitmap.play(checkFile(path));
+		
 		if (outputTo != null)
-			{
-				// lol this is bad kek
-				vlcBitmap.alpha = 0;
+		{
+			// lol this is bad kek
+			vlcBitmap.alpha = 0;
 	
-				sprite = outputTo;
-			}
+			sprite = outputTo;
+		}
 		#end
 	}
 
