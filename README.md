@@ -102,13 +102,6 @@ var video:MP4Handler = new MP4Handler();
 video.playMP4(Paths.video('yourvideonamehere'), new PlayState()); 
 ```
 
-Then, comment out or delete the following lines immediately next to the code you just added.
-
-```haxe
-FlxTransitionableState.skipNextTransIn = true;
-FlxTransitionableState.skipNextTransOut = true;
-```
-
 ## Outputting to a FlxSprite
 
 There are many reasons to do this, as with a FlxSprite you can do layering in play state. or where ever else.
