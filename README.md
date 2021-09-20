@@ -78,7 +78,11 @@ var video:MP4Handler = new MP4Handler();
 
 if (curWeek == 0 && !isCutscene) // Checks if the current week is Tutorial.
 {
-    video.playMP4(Paths.video('yourvideonamehere'), new PlayState()); 
+    video.playMP4(Paths.video('yourvideonamehere'), function()
+    {
+	FlxG.switchState(new PlayState());
+    });
+
     isCutscene = true;
 }
 else
@@ -99,7 +103,10 @@ To play a cutscene after an individual song, place the following code in `PlaySt
 
 ```haxe
 var video:MP4Handler = new MP4Handler();
-video.playMP4(Paths.video('yourvideonamehere'), new PlayState()); 
+video.playMP4(Paths.video('yourvideonamehere'), function()
+{
+	FlxG.switchState(new PlayState());
+}); 
 ```
 
 ## Outputting to a FlxSprite
