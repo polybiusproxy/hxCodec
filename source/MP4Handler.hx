@@ -17,12 +17,12 @@ import flixel.FlxSprite;
 
 class MP4Handler
 {
-	public static var video:Video;
-	public static var netStream:NetStream;
-	public static var finishCallback:FlxState;
+	public var video:Video;
+	public var netStream:NetStream;
+	public var finishCallback:FlxState;
 	public var sprite:FlxSprite;
 	#if desktop
-	public static var vlcBitmap:VlcBitmap;
+	public var vlcBitmap:VlcBitmap;
 	#end
 
 	public function new()
