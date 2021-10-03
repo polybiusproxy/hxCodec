@@ -78,7 +78,11 @@ var video:MP4Handler = new MP4Handler();
 
 if (curWeek == 0 && !isCutscene) // Checks if the current week is Tutorial.
 {
-    video.playMP4(Paths.video('yourvideonamehere'), new PlayState()); 
+    video.playMP4(Paths.video('yourvideonamehere'));
+    video.finishCallback = function()
+    {
+    	LoadingState.loadAndSwitchState(new PlayState());
+    }
     isCutscene = true;
 }
 else
@@ -99,7 +103,11 @@ To play a cutscene after an individual song, place the following code in `PlaySt
 
 ```haxe
 var video:MP4Handler = new MP4Handler();
-video.playMP4(Paths.video('yourvideonamehere'), new PlayState()); 
+video.playMP4(Paths.video('yourvideonamehere'));
+video.finishCallback = function()
+{
+	LoadingState.loadAndSwitchState(new PlayState());
+}
 ```
 
 Then, comment out or delete the following lines immediately next to the code you just added.
