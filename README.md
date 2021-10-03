@@ -83,6 +83,7 @@ if (curWeek == 0 && !isCutscene) // Checks if the current week is Tutorial.
     {
     	LoadingState.loadAndSwitchState(new PlayState());
     }
+    
     isCutscene = true;
 }
 else
@@ -103,6 +104,7 @@ To play a cutscene after an individual song, place the following code in `PlaySt
 
 ```haxe
 var video:MP4Handler = new MP4Handler();
+
 video.playMP4(Paths.video('yourvideonamehere'));
 video.finishCallback = function()
 {
@@ -139,4 +141,5 @@ add(sprite);
 - [datee]() - Creator of HaxeVLC.
 - [BrightFyre](https://github.com/brightfyregit) - Creator of repository.
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
-- The contributors
+- [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol
+- The contributors.
