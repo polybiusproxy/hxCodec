@@ -21,7 +21,7 @@ class MP4Handler
 
 	public function new()
 	{
-		FlxG.autoPause = false;
+		//FlxG.autoPause = false;
 	}
 
 	public function playMP4(path:String, ?repeat:Bool = false, ?outputTo:FlxSprite = null, ?isWindow:Bool = false, ?isFullscreen:Bool = false,
@@ -36,11 +36,19 @@ class MP4Handler
 		}
 
 		bitmap = new VlcBitmap();
-		bitmap.set_height(FlxG.stage.stageHeight);
-		bitmap.set_width(FlxG.stage.stageHeight * (16 / 9));
 
-		trace("Setting width to " + FlxG.stage.stageHeight * (16 / 9));
-		trace("Setting height to " + FlxG.stage.stageHeight);
+		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
+		{
+			bitmap.set_width(FlxG.stage.stageHeight * (16 / 9));
+			bitmap.set_height(FlxG.stage.stageHeight);
+		}
+		else
+		{
+			bitmap.set_width(FlxG.stage.stageWidth);
+			bitmap.set_height(FlxG.stage.stageWidth / (16 / 9));
+		}
+
+		
 
 		bitmap.onVideoReady = onVLCVideoReady;
 		bitmap.onComplete = onVLCComplete;
