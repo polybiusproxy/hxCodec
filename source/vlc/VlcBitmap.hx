@@ -286,8 +286,17 @@ class VlcBitmap extends Bitmap
 
 	function onResize(e:Event):Void
 	{
-		set_height(FlxG.stage.stageHeight);
-		set_width(FlxG.stage.stageHeight * (16 / 9));
+		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
+		{
+			set_width(FlxG.stage.stageHeight * (16 / 9));
+			set_height(FlxG.stage.stageHeight);
+		}
+		else
+		{
+			set_width(FlxG.stage.stageWidth);
+			set_height(FlxG.stage.stageWidth / (16 / 9));
+		}
+		
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
