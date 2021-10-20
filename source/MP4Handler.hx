@@ -57,7 +57,7 @@ class MP4Handler
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
 		if (repeat)
-			bitmap.repeat = -1;
+			bitmap.repeat = -1; 
 		else
 			bitmap.repeat = 0;
 
