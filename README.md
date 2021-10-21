@@ -76,25 +76,28 @@ with:
 ```haxe
 var video:MP4Handler = new MP4Handler();
 
-if (curWeek == 0 && !isCutscene) // Checks if the current week is Tutorial.
+if (curWeek == 0 && !isCutscene) // Checks if the current week is garAlley.
+new FlxTimer().start(1, function(tmr:FlxTimer)
 {
-    video.playMP4(Paths.video('yourvideonamehere'));
-    video.finishCallback = function()
-    {
-    	LoadingState.loadAndSwitchState(new PlayState());
-    }
-    
-    isCutscene = true;
-}
-else
-{
-    new FlxTimer().start(1, function(tmr:FlxTimer)
-    {
-        if (isCutscene)
-            video.onVLCComplete();
-
-        LoadingState.loadAndSwitchState(new PlayState(), true);
-    });
+	{
+	video.playMP4(Paths.video('intro'));
+	video.finishCallback = function()
+		{
+		LoadingState.loadAndSwitchState(new PlayState());
+		}
+		
+		isCutscene = true;
+	}
+});
+	else
+	{
+	new FlxTimer().start(1, function(tmr:FlxTimer)
+	{
+		if (isCutscene)
+		video.onVLCComplete();
+		
+		LoadingState.loadAndSwitchState(new PlayState(), true);
+	});
 }
 ```
 
