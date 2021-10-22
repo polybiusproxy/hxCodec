@@ -76,11 +76,11 @@ with:
 ```haxe
 var video:MP4Handler = new MP4Handler();
 
-			if (curWeek == 0 && !isCutscene) // Checks if the current week is garAlley.
+			if (curWeek == 0 && !isCutscene) // Checks if the current week is tutorial.
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				{
-					video.playMP4(Paths.video('intro'));
+					video.playMP4(Paths.video('yourvideonameherelol'));
 					video.finishCallback = function()
 					{
 						LoadingState.loadAndSwitchState(new PlayState());
