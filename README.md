@@ -80,17 +80,13 @@ if (curWeek == 0 && !isCutscene) // Checks if the current week is Tutorial.
 new FlxTimer().start(1, function(tmr:FlxTimer)
 {
 	{
-	video.playMP4(Paths.video('yourcutscenenamehere'));
-	video.finishCallback = function()
+		video.playMP4(Paths.video('yourcutscenenamehere'));
+		video.finishCallback = function()
 	{
 		LoadingState.loadAndSwitchState(new PlayState());
 	}
-					
-	isCutscene = true;
+   	 	isCutscene = true;
 	}
-    
-   	 isCutscene = true;
-	 }
 });
 else
 {
