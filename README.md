@@ -76,46 +76,71 @@ with:
 ```haxe
 var video:MP4Handler = new MP4Handler();
 
-			if (curWeek == 0 && !isCutscene) // Checks if the current week is garAlley.
-			new FlxTimer().start(1, function(tmr:FlxTimer)
-			{
-				{
-					video.playMP4(Paths.video('intro'));
-					video.finishCallback = function()
-					{
-						LoadingState.loadAndSwitchState(new PlayState());
-					}
+if (curWeek == 0 && !isCutscene) // Checks if the current week is Tutorial.
+new FlxTimer().start(1, function(tmr:FlxTimer)
+{
+	{
+	video.playMP4(Paths.video('yourcutscenenamehere'));
+	video.finishCallback = function()
+	{
+		LoadingState.loadAndSwitchState(new PlayState());
+	}
 					
-					isCutscene = true;
-				}
-			});
-			else
-			{
-				new FlxTimer().start(1, function(tmr:FlxTimer)
-				{
-					if (isCutscene)
-						video.onVLCComplete();
+	isCutscene = true;
+	}
+    
+   	 isCutscene = true;
+	 }
+});
+else
+{
+    new FlxTimer().start(1, function(tmr:FlxTimer)
+    {
+        if (isCutscene)
+            video.onVLCComplete();
 
-					LoadingState.loadAndSwitchState(new PlayState(), true);
-				});
-			}
-		}
+        LoadingState.loadAndSwitchState(new PlayState(), true);
+    });
 ```
 
 To play a cutscene before another week, replace `curWeek == 0` with the number of the week of your choice (-1, because arrays start from 0).
 
-To play a cutscene after an individual song, place the following code in `PlayState.hx` before the line `prevCamFollow = camFollow;` in the `endSong()` function. You can wrap it in an "if" statement if you'd like to restrict it to a specific song.
+To play a cutscene at the end of a song, place the following code in `PlayState.hx` before the line `prevCamFollow = camFollow;` in the `endSong()` function. You can wrap it in an "if" statement if you'd like to restrict it to a specific song.
+you should also add the isCutscene to PlayState, It solved a crash for some.
 
 ```haxe
 var video:MP4Handler = new MP4Handler();
 
-video.playMP4(Paths.video('yourvideonamehere'));
+video.playMP4(Paths.video('yourcutscene'));
 video.finishCallback = function()
 {
 	LoadingState.loadAndSwitchState(new PlayState());
 }
 ```
+if you are using the if statement, this code will work on Kade Engine 1.7 and up probobly 
+```haxe
+if (curSong == 'yoursonghere' && !isCutscene)// remember to make sure your song is Uppercased or lowercased!!!
+{	
+	var video:MP4Handler = new MP4Handler();
+	
+	video.playMP4(Paths.video('yourcutscene'));
+	video.finishCallback = function()
+	{
+		LoadingState.loadAndSwitchState(new PlayState());
+	}
+	isCutscene = true;
+}
+else
+{
+	LoadingState.loadAndSwitchState(new PlayState());
+	clean();
+}
 
+```
+you may have noticed a clean(); under the LoadingState thing where the other LoadingState is and my solution to that is to not add it as it makes things unstable and crash/ other bugs, so dont add it.
+
+if your song is formated with uppercase letters (I.E Thorns, Fresh, etc.) it will have to be uppercase aswell. Make sure it is done correctly or else your game will hard crash.
+if your song is lowercased, then just type it lowercased.
 Then, comment out or delete the following lines immediately next to the code you just added.
 
 ```haxe
@@ -146,4 +171,5 @@ add(sprite);
 - [BrightFyre](https://github.com/brightfyregit) - Creator of repository.
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
 - [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol
+- 
 - The contributors.
