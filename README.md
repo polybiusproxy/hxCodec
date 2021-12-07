@@ -1,4 +1,4 @@
-# hxCodec - Native video support for HaxeFlixel/OpenFL
+# hxCodec - Native video support for OpenFL & Flixel
 
 # Credits
 
