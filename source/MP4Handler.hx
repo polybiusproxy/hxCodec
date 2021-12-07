@@ -25,7 +25,7 @@ class MP4Handler extends vlc.VlcBitmap
 			FlxG.sound.music.pause();
 
 		onVideoReady = onVLCVideoReady;
-		onComplete = onVLCComplete;
+		onComplete = finishVideo;
 		onError = onVLCError;
 
 		this.repeat = repeat ? -1 : 0;
@@ -34,11 +34,16 @@ class MP4Handler extends vlc.VlcBitmap
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
+		// TODO: Remove this
 		playVideo(path);
 	}
 
 	function update(e:Event)
 	{
+		// TODO: Add so you press two times to skip
+		if (FlxG.keys.justPressed.ANY && isPlaying)
+			finishVideo();
+
 		volume = FlxG.sound.volume + 0.4;
 	}
 
@@ -65,16 +70,6 @@ class MP4Handler extends vlc.VlcBitmap
 			readyCallback();
 	}
 
-	function onVLCComplete()
-	{
-		if (FlxG.sound.music != null)
-			FlxG.sound.music.resume();
-
-		stop();
-
-		finishVideo();
-	}
-
 	function onVLCError()
 	{
 		// TODO: Catch the error
@@ -83,6 +78,9 @@ class MP4Handler extends vlc.VlcBitmap
 
 	public function finishVideo()
 	{
+		if (FlxG.sound.music != null)
+			FlxG.sound.music.resume();
+
 		dispose();
 
 		if (FlxG.game.contains(this))
@@ -101,15 +99,5 @@ class MP4Handler extends vlc.VlcBitmap
 		#else
 		throw "Doesn't support sys";
 		#end
-	}
-
-	public function pauseVideo()
-	{
-		pause();
-	}
-
-	public function resumeVideo()
-	{
-		resume();
 	}
 }
