@@ -73,8 +73,6 @@ function playCutscene(name:String)
 	video.finishCallback = function()
 	{
 		startCountdown();
-		startIntro.playAnim();
-		cameraMovement();
 	}
 }
 
