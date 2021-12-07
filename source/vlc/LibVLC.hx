@@ -1,14 +1,9 @@
 package vlc;
 
-import cpp.Callable;
-import cpp.Function;
+#if cpp
 import cpp.Pointer;
-import cpp.RawPointer;
 import cpp.UInt8;
-import haxe.io.ArrayBufferView;
-import lime.utils.UInt8Array;
-
-// import cpp.Void;
+#end
 
 /**
  * ...
@@ -112,8 +107,10 @@ extern class LibVLC
 	@:native("setRepeat")
 	public function setRepeat(repeat:Int = 1):Void;
 
+	#if cpp
 	@:native("getPixelData")
 	public function getPixelData():Pointer<UInt8>;
+	#end
 
 	@:native("getFPS")
 	public function getFPS():Float;
