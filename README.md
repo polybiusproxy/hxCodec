@@ -69,23 +69,25 @@ function playCutscene(name:String)
 {
 	inCutscene = true;
 
-	video = new MP4Handler(Paths.video(name));
+	video = new MP4Handler();
 	video.finishCallback = function()
 	{
 		startCountdown();
 	}
+	video.playVideo(Paths.video(name));
 }
 
 function playEndCutscene(name:String)
 {
 	inCutscene = true;
 
-	video = new MP4Handler(Paths.video(name));
+	video = new MP4Handler();
 	video.finishCallback = function()
 	{
 		SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
 		LoadingState.loadAndSwitchState(new PlayState());
 	}
+	video.playVideo(Paths.video(name));
 }
 ```
 

@@ -12,12 +12,7 @@ class MP4Handler extends vlc.VlcBitmap
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
 
-	/**
-	 * Native video support for Flixel & OpenFL
-	 * @param path Example: `your/video/here.mp4`
-	 * @param repeat Repeat the video.
-	 */
-	public function new(path:String, ?repeat:Bool = false)
+	public function new()
 	{
 		super(FlxG.stage.stageWidth, FlxG.stage.stageHeight);
 
@@ -28,21 +23,23 @@ class MP4Handler extends vlc.VlcBitmap
 		onComplete = finishVideo;
 		onError = onVLCError;
 
-		this.repeat = repeat ? -1 : 0;
-
 		FlxG.addChildBelowMouse(this);
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
-
-		// TODO: Remove this
-		playVideo(path);
 	}
+
+	var pressOnce:Bool;
 
 	function update(e:Event)
 	{
-		// TODO: Add so you press two times to skip
-		if (FlxG.keys.justPressed.ANY && isPlaying)
-			finishVideo();
+		if (FlxG.keys.justPressed.ANY)
+		{
+			// TODO: Add where it resets after a while to false
+			if (!pressOnce)
+				pressOnce = true;
+			else if (isPlaying)
+				finishVideo();
+		}
 
 		volume = FlxG.sound.volume + 0.4;
 	}
@@ -81,6 +78,8 @@ class MP4Handler extends vlc.VlcBitmap
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.resume();
 
+		FlxG.stage.removeEventListener(Event.ENTER_FRAME, update);
+
 		dispose();
 
 		if (FlxG.game.contains(this))
@@ -92,10 +91,17 @@ class MP4Handler extends vlc.VlcBitmap
 		}
 	}
 
-	public function playVideo(path:String)
+	/**
+	 * Native video support for Flixel & OpenFL
+	 * @param path Example: `your/video/here.mp4`
+	 * @param repeat Repeat the video.
+	 */
+	public function playVideo(path:String, ?repeat:Bool = false)
 	{
 		#if sys
 		play(checkFile(path));
+
+		this.repeat = repeat ? -1 : 0;
 		#else
 		throw "Doesn't support sys";
 		#end
