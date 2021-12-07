@@ -21,6 +21,11 @@ You can either download it as a ZIP,
 or git cloning it.
 
 ### 2. Edit `Project.xml`
+Above
+```xml
+<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
+```
+Add
 ```xml
 <assets path="assets/preload/videos" rename="assets/videos" include="*mp4" embed='false' />
 
