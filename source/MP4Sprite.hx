@@ -9,11 +9,11 @@ class MP4Sprite extends FlxSprite
 
 	var video:MP4Handler;
 
-	public function new(x:Float, y:Float, path:String, ?repeat:Bool = false)
+	public function new(x:Float, y:Float)
 	{
 		super(x, y);
 
-		video = new MP4Handler(path, repeat);
+		video = new MP4Handler();
 		video.alpha = 0;
 
 		video.readyCallback = function()
@@ -33,12 +33,22 @@ class MP4Sprite extends FlxSprite
 		};
 	}
 
-	public function pauseVideo()
+	/**
+	 * Native video support for Flixel & OpenFL
+	 * @param path Example: `your/video/here.mp4`
+	 * @param repeat Repeat the video.
+	 */
+	public function playVideo(path:String, ?repeat:Bool = false)
+	{
+		video.playVideo(path, repeat);
+	}
+
+	public function pause()
 	{
 		video.pause();
 	}
 
-	public function resumeVideo()
+	public function resume()
 	{
 		video.resume();
 	}
