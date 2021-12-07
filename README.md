@@ -51,10 +51,8 @@ inline static public function video(key:String, ?library:String)
 
 ### 4. Playing videos
 
-Put your video in assets/videos.
-**WARNING: IT MUST BE IN 1280x720px.**
-
-To play a video at the beginning of a week in Story Mode, add the following code in `StoryMenuState.hx`:
+Put your video in `assets/videos`.
+To play a video at the beginning of a week in Story Mode, add the following code in **`StoryMenuState.hx`**:
 
 First, add a variable called `isCutscene`:
 
@@ -101,8 +99,8 @@ else
 
 To play a cutscene before another week, replace `curWeek == 0` with the number of the week of your choice (-1, because arrays start from 0).
 
-To play a cutscene at the end of a song, place the following code in `PlayState.hx` before the line `prevCamFollow = camFollow;` in the `endSong()` function. You can wrap it in an "if" statement if you'd like to restrict it to a specific song.
-you should also add the isCutscene to PlayState, It solved a crash for some.
+To play a cutscene at the end of a song, place the following code in **`PlayState.hx`** before the line `prevCamFollow = camFollow;` in the `endSong()` function. You can wrap it in an "if" statement if you'd like to restrict it to a specific song.
+you should also add the isCutscene variable to PlayState, it solved a crash for some.
 
 ```haxe
 var video:MP4Handler = new MP4Handler();
@@ -113,9 +111,9 @@ video.finishCallback = function()
 	LoadingState.loadAndSwitchState(new PlayState());
 }
 ```
-if you are using the if statement, this code will work on Kade Engine 1.7 and up probobly 
+If you are using the if statement, this code will work on Kade Engine 1.7 and up.
 ```haxe
-if (curSong == 'yoursonghere' && !isCutscene)// remember to make sure your song is Uppercased or lowercased!!!
+if (curSong.toLowerCase() == 'yoursonghere' && !isCutscene)
 {	
 	var video:MP4Handler = new MP4Handler();
 	
@@ -129,14 +127,12 @@ if (curSong == 'yoursonghere' && !isCutscene)// remember to make sure your song 
 else
 {
 	LoadingState.loadAndSwitchState(new PlayState());
-	clean();
 }
 
 ```
-you may have noticed a clean(); under the LoadingState thing where the other LoadingState is and my solution to that is to not add it as it makes things unstable and crash/ other bugs, so dont add it.
+<!-- You may have noticed a "clean()" function under the LoadingState state switch call, where the other LoadingState is and my solution to that is to not add it as it makes things unstable and crash other bugs, so dont add it. -->
 
-if your song is formated with uppercase letters (I.E Thorns, Fresh, etc.) it will have to be uppercase aswell. Make sure it is done correctly or else your game will hard crash.
-if your song is lowercased, then just type it lowercased.
+Make sure the name of the song is written correctly or else your game will **hard crash.**
 Then, comment out or delete the following lines immediately next to the code you just added.
 
 ```haxe
@@ -147,9 +143,7 @@ FlxTransitionableState.skipNextTransOut = true;
 ## Outputting to a FlxSprite
 
 There are many reasons to do this, as with a FlxSprite you can do layering in play state. or where ever else.
-
 To do this simply make a FlxSprite and do a playMP4 call with the argument. Then just add the sprite, and you're done!
-
 
 ```haxe
 var sprite:FlxSprite = new FlxSprite(0,0);
@@ -167,5 +161,4 @@ add(sprite);
 - [BrightFyre](https://github.com/brightfyregit) - Creator of repository.
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
 - [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol
-- 
 - The contributors.
