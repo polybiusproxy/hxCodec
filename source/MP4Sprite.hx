@@ -2,6 +2,9 @@ package;
 
 import flixel.FlxSprite;
 
+/**
+ * Compared to `MP4Handler`. This loads faster!!
+ */
 class MP4Sprite extends FlxSprite
 {
 	public var readyCallback:Void->Void;
@@ -9,7 +12,7 @@ class MP4Sprite extends FlxSprite
 
 	var video:MP4Handler;
 
-	public function new(x:Float, y:Float)
+	public function new(?x:Float, ?y:Float)
 	{
 		super(x, y);
 
