@@ -41,24 +41,7 @@ inline static public function video(key:String, ?library:String)
 }
 ```
 
-### 4. Edit `Main.hx`
-1. Set zoom to 1 instead of -1.
-2. Remove this code
-```haxe
-var stageWidth:Int = Lib.current.stage.stageWidth;
-var stageHeight:Int = Lib.current.stage.stageHeight;
-
-if (zoom == -1)
-{
-	var ratioX:Float = stageWidth / gameWidth;
-	var ratioY:Float = stageHeight / gameHeight;
-	zoom = Math.min(ratioX, ratioY);
-	gameWidth = Math.ceil(stageWidth / zoom);
-	gameHeight = Math.ceil(stageHeight / zoom);
-}
-```
-
-### 5. Playing videos
+### 4. Playing videos
 
 1. Put your video in `assets/preload/videos`.
 2. Create somewhere in PlayState

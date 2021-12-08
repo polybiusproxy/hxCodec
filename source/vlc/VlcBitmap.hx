@@ -4,6 +4,7 @@ package vlc;
 import cpp.NativeArray;
 import cpp.UInt8;
 #end
+import flixel.FlxG;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -79,12 +80,20 @@ class VlcBitmap extends Bitmap
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	public function new(width:Int = 320, height:Int = 240)
+	public function new(width:Float = 320, height:Float = 240, ?autoScale:Bool = true)
 	{
 		super(null, null, true);
 
-		this.width = width;
-		this.height = height;
+		if (autoScale)
+		{
+			this.width = getVideoWidth();
+			this.height = getVideoHeight();
+		}
+		else
+		{
+			this.width = width;
+			this.height = height;
+		}
 
 		init();
 	}
@@ -112,8 +121,24 @@ class VlcBitmap extends Bitmap
 
 	function onResize(e:Event)
 	{
-		width = FlxG.stage.stageWidth;
-		height = FlxG.stage.stageHeight;
+		width = getVideoWidth();
+		height = getVideoHeight();
+	}
+
+	function getVideoWidth():Float
+	{
+		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
+			return FlxG.stage.stageHeight * (16 / 9);
+		else
+			return FlxG.stage.stageWidth;
+	}
+
+	function getVideoHeight():Float
+	{
+		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
+			return FlxG.stage.stageHeight;
+		else
+			return FlxG.stage.stageWidth / (16 / 9);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
