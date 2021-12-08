@@ -12,9 +12,9 @@ class MP4Handler extends vlc.VlcBitmap
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
 
-	public function new()
+	public function new(width:Float = 320, height:Float = 240, ?autoScale:Bool = true)
 	{
-		super(FlxG.stage.stageWidth, FlxG.stage.stageHeight);
+		super(width, height, autoScale);
 
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.pause();
