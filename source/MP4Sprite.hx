@@ -12,11 +12,11 @@ class MP4Sprite extends FlxSprite
 
 	var video:MP4Handler;
 
-	public function new(?x:Float, ?y:Float)
+	public function new(x:Float = 0, y:Float = 0, width:Float = 320, height:Float = 240, autoScale:Bool = true)
 	{
 		super(x, y);
 
-		video = new MP4Handler();
+		video = new MP4Handler(width, height, autoScale);
 		video.alpha = 0;
 
 		video.readyCallback = function()
@@ -32,7 +32,7 @@ class MP4Sprite extends FlxSprite
 			if (finishCallback != null)
 				finishCallback();
 
-			destroy();
+			kill();
 		};
 	}
 
