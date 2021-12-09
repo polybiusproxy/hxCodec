@@ -74,17 +74,7 @@ function playEndCutscene(name:String)
 }
 ```
 
-3. In the onFocus function
-```haxe
-video.resumeVideo();
-```
-
-4. In the onFocusLost function
-```haxe
-video.pauseVideo();
-```
-
-### 6. Example
+### 5. Example
 At PlayState create function
 ```haxe
 switch (curSong.toLowerCase())
