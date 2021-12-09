@@ -12,7 +12,7 @@ class MP4Handler extends vlc.VlcBitmap
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
 
-	public function new(width:Float = 320, height:Float = 240, ?autoScale:Bool = true)
+	public function new(width:Float = 320, height:Float = 240, autoScale:Bool = true)
 	{
 		super(width, height, autoScale);
 
@@ -26,6 +26,15 @@ class MP4Handler extends vlc.VlcBitmap
 		FlxG.addChildBelowMouse(this);
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
+
+		FlxG.signals.focusGained.add(function()
+		{
+			resume();
+		});
+		FlxG.signals.focusLost.add(function()
+		{
+			pause();
+		});
 	}
 
 	var pressOnce:Bool;
