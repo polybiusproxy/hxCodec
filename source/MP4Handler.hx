@@ -41,7 +41,10 @@ class MP4Handler extends vlc.VlcBitmap
 				finishVideo();
 		}
 
-		volume = FlxG.sound.volume + 0.4;
+		if (FlxG.sound.muted)
+			volume = 0;
+		else
+			volume = FlxG.sound.volume + 0.4;
 	}
 
 	#if sys
