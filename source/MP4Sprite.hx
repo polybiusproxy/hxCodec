@@ -40,10 +40,11 @@ class MP4Sprite extends FlxSprite
 	 * Native video support for Flixel & OpenFL
 	 * @param path Example: `your/video/here.mp4`
 	 * @param repeat Repeat the video.
+	 * @param pauseMusic Pause music until done video.
 	 */
-	public function playVideo(path:String, ?repeat:Bool = false)
+	public function playVideo(path:String, ?repeat:Bool = false, pauseMusic:Bool = false)
 	{
-		video.playVideo(path, repeat);
+		video.playVideo(path, repeat, pauseMusic);
 	}
 
 	public function pause()

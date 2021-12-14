@@ -4,20 +4,19 @@ import openfl.events.Event;
 import flixel.FlxG;
 
 /**
- * The cpp version of playing a video
- * Use bitmap to return to a sprite or use `MP4Sprite`
+ * Play a video using cpp.
+ * Use bitmap to connect to a graphic or use `MP4Sprite`.
  */
 class MP4Handler extends vlc.VlcBitmap
 {
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
 
+	var pauseMusic:Bool;
+
 	public function new(width:Float = 320, height:Float = 240, autoScale:Bool = true)
 	{
 		super(width, height, autoScale);
-
-		if (FlxG.sound.music.playing)
-			FlxG.sound.music.pause();
 
 		onVideoReady = onVLCVideoReady;
 		onComplete = finishVideo;
@@ -37,20 +36,12 @@ class MP4Handler extends vlc.VlcBitmap
 		});
 	}
 
-	var pressOnce:Bool;
-
 	function update(e:Event)
 	{
-		if (FlxG.keys.justPressed.ANY)
-		{
-			// TODO: Add where it resets after a while to false
-			if (!pressOnce)
-				pressOnce = true;
-			else if (isPlaying)
-				finishVideo();
-		}
+		if ((FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) && isPlaying)
+			finishVideo();
 
-		if (FlxG.sound.muted)
+		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
 			volume = 0;
 		else
 			volume = FlxG.sound.volume + 0.4;
@@ -87,7 +78,7 @@ class MP4Handler extends vlc.VlcBitmap
 
 	public function finishVideo()
 	{
-		if (FlxG.sound.music != null)
+		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.resume();
 
 		FlxG.stage.removeEventListener(Event.ENTER_FRAME, update);
@@ -107,9 +98,15 @@ class MP4Handler extends vlc.VlcBitmap
 	 * Native video support for Flixel & OpenFL
 	 * @param path Example: `your/video/here.mp4`
 	 * @param repeat Repeat the video.
+	 * @param pauseMusic Pause music until done video.
 	 */
-	public function playVideo(path:String, ?repeat:Bool = false)
+	public function playVideo(path:String, ?repeat:Bool = false, pauseMusic:Bool = false)
 	{
+		this.pauseMusic = pauseMusic;
+
+		if (FlxG.sound.music != null && pauseMusic)
+			FlxG.sound.music.pause();
+
 		#if sys
 		play(checkFile(path));
 
