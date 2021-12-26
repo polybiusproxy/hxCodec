@@ -54,6 +54,13 @@ Put:
 <haxedef name="HXCPP_ARM64" />
 ```
 
+**OPTIONAL: Large Files**
+
+If a file is too big for GitHub, use Git Large File Service to post large files.
+
+[Download Git Large File Service](https://git-lfs.github.com/)
+
+When downloaded, uncomment the line of code in .gitattributes
 
 ### 3. Setting up the paths
 
