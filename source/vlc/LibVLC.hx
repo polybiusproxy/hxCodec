@@ -1,20 +1,8 @@
 package vlc;
 
-import cpp.Callable;
-import cpp.Function;
 import cpp.Pointer;
-import cpp.RawPointer;
 import cpp.UInt8;
-import haxe.io.ArrayBufferView;
-import lime.utils.UInt8Array;
 
-// import cpp.Void;
-
-/**
- * ...
- * @author Tommy S
- */
-//
 @:buildXml('<include name="../../../../source/vlc/LibVLCBuild.xml" />')
 @:include("LibVLC.h")
 @:unreflective
@@ -123,6 +111,5 @@ extern class LibVLC
 
 	public inline function dispose():Void
 	{
-		// untyped __cpp__('::delete this');
 	}
 }

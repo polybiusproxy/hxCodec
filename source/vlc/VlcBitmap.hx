@@ -1,13 +1,10 @@
 package vlc;
 
 import flixel.FlxG;
-import openfl.system.Capabilities;
 #if (cpp && !mobile)
 import cpp.NativeArray;
 import cpp.UInt8;
-import haxe.ValueException;
 import haxe.io.Bytes;
-import lime.app.Application;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -17,22 +14,11 @@ import openfl.events.Event;
 import openfl.geom.Rectangle;
 import vlc.LibVLC;
 
-/**
- * ...
- * @author Tommy S
- */
 #if (cpp && !mobile)
 @:cppFileCode('#include "LibVLC.cpp"')
 #end
 class VlcBitmap extends Bitmap
 {
-	/////////////////////////////////////////////////////////////////////////////////////
-	// ===================================================================================
-	// Consts
-	//-----------------------------------------------------------------------------------
-	// ===================================================================================
-	// Properties
-	//-----------------------------------------------------------------------------------
 	public var videoWidth:Int;
 	public var videoHeight:Int;
 	public var repeat:Int = 0;
@@ -60,17 +46,11 @@ class VlcBitmap extends Bitmap
 	public var onComplete:Void->Void;
 	public var onError:Void->Void;
 
-	// ===================================================================================
-	// Declarations
-	//-----------------------------------------------------------------------------------
 	var bufferMem:Array<UInt8>;
 	#if (cpp && !mobile)
 	var libvlc:LibVLC;
 	#end
 
-	// ===================================================================================
-	// Variables
-	//-----------------------------------------------------------------------------------
 	var frameSize:Int;
 	var _width:Null<Float>;
 	var _height:Null<Float>;
@@ -83,8 +63,6 @@ class VlcBitmap extends Bitmap
 	var frameRect:Rectangle;
 	var screenWidth:Float;
 	var screenHeight:Float;
-
-	/////////////////////////////////////////////////////////////////////////////////////
 
 	public function new()
 	{
@@ -99,8 +77,6 @@ class VlcBitmap extends Bitmap
 	{
 		init();
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 
 	function init()
 	{
@@ -117,8 +93,6 @@ class VlcBitmap extends Bitmap
 		stage.addEventListener(Event.RESIZE, onResize);
 		stage.addEventListener(Event.ENTER_FRAME, vLoop);
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 
 	public function play(?source:String)
 	{
@@ -152,8 +126,6 @@ class VlcBitmap extends Bitmap
 		#if (cpp && !mobile)
 		isPlaying = false;
 		libvlc.stop();
-		// if (disposeOnStop)
-		// dispose();
 
 		if (onStop != null)
 			onStop();
@@ -212,8 +184,6 @@ class VlcBitmap extends Bitmap
 		return 0;
 		#end
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 
 	function checkFlags()
 	{
@@ -282,8 +252,6 @@ class VlcBitmap extends Bitmap
 		#end
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////
-
 	function onResize(e:Event):Void
 	{
 		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
@@ -296,10 +264,7 @@ class VlcBitmap extends Bitmap
 			set_width(FlxG.stage.stageWidth);
 			set_height(FlxG.stage.stageWidth / (16 / 9));
 		}
-		
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 
 	function videoInitComplete()
 	{
@@ -318,13 +283,8 @@ class VlcBitmap extends Bitmap
 		if (texture2 != null)
 			texture2.dispose();
 
-		// BitmapData
 		bitmapData = new BitmapData(Std.int(videoWidth), Std.int(videoHeight), true, 0);
 		frameRect = new Rectangle(0, 0, Std.int(videoWidth), Std.int(videoHeight));
-
-		// (Stage3D)
-		// texture = Lib.current.stage.stage3Ds[0].context3D.createRectangleTexture(videoWidth, videoHeight, Context3DTextureFormat.BGRA, true);
-		// this.bitmapData = BitmapData.fromTexture(texture);
 
 		smoothing = true;
 
@@ -350,8 +310,6 @@ class VlcBitmap extends Bitmap
 		#end
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////
-
 	function vLoop(e)
 	{
 		#if (cpp && !mobile)
@@ -360,18 +318,15 @@ class VlcBitmap extends Bitmap
 		#end
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////
-
 	function render()
 	{
 		var cTime = Lib.getTimer();
 
-		if ((cTime - oldTime) > 28) // min 28 ms between renders, but this is not a good way to do it...
+		if ((cTime - oldTime) > 28)
 		{
 			oldTime = cTime;
 
 			#if (cpp && !mobile)
-			// if (isPlaying && texture != null) // (Stage3D)
 			if (isPlaying)
 			{
 				try
@@ -379,15 +334,8 @@ class VlcBitmap extends Bitmap
 					NativeArray.setUnmanagedData(bufferMem, libvlc.getPixelData(), frameSize);
 					if (bufferMem != null)
 					{
-						// BitmapData
-						// libvlc.getPixelData() sometimes is null and the exe hangs ...
 						if (libvlc.getPixelData() != null)
 							bitmapData.setPixels(frameRect, Bytes.ofData(bufferMem));
-
-						// (Stage3D)
-						// texture.uploadFromByteArray( Bytes.ofData(cast(bufferMem)), 0 );
-						// this.width++; //This is a horrible hack to force the texture to update... Surely there is a better way...
-						// this.width--;
 					}
 				}
 				catch (e:Error)
@@ -399,8 +347,6 @@ class VlcBitmap extends Bitmap
 			#end
 		}
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 
 	function setVolume(vol:Float)
 	{
@@ -421,8 +367,6 @@ class VlcBitmap extends Bitmap
 		return 0;
 		#end
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 
 	function statusOnOpening()
 	{
@@ -471,7 +415,6 @@ class VlcBitmap extends Bitmap
 		if (isPlaying)
 			isPlaying = false;
 
-		// trace("end reached!");
 		if (onComplete != null)
 			onComplete();
 	}
@@ -503,7 +446,6 @@ class VlcBitmap extends Bitmap
 
 	function onDisplay()
 	{
-		// render();
 	}
 
 	function statusOnError()
@@ -513,8 +455,6 @@ class VlcBitmap extends Bitmap
 		if (onError != null)
 			onError();
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 
 	private override function get_width():Float
 	{
@@ -548,10 +488,6 @@ class VlcBitmap extends Bitmap
 		setVolume(value);
 		return volume = value;
 	}
-
-	// ===================================================================================
-	// Dispose
-	//-----------------------------------------------------------------------------------
 
 	public function dispose()
 	{
@@ -587,7 +523,5 @@ class VlcBitmap extends Bitmap
 		}
 		#end
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 }
 #end
