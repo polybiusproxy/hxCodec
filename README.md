@@ -52,14 +52,6 @@ Put:
 <haxedef name="HXCPP_ARM64" />
 ```
 
-**OPTIONAL: Large Files**
-
-If a file is too big for GitHub, use Git Large File Service to post large files.
-
-[Download Git Large File Service](https://git-lfs.github.com/)
-
-When downloaded, uncomment the line of code in .gitattributes
-
 ### 3. Setting up the paths
 
 In `Paths.hx`, put this code:
@@ -81,10 +73,16 @@ inline static public function video(key:String, ?library:String)
 }
 ```
 
-### 4. Playing videos
+### 4. Videos
 
 Put your video in `assets/videos`.
 To play a video at the beginning of a week in Story Mode, add the following code in **`StoryMenuState.hx`**:
+
+**Required** For files larger than what GitHub can handle, download the Git Large File Service.
+
+[Download Git Large File Service](https://git-lfs.github.com/)
+
+### 5. Playing videos
 
 First, add a variable called `isCutscene`:
 
@@ -188,7 +186,7 @@ add(sprite);
 
 # Credits
 
-- [PolybiusProxy (me)](https://github.com/polybiusproxy) - Creator of hxCodec.
+- [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee]() - Creator of HaxeVLC.
 - [BrightFyre](https://github.com/brightfyregit) - Creator of repository.
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.

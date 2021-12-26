@@ -1,0 +1,19 @@
+{
+    "name": "hxCodec-Jrgamer4u",
+    "url" : "https://github.com/Jrgamer4u/Friday-Night-Funkin-Mp4-Video-Support/",
+    "license": "MIT",
+    "description": "Native video support for HaxeFlixel/OpenFL",
+    "version": "0.0.1",
+    "releasenote": "might not work lmao",
+    "contributors": ["PolybiusProxy","datee","BrightFyre","GWebDev","CryBit"],
+    "dependencies": {
+      "lime": "7.9.0",
+      "openfl": "",
+      "flixel": "",
+      "flixel-tools": "",
+      "flixel-addons": "",
+      "flixel-ui": "",
+      "hscript": ""
+    },
+    "main": "MP4Handler.hx"
+  }
