@@ -8,8 +8,6 @@ import flixel.util.FlxTimer;
 import openfl.events.Event;
 import vlc.VlcBitmap;
 
-// THIS IS FOR TESTING
-// DONT STEAL MY CODE >:(
 class MP4Handler
 {
 	public var finishCallback:Void->Void;
@@ -21,7 +19,6 @@ class MP4Handler
 
 	public function new()
 	{
-		//FlxG.autoPause = false;
 	}
 
 	public function playMP4(path:String, ?repeat:Bool = false, ?outputTo:FlxSprite = null, ?isWindow:Bool = false, ?isFullscreen:Bool = false,
@@ -48,8 +45,6 @@ class MP4Handler
 			bitmap.set_height(FlxG.stage.stageWidth / (16 / 9));
 		}
 
-		
-
 		bitmap.onVideoReady = onVLCVideoReady;
 		bitmap.onComplete = onVLCComplete;
 		bitmap.onError = onVLCError;
@@ -57,7 +52,7 @@ class MP4Handler
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
 		if (repeat)
-			bitmap.repeat = -1; 
+			bitmap.repeat = -1;
 		else
 			bitmap.repeat = 0;
 
@@ -69,7 +64,6 @@ class MP4Handler
 
 		if (outputTo != null)
 		{
-			// lol this is bad kek
 			bitmap.alpha = 0;
 
 			sprite = outputTo;
@@ -81,15 +75,13 @@ class MP4Handler
 		var pDir = "";
 		var appDir = "file:///" + Sys.getCwd() + "/";
 
-		if (fileName.indexOf(":") == -1) // Not a path
+		if (fileName.indexOf(":") == -1)
 			pDir = appDir;
-		else if (fileName.indexOf("file://") == -1 || fileName.indexOf("http") == -1) // C:, D: etc? ..missing "file:///" ?
+		else if (fileName.indexOf("file://") == -1 || fileName.indexOf("http") == -1)
 			pDir = "file:///";
 
 		return pDir + fileName;
 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 
 	function onVLCVideoReady()
 	{
@@ -103,8 +95,6 @@ class MP4Handler
 	{
 		bitmap.stop();
 
-		// Clean player, just in case! Actually no.
-
 		FlxG.camera.fade(FlxColor.BLACK, 0, false);
 
 		trace("Big, Big Chungus, Big Chungus!");
@@ -117,7 +107,7 @@ class MP4Handler
 			}
 			else if (stateCallback != null)
 			{
-				LoadingState.loadAndSwitchState(stateCallback);
+				FlxG.switchState(stateCallback);
 			}
 
 			bitmap.dispose();
@@ -149,7 +139,7 @@ class MP4Handler
 		}
 		else if (stateCallback != null)
 		{
-			LoadingState.loadAndSwitchState(stateCallback);
+			FlxG.switchState(stateCallback);
 		}
 	}
 
@@ -163,7 +153,7 @@ class MP4Handler
 			}
 		}
 
-		bitmap.volume = FlxG.sound.volume + 0.3; // shitty volume fix. then make it louder.
+		bitmap.volume = FlxG.sound.volume + 0.3;
 
 		if (FlxG.sound.volume <= 0.1)
 			bitmap.volume = 0;
