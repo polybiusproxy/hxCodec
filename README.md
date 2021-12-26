@@ -28,6 +28,22 @@ Put:
 <assets path="dlls/" rename='' if="windows"/>
 ```
 
+**OPTIONAL: If your PC is ARM64, add this code:**
+
+After:
+
+```xml
+<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
+<haxedef name="NG_LOGIN" if="newgrounds" />
+```
+
+Put:
+
+```xml
+<haxedef name="HXCPP_ARM64" />
+```
+
+
 ### 3. Setting up the paths
 
 In `Paths.hx`, put this code:
