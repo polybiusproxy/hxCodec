@@ -12,6 +12,14 @@ Original Repository - `https://github.com/polybiusproxy/PolyEngine`.
 You can either download it as a ZIP,
 or git cloning it.
 
+### 2. Create `Videos` Folder
+
+Create a `Videos` Folder inside of `Assets`
+
+```
+assets/videos
+```
+
 ### 2. Edit `Project.xml`
 
 After:
