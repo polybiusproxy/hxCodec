@@ -1,6 +1,4 @@
-<h1>This is a personal branch, and this should not be merged with the main one.</h1>
-
-hxCodec
+# hxCodec
 
 *Made by PolybiusProxy.*
 
