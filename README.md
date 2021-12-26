@@ -1,4 +1,7 @@
-# hxCodec - Native video support for HaxeFlixel/OpenFL
+<h1>This is a personal branch, and this should not be merged with the main one.</h1>
+
+hxCodec
+
 *Made by PolybiusProxy.*
 
 Original Repository - `https://github.com/polybiusproxy/PolyEngine`.
