@@ -1,11 +1,11 @@
-package hxCodec;
+package hxcodec;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import hxCodec.vlc.VlcBitmap;
+import hxcodec.vlc.VlcBitmap;
 import openfl.events.Event;
 
 class MP4Handler {

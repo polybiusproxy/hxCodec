@@ -15,5 +15,5 @@
       "flixel-ui": "",
       "hscript": ""
     },
-    "main": "hxCodec.MP4Handler"
+    "main": "hxcodec.MP4Handler"
   }

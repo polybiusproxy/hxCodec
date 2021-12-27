@@ -1,11 +1,11 @@
-package hxCodec.vlc;
+package hxcodec.vlc;
 
 import flixel.FlxG;
 #if (!mobile)
 import cpp.NativeArray;
 import cpp.UInt8;
 import haxe.io.Bytes;
-import hxCodec.vlc.LibVLC;
+import hxcodec.vlc.LibVLC;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;

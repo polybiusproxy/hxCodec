@@ -1,4 +1,4 @@
-package hxCodec.vlc;
+package hxcodec.vlc;
 
 import cpp.Pointer;
 import cpp.UInt8;
