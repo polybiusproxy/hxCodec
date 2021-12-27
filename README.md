@@ -10,6 +10,10 @@ Original Repository - `https://github.com/polybiusproxy/PolyEngine`.
 You can either download it as a ZIP,
 or git cloning it.
 
+WIP: You can use `haxelib git hxCodec https://github.com/Jrgamer4u/Friday-Night-Funkin-Mp4-Video-Support`
+
+Might not work with this fork. For now, just use the PolybiusProxy version.
+
 ### 2. Create `Videos` Folder
 
 Create a `Videos` Folder inside of `Assets`
