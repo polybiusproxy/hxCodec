@@ -4,7 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/vlc/cpp/include/vlc/"
+                "${workspaceFolder}/hxCodec/vlc/cpp/include/vlc/"
             ],
             "defines": [
                 "_DEBUG",
