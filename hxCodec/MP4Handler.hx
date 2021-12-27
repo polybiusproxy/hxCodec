@@ -1,15 +1,14 @@
-package;
+package hxCodec;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import hxCodec.vlc.VlcBitmap;
 import openfl.events.Event;
-import vlc.VlcBitmap;
 
-class MP4Handler
-{
+class MP4Handler {
 	public var finishCallback:Void->Void;
 	public var stateCallback:FlxState;
 
@@ -17,30 +16,22 @@ class MP4Handler
 
 	public var sprite:FlxSprite;
 
-	public function new()
-	{
-	}
+	public function new() {}
 
 	public function playMP4(path:String, ?repeat:Bool = false, ?outputTo:FlxSprite = null, ?isWindow:Bool = false, ?isFullscreen:Bool = false,
-			?midSong:Bool = false):Void
-	{
-		if (!midSong)
-		{
-			if (FlxG.sound.music != null)
-			{
+			?midSong:Bool = false):Void {
+		if (!midSong) {
+			if (FlxG.sound.music != null) {
 				FlxG.sound.music.stop();
 			}
 		}
 
 		bitmap = new VlcBitmap();
 
-		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
-		{
+		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16) {
 			bitmap.set_width(FlxG.stage.stageHeight * (16 / 9));
 			bitmap.set_height(FlxG.stage.stageHeight);
-		}
-		else
-		{
+		} else {
 			bitmap.set_width(FlxG.stage.stageWidth);
 			bitmap.set_height(FlxG.stage.stageWidth / (16 / 9));
 		}
@@ -62,16 +53,14 @@ class MP4Handler
 		FlxG.addChildBelowMouse(bitmap);
 		bitmap.play(checkFile(path));
 
-		if (outputTo != null)
-		{
+		if (outputTo != null) {
 			bitmap.alpha = 0;
 
 			sprite = outputTo;
 		}
 	}
 
-	function checkFile(fileName:String):String
-	{
+	function checkFile(fileName:String):String {
 		var pDir = "";
 		var appDir = "file:///" + Sys.getCwd() + "/";
 
@@ -83,72 +72,56 @@ class MP4Handler
 		return pDir + fileName;
 	}
 
-	function onVLCVideoReady()
-	{
+	function onVLCVideoReady() {
 		trace("video loaded!");
 
 		if (sprite != null)
 			sprite.loadGraphic(bitmap.bitmapData);
 	}
 
-	public function onVLCComplete()
-	{
+	public function onVLCComplete() {
 		bitmap.stop();
 
 		FlxG.camera.fade(FlxColor.BLACK, 0, false);
 
 		trace("Big, Big Chungus, Big Chungus!");
 
-		new FlxTimer().start(0.3, function(tmr:FlxTimer)
-		{
-			if (finishCallback != null)
-			{
+		new FlxTimer().start(0.3, function(tmr:FlxTimer) {
+			if (finishCallback != null) {
 				finishCallback();
-			}
-			else if (stateCallback != null)
-			{
+			} else if (stateCallback != null) {
 				FlxG.switchState(stateCallback);
 			}
 
 			bitmap.dispose();
 
-			if (FlxG.game.contains(bitmap))
-			{
+			if (FlxG.game.contains(bitmap)) {
 				FlxG.game.removeChild(bitmap);
 			}
 		});
 	}
 
-	public function kill()
-	{
+	public function kill() {
 		bitmap.stop();
 
-		if (finishCallback != null)
-		{
+		if (finishCallback != null) {
 			finishCallback();
 		}
 
 		bitmap.visible = false;
 	}
 
-	function onVLCError()
-	{
-		if (finishCallback != null)
-		{
+	function onVLCError() {
+		if (finishCallback != null) {
 			finishCallback();
-		}
-		else if (stateCallback != null)
-		{
+		} else if (stateCallback != null) {
 			FlxG.switchState(stateCallback);
 		}
 	}
 
-	function update(e:Event)
-	{
-		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)
-		{
-			if (bitmap.isPlaying)
-			{
+	function update(e:Event) {
+		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
+			if (bitmap.isPlaying) {
 				onVLCComplete();
 			}
 		}
