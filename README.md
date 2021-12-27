@@ -6,13 +6,17 @@ Original Repository - `https://github.com/polybiusproxy/PolyEngine`.
 
 [Click here to check the roadmap of hxCodec here](https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/projects/1)
   
+## NOTE
+
+This version only works with VScode, send me your solutions at https://github.com/Jrgamer4u/FNKNGT/labels/Source-code%20editor%20can%20not%20find%20plugins%20and%20dlls
+
 ### 1. Download the repository:
 You can either download it as a ZIP,
 or git cloning it.
 
 WIP: You can use `haxelib git hxCodec https://github.com/Jrgamer4u/Friday-Night-Funkin-Mp4-Video-Support`
 
-Might not work with this fork. For now, just use the PolybiusProxy version.
+Code might not work with this fork.
 
 ### 2. Create `Videos` Folder
 
