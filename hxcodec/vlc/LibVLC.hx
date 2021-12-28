@@ -8,10 +8,8 @@ import cpp.UInt8;
 // Only works with VScode, send me your solutions at https://github.com/Jrgamer4u/FNKNGT/labels/Source-code%20editor%20can%20not%20find%20plugins%20and%20dlls
 // this solution might not work.
 @:buildXml("
-<target id='haxe'>
-  <lib name='${haxelib:nme}/lib/${BINDIR}/libnme${LIBEXTRA}${LIBEXT}'/>
-</target>
-")
+  <lib name='${PROJECT_DIR}/LibVLCBuild.xml'/>
+  ")
 
 @:include("LibVLC.h")
 @:unreflective
