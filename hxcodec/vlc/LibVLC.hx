@@ -10,8 +10,12 @@ import cpp.UInt8;
 @:buildXml('
 <files id="haxe">
 <compilerflag value="-Iinclude"/>
-	<compilerflag value="-Iinclude/"/>
-	<file name="hxcodec/vlc/LibVLCBuild.xml" />
+    <compilerflag value="-Iinclude/"/>
+    <file name="$classDir/hxcodec/vlc/LibVLCBuild.xml"/>
+
+  </files>
+<files id="__lib__">
+  <compilerflag value="-Iinclude"/>
 </files>
 ')
 
