@@ -1,65 +1,44 @@
 package hxcodec;
 
 import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.FlxState;
-import flixel.util.FlxColor;
-import flixel.util.FlxTimer;
-import hxcodec.vlc.VlcBitmap;
 import openfl.events.Event;
 
-class MP4Handler {
+class MP4Handler extends hxcodec.vlc.VlcBitmap {
+	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
-	public var stateCallback:FlxState;
 
-	public var bitmap:VlcBitmap;
+	var pauseMusic:Bool;
 
-	public var sprite:FlxSprite;
+	public function new(width:Float = 320, height:Float = 240, autoScale:Bool = true) {
+		super(width, height, autoScale);
 
-	public function new() {}
+		onVideoReady = onVLCVideoReady;
+		onComplete = finishVideo;
+		onError = onVLCError;
 
-	public function playMP4(path:String, ?repeat:Bool = false, ?outputTo:FlxSprite = null, ?isWindow:Bool = false, ?isFullscreen:Bool = false,
-			?midSong:Bool = false):Void {
-		if (!midSong) {
-			if (FlxG.sound.music != null) {
-				FlxG.sound.music.stop();
-			}
-		}
-
-		bitmap = new VlcBitmap();
-
-		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16) {
-			bitmap.set_width(FlxG.stage.stageHeight * (16 / 9));
-			bitmap.set_height(FlxG.stage.stageHeight);
-		} else {
-			bitmap.set_width(FlxG.stage.stageWidth);
-			bitmap.set_height(FlxG.stage.stageWidth / (16 / 9));
-		}
-
-		bitmap.onVideoReady = onVLCVideoReady;
-		bitmap.onComplete = onVLCComplete;
-		bitmap.onError = onVLCError;
+		FlxG.addChildBelowMouse(this);
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
-		if (repeat)
-			bitmap.repeat = -1;
-		else
-			bitmap.repeat = 0;
-
-		bitmap.inWindow = isWindow;
-		bitmap.fullscreen = isFullscreen;
-
-		FlxG.addChildBelowMouse(bitmap);
-		bitmap.play(checkFile(path));
-
-		if (outputTo != null) {
-			bitmap.alpha = 0;
-
-			sprite = outputTo;
-		}
+		FlxG.signals.focusGained.add(function() {
+			resume();
+		});
+		FlxG.signals.focusLost.add(function() {
+			pause();
+		});
 	}
 
+	function update(e:Event) {
+		if ((FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) && isPlaying)
+			finishVideo();
+
+		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
+			volume = 0;
+		else
+			volume = FlxG.sound.volume + 0.4;
+	}
+
+	#if sys
 	function checkFile(fileName:String):String {
 		var pDir = "";
 		var appDir = "file:///" + Sys.getCwd() + "/";
@@ -71,64 +50,47 @@ class MP4Handler {
 
 		return pDir + fileName;
 	}
+	#end
 
 	function onVLCVideoReady() {
-		trace("video loaded!");
+		trace("Video loaded!");
 
-		if (sprite != null)
-			sprite.loadGraphic(bitmap.bitmapData);
-	}
-
-	public function onVLCComplete() {
-		bitmap.stop();
-
-		FlxG.camera.fade(FlxColor.BLACK, 0, false);
-
-		trace("Big, Big Chungus, Big Chungus!");
-
-		new FlxTimer().start(0.3, function(tmr:FlxTimer) {
-			if (finishCallback != null) {
-				finishCallback();
-			} else if (stateCallback != null) {
-				FlxG.switchState(stateCallback);
-			}
-
-			bitmap.dispose();
-
-			if (FlxG.game.contains(bitmap)) {
-				FlxG.game.removeChild(bitmap);
-			}
-		});
-	}
-
-	public function kill() {
-		bitmap.stop();
-
-		if (finishCallback != null) {
-			finishCallback();
-		}
-
-		bitmap.visible = false;
+		if (readyCallback != null)
+			readyCallback();
 	}
 
 	function onVLCError() {
-		if (finishCallback != null) {
-			finishCallback();
-		} else if (stateCallback != null) {
-			FlxG.switchState(stateCallback);
+		throw "VLC caught an error!";
+	}
+
+	public function finishVideo() {
+		if (FlxG.sound.music != null && pauseMusic)
+			FlxG.sound.music.resume();
+
+		FlxG.stage.removeEventListener(Event.ENTER_FRAME, update);
+
+		dispose();
+
+		if (FlxG.game.contains(this)) {
+			FlxG.game.removeChild(this);
+
+			if (finishCallback != null)
+				finishCallback();
 		}
 	}
 
-	function update(e:Event) {
-		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
-			if (bitmap.isPlaying) {
-				onVLCComplete();
-			}
-		}
+	public function playVideo(path:String, ?repeat:Bool = false, pauseMusic:Bool = false) {
+		this.pauseMusic = pauseMusic;
 
-		bitmap.volume = FlxG.sound.volume + 0.3;
+		if (FlxG.sound.music != null && pauseMusic)
+			FlxG.sound.music.pause();
 
-		if (FlxG.sound.volume <= 0.1)
-			bitmap.volume = 0;
+		#if sys
+		play(checkFile(path));
+
+		this.repeat = repeat ? -1 : 0;
+		#else
+		throw "Doesn't support sys";
+		#end
 	}
 }
