@@ -173,7 +173,7 @@ add(sprite);
 # Credits
 
 - [PolybiusProxy (me)](https://github.com/polybiusproxy) - Creator of hxCodec.
-- [datee]() - Creator of HaxeVLC.
+- [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [BrightFyre](https://github.com/brightfyregit) - Creator of repository.
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
 - [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol
