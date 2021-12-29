@@ -29,8 +29,19 @@ Add
 ```xml
 <assets path="assets/preload/videos" rename="assets/videos" include="*mp4" embed='false' />
 
-<assets path="plugins/" rename='' if="cpp" />
-<assets path="dlls/" rename='' if="cpp" />
+<assets path="assets/videos" exclude="*.mp3" if="web"/>
+<assets path="assets/videos" exclude="*.ogg" unless="web"/>
+
+<assets path="plugins/" rename='' if="windows"/>
+<assets path="dlls/" rename='' if="windows"/>
+```
+
+**OPTIONAL: If your PC is ARM64, add this code:**
+
+Add:
+
+```xml
+<haxedef name="HXCPP_ARM64" />
 ```
 
 ### 3. Edit `Paths.hx`
