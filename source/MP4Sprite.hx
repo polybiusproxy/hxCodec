@@ -3,7 +3,7 @@ package;
 import flixel.FlxSprite;
 
 /**
- * Compared to `MP4Handler`. This loads faster!!
+ * Compared to `MP4Handler`. This loads slower!!
  */
 class MP4Sprite extends FlxSprite
 {
