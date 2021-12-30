@@ -49,7 +49,7 @@ class LibVLC
 		float getPosition();
 		void setPosition(float pos);
 		bool isSeekable();
-		float getFps();
+		float getFPS();
 		void nextFrame();
 		bool hasVout();
 		void setRepeat(int numRepeats);
