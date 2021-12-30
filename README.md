@@ -24,30 +24,9 @@ For files larger than what GitHub can handle, download the Git Large File Servic
 
 [Download Git Large File Service](https://git-lfs.github.com/)
 
-### The code required to change from the Original Repository to make this fork work.
+### Instructions
 
 [Original Repository's Readme](https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/blob/main/README.md)
-
-replace these lines:
-
-```haxe
-video.playMP4
-```
-to
-```haxe
-video.playVideo
-```
-<br><br>
-
-```haxe
-LoadingState.loadAndSwitchState
-```
-to
-```haxe
-if (FlxG.sound.music != null)
-FlxG.sound.music.stop();
-FlxG.switchState(new PlayState());
-```
 
 # Credits
 
