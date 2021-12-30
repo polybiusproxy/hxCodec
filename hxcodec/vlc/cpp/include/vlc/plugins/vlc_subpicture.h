@@ -59,7 +59,6 @@ typedef struct subpicture_private_t subpicture_private_t;
 
 struct subpicture_t
 {
-
     int i_channel;
 
     int64_t i_order;

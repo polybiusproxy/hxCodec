@@ -10,7 +10,6 @@ extern "C"
 
     enum
     {
-
         OSD_PLAY_ICON = 1,
         OSD_PAUSE_ICON,
         OSD_SPEAKER_ICON,
