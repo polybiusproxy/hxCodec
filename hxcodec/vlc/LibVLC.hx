@@ -5,8 +5,6 @@ import cpp.Pointer;
 import cpp.UInt8;
 #end
 
-// Only works with VScode, send me your solutions at https://github.com/Jrgamer4u/FNKNGT/labels/Source-code%20editor%20can%20not%20find%20plugins%20and%20dlls
-// test
 @:buildXml("<include name='src/hxCodec/vlc/LibVLCBuild.xml' />")
 @:include("LibVLC.h")
 @:unreflective
