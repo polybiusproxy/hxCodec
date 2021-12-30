@@ -9,7 +9,7 @@
 	</files>
 	
 	<target id='haxe' tool='linker' toolid='exe'>
-		<lib name='${CPP_DIR}/lib/libvlc.lib' if='windows'/>
-		<lib name='${CPP_DIR}/lib/libvlccore.lib' if='windows'/>
+		<lib name='${CPP_DIR}/lib/libvlc.lib' if='cpp'/>
+		<lib name='${CPP_DIR}/lib/libvlccore.lib' if='cpp'/>
 	</target>
 </xml>
