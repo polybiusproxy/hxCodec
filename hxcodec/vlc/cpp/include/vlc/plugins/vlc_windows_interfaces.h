@@ -143,7 +143,6 @@ typedef struct ITaskbarList3 ITaskbarList3;
 
 struct ITaskbarList3Vtbl
 {
-
     long(WINAPI *QueryInterface)(ITaskbarList3 *This, REFIID riid, void **ppvObject);
 
     long(WINAPI *AddRef)(ITaskbarList3 *This);

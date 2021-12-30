@@ -27,7 +27,6 @@ typedef struct
     {
         char *psz_mux;
     } vod;
-
 } vlm_media_t;
 
 typedef struct
@@ -43,14 +42,11 @@ typedef struct
 
 #if 0
 typedef struct
-{
-
-} vlm_schedule_t
+{} vlm_schedule_t
 #endif
 
 enum vlm_event_type_e
 {
-
     VLM_EVENT_MEDIA_ADDED = 0x100,
     VLM_EVENT_MEDIA_REMOVED,
     VLM_EVENT_MEDIA_CHANGED,
@@ -71,7 +67,6 @@ typedef struct
 
 enum vlm_query_e
 {
-
     VLM_GET_MEDIAS,
 
     VLM_CLEAR_MEDIAS,
@@ -107,7 +102,6 @@ enum vlm_query_e
     VLM_SET_MEDIA_INSTANCE_POSITION,
 
     VLM_CLEAR_SCHEDULES,
-
 };
 
 struct vlm_message_t

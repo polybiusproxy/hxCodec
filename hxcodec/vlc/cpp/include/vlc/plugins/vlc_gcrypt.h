@@ -50,7 +50,6 @@ static const struct gcry_thread_cbs gcry_threads_vlc =
 
 static inline void vlc_gcrypt_init(void)
 {
-
     static bool done = false;
 
     vlc_global_lock(VLC_GCRYPT_MUTEX);

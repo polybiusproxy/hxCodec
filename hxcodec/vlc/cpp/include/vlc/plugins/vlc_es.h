@@ -14,7 +14,6 @@ struct video_palette_t
 #define AUDIO_REPLAY_GAIN_ALBUM (1)
 typedef struct
 {
-
     bool pb_peak[AUDIO_REPLAY_GAIN_MAX];
 
     float pf_peak[AUDIO_REPLAY_GAIN_MAX];
@@ -183,7 +182,6 @@ VLC_API void video_format_Print(vlc_object_t *, const char *, const video_format
 
 struct subs_format_t
 {
-
     char *psz_encoding;
 
     int i_x_origin;
@@ -191,7 +189,6 @@ struct subs_format_t
 
     struct
     {
-
         uint32_t palette[16 + 1];
 
         int i_original_frame_width;

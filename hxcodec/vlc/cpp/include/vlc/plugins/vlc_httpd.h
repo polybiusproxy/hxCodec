@@ -61,7 +61,6 @@ typedef struct httpd_message_t
     int64_t i_body_offset;
     int i_body;
     uint8_t *p_body;
-
 } httpd_message_t;
 
 typedef struct httpd_url_t httpd_url_t;

@@ -194,7 +194,6 @@ typedef enum vlc_action
     ACTIONID_PROGRAM_SID_NEXT,
     ACTIONID_PROGRAM_SID_PREV,
     ACTIONID_INTF_POPUP_MENU,
-
 } vlc_action_t;
 
 VLC_API vlc_action_t vlc_GetActionId(const char *psz_key) VLC_USED;

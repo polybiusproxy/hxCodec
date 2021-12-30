@@ -15,7 +15,6 @@ enum
 
 typedef struct
 {
-
     int i_x;
     int i_y;
 

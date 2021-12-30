@@ -27,7 +27,6 @@ extern "C"
         libvlc_meta_EncodedBy,
         libvlc_meta_ArtworkURL,
         libvlc_meta_TrackID
-
     } libvlc_meta_t;
 
     typedef enum libvlc_state_t
@@ -58,7 +57,6 @@ extern "C"
 
     typedef struct libvlc_media_stats_t
     {
-
         int i_read_bytes;
         float f_input_bitrate;
 
@@ -83,7 +81,6 @@ extern "C"
 
     typedef struct libvlc_media_track_info_t
     {
-
         uint32_t i_codec;
         int i_id;
         libvlc_track_type_t i_type;
@@ -95,18 +92,15 @@ extern "C"
         {
             struct
             {
-
                 unsigned i_channels;
                 unsigned i_rate;
             } audio;
             struct
             {
-
                 unsigned i_height;
                 unsigned i_width;
             } video;
         } u;
-
     } libvlc_media_track_info_t;
 
     typedef struct libvlc_audio_track_t
@@ -132,7 +126,6 @@ extern "C"
 
     typedef struct libvlc_media_track_t
     {
-
         uint32_t i_codec;
         uint32_t i_original_fourcc;
         int i_id;
@@ -151,7 +144,6 @@ extern "C"
         unsigned int i_bitrate;
         char *psz_language;
         char *psz_description;
-
     } libvlc_media_track_t;
 
     LIBVLC_API libvlc_media_t *libvlc_media_new_location(

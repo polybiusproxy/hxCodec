@@ -164,7 +164,6 @@
 
 static const struct config_category_t categories_array[] =
     {
-
         {CAT_INTERFACE, INTF_TITLE, INTF_HELP},
         {SUBCAT_INTERFACE_GENERAL, INTF_TITLE, INTF_GENERAL_HELP},
         {SUBCAT_INTERFACE_MAIN, INTF_MAIN_TITLE, INTF_MAIN_HELP},

@@ -236,8 +236,8 @@ static inline void *realloc_down(void *ptr, size_t size)
 
 #define ARRAY_VAL(array, pos) array.p_elems[pos]
 
-#define ARRAY_BSEARCH(array, elem, zetype, key, answer) \
-    BSEARCH((array).p_elems, (array).i_size, elem, zetype, key, answer)
+#define ARRAY_BSEARCH(array, elem, zetype, key, answer)                 \
+    BSEARCH((array).p_elems, (array).i_size, elem, zetype, key, answer) \
 
 #define FOREACH_ARRAY(item, array)                          \
     {                                                       \
@@ -495,13 +495,11 @@ __vlc_dictionary_insert(vlc_dictionary_t *p_dict, const char *psz_key,
     p_dict->p_entries[i_pos] = p_entry;
     if (rebuild)
     {
-
         int count;
         for (count = 1; p_entry->p_next; count++)
             p_entry = p_entry->p_next;
         if (count > 3)
         {
-
             struct vlc_dictionary_t new_dict;
             int i_new_size = ((p_dict->i_size + 2) * 3) / 2;
             int i;

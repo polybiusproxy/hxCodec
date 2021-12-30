@@ -250,7 +250,6 @@ typedef union
         int32_t x;
         int32_t y;
     } coords;
-
 } vlc_value_t;
 
 struct vlc_list_t

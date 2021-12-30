@@ -97,7 +97,6 @@ VLC_API void input_item_node_PostAndDelete(input_item_node_t *p_node);
 
 enum input_item_option_e
 {
-
     VLC_INPUT_OPTION_TRUSTED = 0x2,
 
     VLC_INPUT_OPTION_UNIQUE = 0x100,

@@ -38,7 +38,6 @@ extern "C"
 
     enum stream_query_e
     {
-
         STREAM_CAN_SEEK,
         STREAM_CAN_FASTSEEK,
         STREAM_CAN_PAUSE,

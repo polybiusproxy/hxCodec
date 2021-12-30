@@ -23,7 +23,6 @@ enum
 
 typedef struct
 {
-
     bool is_standalone;
 
     unsigned type;
@@ -33,7 +32,6 @@ typedef struct
 
     unsigned width;
     unsigned height;
-
 } vout_window_cfg_t;
 
 struct vout_window_t

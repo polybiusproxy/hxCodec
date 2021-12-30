@@ -11,12 +11,10 @@ typedef struct video_splitter_owner_t video_splitter_owner_t;
 
 typedef struct
 {
-
     video_format_t fmt;
 
     struct
     {
-
         int i_x;
         int i_y;
 
@@ -24,7 +22,6 @@ typedef struct
     } window;
 
     char *psz_module;
-
 } video_splitter_output_t;
 
 struct video_splitter_t

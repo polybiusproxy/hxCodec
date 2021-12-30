@@ -15,7 +15,6 @@ extern "C"
         int i_id;
         char *psz_name;
         struct libvlc_track_description_t *p_next;
-
     } libvlc_track_description_t;
 
     typedef struct libvlc_audio_output_t
@@ -23,7 +22,6 @@ extern "C"
         char *psz_name;
         char *psz_description;
         struct libvlc_audio_output_t *p_next;
-
     } libvlc_audio_output_t;
 
     typedef struct libvlc_audio_output_device_t
@@ -31,7 +29,6 @@ extern "C"
         struct libvlc_audio_output_device_t *p_next;
         char *psz_device;
         char *psz_description;
-
     } libvlc_audio_output_device_t;
 
     typedef struct libvlc_rectangle_t

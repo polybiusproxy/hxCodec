@@ -49,7 +49,6 @@ typedef struct demux_meta_t
 
 enum demux_query_e
 {
-
     DEMUX_GET_POSITION,
     DEMUX_SET_POSITION,
 

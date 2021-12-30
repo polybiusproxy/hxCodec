@@ -19,7 +19,7 @@ static inline char *psz_md5_hash(struct md5_s *md5_s)
     if (likely(psz))
     {
         for (int i = 0; i < 16; i++)
-            sprintf(&psz[2 * i], "%02" PRIx8, md5_s->buf[i]);
+            sprintf(&psz[2 * i], sizeof(&psz[2 * i]), "%02" PRIx8, md5_s->buf[i]);
     }
     return psz;
 }

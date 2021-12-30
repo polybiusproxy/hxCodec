@@ -17,7 +17,6 @@ typedef struct vlc_event_manager_t
 
 typedef enum vlc_event_type_t
 {
-
     vlc_InputStateChanged,
     vlc_InputSelectedStreamChanged,
 
@@ -43,7 +42,6 @@ typedef struct vlc_event_t
     void *p_obj;
     union vlc_event_type_specific
     {
-
         struct vlc_input_state_changed
         {
             int new_state;
@@ -103,7 +101,6 @@ typedef struct vlc_event_t
         {
             void *unused;
         } services_discovery_ended;
-
     } u;
 } vlc_event_t;
 

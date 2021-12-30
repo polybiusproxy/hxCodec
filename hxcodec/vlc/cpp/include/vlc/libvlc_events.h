@@ -8,7 +8,6 @@ extern "C"
 
     enum libvlc_event_e
     {
-
         libvlc_MediaMetaChanged = 0,
         libvlc_MediaSubItemAdded,
         libvlc_MediaDurationChanged,
@@ -73,7 +72,6 @@ extern "C"
         void *p_obj;
         union
         {
-
             struct
             {
                 libvlc_meta_t meta_type;

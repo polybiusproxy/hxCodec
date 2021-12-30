@@ -3,7 +3,6 @@
 
 enum es_out_query_e
 {
-
     ES_OUT_SET_ES,
     ES_OUT_RESTART_ES,
 

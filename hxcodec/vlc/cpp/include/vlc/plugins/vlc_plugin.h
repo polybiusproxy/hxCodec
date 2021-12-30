@@ -52,7 +52,6 @@ enum vlc_module_properties
     VLC_CONFIG_LIST,
 
     VLC_CONFIG_LIST_CB,
-
 };
 
 #define CONFIG_HINT_CATEGORY 0x02

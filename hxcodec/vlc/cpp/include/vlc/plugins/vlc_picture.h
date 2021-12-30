@@ -15,7 +15,6 @@ typedef struct plane_t
 
     int i_visible_lines;
     int i_visible_pitch;
-
 } plane_t;
 
 #define PICTURE_PLANE_MAX (VOUT_MAX_PLANES)
@@ -24,7 +23,6 @@ typedef struct picture_gc_sys_t picture_gc_sys_t;
 
 struct picture_t
 {
-
     video_frame_format_t format;
 
     plane_t p[PICTURE_PLANE_MAX];
@@ -63,7 +61,6 @@ typedef struct
         int i_lines;
         int i_pitch;
     } p[PICTURE_PLANE_MAX];
-
 } picture_resource_t;
 
 VLC_API picture_t *picture_NewFromResource(const video_format_t *, const picture_resource_t *) VLC_USED;

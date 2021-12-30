@@ -39,7 +39,6 @@ typedef struct
 
     struct
     {
-
         const char *title;
 
         unsigned width;
@@ -65,7 +64,6 @@ typedef struct
         int num;
         int den;
     } zoom;
-
 } vout_display_cfg_t;
 
 typedef struct
@@ -80,7 +78,6 @@ typedef struct
 
 enum
 {
-
     VOUT_DISPLAY_HIDE_MOUSE,
 
     VOUT_DISPLAY_RESET_PICTURES,
@@ -104,7 +101,6 @@ enum
 
 enum
 {
-
     VOUT_DISPLAY_EVENT_PICTURES_INVALID,
 
     VOUT_DISPLAY_EVENT_FULLSCREEN,
@@ -125,7 +121,6 @@ enum
 
 struct vout_display_owner_t
 {
-
     vout_display_owner_sys_t *sys;
 
     void (*event)(vout_display_t *, int, va_list);

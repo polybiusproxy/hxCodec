@@ -52,7 +52,6 @@ static inline uint32_t bs_read(bs_t *s, int i_count)
 
         if ((i_shr = s->i_left - i_count) >= 0)
         {
-
             i_result |= (*s->p >> i_shr) & i_mask[i_count];
             s->i_left -= i_count;
             if (s->i_left == 0)
@@ -64,7 +63,6 @@ static inline uint32_t bs_read(bs_t *s, int i_count)
         }
         else
         {
-
             i_result |= (*s->p & i_mask[s->i_left]) << -i_shr;
             i_count -= s->i_left;
             s->p++;

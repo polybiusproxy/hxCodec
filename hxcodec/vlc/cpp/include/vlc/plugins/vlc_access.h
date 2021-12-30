@@ -5,7 +5,6 @@
 
 enum access_query_e
 {
-
     ACCESS_CAN_SEEK,
     ACCESS_CAN_FASTSEEK,
     ACCESS_CAN_PAUSE,

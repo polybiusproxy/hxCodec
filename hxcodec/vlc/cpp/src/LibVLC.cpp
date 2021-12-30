@@ -10,7 +10,6 @@ LibVLC::LibVLC(void)
 {
 	char const *Args[] =
 	{
-
 		"--drop-late-frames",
 		"--ignore-config",
 		"--intf",
@@ -30,7 +29,6 @@ LibVLC::LibVLC(void)
 		"--verbose=2"
 #else
 #endif
-
 	};
 
 	int Argc = sizeof(Args) / sizeof(*Args);
@@ -87,7 +85,6 @@ static void display(void *opaque, void *picture)
 
 static unsigned format_setup(void **opaque, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
-
 	struct ctx *callback = reinterpret_cast<struct ctx *>(*opaque);
 
 	unsigned _w = (*width);
@@ -115,7 +112,6 @@ static void format_cleanup(void *opaque)
 
 uint8_t *LibVLC::getPixelData()
 {
-
 	if (ctx.bufferFlip)
 		return ctx.pixeldata2;
 	else
@@ -162,7 +158,6 @@ void LibVLC::play(const char *path)
 
 void LibVLC::playInWindow()
 {
-
 	ctx.pixeldata = 0;
 	ctx.pixeldata2 = 0;
 	eventManager = libvlc_media_player_event_manager(libVlcMediaPlayer);

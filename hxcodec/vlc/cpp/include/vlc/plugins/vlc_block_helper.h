@@ -8,7 +8,6 @@ typedef struct block_bytestream_t
     block_t *p_chain;
     block_t *p_block;
     size_t i_offset;
-
 } block_bytestream_t;
 
 static inline void block_BytestreamInit(block_bytestream_t *p_bytestream)
@@ -99,7 +98,6 @@ static inline block_t *block_BytestreamPop(block_bytestream_t *p_bytestream)
 
 static inline int block_SkipByte(block_bytestream_t *p_bytestream)
 {
-
     if (p_bytestream->p_block->i_buffer - p_bytestream->i_offset)
     {
         p_bytestream->i_offset++;
@@ -127,7 +125,6 @@ static inline int block_SkipByte(block_bytestream_t *p_bytestream)
 static inline int block_PeekByte(block_bytestream_t *p_bytestream,
                                  uint8_t *p_data)
 {
-
     if (p_bytestream->p_block->i_buffer - p_bytestream->i_offset)
     {
         *p_data = p_bytestream->p_block->p_buffer[p_bytestream->i_offset];
@@ -154,7 +151,6 @@ static inline int block_PeekByte(block_bytestream_t *p_bytestream,
 static inline int block_GetByte(block_bytestream_t *p_bytestream,
                                 uint8_t *p_data)
 {
-
     if (p_bytestream->p_block->i_buffer - p_bytestream->i_offset)
     {
         *p_data = p_bytestream->p_block->p_buffer[p_bytestream->i_offset];
@@ -203,7 +199,6 @@ static inline int block_WaitBytes(block_bytestream_t *p_bytestream,
 
     if (i_size)
     {
-
         return VLC_EGENERIC;
     }
     return VLC_SUCCESS;
@@ -231,7 +226,6 @@ static inline int block_SkipBytes(block_bytestream_t *p_bytestream,
 
     if (i_data)
     {
-
         return VLC_EGENERIC;
     }
 
@@ -262,7 +256,6 @@ static inline int block_PeekBytes(block_bytestream_t *p_bytestream,
 
     if (i_size)
     {
-
         return VLC_EGENERIC;
     }
 
@@ -312,7 +305,6 @@ static inline int block_GetBytes(block_bytestream_t *p_bytestream,
 
     if (i_size)
     {
-
         return VLC_EGENERIC;
     }
 
@@ -365,7 +357,6 @@ static inline int block_PeekOffsetBytes(block_bytestream_t *p_bytestream,
 
     if (i_size)
     {
-
         return VLC_EGENERIC;
     }
 
@@ -427,7 +418,6 @@ static inline int block_FindStartcodeFromOffset(
 
     if (i_size >= 0)
     {
-
         return VLC_EGENERIC;
     }
 
@@ -449,7 +439,6 @@ static inline int block_FindStartcodeFromOffset(
 
                 if (i_match + 1 == i_startcode_length)
                 {
-
                     *pi_offset += i_offset - i_match;
                     return VLC_SUCCESS;
                 }
@@ -458,7 +447,6 @@ static inline int block_FindStartcodeFromOffset(
             }
             else if (i_match)
             {
-
                 p_block = p_block_backup;
                 i_offset = i_offset_backup;
                 *pi_offset = i_caller_offset_backup;

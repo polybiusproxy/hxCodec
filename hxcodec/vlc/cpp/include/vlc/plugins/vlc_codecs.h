@@ -86,7 +86,6 @@ typedef struct
 
 #ifndef _VLC_BITMAPINFOHEADER_
 #define _VLC_BITMAPINFOHEADER_
-
 typedef struct
     ATTR_PACKED
 {
@@ -179,7 +178,6 @@ typedef struct
         uint32_t dwBitMasks[3];
         TRUECOLORINFO TrueColorInfo;
     };
-
 } VIDEOINFO;
 #endif
 

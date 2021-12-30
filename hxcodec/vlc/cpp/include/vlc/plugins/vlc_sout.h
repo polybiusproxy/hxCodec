@@ -92,7 +92,6 @@ extern "C"
 
     enum sout_mux_query_e
     {
-
         MUX_CAN_ADD_STREAM_WHILE_MUXING,
 
         MUX_GET_ADD_STREAM_WAIT,

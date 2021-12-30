@@ -86,7 +86,6 @@ struct filter_t
         } render;
 #define pf_render_text u.render.pf_text
 #define pf_render_html u.render.pf_html
-
     } u;
 
     int (*pf_get_attachments)(filter_t *, input_attachment_t ***, int *);

@@ -10,7 +10,6 @@ typedef struct extension_sys_t extension_sys_t;
 
 typedef struct extension_t
 {
-
     char *psz_name;
 
     char *psz_title;
@@ -41,7 +40,6 @@ struct extensions_manager_t
 
 enum
 {
-
     EXTENSION_ACTIVATE,
     EXTENSION_DEACTIVATE,
     EXTENSION_IS_ACTIVATED,
@@ -201,7 +199,6 @@ typedef enum
 
 struct extension_widget_t
 {
-
     extension_widget_type_e type;
     char *psz_text;
 

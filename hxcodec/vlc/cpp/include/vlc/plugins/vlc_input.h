@@ -54,7 +54,6 @@ typedef struct
 
     int i_seekpoint;
     seekpoint_t **seekpoint;
-
 } input_title_t;
 
 static inline input_title_t *vlc_input_title_New(void)
@@ -203,7 +202,6 @@ typedef enum input_state_e
 
 typedef enum input_event_type_e
 {
-
     INPUT_EVENT_STATE,
 
     INPUT_EVENT_DEAD,
@@ -251,12 +249,10 @@ typedef enum input_event_type_e
     INPUT_EVENT_AOUT,
 
     INPUT_EVENT_VOUT,
-
 } input_event_type_e;
 
 enum input_query_e
 {
-
     INPUT_GET_POSITION,
     INPUT_SET_POSITION,
 
