@@ -55,7 +55,6 @@ public:
 	void setRepeat(int numRepeats);
 	int getRepeat();
 	const char *getLastError();
-	float getFPS();
 	void openMedia(const char *mediaPathName);
 	int flags[16] = {-1};
 	void setFormat(char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines);
