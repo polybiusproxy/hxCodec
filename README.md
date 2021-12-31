@@ -45,7 +45,7 @@ Add:
 ```
 
 ### 3. Edit `Paths.hx`
-```haxe
+```hx
 inline static public function video(key:String, ?library:String)
 {
 	return getPath('videos/$key.mp4', BINARY, library);
@@ -56,7 +56,7 @@ inline static public function video(key:String, ?library:String)
 
 1. Put your video in `assets/preload/videos`.
 2. Create somewhere in PlayState
-```haxe
+```hx
 var video:MP4Handler;
 
 function playCutscene(name:String)
@@ -87,7 +87,7 @@ function playEndCutscene(name:String)
 
 ### 5. Example
 At PlayState create function
-```haxe
+```hx
 switch (curSong.toLowerCase())
 {
 	case 'too-slow':
@@ -100,7 +100,7 @@ switch (curSong.toLowerCase())
 ```
 
 At PlayState endSong function
-```haxe
+```hx
 if (SONG.song.toLowerCase() == 'triple-trouble')
 	playEndCutscene('soundtestcodes');
 ```
