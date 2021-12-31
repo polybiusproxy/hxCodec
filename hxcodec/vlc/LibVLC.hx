@@ -106,10 +106,13 @@ extern class LibVLC {
 	@:native("getPixelData")
 	public function getPixelData():Pointer<UInt8>;
 	#end
-
+	/* for some reason this part of the code makes vscode angry for some reason??? 
+		if there's a way to fix this, it would make the code more stable and less error-prone. */
+	/*
 	@:native("getFPS")
 	public function getFPS():Float;
-
+	*/
+	
 	@:native("flags")
 	public var flags:Array<Int>;
 

@@ -49,7 +49,11 @@ public:
 	float getPosition();
 	void setPosition(float pos);
 	bool isSeekable();
+	/* for some reason this part of the code makes vscode angry for some reason??? 
+		if there's a way to fix this, it would make the code more stable and less error-prone. */
+	/*
 	float getFps();
+	*/
 	void nextFrame();
 	bool hasVout();
 	void setRepeat(int numRepeats);
