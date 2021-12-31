@@ -3,7 +3,7 @@
     "url" : "https://github.com/Jrgamer4u/Friday-Night-Funkin-Mp4-Video-Support/",
     "license": "MIT",
     "description": "Native video support for HaxeFlixel/OpenFL",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "releasenote": "might not work lmao",
     "contributors": ["PolybiusProxy","datee","BrightFyre","GWebDev","CryBit"],
     "dependencies": {
