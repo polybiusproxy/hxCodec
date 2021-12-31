@@ -1,3 +1,7 @@
+#ifndef LIBVLC_H
+#define LIBVLC_H
+
+#include "vlc/vlc.h"
 #include <mutex>
 #include <iostream>
 #include <string>
@@ -408,3 +412,5 @@ void LibVLC::callbacks(const libvlc_event_t *event, void *ptr)
 		break;
 	}
 }
+
+#endif
