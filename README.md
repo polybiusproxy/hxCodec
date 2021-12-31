@@ -53,7 +53,7 @@ FlxG.switchState(new PlayState());
 ```
 to
 ```haxe
-<assets path="src/hxCodec/plugins/" if="windows"/>
+<assets path="src/hxCodec/plugins/" rename='' if="windows"/>
 <assets path="src/hxCodec/dlls/" rename='' if="windows"/>
 ```
 
