@@ -14,8 +14,19 @@ import openfl.errors.Error;
 import openfl.events.Event;
 import openfl.geom.Rectangle;
 
+/**
+ * ...
+ * @author Tommy S
+ */
 @:cppFileCode('#include "LibVLC.cpp"')
 class VlcBitmap extends Bitmap {
+	/////////////////////////////////////////////////////////////////////////////////////
+	// ===================================================================================
+	// Consts
+	//-----------------------------------------------------------------------------------
+	// ===================================================================================
+	// Properties
+	//-----------------------------------------------------------------------------------
 	public var videoWidth:Int;
 	public var videoHeight:Int;
 	public var repeat:Int = 0;
@@ -41,12 +52,18 @@ class VlcBitmap extends Bitmap {
 	public var onComplete:Void->Void;
 	public var onError:Void->Void;
 
+	// ===================================================================================
+	// Declarations
+	//-----------------------------------------------------------------------------------
 	#if cpp
 	var bufferMem:Array<UInt8>;
 	#end
 
 	var libvlc:LibVLC;
 
+	// ===================================================================================
+	// Variables
+	//-----------------------------------------------------------------------------------
 	var frameSize:Int;
 	var _width:Null<Float>;
 	var _height:Null<Float>;
@@ -59,6 +76,8 @@ class VlcBitmap extends Bitmap {
 	var frameRect:Rectangle;
 	var screenWidth:Float;
 	var screenHeight:Float;
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	public function new(width:Float = 320, height:Float = 240, ?autoScale:Bool = true) {
 		super(null, null, true);
@@ -77,6 +96,8 @@ class VlcBitmap extends Bitmap {
 	function mThread() {
 		init();
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	function init() {
 		addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
@@ -109,6 +130,8 @@ class VlcBitmap extends Bitmap {
 			return FlxG.stage.stageWidth / (16 / 9);
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	public function play(?source:String) {
 		libvlc.setRepeat(repeat);
 
@@ -124,6 +147,8 @@ class VlcBitmap extends Bitmap {
 	public function stop() {
 		isPlaying = false;
 		libvlc.stop();
+		// if (disposeOnStop)
+		// dispose();
 
 		if (onStop != null)
 			onStop();
@@ -152,19 +177,21 @@ class VlcBitmap extends Bitmap {
 	/* for some reason this part of the code makes vscode angry for some reason??? 
 		if there's a way to fix this, it would make the code more stable and less error-prone. */
 	/*
-	public function getFPS():Float {
-		if (libvlc != null && initComplete)
-			return libvlc.getFPS();
-		else
-			return 0;
-	}
-	*/
+		public function getFPS():Float {
+			if (libvlc != null && initComplete)
+				return libvlc.getFPS();
+			else
+				return 0;
+		}
+	 */
 	public function getTime():Int {
 		if (libvlc != null && initComplete)
 			return libvlc.getTime();
 		else
 			return 0;
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	function checkFlags() {
 		if (!isDisposed) {
@@ -217,6 +244,8 @@ class VlcBitmap extends Bitmap {
 		}
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	function videoInitComplete() {
 		videoWidth = libvlc.getWidth();
 		videoHeight = libvlc.getHeight();
@@ -232,8 +261,13 @@ class VlcBitmap extends Bitmap {
 		if (texture2 != null)
 			texture2.dispose();
 
+		// BitmapData
 		bitmapData = new BitmapData(Std.int(videoWidth), Std.int(videoHeight), true, 0);
 		frameRect = new Rectangle(0, 0, Std.int(videoWidth), Std.int(videoHeight));
+
+		// (Stage3D)
+		// texture = Lib.current.stage.stage3Ds[0].context3D.createRectangleTexture(videoWidth, videoHeight, Context3DTextureFormat.BGRA, true);
+		// this.bitmapData = BitmapData.fromTexture(texture);
 
 		smoothing = true;
 
@@ -260,24 +294,38 @@ class VlcBitmap extends Bitmap {
 			onVideoReady();
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	function vLoop(e) {
 		checkFlags();
 		render();
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	function render() {
 		var cTime = Lib.getTimer();
 
+		// min 28 ms between renders, but this is not a good way to do it...
 		if ((cTime - oldTime) > 28) {
 			oldTime = cTime;
 
+			// if (isPlaying && texture != null)
+			// (Stage3D)
 			if (isPlaying) {
 				try {
 					#if cpp
 					NativeArray.setUnmanagedData(bufferMem, libvlc.getPixelData(), frameSize);
 					if (bufferMem != null) {
+						// BitmapData
+						// libvlc.getPixelData() sometimes is null and the exe hangs ...
 						if (libvlc.getPixelData() != null)
 							bitmapData.setPixels(frameRect, haxe.io.Bytes.ofData(bufferMem));
+
+						// (Stage3D)
+						// texture.uploadFromByteArray( Bytes.ofData(cast(bufferMem)), 0 );
+						// this.width++; //This is a horrible hack to force the texture to update... Surely there is a better way...
+						// this.width--;
 					}
 					#end
 				} catch (e:Error) {
@@ -287,6 +335,8 @@ class VlcBitmap extends Bitmap {
 			}
 		}
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	function setVolume(vol:Float) {
 		if (libvlc != null && initComplete)
@@ -299,6 +349,8 @@ class VlcBitmap extends Bitmap {
 		else
 			return 0;
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	function statusOnOpening() {
 		if (onOpening != null)
@@ -340,6 +392,7 @@ class VlcBitmap extends Bitmap {
 		if (isPlaying)
 			isPlaying = false;
 
+		// trace("end reached!");
 		if (onComplete != null)
 			onComplete();
 	}
@@ -361,7 +414,9 @@ class VlcBitmap extends Bitmap {
 
 	function statusOnBackward() {}
 
-	function onDisplay() {}
+	function onDisplay() {
+		// render();
+	}
 
 	function statusOnError() {
 		trace("VLC ERROR - File not found?");
@@ -369,6 +424,8 @@ class VlcBitmap extends Bitmap {
 		if (onError != null)
 			onError();
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	private override function get_width():Float {
 		return _width;
@@ -396,6 +453,10 @@ class VlcBitmap extends Bitmap {
 		setVolume(value);
 		return volume = value;
 	}
+
+	// ===================================================================================
+	// Dispose
+	//-----------------------------------------------------------------------------------
 
 	public function dispose() {
 		libvlc.stop();
@@ -427,4 +488,6 @@ class VlcBitmap extends Bitmap {
 			libvlc = null;
 		}
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 }

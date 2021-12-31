@@ -2,6 +2,9 @@ package hxcodec;
 
 import flixel.FlxSprite;
 
+/**
+ * Compared to `MP4Handler`. This loads slower!!
+ */
 class MP4Sprite extends FlxSprite {
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
@@ -29,6 +32,12 @@ class MP4Sprite extends FlxSprite {
 		};
 	}
 
+	/**
+	 * Native video support for Flixel & OpenFL
+	 * @param path Example: `your/video/here.mp4`
+	 * @param repeat Repeat the video.
+	 * @param pauseMusic Pause music until done video.
+	 */
 	public function playVideo(path:String, ?repeat:Bool = false, pauseMusic:Bool = false) {
 		video.playVideo(path, repeat, pauseMusic);
 	}

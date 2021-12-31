@@ -5,6 +5,11 @@ import cpp.Pointer;
 import cpp.UInt8;
 #end
 
+/**
+ * ...
+ * @author Tommy S
+ */
+//
 @:buildXml("<include name='${haxelib:hxcodec}/hxcodec/vlc/LibVLCBuild.xml' />")
 @:include("LibVLC.h")
 @:unreflective
