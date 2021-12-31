@@ -174,16 +174,14 @@ class VlcBitmap extends Bitmap {
 			onSeek();
 	}
 
-	/* for some reason this part of the code makes vscode angry for some reason??? 
-		if there's a way to fix this, it would make the code more stable and less error-prone. */
-	/*
-		public function getFPS():Float {
-			if (libvlc != null && initComplete)
-				return libvlc.getFPS();
-			else
-				return 0;
-		}
-	 */
+	
+	public function getFPS():Float {
+		if (libvlc != null && initComplete)
+			return libvlc.getFPS();
+		else
+			return 0;
+	}
+	
 	public function getTime():Int {
 		if (libvlc != null && initComplete)
 			return libvlc.getTime();

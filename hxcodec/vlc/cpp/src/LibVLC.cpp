@@ -313,14 +313,11 @@ void LibVLC::openMedia(const char *mediaPathName)
 
 	libvlc_media_player_set_media(libVlcMediaPlayer, libVlcMediaItem);
 }
-/* for some reason this part of the code makes vscode angry for some reason??? 
-		if there's a way to fix this, it would make the code more stable and less error-prone. */
-/*
+
 float LibVLC::getFPS()
 {
 	return libvlc_media_player_get_fps(libVlcMediaPlayer);
 }
-*/
 
 void LibVLC::nextFrame()
 {
