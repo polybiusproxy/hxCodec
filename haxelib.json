@@ -1,0 +1,15 @@
+{
+  "name": "mp4 video support",
+  "url" : "https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support",
+  "license": "MIT",
+  "tags": ["mp4", "video"],
+  "description": "This library is used for video support for flixel projects",
+  "version": "0.0.1",
+  "classPath": "source/", "plugins/plugins/", "dlls/"
+  "releasenote": "",
+  "contributors": ["brightfyre","polybiusproxy"],
+  "dependencies": {
+    "flixel": "",
+    "nme": "4.9.0"
+  },
+}
