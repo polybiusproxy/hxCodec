@@ -173,7 +173,6 @@ class VlcBitmap extends Bitmap {
 		if (onSeek != null)
 			onSeek();
 	}
-
 	
 	public function getFPS():Float {
 		if (libvlc != null && initComplete)
