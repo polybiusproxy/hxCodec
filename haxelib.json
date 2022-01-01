@@ -8,8 +8,5 @@
   "classPath": "source/", "plugins/plugins/", "dlls/"
   "releasenote": "",
   "contributors": ["brightfyre","polybiusproxy"],
-  "dependencies": {
-    "flixel": "",
-    "nme": "4.9.0"
-  },
+  "dependencies": {}
 }
