@@ -1,6 +1,6 @@
 {
     "name": "hxCodec",
-    "url" : "https://github.com/Jrgamer4u/Friday-Night-Funkin-Mp4-Video-Support/",
+    "url" : "https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/",
     "license": "MIT",
     "description": "Native video support for HaxeFlixel/OpenFL",
     "version": "0.0.2",
