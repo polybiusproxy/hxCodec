@@ -24,6 +24,8 @@ For files larger than what GitHub can handle, download the Git Large File Servic
 
 [Original Repository's Readme](https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/tree/347fa07c72626e1fcbe60a39554401b169234282)
 
+Make the video file on your own.
+
 replace these lines:
 
 ```haxe

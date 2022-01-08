@@ -173,14 +173,14 @@ class VlcBitmap extends Bitmap {
 		if (onSeek != null)
 			onSeek();
 	}
-	
+
 	public function getFPS():Float {
 		if (libvlc != null && initComplete)
 			return libvlc.getFPS();
 		else
 			return 0;
 	}
-	
+
 	public function getTime():Int {
 		if (libvlc != null && initComplete)
 			return libvlc.getTime();
@@ -303,12 +303,11 @@ class VlcBitmap extends Bitmap {
 	function render() {
 		var cTime = Lib.getTimer();
 
-		// min 28 ms between renders, but this is not a good way to do it...
-		if ((cTime - oldTime) > 28) {
+		if ((cTime - oldTime) > 28) // min 28 ms between renders, but this is not a good way to do it...
+		{
 			oldTime = cTime;
 
-			// if (isPlaying && texture != null)
-			// (Stage3D)
+			// if (isPlaying && texture != null) // (Stage3D)
 			if (isPlaying) {
 				try {
 					#if cpp

@@ -10,7 +10,7 @@ import cpp.UInt8;
  * @author Tommy S
  */
 //
-@:buildXml("<include name='${haxelib:hxcodec}/hxcodec/vlc/LibVLCBuild.xml' />")
+@:buildXml('<include name="${haxelib:hxcodec}/hxcodec/vlc/LibVLCBuild.xml" />')
 @:include("LibVLC.h")
 @:unreflective
 @:keep
@@ -109,9 +109,11 @@ extern class LibVLC {
 
 	@:native("getFPS")
 	public function getFPS():Float;
-	
+
 	@:native("flags")
 	public var flags:Array<Int>;
 
-	public inline function dispose():Void {}
+	public inline function dispose():Void {
+		// untyped __cpp__('::delete this');
+	}
 }

@@ -39,12 +39,12 @@ public:
 	int getHeight();
 	int isPlaying();
 	void useHWacceleration(bool hwAcc);
-
+	// char *str LibVLC::getMeta(libvlc_media_t media);
 	uint8_t *getPixelData();
 	void setVolume(float volume);
 	float getVolume();
-
-	libvlc_time_t getTime();
+	// void setCallback(cpp::Function<void (String)> callback, int cbIndex);
+	libvlc_time_t getTime(); // This caused building issues.
 	void setTime(libvlc_time_t time);
 	float getPosition();
 	void setPosition(float pos);
@@ -55,10 +55,11 @@ public:
 	void setRepeat(int numRepeats);
 	int getRepeat();
 	const char *getLastError();
+	float getFPS();
 	void openMedia(const char *mediaPathName);
 	int flags[16] = {-1};
 	void setFormat(char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines);
-	void setInitProps();
+	void setInitProps(); // This caused building issues.
 	t_ctx ctx;
 
 private:
@@ -71,6 +72,7 @@ private:
 	int repeat;
 	int callbackIndex;
 	cpp::Function<Void(String)> vlcCallbackMth;
+	// float vol = 1.0; -- why was this made??? wtf
 };
 
 #endif
