@@ -13,13 +13,8 @@
     "CryBit"
   ],
   "dependencies": {
-    "lime": "7.9.0",
     "openfl": "",
-    "flixel": "",
-    "flixel-tools": "",
-    "flixel-addons": "",
-    "flixel-ui": "",
-    "hscript": ""
+    "flixel": ""
   },
   "main": "hxcodec.MP4Handler"
 }
