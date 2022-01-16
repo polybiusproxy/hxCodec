@@ -52,7 +52,7 @@
 /* Max acceptable resampling (in %) */
 #define AOUT_MAX_RESAMPLING             10
 
-#include "vlc_es.h"
+#include <vlc_es.h>
 
 #define AOUT_FMTS_IDENTICAL( p_first, p_second ) (                          \
     ((p_first)->i_format == (p_second)->i_format)                           \

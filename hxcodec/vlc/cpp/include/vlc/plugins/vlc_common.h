@@ -35,7 +35,7 @@
 /*****************************************************************************
  * Required vlc headers
  *****************************************************************************/
-#include "vlc_config.h"
+#include <vlc_config.h>
 
 /*****************************************************************************
  * Required system headers
@@ -411,8 +411,8 @@ typedef int ( * vlc_callback_t ) ( vlc_object_t *,      /* variable's object */
 #   include <os2.h>
 #endif
 
-#include "vlc_mtime.h"
-#include "vlc_threads.h"
+#include <vlc_mtime.h>
+#include <vlc_threads.h>
 
 /*****************************************************************************
  * Common structure members
@@ -900,11 +900,11 @@ VLC_API const char * VLC_Compiler( void ) VLC_USED;
 /*****************************************************************************
  * Additional vlc stuff
  *****************************************************************************/
-#include "vlc_messages.h"
-#include "vlc_objects.h"
-#include "vlc_variables.h"
-#include "vlc_main.h"
-#include "vlc_configuration.h"
+#include <vlc_messages.h>
+#include <vlc_objects.h>
+#include <vlc_variables.h>
+#include <vlc_main.h>
+#include <vlc_configuration.h>
 
 #if defined( _WIN32 ) || defined( __SYMBIAN32__ ) || defined( __OS2__ )
 #   define DIR_SEP_CHAR '\\'

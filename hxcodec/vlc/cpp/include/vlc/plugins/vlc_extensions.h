@@ -24,8 +24,8 @@
 #ifndef VLC_EXTENSIONS_H
 #define VLC_EXTENSIONS_H
 
-#include "vlc_common.h"
-#include "vlc_arrays.h"
+#include <vlc_common.h>
+#include <vlc_arrays.h>
 
 /* Structures */
 typedef struct extensions_manager_sys_t extensions_manager_sys_t;
