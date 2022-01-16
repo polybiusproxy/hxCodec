@@ -15,8 +15,7 @@ import cpp.UInt8;
 @:unreflective
 @:keep
 @:native("LibVLC*")
-extern class LibVLC
-{
+extern class LibVLC {
 	@:native("LibVLC::create")
 	public static function create():LibVLC;
 
@@ -27,15 +26,11 @@ extern class LibVLC
 	public function openMedia(path:String):Void;
 
 	@:native("play")
-	@:overload(function():Void
-	{
-	})
+	@:overload(function():Void {})
 	public function play(path:String):Void;
 
 	@:native("playInWindow")
-	@:overload(function():Void
-	{
-	})
+	@:overload(function():Void {})
 	public function playInWindow(path:String):Void;
 
 	@:native("stop")
@@ -118,8 +113,7 @@ extern class LibVLC
 	@:native("flags")
 	public var flags:Array<Int>;
 
-	public inline function dispose():Void
-	{
+	public inline function dispose():Void {
 		// untyped __cpp__('::delete this');
 	}
 }

@@ -41,53 +41,52 @@
  *****************************************************************************/
 struct info_t
 {
-    char *psz_name;            /**< Name of this info */
-    char *psz_value;           /**< Value of the info */
+    char *psz_name;  /**< Name of this info */
+    char *psz_value; /**< Value of the info */
 };
 
 struct info_category_t
 {
-    char   *psz_name;      /**< Name of this category */
-    int    i_infos;        /**< Number of infos in the category */
-    struct info_t **pp_infos;     /**< Pointer to an array of infos */
+    char *psz_name;           /**< Name of this category */
+    int i_infos;              /**< Number of infos in the category */
+    struct info_t **pp_infos; /**< Pointer to an array of infos */
 };
 
 struct input_item_t
 {
-    int        i_id;                 /**< Identifier of the item */
+    int i_id; /**< Identifier of the item */
 
-    char       *psz_name;            /**< text describing this item */
-    char       *psz_uri;             /**< mrl of this item */
+    char *psz_name; /**< text describing this item */
+    char *psz_uri;  /**< mrl of this item */
 
-    int        i_options;            /**< Number of input options */
-    char       **ppsz_options;       /**< Array of input options */
-    uint8_t    *optflagv;            /**< Some flags of input options */
-    unsigned   optflagc;
+    int i_options;       /**< Number of input options */
+    char **ppsz_options; /**< Array of input options */
+    uint8_t *optflagv;   /**< Some flags of input options */
+    unsigned optflagc;
 
-    mtime_t    i_duration;           /**< Duration in microseconds */
+    mtime_t i_duration; /**< Duration in microseconds */
 
-
-    int        i_categories;         /**< Number of info categories */
+    int i_categories;                /**< Number of info categories */
     info_category_t **pp_categories; /**< Pointer to the first info category */
 
-    int         i_es;                /**< Number of es format descriptions */
-    es_format_t **es;                /**< Es formats */
+    int i_es;         /**< Number of es format descriptions */
+    es_format_t **es; /**< Es formats */
 
-    input_stats_t *p_stats;          /**< Statistics */
-    int           i_nb_played;       /**< Number of times played */
+    input_stats_t *p_stats; /**< Statistics */
+    int i_nb_played;        /**< Number of times played */
 
     vlc_meta_t *p_meta;
 
-    int         i_epg;               /**< Number of EPG entries */
-    vlc_epg_t   **pp_epg;            /**< EPG entries */
+    int i_epg;          /**< Number of EPG entries */
+    vlc_epg_t **pp_epg; /**< EPG entries */
 
     vlc_event_manager_t event_manager;
 
-    vlc_mutex_t lock;                 /**< Lock for the item */
+    vlc_mutex_t lock; /**< Lock for the item */
 
-    uint8_t     i_type;              /**< Type (file, disc, ... see input_item_type_e) */
-    bool        b_fixed_name;        /**< Can the interface change the name ?*/
-    bool        b_error_when_reading;/**< Error When Reading */
+    uint8_t i_type;            /**< Type (file, disc, ... see input_item_type_e) */
+    bool b_fixed_name;         /**< Can the interface change the name ?*/
+    bool b_error_when_reading; /**< Error When Reading */
 };
 
 enum input_item_type_e
@@ -108,14 +107,14 @@ enum input_item_type_e
 
 struct input_item_node_t
 {
-    input_item_t *         p_item;
-    int                    i_children;
-    input_item_node_t      **pp_children;
-    input_item_node_t      *p_parent;
+    input_item_t *p_item;
+    int i_children;
+    input_item_node_t **pp_children;
+    input_item_node_t *p_parent;
 };
 
-VLC_API void input_item_CopyOptions( input_item_t *p_parent, input_item_t *p_child );
-VLC_API void input_item_SetName( input_item_t *p_item, const char *psz_name );
+VLC_API void input_item_CopyOptions(input_item_t *p_parent, input_item_t *p_child);
+VLC_API void input_item_SetName(input_item_t *p_item, const char *psz_name);
 
 /**
  * Add one subitem to this item
@@ -127,29 +126,29 @@ VLC_API void input_item_SetName( input_item_t *p_item, const char *psz_name );
  *
  * Sends a vlc_InputItemSubItemTreeAdded and a vlc_InputItemSubItemAdded event
  */
-VLC_API void input_item_PostSubItem( input_item_t *p_parent, input_item_t *p_child );
+VLC_API void input_item_PostSubItem(input_item_t *p_parent, input_item_t *p_child);
 
 /**
  * Start adding multiple subitems.
  *
  * Create a root node to hold a tree of subitems for given item
  */
-VLC_API input_item_node_t * input_item_node_Create( input_item_t *p_input ) VLC_USED;
+VLC_API input_item_node_t *input_item_node_Create(input_item_t *p_input) VLC_USED;
 
 /**
  * Add a new child node to this parent node that will point to this subitem.
  */
-VLC_API input_item_node_t * input_item_node_AppendItem( input_item_node_t *p_node, input_item_t *p_item );
+VLC_API input_item_node_t *input_item_node_AppendItem(input_item_node_t *p_node, input_item_t *p_item);
 
 /**
  * Add an already created node to children of this parent node.
  */
-VLC_API void input_item_node_AppendNode( input_item_node_t *p_parent, input_item_node_t *p_child );
+VLC_API void input_item_node_AppendNode(input_item_node_t *p_parent, input_item_node_t *p_child);
 
 /**
  * Delete a node created with input_item_node_Create() and all its children.
  */
-VLC_API void input_item_node_Delete( input_item_node_t *p_node );
+VLC_API void input_item_node_Delete(input_item_node_t *p_node);
 
 /**
  * End adding multiple subitems.
@@ -162,8 +161,7 @@ VLC_API void input_item_node_Delete( input_item_node_t *p_node );
  *
  * In the end deletes the node and all its children nodes.
  */
-VLC_API void input_item_node_PostAndDelete( input_item_node_t *p_node );
-
+VLC_API void input_item_node_PostAndDelete(input_item_node_t *p_node);
 
 /**
  * Option flags
@@ -176,39 +174,37 @@ enum input_item_option_e
 
     /* Change the value associated to an option if already present, otherwise
      * add the option */
-    VLC_INPUT_OPTION_UNIQUE  = 0x100,
+    VLC_INPUT_OPTION_UNIQUE = 0x100,
 };
 
 /**
  * This function allows to add an option to an existing input_item_t.
  */
-VLC_API int input_item_AddOption(input_item_t *, const char *, unsigned i_flags );
+VLC_API int input_item_AddOption(input_item_t *, const char *, unsigned i_flags);
 
 /* */
-VLC_API bool input_item_HasErrorWhenReading( input_item_t * );
-VLC_API void input_item_SetMeta( input_item_t *, vlc_meta_type_t meta_type, const char *psz_val );
-VLC_API bool input_item_MetaMatch( input_item_t *p_i, vlc_meta_type_t meta_type, const char *psz );
-VLC_API char * input_item_GetMeta( input_item_t *p_i, vlc_meta_type_t meta_type ) VLC_USED;
-VLC_API char * input_item_GetName( input_item_t * p_i ) VLC_USED;
-VLC_API char * input_item_GetTitleFbName( input_item_t * p_i ) VLC_USED;
-VLC_API char * input_item_GetURI( input_item_t * p_i ) VLC_USED;
-VLC_API void input_item_SetURI( input_item_t * p_i, const char *psz_uri );
-VLC_API mtime_t input_item_GetDuration( input_item_t * p_i );
-VLC_API void input_item_SetDuration( input_item_t * p_i, mtime_t i_duration );
-VLC_API bool input_item_IsPreparsed( input_item_t *p_i );
-VLC_API bool input_item_IsArtFetched( input_item_t *p_i );
+VLC_API bool input_item_HasErrorWhenReading(input_item_t *);
+VLC_API void input_item_SetMeta(input_item_t *, vlc_meta_type_t meta_type, const char *psz_val);
+VLC_API bool input_item_MetaMatch(input_item_t *p_i, vlc_meta_type_t meta_type, const char *psz);
+VLC_API char *input_item_GetMeta(input_item_t *p_i, vlc_meta_type_t meta_type) VLC_USED;
+VLC_API char *input_item_GetName(input_item_t *p_i) VLC_USED;
+VLC_API char *input_item_GetTitleFbName(input_item_t *p_i) VLC_USED;
+VLC_API char *input_item_GetURI(input_item_t *p_i) VLC_USED;
+VLC_API void input_item_SetURI(input_item_t *p_i, const char *psz_uri);
+VLC_API mtime_t input_item_GetDuration(input_item_t *p_i);
+VLC_API void input_item_SetDuration(input_item_t *p_i, mtime_t i_duration);
+VLC_API bool input_item_IsPreparsed(input_item_t *p_i);
+VLC_API bool input_item_IsArtFetched(input_item_t *p_i);
 
-#define INPUT_META( name ) \
-static inline \
-void input_item_Set ## name (input_item_t *p_input, const char *val) \
-{ \
-    input_item_SetMeta (p_input, vlc_meta_ ## name, val); \
-} \
-static inline \
-char *input_item_Get ## name (input_item_t *p_input) \
-{ \
-    return input_item_GetMeta (p_input, vlc_meta_ ## name); \
-}
+#define INPUT_META(name)                                                            \
+    static inline void input_item_Set##name(input_item_t *p_input, const char *val) \
+    {                                                                               \
+        input_item_SetMeta(p_input, vlc_meta_##name, val);                          \
+    }                                                                               \
+    static inline char *input_item_Get##name(input_item_t *p_input)                 \
+    {                                                                               \
+        return input_item_GetMeta(p_input, vlc_meta_##name);                        \
+    }
 
 INPUT_META(Title)
 INPUT_META(Artist)
@@ -231,14 +227,14 @@ INPUT_META(TrackTotal)
 
 #define input_item_SetTrackNum input_item_SetTrackNumber
 #define input_item_GetTrackNum input_item_GetTrackNumber
-#define input_item_SetArtURL   input_item_SetArtworkURL
-#define input_item_GetArtURL   input_item_GetArtworkURL
+#define input_item_SetArtURL input_item_SetArtworkURL
+#define input_item_GetArtURL input_item_GetArtworkURL
 
-VLC_API char * input_item_GetInfo( input_item_t *p_i, const char *psz_cat,const char *psz_name ) VLC_USED;
-VLC_API int input_item_AddInfo( input_item_t *p_i, const char *psz_cat, const char *psz_name, const char *psz_format, ... ) VLC_FORMAT( 4, 5 );
-VLC_API int input_item_DelInfo( input_item_t *p_i, const char *psz_cat, const char *psz_name );
-VLC_API void input_item_ReplaceInfos( input_item_t *, info_category_t * );
-VLC_API void input_item_MergeInfos( input_item_t *, info_category_t * );
+VLC_API char *input_item_GetInfo(input_item_t *p_i, const char *psz_cat, const char *psz_name) VLC_USED;
+VLC_API int input_item_AddInfo(input_item_t *p_i, const char *psz_cat, const char *psz_name, const char *psz_format, ...) VLC_FORMAT(4, 5);
+VLC_API int input_item_DelInfo(input_item_t *p_i, const char *psz_cat, const char *psz_name);
+VLC_API void input_item_ReplaceInfos(input_item_t *, info_category_t *);
+VLC_API void input_item_MergeInfos(input_item_t *, info_category_t *);
 
 /**
  * This function creates a new input_item_t with the provided information.
@@ -246,26 +242,26 @@ VLC_API void input_item_MergeInfos( input_item_t *, info_category_t * );
  * XXX You may also use input_item_New or input_item_NewExt as they need
  * less arguments.
  */
-VLC_API input_item_t * input_item_NewWithType( const char *psz_uri, const char *psz_name, int i_options, const char *const *ppsz_options, unsigned i_option_flags, mtime_t i_duration, int i_type ) VLC_USED;
+VLC_API input_item_t *input_item_NewWithType(const char *psz_uri, const char *psz_name, int i_options, const char *const *ppsz_options, unsigned i_option_flags, mtime_t i_duration, int i_type) VLC_USED;
 
 /**
  * This function creates a new input_item_t with the provided information.
  *
  * Provided for convenience.
  */
-VLC_API input_item_t * input_item_NewExt( const char *psz_uri, const char *psz_name, int i_options, const char *const *ppsz_options, unsigned i_option_flags, mtime_t i_duration ) VLC_USED;
+VLC_API input_item_t *input_item_NewExt(const char *psz_uri, const char *psz_name, int i_options, const char *const *ppsz_options, unsigned i_option_flags, mtime_t i_duration) VLC_USED;
 
 /**
  * This function creates a new input_item_t with the provided information.
  *
  * Provided for convenience.
  */
-#define input_item_New( a,b ) input_item_NewExt( a, b, 0, NULL, 0, -1 )
+#define input_item_New(a, b) input_item_NewExt(a, b, 0, NULL, 0, -1)
 
 /**
  * This function creates a new input_item_t as a copy of another.
  */
-VLC_API input_item_t * input_item_Copy(input_item_t * ) VLC_USED;
+VLC_API input_item_t *input_item_Copy(input_item_t *) VLC_USED;
 
 /** Holds an input item, i.e. creates a new reference. */
 VLC_API input_item_t *input_item_Hold(input_item_t *);
@@ -282,7 +278,7 @@ VLC_API void input_item_Release(input_item_t *);
  ******************/
 struct input_stats_t
 {
-    vlc_mutex_t         lock;
+    vlc_mutex_t lock;
 
     /* Input */
     int64_t i_read_packets;

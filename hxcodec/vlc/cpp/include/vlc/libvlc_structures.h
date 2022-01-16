@@ -31,43 +31,44 @@
 
 #include <stdint.h>
 
-# ifdef __cplusplus
-extern "C" {
-# endif
-
-/**
- * \ingroup libvlc_core
- * @{
- */
-
-/** This structure is opaque. It represents a libvlc instance */
-typedef struct libvlc_instance_t libvlc_instance_t;
-
-typedef int64_t libvlc_time_t;
-
-/**@} */
-
-/**
- * \ingroup libvlc_log
- * @{
- */
-
-/** This structure is opaque. It represents a libvlc log iterator */
-typedef struct libvlc_log_iterator_t libvlc_log_iterator_t;
-
-typedef struct libvlc_log_message_t
+#ifdef __cplusplus
+extern "C"
 {
-    int         i_severity;   /* 0=INFO, 1=ERR, 2=WARN, 3=DBG */
-    const char *psz_type;     /* module type */
-    const char *psz_name;     /* module name */
-    const char *psz_header;   /* optional header */
-    const char *psz_message;  /* message */
-} libvlc_log_message_t;
+#endif
 
-/**@} */
+    /**
+     * \ingroup libvlc_core
+     * @{
+     */
 
-# ifdef __cplusplus
+    /** This structure is opaque. It represents a libvlc instance */
+    typedef struct libvlc_instance_t libvlc_instance_t;
+
+    typedef int64_t libvlc_time_t;
+
+    /**@} */
+
+    /**
+     * \ingroup libvlc_log
+     * @{
+     */
+
+    /** This structure is opaque. It represents a libvlc log iterator */
+    typedef struct libvlc_log_iterator_t libvlc_log_iterator_t;
+
+    typedef struct libvlc_log_message_t
+    {
+        int i_severity;          /* 0=INFO, 1=ERR, 2=WARN, 3=DBG */
+        const char *psz_type;    /* module type */
+        const char *psz_name;    /* module name */
+        const char *psz_header;  /* optional header */
+        const char *psz_message; /* message */
+    } libvlc_log_message_t;
+
+    /**@} */
+
+#ifdef __cplusplus
 }
-# endif
+#endif
 
 #endif

@@ -31,22 +31,22 @@
 
 typedef struct
 {
-    int64_t i_start;    /* Interpreted as a value return by time() */
-    int     i_duration;    /* Duration of the event in second */
+    int64_t i_start; /* Interpreted as a value return by time() */
+    int i_duration;  /* Duration of the event in second */
 
-    char    *psz_name;
-    char    *psz_short_description;
-    char    *psz_description;
+    char *psz_name;
+    char *psz_short_description;
+    char *psz_description;
 
-    uint8_t i_rating;   /* Parental control, set to 0 when undefined */
+    uint8_t i_rating; /* Parental control, set to 0 when undefined */
 } vlc_epg_event_t;
 
 typedef struct
 {
-    char            *psz_name;
+    char *psz_name;
     vlc_epg_event_t *p_current; /* Can be null or should be the same than one of pp_event entry */
 
-    int             i_event;
+    int i_event;
     vlc_epg_event_t **pp_event;
 } vlc_epg_t;
 
@@ -67,14 +67,14 @@ VLC_API void vlc_epg_Clean(vlc_epg_t *p_epg);
  *
  * \see vlc_epg_t for the definitions of the parameters.
  */
-VLC_API void vlc_epg_AddEvent(vlc_epg_t *p_epg, int64_t i_start, int i_duration, const char *psz_name, const char *psz_short_description, const char *psz_description, uint8_t i_rating );
+VLC_API void vlc_epg_AddEvent(vlc_epg_t *p_epg, int64_t i_start, int i_duration, const char *psz_name, const char *psz_short_description, const char *psz_description, uint8_t i_rating);
 
 /**
  * It creates a new vlc_epg_t*
  *
  * You must call vlc_epg_Delete to release the associated resource.
  */
-VLC_API vlc_epg_t * vlc_epg_New(const char *psz_name) VLC_USED;
+VLC_API vlc_epg_t *vlc_epg_New(const char *psz_name) VLC_USED;
 
 /**
  * It releases a vlc_epg_t*.
@@ -94,4 +94,3 @@ VLC_API void vlc_epg_SetCurrent(vlc_epg_t *p_epg, int64_t i_start);
 VLC_API void vlc_epg_Merge(vlc_epg_t *p_dst, const vlc_epg_t *p_src);
 
 #endif
-

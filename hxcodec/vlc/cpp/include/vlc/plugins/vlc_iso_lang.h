@@ -35,13 +35,13 @@ struct iso639_lang_t
     const char psz_iso639_2B[4]; /* ISO-639-2/B (3 characters) native code */
 };
 
-#if defined( __cplusplus )
-extern "C" {
+#if defined(__cplusplus)
+extern "C"
+{
 #endif
-VLC_API const iso639_lang_t * GetLang_1( const char * );
-VLC_API const iso639_lang_t * GetLang_2T( const char * );
-VLC_API const iso639_lang_t * GetLang_2B( const char * );
-#if defined( __cplusplus )
+    VLC_API const iso639_lang_t *GetLang_1(const char *);
+    VLC_API const iso639_lang_t *GetLang_2T(const char *);
+    VLC_API const iso639_lang_t *GetLang_2B(const char *);
+#if defined(__cplusplus)
 }
 #endif
-
