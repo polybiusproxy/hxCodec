@@ -8,7 +8,7 @@
   
 ### 1. Haxelib
 
-You can use `haxelib git hxCodec https://github.com/Jrgamer4u/Friday-Night-Funkin-Mp4-Video-Support`
+You can use `haxelib git hxCodec https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support`
 
 You need [Git](https://git-scm.com/downloads) to use `haxelib git`.
 
