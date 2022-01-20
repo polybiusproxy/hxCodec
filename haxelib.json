@@ -1,0 +1,25 @@
+{
+  "name": "hxCodec",
+  "url": "https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/",
+  "license": "MIT",
+  "description": "Native video support for HaxeFlixel/OpenFL",
+  "version": "0.0.1",
+  "releasenote": "initial",
+  "contributors": [
+    "PolybiusProxy",
+    "datee",
+    "BrightFyre",
+    "GWebDev",
+    "CryBit",
+    "DotWithATopHat",
+    "KadeDev",
+    "TheRealJake_12",
+    "deandimarzo",
+    "Jrgamer4u"
+  ],
+  "dependencies": {
+    "openfl": "",
+    "flixel": ""
+  },
+  "main": "hxcodec.MP4Handler"
+}
