@@ -19,98 +19,98 @@ extern class LibVLC {
 	@:native("LibVLC::create")
 	public static function create():LibVLC;
 
-	@:native("setPath")
+	@:native("LibVLC::setPath")
 	public function setPath(path:String):Void;
 
-	@:native("openMedia")
+	@:native("LibVLC::openMedia")
 	public function openMedia(path:String):Void;
 
-	@:native("play")
+	@:native("LibVLC::play")
 	@:overload(function():Void {})
 	public function play(path:String):Void;
 
-	@:native("playInWindow")
+	@:native("LibVLC::playInWindow")
 	@:overload(function():Void {})
 	public function playInWindow(path:String):Void;
 
-	@:native("stop")
+	@:native("LibVLC::stop")
 	public function stop():Void;
 
-	@:native("pause")
+	@:native("LibVLC::pause")
 	public function pause():Void;
 
-	@:native("resume")
+	@:native("LibVLC::resume")
 	public function resume():Void;
 
-	@:native("togglePause")
+	@:native("LibVLC::togglePause")
 	public function togglePause():Void;
 
-	@:native("fullscreen")
+	@:native("LibVLC::fullscreen")
 	public function setWindowFullscreen(fullscreen:Bool):Void;
 
-	@:native("showMainWindow")
+	@:native("LibVLC::showMainWindow")
 	public function showMainWindow(show:Bool):Void;
 
-	@:native("getLength")
+	@:native("LibVLC::getLength")
 	public function getLength():Float;
 
-	@:native("getDuration")
+	@:native("LibVLC::getDuration")
 	public function getDuration():Float;
 
-	@:native("getWidth")
+	@:native("LibVLC::getWidth")
 	public function getWidth():Int;
 
-	@:native("getHeight")
+	@:native("LibVLC::getHeight")
 	public function getHeight():Int;
 
-	@:native("getMeta")
+	@:native("LibVLC::getMeta")
 	public function getMeta(meta:Dynamic):String;
 
-	@:native("isPlaying")
+	@:native("LibVLC::isPlaying")
 	public function isPlaying():Bool;
 
-	@:native("isSeekable")
+	@:native("LibVLC::isSeekable")
 	public function isSeekable():Bool;
 
-	@:native("setVolume")
+	@:native("LibVLC::setVolume")
 	public function setVolume(volume:Float):Void;
 
-	@:native("getVolume")
+	@:native("LibVLC::getVolume")
 	public function getVolume():Float;
 
-	@:native("getTime")
+	@:native("LibVLC::getTime")
 	public function getTime():Int;
 
-	@:native("setTime")
+	@:native("LibVLC::setTime")
 	public function setTime(time:Int):Void;
 
-	@:native("getPosition")
+	@:native("LibVLC::getPosition")
 	public function getPosition():Float;
 
-	@:native("setPosition")
+	@:native("LibVLC::setPosition")
 	public function setPosition(pos:Float):Void;
 
-	@:native("useHWacceleration")
+	@:native("LibVLC::useHWacceleration")
 	public function useHWacceleration(hwAcc:Bool):Void;
 
-	@:native("getLastError")
+	@:native("LibVLC::getLastError")
 	public function getLastError():String;
 
-	@:native("getRepeat")
+	@:native("LibVLC::getRepeat")
 	public function getRepeat():Int;
 
-	@:native("setRepeat")
+	@:native("LibVLC::setRepeat")
 	public function setRepeat(repeat:Int = 1):Void;
 
 	#if cpp
-	@:native("getPixelData")
+	@:native("LibVLC::getPixelData")
 	public function getPixelData():Pointer<UInt8>;
 	#end
 
-	@:native("getFPS")
+	@:native("LibVLC::getFPS")
 	public function getFPS():Float;
 
-	@:native("flags")
+	@:native("LibVLC::flags")
 	public var flags:Array<Int>;
 
 	public inline function dispose():Void {

@@ -1,8 +1,11 @@
 #include <mutex>
 #include <iostream>
 #include <string>
-#include <StdInt.h>
+#include <stdint.h>
+#if PLATFORM_WINDOWS
 #include <windows.h>
+#endif
+// Other platforms need other libraries.
 
 using std::string;
 using namespace std;
