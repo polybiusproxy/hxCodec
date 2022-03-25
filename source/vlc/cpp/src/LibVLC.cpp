@@ -1,7 +1,7 @@
 #include <mutex>
 #include <iostream>
 #include <string>
-#include <StdInt.h>
+#include <stdInt.h>
 #include <windows.h> 
 
 using std::string;
