@@ -1,4 +1,4 @@
-package;
+package vlc;
 
 import flixel.FlxSprite;
 

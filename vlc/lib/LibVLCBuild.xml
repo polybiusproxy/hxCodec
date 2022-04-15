@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xml>
+    <files id='haxe'>
+        <compilervalue name="-I" value="${haxelib:hxCodec}/lib/vlc/include/" />
+        <compilervalue name="-I" value="${haxelib:hxCodec}/lib/vlc/src/" />
+    </files>
+
+    <target id="haxe">
+        <section if="windows">
+			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Windows64/libvlc.lib' if='windows'/>
+			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Windows64/libvlccore.lib' if='windows'/>
+        </section>
+        <section if="linux">
+			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Linux64/libvlc.so.5' if='linux'/>
+			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Linux64/libvlccore.so.9' if='linux'/>
+        </section>
+    </target>
+</xml>
