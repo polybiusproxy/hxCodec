@@ -1,13 +1,14 @@
-package;
+package vlc;
 
 import openfl.events.Event;
 import flixel.FlxG;
+import vlc.bitmap.VlcBitmap;
 
 /**
  * Play a video using cpp.
  * Use bitmap to connect to a graphic or use `MP4Sprite`.
  */
-class MP4Handler extends vlc.VlcBitmap
+class MP4Handler extends VlcBitmap
 {
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;

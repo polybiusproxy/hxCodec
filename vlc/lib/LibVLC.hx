@@ -1,4 +1,4 @@
-package vlc;
+package vlc.lib;
 
 #if cpp
 import cpp.Pointer;
@@ -10,7 +10,8 @@ import cpp.UInt8;
  * @author Tommy S
  */
 //
-@:buildXml('<include name="../../../../source/vlc/LibVLCBuild.xml" />')
+@:buildXml('<include name="${haxelib:hxCodec}/vlc/lib/LibVLCBuild.xml" />')
+
 @:include("LibVLC.h")
 @:unreflective
 @:keep
