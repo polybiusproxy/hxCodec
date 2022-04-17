@@ -1,8 +1,8 @@
-# hxCodec - Native video support for OpenFL & Flixel
+# hxCodec - Native video support for OpenFL & HaxeFlixel
 
 [Original Repository](https://github.com/polybiusproxy/PolyEngine).
 
-[Click here to check the roadmap of hxCodec here](https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/projects/1)
+[Click here to check the roadmap of hxCodec](https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/projects/1)
 
 ## Credits
 
@@ -11,10 +11,19 @@
 - [BrightFyre](https://github.com/brightfyregit) - Creator of repository.
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
 - [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol
+- [Erizur](https://github.com/Erizur) - Linux Support
 - The contributors.
 
+## About Linux Support
+Recently we achieved Linux support thanks to the contributors, but every Linux user has to download "libvlc-dev" and "libvlccore-dev" from your distro's package manager.
+You can also install them through the terminal:
+```bash
+sudo apt-get install libvlc-dev
+sudo apt-get install libvlccore-dev
+```
+
 ## Instructions
-**These are for Friday Night Funkin mostly so it may not work for your flixel project.**
+**These are for Friday Night Funkin' mostly so it may not work for your HaxeFlixel project.**
 
 ### 1. Download the repository:
 You can either download it as a ZIP,
