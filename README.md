@@ -12,8 +12,8 @@
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
 - [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol
 - [Erizur](https://github.com/Erizur) - Linux Support
-- [Erizur](https://github.com/Erizur) - Android Support
-- [Erizur](https://github.com/Erizur) - Helper for Android Support
+- [Saw (M.A. Jigsaw)](https://github.com/jigsaw-4277821) - Android Support
+- [luckydog7](https://github.com/luckydog7) - Helper for Android Support
 - The contributors.
 
 ## About Linux Support
@@ -25,7 +25,7 @@ sudo apt-get install libvlccore-dev
 ```
 
 ## About Android Support
-Recently we achieved Android support thanks to the contributors, if ou want to run the videos, the videos needs to be in external storage (phone root folder)
+Recently we achieved Android support thanks to the contributors, if you want to run the videos, the videos needs to be in external storage (phone root folder)
 
 ## Instructions
 **These are for Friday Night Funkin' mostly so it may not work for your HaxeFlixel project.**
