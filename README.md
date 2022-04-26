@@ -12,6 +12,8 @@
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
 - [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol
 - [Erizur](https://github.com/Erizur) - Linux Support
+- [Erizur](https://github.com/Erizur) - Android Support
+- [Erizur](https://github.com/Erizur) - Helper for Android Support
 - The contributors.
 
 ## About Linux Support
@@ -22,32 +24,22 @@ sudo apt-get install libvlc-dev
 sudo apt-get install libvlccore-dev
 ```
 
+## About Android Support
+Recently we achieved Android support thanks to the contributors, if ou want to run the videos, the videos needs to be in external storage (phone root folder)
+
 ## Instructions
 **These are for Friday Night Funkin' mostly so it may not work for your HaxeFlixel project.**
 
-### 1. Download the repository:
-You can either download it as a ZIP,
-or git cloning it.
+### 1. Install the Haxelib:
 
-### 2. Edit `Project.xml`
-Above
-```xml
-<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
-```
-Add
-```xml
-<assets path="assets/preload/videos" rename="assets/videos" include="*mp4" embed='false' />
-
-<assets path="assets/videos" exclude="*.mp3" if="web"/>
-<assets path="assets/videos" exclude="*.ogg" unless="web"/>
-
-<assets path="plugins/" rename='' if="windows"/>
-<assets path="dlls/" rename='' if="windows"/>
+To Install Them You Need To Open Command prompt/PowerShell And To Tipe
+```cmd
+haxelib git hxCodec https://github.com/brightfyregit/hxCodec.git
 ```
 
-**OPTIONAL: If your PC is ARM64, add this code:**
+### 2. Create a folder called `videos` in `assets/preload` folder:
 
-Add:
+### 3. **OPTIONAL: If your PC is ARM64, add this code in `Project.xml`:**
 
 ```xml
 <haxedef name="HXCPP_ARM64" />
@@ -66,6 +58,8 @@ inline static public function video(key:String, ?library:String)
 1. Put your video in `assets/preload/videos`.
 2. Create somewhere in PlayState
 ```haxe
+import vlc.MP4Handler;
+
 var video:MP4Handler;
 
 function playCutscene(name:String)
