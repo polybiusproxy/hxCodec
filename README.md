@@ -12,7 +12,7 @@
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
 - [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol
 - [Erizur](https://github.com/Erizur) - Linux Support
-- [Saw (M.A. Jigsaw)](https://github.com/jigsaw-4277821) - Android Support
+- [Saw (M.A. Jigsaw)](https://github.com/jigsaw-4277821) - Android Support + Turned this into a Haxelib
 - [luckydog7](https://github.com/luckydog7) - Helper for Android Support
 - The contributors.
 
