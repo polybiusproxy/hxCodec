@@ -5,6 +5,6 @@
 	"tags": ["mp4", "video", "haxeflixel", "openfl", "windows", "linux", "android"],
 	"description": "Native video support for HaxeFlixel & OpenFL",
 	"version": "2.5.1",
-	"releasenote": "",
+	"releasenote": "fixed: haxelib.json and README.md",
 	"contributors": ["polybiusproxy"]
 }
