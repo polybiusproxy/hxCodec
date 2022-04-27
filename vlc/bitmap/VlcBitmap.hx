@@ -127,18 +127,26 @@ class VlcBitmap extends Bitmap
 
 	function getVideoWidth():Float
 	{
+		#if !android
 		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
 			return FlxG.stage.stageHeight * (16 / 9);
 		else
 			return FlxG.stage.stageWidth;
+		#else
+		return FlxG.stage.stageWidth;
+		#end
 	}
 
 	function getVideoHeight():Float
 	{
+		#if !android
 		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
 			return FlxG.stage.stageHeight;
 		else
 			return FlxG.stage.stageWidth / (16 / 9);
+		#else
+		return FlxG.stage.stageHeight;
+		#end
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
