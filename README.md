@@ -12,7 +12,8 @@
 **These are for Friday Night Funkin' mostly so it may not work for your HaxeFlixel project.**
 
 ### 1. Install the Haxelib:
-
+[Install the Haxelib here](https://lib.haxe.org/p/hxCodec/).
+You can also install it through git:
 ```cmd
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
 ```
