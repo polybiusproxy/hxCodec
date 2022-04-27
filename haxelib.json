@@ -1,10 +1,10 @@
 {
 	"name": "hxCodec",
-	"url": "https://github.com/brightfyregit/hxCodec",
+	"url": "https://github.com/polybiusproxy/hxCodec",
 	"license": "MIT",
 	"tags": [],
-	"description": "Native video support for OpenFL & Flixel",
-	"version": "",
+	"description": "Native video support for HaxeFlixel & OpenFL",
+	"version": "2.5.0",
 	"releasenote": "",
-	"contributors": ["brightfyregit", "polybiusproxy", "DotWith", "CryBitDev", "KadeDev", "TheRealJake12", "deandimarzo", "McJonnycat", "Saw (M.A. jigsaw)", "luckydog7"]
+	"contributors": ["polybiusproxy", "brightfyregit", "DotWith", "CryBitDev", "KadeDev", "TheRealJake12", "deandimarzo", "McJonnycat", "Saw (M.A. jigsaw)", "luckydog7"]
 }
