@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension>
+
+	<assets path="plugins/" rename='' if="windows"/>
+	<assets path="dlls/" rename='' if="windows"/>
+
+	<ndll name="vlc" if="android"/>
+	<ndll name="c++_shared" if="android"/>
+</extension>
