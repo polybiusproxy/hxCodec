@@ -4,7 +4,7 @@
 	"license": "MIT",
 	"tags": ["mp4", "video", "haxeflixel", "openfl", "windows", "linux", "android"],
 	"description": "Native video support for HaxeFlixel & OpenFL",
-	"version": "2.5.0",
+	"version": "2.5.1",
 	"releasenote": "",
 	"contributors": ["polybiusproxy"]
 }
