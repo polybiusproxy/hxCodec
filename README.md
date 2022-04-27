@@ -26,7 +26,7 @@ sudo apt-get install libvlccore-dev
 
 ## About Android Support
 Recently we achieved Android support thanks to the contributors, if you want to run the videos, the videos needs to be in external storage (phone root folder)
-The location should be something like '/storage/emulated/0/appname/yourvideo.mp4'
+The location should be something like `/storage/emulated/0/appname/yourvideo.mp4`
 
 ## Instructions
 **These are for Friday Night Funkin' mostly so it may not work for your HaxeFlixel project.**
