@@ -3,7 +3,7 @@ package vlc;
 import flixel.FlxSprite;
 
 /**
- * Compared to `MP4Handler`. This loads slower!!
+ * This class will play the video in the form of a FlxSprite, which you can control.
  */
 class MP4Sprite extends FlxSprite
 {
