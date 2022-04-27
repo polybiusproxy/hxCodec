@@ -112,4 +112,4 @@ This is not suitable for games and will be fixed soon.
 - [BrightFyre](https://github.com/brightfyregit) - Creator of repository.
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
 - [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol
-- The contributors. <!-- forgot this existed and i added contributors on the credits lol -->
+- The contributors.
