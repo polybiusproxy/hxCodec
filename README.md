@@ -112,5 +112,6 @@ This is not suitable for games and will be fixed soon.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [BrightFyre](https://github.com/brightfyregit) - Creator of repository.
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
-- [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol
+- [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol 
+- [Jigsaw](https://github.com/jigsaw-4277821) - for the Android port
 - The contributors.
