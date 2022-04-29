@@ -16,7 +16,7 @@ class MP4Sprite extends FlxSprite
 	{
 		super(x, y);
 
-		video = new MP4Handler(width, height, autoScale);
+		video = new MP4Handler(width, height, autoScale, false);
 		video.alpha = 0;
 
 		video.readyCallback = function()
