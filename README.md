@@ -18,7 +18,7 @@ You can also install it through git:
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
 ```
 
-### 2. Create a folder called `videos` in `assets/preload` folder:
+### 2. Create a folder called `videos` in your assets folder:
 
 ### 3. **OPTIONAL: If your PC is ARM64, add this code in `Project.xml`:**
 
@@ -36,7 +36,7 @@ inline static public function video(key:String, ?library:String)
 
 ### 4. Playing videos
 
-1. Put your video in `assets/preload/videos`.
+1. Put your video in the videos folder.
 2. Create somewhere in PlayState:
 ```haxe
 import vlc.MP4Handler;
@@ -69,7 +69,7 @@ function playEndCutscene(name:String)
 }
 ```
 
-### EXAMPLE
+### EXAMPLE (For fnf)
 At the PlayState "create()" function:
 ```haxe
 switch (curSong.toLowerCase())
@@ -92,7 +92,7 @@ if (SONG.song.toLowerCase() == 'triple-trouble')
 ## BUILDING
 ### Windows
 You don't need any special instructions in order to build for Windows.
-Just pull the "lime build windows".
+Just pull the `lime build windows`.
 
 ### Linux
 In order to make your game work with the library, every Linux user (this includes the player) **has to download** "libvlc-dev" and "libvlccore-dev" from your distro's package manager.
