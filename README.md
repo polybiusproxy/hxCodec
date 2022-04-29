@@ -101,7 +101,8 @@ You can also install them through the terminal:
 sudo apt-get install libvlc-dev
 sudo apt-get install libvlccore-dev
 ```
-
+### MAC 
+in order to make this thing happen follow the instructions on here https://wiki.videolan.org/MacOSCompile/ this will help you compile it and before you do make sure to download java https://www.java.com/en/ and download the java jdk https://www.oracle.com/java/technologies/downloads/ before you start doing it.
 ### Android
 Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/yourvideo.mp4`).
 This is not suitable for games and will be fixed soon.
