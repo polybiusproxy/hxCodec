@@ -37,13 +37,12 @@ LibVLC::LibVLC(void)
 		"--text-renderer", "dummy",
 		"--quiet",
 		#if PLATFORM_LINUX
-"--no-xlib",
-#endif
+		"--no-xlib",
+		#endif
 
-#if DEBUG
-"--verbose=2"
-#else
-#endif
+		#if DEBUG
+		"--verbose=2"
+		#endif
 		//"--no-xlib", //no xlib if linux
 		//"--vout", "vmem"
 		//"--avcodec-hw=dxva2",
@@ -53,7 +52,6 @@ LibVLC::LibVLC(void)
 	int Argc = sizeof(Args) / sizeof(*Args);
 	// libVlcInstance = libvlc_new(Argc, Args);
 	libVlcInstance = libvlc_new(0, NULL);
-	
 }
 
 LibVLC::~LibVLC(void)
