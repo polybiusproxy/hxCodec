@@ -69,7 +69,7 @@ function playEndCutscene(name:String)
 }
 ```
 
-### EXAMPLE (For fnf)
+### EXAMPLE (FOR FNF)
 At the PlayState "create()" function:
 ```haxe
 switch (curSong.toLowerCase())
