@@ -74,19 +74,46 @@ At the PlayState "create()" function:
 ```haxe
 switch (curSong.toLowerCase())
 {
-	case 'too-slow':
-		playCutscene('tooslowcutscene1');
-	case 'you-cant-run':
-		playCutscene('tooslowcutscene2');
+	case 'song1':
+		playCutscene('song1scene');
+	case 'song2':
+		playCutscene('song2scene');
 	default:
 		startCountdown();
 }
 ```
+**FOR KADE 1.8 USERS!!
+```haxe
+generateSong(SONG.songId);
+
+switch (curSong.toLowerCase())
+{
+	case 'bopeebo':
+		playCutscene('gunsCutscene');
+	default:
+		startCountdown();
+}
+
+```
 
 At the PlayState "endSong()" function:
 ```haxe
-if (SONG.song.toLowerCase() == 'triple-trouble')
-	playEndCutscene('soundtestcodes');
+if (SONG.song.toLowerCase() == 'pingas')
+	playEndCutscene('pingas');
+```
+
+**FOR KADE 1.8 USERS AGAIN
+```haxe
+PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
+FlxG.sound.music.stop();
+
+switch (curSong.toLowerCase())
+{
+	case 'deez':
+		playEndCutscene('bigChungus');
+	case 'nuts':
+		playEndCutscene('bigChungus');
+}
 ```
 
 ## BUILDING
