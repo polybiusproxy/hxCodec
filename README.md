@@ -82,7 +82,7 @@ switch (curSong.toLowerCase())
 		startCountdown();
 }
 ```
-**FOR KADE 1.8 USERS!!
+**FOR KADE 1.8 USERS!!**
 ```haxe
 generateSong(SONG.songId);
 
@@ -102,7 +102,7 @@ if (SONG.song.toLowerCase() == 'pingas')
 	playEndCutscene('pingas');
 ```
 
-**FOR KADE 1.8 USERS AGAIN
+**FOR KADE 1.8 USERS AGAIN**
 ```haxe
 PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
 FlxG.sound.music.stop();
