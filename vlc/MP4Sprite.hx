@@ -1,6 +1,7 @@
 package vlc;
 
 import flixel.FlxSprite;
+import vlc.MP4Handler;
 
 /**
  * This class will play the video in the form of a FlxSprite, which you can control.
@@ -10,24 +11,24 @@ class MP4Sprite extends FlxSprite
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
 
-	var video:MP4Handler;
+	public var bitmap:MP4Handler;
 
 	public function new(x:Float = 0, y:Float = 0, width:Float = 320, height:Float = 240, autoScale:Bool = true)
 	{
 		super(x, y);
 
-		video = new MP4Handler(width, height, autoScale);
-		video.alpha = 0;
+		bitmap = new MP4Handler(width, height, autoScale, false);
+		bitmap.alpha = 0;
 
-		video.readyCallback = function()
+		bitmap.readyCallback = function()
 		{
-			loadGraphic(video.bitmapData);
+			loadGraphic(bitmap.bitmapData);
 
 			if (readyCallback != null)
 				readyCallback();
 		}
 
-		video.finishCallback = function()
+		bitmap.finishCallback = function()
 		{
 			if (finishCallback != null)
 				finishCallback();
@@ -44,16 +45,22 @@ class MP4Sprite extends FlxSprite
 	 */
 	public function playVideo(path:String, ?repeat:Bool = false, pauseMusic:Bool = false)
 	{
-		video.playVideo(path, repeat, pauseMusic);
+		bitmap.playVideo(path, repeat, pauseMusic);
 	}
 
+	/**
+	 * You can use it like MP4Sprite.bitmap.pause(); aswell
+	 */
 	public function pause()
 	{
-		video.pause();
+		bitmap.pause();
 	}
 
+	/**
+	 * You can use it like MP4Sprite.bitmap.resume(); aswell
+	 */
 	public function resume()
 	{
-		video.resume();
+		bitmap.resume();
 	}
 }

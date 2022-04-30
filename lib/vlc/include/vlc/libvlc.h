@@ -48,9 +48,8 @@
 
 #ifdef __LIBVLC__
 /* Avoid unhelpful warnings from libvlc with our deprecated APIs */
-#   define LIBVLC_DEPRECATED
-#elif defined(__GNUC__) && \
-      (__GNUC__ > 3 || __GNUC__ == 3 && __GNUC_MINOR__ > 0)
+# define LIBVLC_DEPRECATED
+#elif defined(__GNUC__) && (__GNUC__ > 3 || __GNUC__ == 3 && __GNUC_MINOR__ > 0)
 # define LIBVLC_DEPRECATED __attribute__((deprecated))
 #else
 # define LIBVLC_DEPRECATED

@@ -15,7 +15,7 @@ class MP4Handler extends VlcBitmap
 
 	var pauseMusic:Bool;
 
-	public function new(width:Float = 320, height:Float = 240, autoScale:Bool = true)
+	public function new(width:Float = 320, height:Float = 240, autoScale:Bool = true, needsUpdate:Bool = true)
 	{
 		super(width, height, autoScale);
 
@@ -25,7 +25,10 @@ class MP4Handler extends VlcBitmap
 
 		FlxG.addChildBelowMouse(this);
 
-		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
+		if (needsUpdate)
+		{
+			FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
+		}
 
 		FlxG.signals.focusGained.add(function()
 		{
@@ -39,7 +42,7 @@ class MP4Handler extends VlcBitmap
 
 	function update(e:Event)
 	{
-		if ((FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) && isPlaying)
+		if ((FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && isPlaying)
 			finishVideo();
 
 		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
