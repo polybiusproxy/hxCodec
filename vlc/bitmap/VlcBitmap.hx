@@ -69,7 +69,6 @@ class VlcBitmap extends Bitmap
 	var _width:Null<Float>;
 	var _height:Null<Float>;
 	var texture:RectangleTexture;
-	var texture2:RectangleTexture;
 	var bmdBuf:BitmapData;
 	var bmdBuf2:BitmapData;
 	var oldTime:Int;
@@ -160,8 +159,6 @@ class VlcBitmap extends Bitmap
 	{
 		isPlaying = false;
 		libvlc.stop();
-		// if (disposeOnStop)
-		// dispose();
 
 		if (onStop != null)
 			onStop();
@@ -171,6 +168,7 @@ class VlcBitmap extends Bitmap
 	{
 		isPlaying = false;
 		libvlc.pause();
+
 		if (onPause != null)
 			onPause();
 	}
@@ -179,6 +177,7 @@ class VlcBitmap extends Bitmap
 	{
 		isPlaying = true;
 		libvlc.resume();
+
 		if (onResume != null)
 			onResume();
 	}
@@ -186,6 +185,7 @@ class VlcBitmap extends Bitmap
 	public function seek(seekTotime:Float)
 	{
 		libvlc.setPosition(seekTotime);
+
 		if (onSeek != null)
 			onSeek();
 	}
@@ -288,16 +288,10 @@ class VlcBitmap extends Bitmap
 
 		if (texture != null)
 			texture.dispose();
-		if (texture2 != null)
-			texture2.dispose();
 
 		// BitmapData
 		bitmapData = new BitmapData(Std.int(videoWidth), Std.int(videoHeight), true, 0);
 		frameRect = new Rectangle(0, 0, Std.int(videoWidth), Std.int(videoHeight));
-
-		// (Stage3D)
-		// texture = Lib.current.stage.stage3Ds[0].context3D.createRectangleTexture(videoWidth, videoHeight, Context3DTextureFormat.BGRA, true);
-		// this.bitmapData = BitmapData.fromTexture(texture);
 
 		smoothing = true;
 
@@ -342,7 +336,6 @@ class VlcBitmap extends Bitmap
 		{
 			oldTime = cTime;
 
-			// if (isPlaying && texture != null) // (Stage3D)
 			if (isPlaying)
 			{
 				try
@@ -355,11 +348,6 @@ class VlcBitmap extends Bitmap
 						// libvlc.getPixelData() sometimes is null and the exe hangs ...
 						if (libvlc.getPixelData() != null)
 							bitmapData.setPixels(frameRect, haxe.io.Bytes.ofData(bufferMem));
-
-						// (Stage3D)
-						// texture.uploadFromByteArray( Bytes.ofData(cast(bufferMem)), 0 );
-						// this.width++; //This is a horrible hack to force the texture to update... Surely there is a better way...
-						// this.width--;
 					}
 					#end
 				}
@@ -398,8 +386,6 @@ class VlcBitmap extends Bitmap
 
 	function statusOnBuffering()
 	{
-		trace("buffering");
-
 		if (onBuffer != null)
 			onBuffer();
 	}
@@ -437,7 +423,6 @@ class VlcBitmap extends Bitmap
 		if (isPlaying)
 			isPlaying = false;
 
-		// trace("end reached!");
 		if (onComplete != null)
 			onComplete();
 	}
@@ -445,13 +430,12 @@ class VlcBitmap extends Bitmap
 	function statusOnTimeChanged(newTime:Int)
 	{
 		time = newTime;
+
 		if (onProgress != null)
 			onProgress();
 	}
 
-	function statusOnPositionChanged(newPos:Int)
-	{
-	}
+	function statusOnPositionChanged(newPos:Int){}
 
 	function statusOnSeekableChanged(newPos:Int)
 	{
@@ -459,18 +443,11 @@ class VlcBitmap extends Bitmap
 			onSeek();
 	}
 
-	function statusOnForward()
-	{
-	}
+	function statusOnForward(){}
 
-	function statusOnBackward()
-	{
-	}
+	function statusOnBackward(){}
 
-	function onDisplay()
-	{
-		// render();
-	}
+	function onDisplay(){}
 
 	function statusOnError()
 	{
@@ -548,7 +525,6 @@ class VlcBitmap extends Bitmap
 
 		while (!isPlaying && !isDisposed)
 		{
-			libvlc.dispose();
 			libvlc = null;
 		}
 	}
