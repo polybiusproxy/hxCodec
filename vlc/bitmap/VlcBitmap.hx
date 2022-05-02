@@ -69,7 +69,6 @@ class VlcBitmap extends Bitmap
 	var _width:Null<Float>;
 	var _height:Null<Float>;
 	var texture:RectangleTexture;
-	var texture2:RectangleTexture;
 	var bmdBuf:BitmapData;
 	var bmdBuf2:BitmapData;
 	var oldTime:Int;
@@ -128,17 +127,41 @@ class VlcBitmap extends Bitmap
 	function getVideoWidth():Float
 	{
 		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
+		{
+			#if debug
+			trace(FlxG.stage.stageHeight * (16 / 9));
+			#end
+
 			return FlxG.stage.stageHeight * (16 / 9);
+		}
 		else
+		{
+			#if debug
+			trace(FlxG.stage.stageWidth);
+			#end
+
 			return FlxG.stage.stageWidth;
+		}
 	}
 
 	function getVideoHeight():Float
 	{
 		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
+		{
+			#if debug
+			trace(FlxG.stage.stageHeight);
+			#end
+
 			return FlxG.stage.stageHeight;
+		}
 		else
+		{
+			#if debug
+			trace(FlxG.stage.stageWidth / (16 / 9));
+			#end
+
 			return FlxG.stage.stageWidth / (16 / 9);
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -152,6 +175,10 @@ class VlcBitmap extends Bitmap
 		else
 			libvlc.play();
 
+		#if debug
+		trace("the video is playing");
+		#end
+
 		if (onPlay != null)
 			onPlay();
 	}
@@ -160,8 +187,10 @@ class VlcBitmap extends Bitmap
 	{
 		isPlaying = false;
 		libvlc.stop();
-		// if (disposeOnStop)
-		// dispose();
+
+		#if debug
+		trace("the video is stoping");
+		#end
 
 		if (onStop != null)
 			onStop();
@@ -171,6 +200,11 @@ class VlcBitmap extends Bitmap
 	{
 		isPlaying = false;
 		libvlc.pause();
+
+		#if debug
+		trace("the video is pausing");
+		#end
+
 		if (onPause != null)
 			onPause();
 	}
@@ -179,6 +213,11 @@ class VlcBitmap extends Bitmap
 	{
 		isPlaying = true;
 		libvlc.resume();
+
+		#if debug
+		trace("the video is resumeing");
+		#end
+
 		if (onResume != null)
 			onResume();
 	}
@@ -186,6 +225,11 @@ class VlcBitmap extends Bitmap
 	public function seek(seekTotime:Float)
 	{
 		libvlc.setPosition(seekTotime);
+
+		#if debug
+		trace("new position: " + seekTotime);
+		#end
+
 		if (onSeek != null)
 			onSeek();
 	}
@@ -196,6 +240,10 @@ class VlcBitmap extends Bitmap
 			return libvlc.getFPS();
 		else
 			return 0;
+
+		#if debug
+		trace(libvlc.getFPS());
+		#end
 	}
 
 	public function setTime(time:Int)
@@ -209,6 +257,10 @@ class VlcBitmap extends Bitmap
 			return libvlc.getTime();
 		else
 			return 0;
+
+		#if debug
+		trace(libvlc.getTime());
+		#end
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -293,16 +345,10 @@ class VlcBitmap extends Bitmap
 
 		if (texture != null)
 			texture.dispose();
-		if (texture2 != null)
-			texture2.dispose();
 
 		// BitmapData
 		bitmapData = new BitmapData(Std.int(videoWidth), Std.int(videoHeight), true, 0);
 		frameRect = new Rectangle(0, 0, Std.int(videoWidth), Std.int(videoHeight));
-
-		// (Stage3D)
-		// texture = Lib.current.stage.stage3Ds[0].context3D.createRectangleTexture(videoWidth, videoHeight, Context3DTextureFormat.BGRA, true);
-		// this.bitmapData = BitmapData.fromTexture(texture);
 
 		smoothing = true;
 
@@ -324,6 +370,10 @@ class VlcBitmap extends Bitmap
 		setVolume(volume);
 
 		initComplete = true;
+
+		#if debug
+		trace("the video is starting");
+		#end
 
 		if (onVideoReady != null)
 			onVideoReady();
@@ -347,7 +397,6 @@ class VlcBitmap extends Bitmap
 		{
 			oldTime = cTime;
 
-			// if (isPlaying && texture != null) // (Stage3D)
 			if (isPlaying)
 			{
 				try
@@ -360,11 +409,6 @@ class VlcBitmap extends Bitmap
 						// libvlc.getPixelData() sometimes is null and the exe hangs ...
 						if (libvlc.getPixelData() != null)
 							bitmapData.setPixels(frameRect, haxe.io.Bytes.ofData(bufferMem));
-
-						// (Stage3D)
-						// texture.uploadFromByteArray( Bytes.ofData(cast(bufferMem)), 0 );
-						// this.width++; //This is a horrible hack to force the texture to update... Surely there is a better way...
-						// this.width--;
 					}
 					#end
 				}
@@ -381,6 +425,10 @@ class VlcBitmap extends Bitmap
 
 	function setVolume(vol:Float)
 	{
+		#if debug
+		trace("new volume: " + vol * 100);
+		#end
+
 		if (libvlc != null && initComplete)
 			libvlc.setVolume(vol * 100);
 	}
@@ -397,13 +445,19 @@ class VlcBitmap extends Bitmap
 
 	function statusOnOpening()
 	{
+		#if debug
+		trace("the video is open");
+		#end
+
 		if (onOpening != null)
 			onOpening();
 	}
 
 	function statusOnBuffering()
 	{
+		#if debug
 		trace("buffering");
+		#end
 
 		if (onBuffer != null)
 			onBuffer();
@@ -424,6 +478,10 @@ class VlcBitmap extends Bitmap
 		if (isPlaying)
 			isPlaying = false;
 
+		#if debug
+		trace("the video is paused");
+		#end
+
 		if (onPause != null)
 			onPause();
 	}
@@ -432,6 +490,10 @@ class VlcBitmap extends Bitmap
 	{
 		if (isPlaying)
 			isPlaying = false;
+
+		#if debug
+		trace("the video stoped");
+		#end
 
 		if (onStop != null)
 			onStop();
@@ -442,7 +504,10 @@ class VlcBitmap extends Bitmap
 		if (isPlaying)
 			isPlaying = false;
 
-		// trace("end reached!");
+		#if debug
+		trace("end reached!");
+		#end
+
 		if (onComplete != null)
 			onComplete();
 	}
@@ -450,36 +515,42 @@ class VlcBitmap extends Bitmap
 	function statusOnTimeChanged(newTime:Int)
 	{
 		time = newTime;
+
+		#if debug
+		trace("new Time: " + newTime);
+		#end
+
 		if (onProgress != null)
 			onProgress();
 	}
 
-	function statusOnPositionChanged(newPos:Int)
-	{
+	function statusOnPositionChanged(newPos:Int){
+		#if debug
+		trace("new Pos: " + newPos);
+		#end
 	}
 
 	function statusOnSeekableChanged(newPos:Int)
 	{
+		#if debug
+		trace("new Seek Pos: " + newPos);
+		#end
+
 		if (onSeek != null)
 			onSeek();
 	}
 
-	function statusOnForward()
-	{
-	}
+	function statusOnForward(){}
 
-	function statusOnBackward()
-	{
-	}
+	function statusOnBackward(){}
 
-	function onDisplay()
-	{
-		// render();
-	}
+	function onDisplay(){}
 
 	function statusOnError()
 	{
+		#if debug
 		trace("VLC ERROR - File not found?");
+		#end
 
 		if (onError != null)
 			onError();
@@ -553,7 +624,6 @@ class VlcBitmap extends Bitmap
 
 		while (!isPlaying && !isDisposed)
 		{
-			libvlc.dispose();
 			libvlc = null;
 		}
 	}
