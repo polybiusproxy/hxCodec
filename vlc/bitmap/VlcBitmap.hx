@@ -237,34 +237,38 @@ class VlcBitmap extends Bitmap
 	public function getFPS():Float
 	{
 		if (libvlc != null && initComplete)
+		{
+			#if debug
+			trace(libvlc.getFPS());
+			#end
+
 			return libvlc.getFPS();
+		}
 		else
 			return 0;
-
-		#if debug
-		trace(libvlc.getFPS());
-		#end
 	}
 
 	public function setTime(time:Int)
 	{
-		libvlc.setTime(time);
-
 		#if debug
 		trace("the new time is: " + time);
 		#end
+
+		libvlc.setTime(time);
 	}
 
 	public function getTime():Int
 	{
 		if (libvlc != null && initComplete)
+		{
+			#if debug
+			trace(libvlc.getTime());
+			#end
+
 			return libvlc.getTime();
+		}
 		else
 			return 0;
-
-		#if debug
-		trace(libvlc.getTime());
-		#end
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -338,6 +342,10 @@ class VlcBitmap extends Bitmap
 
 	function videoInitComplete()
 	{
+		#if debug
+		trace("the video is starting");
+		#end
+
 		videoWidth = libvlc.getWidth();
 		videoHeight = libvlc.getHeight();
 
@@ -375,10 +383,6 @@ class VlcBitmap extends Bitmap
 
 		initComplete = true;
 
-		#if debug
-		trace("the video is starting");
-		#end
-
 		if (onVideoReady != null)
 			onVideoReady();
 	}
@@ -406,6 +410,10 @@ class VlcBitmap extends Bitmap
 				try
 				{
 					#if cpp
+					#if debug
+					trace("rendering...");
+					#end
+
 					NativeArray.setUnmanagedData(bufferMem, libvlc.getPixelData(), frameSize);
 					if (bufferMem != null)
 					{
@@ -414,11 +422,6 @@ class VlcBitmap extends Bitmap
 						if (libvlc.getPixelData() != null)
 							bitmapData.setPixels(frameRect, haxe.io.Bytes.ofData(bufferMem));
 					}
-
-					#if debug
-					trace("rendering...");
-					#end
-
 					#end
 				}
 				catch (e:Error)
@@ -434,22 +437,26 @@ class VlcBitmap extends Bitmap
 
 	function setVolume(vol:Float)
 	{
-		#if debug
-		trace("new volume: " + vol * 100);
-		#end
+		if (libvlc != null && initcomplete)
+		{
+			#if debug
+			trace("new volume: " + vol * 100);
+			#end
 
-		if (libvlc != null && initComplete)
 			libvlc.setVolume(vol * 100);
+		}
 	}
 
 	public function getVolume():Float
 	{
-		#if debug
-		trace("the volume is: " + libvlc.getVolume());
-		#end
-
 		if (libvlc != null && initComplete)
+		{
+			#if debug
+			trace("the volume is: " + libvlc.getVolume());
+			#end
+
 			return libvlc.getVolume();
+		}
 		else
 			return 0;
 	}
@@ -546,7 +553,7 @@ class VlcBitmap extends Bitmap
 	function statusOnSeekableChanged(newPos:Int)
 	{
 		#if debug
-		trace("new Seek Pos: " + newPos);
+		trace("new Seeked Pos: " + newPos);
 		#end
 
 		if (onSeek != null)
@@ -573,11 +580,11 @@ class VlcBitmap extends Bitmap
 
 	private override function get_width():Float
 	{
-		return _width;
-
 		#if debug
 		trace(_width);
 		#end
+
+		return _width;
 	}
 
 	public override function set_width(value:Float):Float
@@ -593,11 +600,11 @@ class VlcBitmap extends Bitmap
 
 	private override function get_height():Float
 	{
-		return _height;
-
 		#if debug
 		trace(_height);
 		#end
+
+		return _height;
 	}
 
 	public override function set_height(value:Float):Float
@@ -613,21 +620,20 @@ class VlcBitmap extends Bitmap
 
 	function get_volume():Float
 	{
-		return volume;
-
 		#if debug
 		trace("the volume is " + volume);
 		#end
+
+		return volume;
 	}
 
 	function set_volume(value:Float):Float
 	{
-		setVolume(value);
-
 		#if debug
 		trace("the new volume is " + value);
 		#end
 
+		setVolume(value);
 		return volume = value;
 	}
 
@@ -637,6 +643,10 @@ class VlcBitmap extends Bitmap
 
 	public function dispose()
 	{
+		#if debug
+		trace("disposeing the hole thing lol");
+		#end
+
 		libvlc.stop();
 
 		stage.removeEventListener(Event.ENTER_FRAME, vLoop);
@@ -666,10 +676,6 @@ class VlcBitmap extends Bitmap
 		{
 			libvlc = null;
 		}
-
-		#if debug
-		trace("disposeing the hole thing lol");
-		#end
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
