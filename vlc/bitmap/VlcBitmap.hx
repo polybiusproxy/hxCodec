@@ -127,17 +127,41 @@ class VlcBitmap extends Bitmap
 	function getVideoWidth():Float
 	{
 		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
+		{
+			#if debug
+			trace(FlxG.stage.stageHeight * (16 / 9));
+			#end
+
 			return FlxG.stage.stageHeight * (16 / 9);
+		}
 		else
+		{
+			#if debug
+			trace(FlxG.stage.stageWidth);
+			#end
+
 			return FlxG.stage.stageWidth;
+		}
 	}
 
 	function getVideoHeight():Float
 	{
 		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
+		{
+			#if debug
+			trace(FlxG.stage.stageHeight);
+			#end
+
 			return FlxG.stage.stageHeight;
+		}
 		else
+		{
+			#if debug
+			trace(FlxG.stage.stageWidth / (16 / 9));
+			#end
+
 			return FlxG.stage.stageWidth / (16 / 9);
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -151,6 +175,10 @@ class VlcBitmap extends Bitmap
 		else
 			libvlc.play();
 
+		#if debug
+		trace("the video is playing");
+		#end
+
 		if (onPlay != null)
 			onPlay();
 	}
@@ -159,6 +187,10 @@ class VlcBitmap extends Bitmap
 	{
 		isPlaying = false;
 		libvlc.stop();
+
+		#if debug
+		trace("the video is stoping");
+		#end
 
 		if (onStop != null)
 			onStop();
@@ -169,6 +201,10 @@ class VlcBitmap extends Bitmap
 		isPlaying = false;
 		libvlc.pause();
 
+		#if debug
+		trace("the video is pausing");
+		#end
+
 		if (onPause != null)
 			onPause();
 	}
@@ -178,6 +214,10 @@ class VlcBitmap extends Bitmap
 		isPlaying = true;
 		libvlc.resume();
 
+		#if debug
+		trace("the video is resumeing");
+		#end
+
 		if (onResume != null)
 			onResume();
 	}
@@ -185,6 +225,10 @@ class VlcBitmap extends Bitmap
 	public function seek(seekTotime:Float)
 	{
 		libvlc.setPosition(seekTotime);
+
+		#if debug
+		trace("new position: " + seekTotime);
+		#end
 
 		if (onSeek != null)
 			onSeek();
@@ -196,6 +240,10 @@ class VlcBitmap extends Bitmap
 			return libvlc.getFPS();
 		else
 			return 0;
+
+		#if debug
+		trace(libvlc.getFPS());
+		#end
 	}
 
 	public function getTime():Int
@@ -204,6 +252,10 @@ class VlcBitmap extends Bitmap
 			return libvlc.getTime();
 		else
 			return 0;
+
+		#if debug
+		trace(libvlc.getTime());
+		#end
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -314,6 +366,10 @@ class VlcBitmap extends Bitmap
 
 		initComplete = true;
 
+		#if debug
+		trace("the video is starting");
+		#end
+
 		if (onVideoReady != null)
 			onVideoReady();
 	}
@@ -364,6 +420,10 @@ class VlcBitmap extends Bitmap
 
 	function setVolume(vol:Float)
 	{
+		#if debug
+		trace("new volume: " + vol * 100);
+		#end
+
 		if (libvlc != null && initComplete)
 			libvlc.setVolume(vol * 100);
 	}
@@ -380,12 +440,20 @@ class VlcBitmap extends Bitmap
 
 	function statusOnOpening()
 	{
+		#if debug
+		trace("the video is open");
+		#end
+
 		if (onOpening != null)
 			onOpening();
 	}
 
 	function statusOnBuffering()
 	{
+		#if debug
+		trace("buffering");
+		#end
+
 		if (onBuffer != null)
 			onBuffer();
 	}
@@ -405,6 +473,10 @@ class VlcBitmap extends Bitmap
 		if (isPlaying)
 			isPlaying = false;
 
+		#if debug
+		trace("the video is paused");
+		#end
+
 		if (onPause != null)
 			onPause();
 	}
@@ -413,6 +485,10 @@ class VlcBitmap extends Bitmap
 	{
 		if (isPlaying)
 			isPlaying = false;
+
+		#if debug
+		trace("the video stoped");
+		#end
 
 		if (onStop != null)
 			onStop();
@@ -423,6 +499,10 @@ class VlcBitmap extends Bitmap
 		if (isPlaying)
 			isPlaying = false;
 
+		#if debug
+		trace("end reached!");
+		#end
+
 		if (onComplete != null)
 			onComplete();
 	}
@@ -431,14 +511,26 @@ class VlcBitmap extends Bitmap
 	{
 		time = newTime;
 
+		#if debug
+		trace("new Time: " + newTime);
+		#end
+
 		if (onProgress != null)
 			onProgress();
 	}
 
-	function statusOnPositionChanged(newPos:Int){}
+	function statusOnPositionChanged(newPos:Int){
+		#if debug
+		trace("new Pos: " + newPos);
+		#end
+	}
 
 	function statusOnSeekableChanged(newPos:Int)
 	{
+		#if debug
+		trace("new Seek Pos: " + newPos);
+		#end
+
 		if (onSeek != null)
 			onSeek();
 	}
@@ -451,7 +543,9 @@ class VlcBitmap extends Bitmap
 
 	function statusOnError()
 	{
+		#if debug
 		trace("VLC ERROR - File not found?");
+		#end
 
 		if (onError != null)
 			onError();
