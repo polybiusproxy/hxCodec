@@ -198,6 +198,11 @@ class VlcBitmap extends Bitmap
 			return 0;
 	}
 
+	public function setTime(time:Int)
+	{
+		libvlc.setTime(time);
+	}
+
 	public function getTime():Int
 	{
 		if (libvlc != null && initComplete)
