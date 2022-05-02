@@ -66,15 +66,11 @@ class VlcBitmap extends Bitmap
 	// Variables
 	//-----------------------------------------------------------------------------------
 	var frameSize:Int;
+	var oldTime:Int;
 	var _width:Null<Float>;
 	var _height:Null<Float>;
 	var texture:RectangleTexture;
-	var bmdBuf:BitmapData;
-	var oldTime:Int;
-	var flipBuffer:Bool;
 	var frameRect:Rectangle;
-	var screenWidth:Float;
-	var screenHeight:Float;
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
