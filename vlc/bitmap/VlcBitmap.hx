@@ -445,7 +445,7 @@ class VlcBitmap extends Bitmap
 	public function getVolume():Float
 	{
 		#if debug
-		trace("the volume is: " + vol * 100);
+		trace("the volume is: " + libvlc.getVolume());
 		#end
 
 		if (libvlc != null && initComplete)
