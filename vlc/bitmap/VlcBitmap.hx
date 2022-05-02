@@ -246,6 +246,15 @@ class VlcBitmap extends Bitmap
 		#end
 	}
 
+	public function setTime(time:Int)
+	{
+		libvlc.setTime(time);
+
+		#if debug
+		trace("the new time is: " + time);
+		#end
+	}
+
 	public function getTime():Int
 	{
 		if (libvlc != null && initComplete)
@@ -405,6 +414,11 @@ class VlcBitmap extends Bitmap
 						if (libvlc.getPixelData() != null)
 							bitmapData.setPixels(frameRect, haxe.io.Bytes.ofData(bufferMem));
 					}
+
+					#if debug
+					trace("rendering...");
+					#end
+
 					#end
 				}
 				catch (e:Error)
@@ -430,6 +444,10 @@ class VlcBitmap extends Bitmap
 
 	public function getVolume():Float
 	{
+		#if debug
+		trace("the volume is: " + vol * 100);
+		#end
+
 		if (libvlc != null && initComplete)
 			return libvlc.getVolume();
 		else
@@ -556,33 +574,60 @@ class VlcBitmap extends Bitmap
 	private override function get_width():Float
 	{
 		return _width;
+
+		#if debug
+		trace(_width);
+		#end
 	}
 
 	public override function set_width(value:Float):Float
 	{
 		_width = value;
+
+		#if debug
+		trace("new width is " + value);
+		#end
+
 		return super.set_width(value);
 	}
 
 	private override function get_height():Float
 	{
 		return _height;
+
+		#if debug
+		trace(_height);
+		#end
 	}
 
 	public override function set_height(value:Float):Float
 	{
 		_height = value;
+
+		#if debug
+		trace("new height is " + value);
+		#end
+
 		return super.set_height(value);
 	}
 
 	function get_volume():Float
 	{
 		return volume;
+
+		#if debug
+		trace("the volume is " + volume);
+		#end
 	}
 
 	function set_volume(value:Float):Float
 	{
 		setVolume(value);
+
+		#if debug
+		trace("the new volume is " + value);
+		#end
+
 		return volume = value;
 	}
 
@@ -621,6 +666,10 @@ class VlcBitmap extends Bitmap
 		{
 			libvlc = null;
 		}
+
+		#if debug
+		trace("disposeing the hole thing lol");
+		#end
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
