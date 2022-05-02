@@ -70,7 +70,6 @@ class VlcBitmap extends Bitmap
 	var _height:Null<Float>;
 	var texture:RectangleTexture;
 	var bmdBuf:BitmapData;
-	var bmdBuf2:BitmapData;
 	var oldTime:Int;
 	var flipBuffer:Bool;
 	var frameRect:Rectangle;
@@ -437,7 +436,7 @@ class VlcBitmap extends Bitmap
 
 	function setVolume(vol:Float)
 	{
-		if (libvlc != null && initcomplete)
+		if (libvlc != null && initComplete)
 		{
 			#if debug
 			trace("new volume: " + vol * 100);
