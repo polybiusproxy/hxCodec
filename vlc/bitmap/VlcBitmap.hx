@@ -80,7 +80,7 @@ class VlcBitmap extends Bitmap
 
 	public function new(width:Float = 320, height:Float = 240, ?autoScale:Bool = true)
 	{
-		super(null, null, false);
+		super(null, null, true);
 
 		if (autoScale)
 		{
