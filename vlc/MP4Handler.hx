@@ -8,16 +8,14 @@ import vlc.bitmap.VlcBitmap;
  * Play a video using cpp.
  * Use bitmap to connect to a graphic or use `MP4Sprite`.
  */
-class MP4Handler extends VlcBitmap
-{
+class MP4Handler extends VlcBitmap {
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
 	public var canSkip:Bool = true;
 
 	var pauseMusic:Bool;
 
-	public function new(width:Float = 320, height:Float = 240, autoScale:Bool = true)
-	{
+	public function new(width:Float = 320, height:Float = 240, autoScale:Bool = true) {
 		super(width, height, autoScale);
 
 		onVideoReady = onVLCVideoReady;
@@ -28,19 +26,18 @@ class MP4Handler extends VlcBitmap
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
-		FlxG.signals.focusGained.add(function()
-		{
+		FlxG.signals.focusGained.add(function() {
 			resume();
 		});
-		FlxG.signals.focusLost.add(function()
-		{
+		FlxG.signals.focusLost.add(function() {
 			pause();
 		});
 	}
 
-	function update(e:Event)
-	{
-		if (canSkip && (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && isPlaying)
+	function update(e:Event) {
+		if (canSkip
+			&& (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)
+			&& isPlaying)
 			finishVideo();
 
 		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
@@ -50,8 +47,7 @@ class MP4Handler extends VlcBitmap
 	}
 
 	#if sys
-	function checkFile(fileName:String):String
-	{
+	function checkFile(fileName:String):String {
 		#if !android
 		var pDir = "";
 		var appDir = "file:///" + Sys.getCwd() + "/";
@@ -68,22 +64,19 @@ class MP4Handler extends VlcBitmap
 	}
 	#end
 
-	function onVLCVideoReady()
-	{
+	function onVLCVideoReady() {
 		trace("Video loaded!");
 
 		if (readyCallback != null)
 			readyCallback();
 	}
 
-	function onVLCError()
-	{
+	function onVLCError() {
 		// TODO: Catch the error
 		throw "VLC caught an error!";
 	}
 
-	public function finishVideo()
-	{
+	public function finishVideo() {
 		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.resume();
 
@@ -91,8 +84,7 @@ class MP4Handler extends VlcBitmap
 
 		dispose();
 
-		if (FlxG.game.contains(this))
-		{
+		if (FlxG.game.contains(this)) {
 			FlxG.game.removeChild(this);
 
 			if (finishCallback != null)
@@ -106,8 +98,7 @@ class MP4Handler extends VlcBitmap
 	 * @param repeat Repeat the video.
 	 * @param pauseMusic Pause music until done video.
 	 */
-	public function playVideo(path:String, ?repeat:Bool = false, pauseMusic:Bool = false)
-	{
+	public function playVideo(path:String, ?repeat:Bool = false, pauseMusic:Bool = false) {
 		this.pauseMusic = pauseMusic;
 
 		if (FlxG.sound.music != null && pauseMusic)

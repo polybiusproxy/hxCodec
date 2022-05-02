@@ -44,15 +44,16 @@ struct vlc_gl_t
     module_t *module;
     void *sys;
 
-    int  (*makeCurrent)(vlc_gl_t *);
+    int (*makeCurrent)(vlc_gl_t *);
     void (*releaseCurrent)(vlc_gl_t *);
     void (*swap)(vlc_gl_t *);
-    int  (*lock)(vlc_gl_t *);
+    int (*lock)(vlc_gl_t *);
     void (*unlock)(vlc_gl_t *);
-    void*(*getProcAddress)(vlc_gl_t *, const char *);
+    void *(*getProcAddress)(vlc_gl_t *, const char *);
 };
 
-enum {
+enum
+{
     VLC_OPENGL,
     VLC_OPENGL_ES,
     VLC_OPENGL_ES2,

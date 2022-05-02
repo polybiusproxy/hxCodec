@@ -36,32 +36,28 @@
 /* RFC 2617: Basic and Digest Access Authentication */
 typedef struct http_auth_t
 {
-    char *psz_realm;
-    char *psz_domain;
-    char *psz_nonce;
-    char *psz_opaque;
-    char *psz_stale;
-    char *psz_algorithm;
-    char *psz_qop;
-    int i_nonce;
-    char *psz_cnonce;
-    char *psz_HA1; /* stored H(A1) value if algorithm = "MD5-sess" */
+  char *psz_realm;
+  char *psz_domain;
+  char *psz_nonce;
+  char *psz_opaque;
+  char *psz_stale;
+  char *psz_algorithm;
+  char *psz_qop;
+  int i_nonce;
+  char *psz_cnonce;
+  char *psz_HA1; /* stored H(A1) value if algorithm = "MD5-sess" */
 } http_auth_t;
 
-
-VLC_API void http_auth_Init( http_auth_t * );
-VLC_API void http_auth_Reset( http_auth_t * );
-VLC_API void http_auth_ParseWwwAuthenticateHeader
-            ( vlc_object_t *, http_auth_t * ,
-              const char * );
-VLC_API int http_auth_ParseAuthenticationInfoHeader
-            ( vlc_object_t *, http_auth_t *,
-              const char *, const char *,
-              const char *, const char *,
-              const char * );
-VLC_API char *http_auth_FormatAuthorizationHeader
-            ( vlc_object_t *, http_auth_t *,
-              const char *, const char *,
-              const char *, const char * ) VLC_USED;
+VLC_API void http_auth_Init(http_auth_t *);
+VLC_API void http_auth_Reset(http_auth_t *);
+VLC_API void http_auth_ParseWwwAuthenticateHeader(vlc_object_t *, http_auth_t *,
+                                                  const char *);
+VLC_API int http_auth_ParseAuthenticationInfoHeader(vlc_object_t *, http_auth_t *,
+                                                    const char *, const char *,
+                                                    const char *, const char *,
+                                                    const char *);
+VLC_API char *http_auth_FormatAuthorizationHeader(vlc_object_t *, http_auth_t *,
+                                                  const char *, const char *,
+                                                  const char *, const char *) VLC_USED;
 
 #endif /* VLC_HTTP_H */

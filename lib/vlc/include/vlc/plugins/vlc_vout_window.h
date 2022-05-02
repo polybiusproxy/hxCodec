@@ -36,12 +36,12 @@
 typedef struct vout_window_t vout_window_t;
 typedef struct vout_window_sys_t vout_window_sys_t;
 
-
 /**
  * Window handle type
  */
-enum {
-    VOUT_WINDOW_TYPE_INVALID=0,
+enum
+{
+    VOUT_WINDOW_TYPE_INVALID = 0,
     VOUT_WINDOW_TYPE_XID,
     VOUT_WINDOW_TYPE_HWND,
     VOUT_WINDOW_TYPE_NSOBJECT,
@@ -50,13 +50,15 @@ enum {
 /**
  * Control query for vout_window_t
  */
-enum {
-    VOUT_WINDOW_SET_STATE, /* unsigned state */
-    VOUT_WINDOW_SET_SIZE,   /* unsigned i_width, unsigned i_height */
+enum
+{
+    VOUT_WINDOW_SET_STATE,      /* unsigned state */
+    VOUT_WINDOW_SET_SIZE,       /* unsigned i_width, unsigned i_height */
     VOUT_WINDOW_SET_FULLSCREEN, /* int b_fullscreen */
 };
 
-typedef struct {
+typedef struct
+{
     /* If true, a standalone window is requested */
     bool is_standalone;
 
@@ -77,22 +79,25 @@ typedef struct {
  * FIXME do we need an event system in the window too ?
  * or the window user will take care of it ?
  */
-struct vout_window_t {
+struct vout_window_t
+{
     VLC_COMMON_MEMBERS
 
     /* window handle (mandatory)
      *
      * It must be filled in the open function.
      */
-    union {
-        void     *hwnd;     /* Win32 window handle */
-        uint32_t xid;       /* X11 windows ID */
-        void     *nsobject; /* Mac OSX view object */
+    union
+    {
+        void *hwnd;     /* Win32 window handle */
+        uint32_t xid;   /* X11 windows ID */
+        void *nsobject; /* Mac OSX view object */
     } handle;
 
     /* display server (mandatory) */
-    union {
-        char     *x11; /* X11 display (NULL = use default) */
+    union
+    {
+        char *x11; /* X11 display (NULL = use default) */
     } display;
 
     /* Control on the module (mandatory)
@@ -116,7 +121,7 @@ struct vout_window_t {
  / vout_display_NewWindow() and vout_display_DeleteWindow() instead.
  * This enables recycling windows.
  */
-VLC_API vout_window_t * vout_window_New(vlc_object_t *, const char *module, const vout_window_cfg_t *);
+VLC_API vout_window_t *vout_window_New(vlc_object_t *, const char *module, const vout_window_cfg_t *);
 
 /**
  * Deletes a window created by vout_window_New().
@@ -124,7 +129,6 @@ VLC_API vout_window_t * vout_window_New(vlc_object_t *, const char *module, cons
  * @note See vout_window_New() about window recycling.
  */
 VLC_API void vout_window_Delete(vout_window_t *);
-
 
 /**
  * Reconfigures a window.

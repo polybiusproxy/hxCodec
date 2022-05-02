@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="LibVLCBuild.xsd"?>
 <xml>
     <files id='haxe'>
         <compilervalue name="-I" value="${haxelib:hxCodec}/lib/vlc/include/" />
@@ -7,12 +8,12 @@
 
     <target id="haxe">
         <section if="windows">
-			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Windows/libvlc.lib' if='windows'/>
-			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Windows/libvlccore.lib' if='windows'/>
+            <lib name='${haxelib:hxCodec}/ndll/Windows/libvlc.lib' if='windows' />
+            <lib name='${haxelib:hxCodec}/ndll/Windows/libvlccore.lib' if='windows' />
         </section>
         <section if="linux">
-			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlc.so.5' if='linux'/>
-			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlccore.so.9' if='linux'/>
+            <lib name='${haxelib:hxCodec}/ndll/Linux/libvlc.so.5' if='linux' />
+            <lib name='${haxelib:hxCodec}/ndll/Linux/libvlccore.so.9' if='linux' />
         </section>
         <section if="android">
             <lib name='${haxelib:hxCodec}/ndll/Android/libvlc-v7.so' if='HXCPP_ARMV7' />

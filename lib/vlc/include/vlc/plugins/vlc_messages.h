@@ -45,10 +45,10 @@
 /** Message types */
 enum vlc_log_type
 {
-    VLC_MSG_INFO=0, /**< Important information */
-    VLC_MSG_ERR,    /**< Error */
-    VLC_MSG_WARN,   /**< Warning */
-    VLC_MSG_DBG,    /**< Debug */
+    VLC_MSG_INFO = 0, /**< Important information */
+    VLC_MSG_ERR,      /**< Error */
+    VLC_MSG_WARN,     /**< Warning */
+    VLC_MSG_DBG,      /**< Debug */
 };
 
 /**
@@ -56,26 +56,26 @@ enum vlc_log_type
  */
 typedef struct vlc_log_t
 {
-    uintptr_t   i_object_id; /**< Emitter (temporaly) unique object ID or 0 */
+    uintptr_t i_object_id;       /**< Emitter (temporaly) unique object ID or 0 */
     const char *psz_object_type; /**< Emitter object type name */
-    const char *psz_module; /**< Emitter module (source code) */
-    const char *psz_header; /**< Additional header (used by VLM media) */
+    const char *psz_module;      /**< Emitter module (source code) */
+    const char *psz_header;      /**< Additional header (used by VLM media) */
 } vlc_log_t;
 
 VLC_API void vlc_Log(vlc_object_t *, int,
-                     const char *, const char *, ...) VLC_FORMAT( 4, 5 );
+                     const char *, const char *, ...) VLC_FORMAT(4, 5);
 VLC_API void vlc_vaLog(vlc_object_t *, int,
                        const char *, const char *, va_list);
 #define msg_GenericVa(a, b, c, d, e) vlc_vaLog(VLC_OBJECT(a), b, c, d, e)
 
-#define msg_Info( p_this, ... ) \
-    vlc_Log( VLC_OBJECT(p_this), VLC_MSG_INFO, MODULE_STRING, __VA_ARGS__ )
-#define msg_Err( p_this, ... ) \
-    vlc_Log( VLC_OBJECT(p_this), VLC_MSG_ERR,  MODULE_STRING, __VA_ARGS__ )
-#define msg_Warn( p_this, ... ) \
-    vlc_Log( VLC_OBJECT(p_this), VLC_MSG_WARN, MODULE_STRING, __VA_ARGS__ )
-#define msg_Dbg( p_this, ... ) \
-    vlc_Log( VLC_OBJECT(p_this), VLC_MSG_DBG,  MODULE_STRING, __VA_ARGS__ )
+#define msg_Info(p_this, ...) \
+    vlc_Log(VLC_OBJECT(p_this), VLC_MSG_INFO, MODULE_STRING, __VA_ARGS__)
+#define msg_Err(p_this, ...) \
+    vlc_Log(VLC_OBJECT(p_this), VLC_MSG_ERR, MODULE_STRING, __VA_ARGS__)
+#define msg_Warn(p_this, ...) \
+    vlc_Log(VLC_OBJECT(p_this), VLC_MSG_WARN, MODULE_STRING, __VA_ARGS__)
+#define msg_Dbg(p_this, ...) \
+    vlc_Log(VLC_OBJECT(p_this), VLC_MSG_DBG, MODULE_STRING, __VA_ARGS__)
 
 /**
  * @}

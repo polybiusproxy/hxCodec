@@ -37,18 +37,18 @@
 /** Description of a planar graphic field */
 typedef struct plane_t
 {
-    uint8_t *p_pixels;                        /**< Start of the plane's data */
+    uint8_t *p_pixels; /**< Start of the plane's data */
 
     /* Variables used for fast memcpy operations */
-    int i_lines;           /**< Number of lines, including margins */
-    int i_pitch;           /**< Number of bytes in a line, including margins */
+    int i_lines; /**< Number of lines, including margins */
+    int i_pitch; /**< Number of bytes in a line, including margins */
 
     /** Size of a macropixel, defaults to 1 */
     int i_pixel_pitch;
 
     /* Variables used for pictures with margins */
-    int i_visible_lines;            /**< How many visible lines are there ? */
-    int i_visible_pitch;            /**< How many visible pixels are there ? */
+    int i_visible_lines; /**< How many visible lines are there ? */
+    int i_visible_pitch; /**< How many visible pixels are there ? */
 
 } plane_t;
 
@@ -56,7 +56,6 @@ typedef struct plane_t
  * Maximum number of plane for a picture
  */
 #define PICTURE_PLANE_MAX (VOUT_MAX_PLANES)
-
 
 /**
  * A private definition to help overloading picture release
@@ -73,35 +72,35 @@ struct picture_t
      */
     video_frame_format_t format;
 
-    plane_t         p[PICTURE_PLANE_MAX];     /**< description of the planes */
-    int             i_planes;                /**< number of allocated planes */
+    plane_t p[PICTURE_PLANE_MAX]; /**< description of the planes */
+    int i_planes;                 /**< number of allocated planes */
 
     /** \name Picture management properties
      * These properties can be modified using the video output thread API,
      * but should never be written directly */
     /**@{*/
-    mtime_t         date;                                  /**< display date */
-    bool            b_force;
+    mtime_t date; /**< display date */
+    bool b_force;
     /**@}*/
 
     /** \name Picture dynamic properties
      * Those properties can be changed by the decoder
      * @{
      */
-    bool            b_progressive;          /**< is it a progressive frame ? */
-    bool            b_top_field_first;             /**< which field is first */
-    unsigned int    i_nb_fields;                  /**< # of displayed fields */
+    bool b_progressive;       /**< is it a progressive frame ? */
+    bool b_top_field_first;   /**< which field is first */
+    unsigned int i_nb_fields; /**< # of displayed fields */
     /**@}*/
 
     /** Private data - the video output plugin might want to put stuff here to
      * keep track of the picture */
-    picture_sys_t * p_sys;
+    picture_sys_t *p_sys;
 
     /** This way the picture_Release can be overloaded */
     struct
     {
         vlc_atomic_t refcount;
-        void (*pf_destroy)( picture_t * );
+        void (*pf_destroy)(picture_t *);
         picture_gc_sys_t *p_sys;
     } gc;
 
@@ -115,7 +114,7 @@ struct picture_t
  * with picture_Hold and picture_Release. This default management will release
  * p_sys, gc.p_sys fields if non NULL.
  */
-VLC_API picture_t * picture_New( vlc_fourcc_t i_chroma, int i_width, int i_height, int i_sar_num, int i_sar_den ) VLC_USED;
+VLC_API picture_t *picture_New(vlc_fourcc_t i_chroma, int i_width, int i_height, int i_sar_num, int i_sar_den) VLC_USED;
 
 /**
  * This function will create a new picture using the given format.
@@ -123,7 +122,7 @@ VLC_API picture_t * picture_New( vlc_fourcc_t i_chroma, int i_width, int i_heigh
  * When possible, it is preferred to use this function over picture_New
  * as more information about the format is kept.
  */
-VLC_API picture_t * picture_NewFromFormat( const video_format_t *p_fmt ) VLC_USED;
+VLC_API picture_t *picture_NewFromFormat(const video_format_t *p_fmt) VLC_USED;
 
 /**
  * Resource for a picture.
@@ -137,9 +136,9 @@ typedef struct
      */
     struct
     {
-        uint8_t *p_pixels;  /**< Start of the plane's data */
-        int i_lines;        /**< Number of lines, including margins */
-        int i_pitch;        /**< Number of bytes in a line, including margins */
+        uint8_t *p_pixels; /**< Start of the plane's data */
+        int i_lines;       /**< Number of lines, including margins */
+        int i_pitch;       /**< Number of bytes in a line, including margins */
     } p[PICTURE_PLANE_MAX];
 
 } picture_resource_t;
@@ -149,7 +148,7 @@ typedef struct
  *
  * If the resource is NULL then a plain picture_NewFromFormat is returned.
  */
-VLC_API picture_t * picture_NewFromResource( const video_format_t *, const picture_resource_t * ) VLC_USED;
+VLC_API picture_t *picture_NewFromResource(const video_format_t *, const picture_resource_t *) VLC_USED;
 
 /**
  * This function will increase the picture reference count.
@@ -157,13 +156,13 @@ VLC_API picture_t * picture_NewFromResource( const video_format_t *, const pictu
  *
  * It returns the given picture for convenience.
  */
-VLC_API picture_t *picture_Hold( picture_t *p_picture );
+VLC_API picture_t *picture_Hold(picture_t *p_picture);
 
 /**
  * This function will release a picture.
  * It will not have any effect on picture obtained from vout
  */
-VLC_API void picture_Release( picture_t *p_picture );
+VLC_API void picture_Release(picture_t *p_picture);
 
 /**
  * This function will return true if you are not the only owner of the
@@ -171,26 +170,26 @@ VLC_API void picture_Release( picture_t *p_picture );
  *
  * It is only valid if it is created using picture_New.
  */
-VLC_API bool picture_IsReferenced( picture_t *p_picture );
+VLC_API bool picture_IsReferenced(picture_t *p_picture);
 
 /**
  * This function will copy all picture dynamic properties.
  */
-VLC_API void picture_CopyProperties( picture_t *p_dst, const picture_t *p_src );
+VLC_API void picture_CopyProperties(picture_t *p_dst, const picture_t *p_src);
 
 /**
  * This function will reset a picture information (properties and quantizers).
  * It is sometimes useful for reusing pictures (like from a pool).
  */
-VLC_API void picture_Reset( picture_t * );
+VLC_API void picture_Reset(picture_t *);
 
 /**
  * This function will copy the picture pixels.
  * You can safely copy between pictures that do not have the same size,
  * only the compatible(smaller) part will be copied.
  */
-VLC_API void picture_CopyPixels( picture_t *p_dst, const picture_t *p_src );
-VLC_API void plane_CopyPixels( plane_t *p_dst, const plane_t *p_src );
+VLC_API void picture_CopyPixels(picture_t *p_dst, const picture_t *p_src);
+VLC_API void plane_CopyPixels(plane_t *p_dst, const plane_t *p_src);
 
 /**
  * This function will copy both picture dynamic properties and pixels.
@@ -201,7 +200,7 @@ VLC_API void plane_CopyPixels( plane_t *p_dst, const plane_t *p_src );
  * \param p_dst pointer to the destination picture.
  * \param p_src pointer to the source picture.
  */
-VLC_API void picture_Copy( picture_t *p_dst, const picture_t *p_src );
+VLC_API void picture_Copy(picture_t *p_dst, const picture_t *p_src);
 
 /**
  * This function will export a picture to an encoded bitstream.
@@ -219,7 +218,7 @@ VLC_API void picture_Copy( picture_t *p_dst, const picture_t *p_src );
  *  - if strictly higher than 0, it will override the dimension.
  * If at most one of them is > 0 then the picture aspect ratio will be kept.
  */
-VLC_API int picture_Export( vlc_object_t *p_obj, block_t **pp_image, video_format_t *p_fmt, picture_t *p_picture, vlc_fourcc_t i_format, int i_override_width, int i_override_height );
+VLC_API int picture_Export(vlc_object_t *p_obj, block_t **pp_image, video_format_t *p_fmt, picture_t *p_picture, vlc_fourcc_t i_format, int i_override_width, int i_override_height);
 
 /**
  * This function will setup all fields of a picture_t without allocating any
@@ -232,8 +231,7 @@ VLC_API int picture_Export( vlc_object_t *p_obj, block_t **pp_image, video_forma
  *
  * It can be useful to get the properties of planes.
  */
-VLC_API int picture_Setup( picture_t *, vlc_fourcc_t i_chroma, int i_width, int i_height, int i_sar_num, int i_sar_den );
-
+VLC_API int picture_Setup(picture_t *, vlc_fourcc_t i_chroma, int i_width, int i_height, int i_sar_num, int i_sar_den);
 
 /**
  * This function will blend a given subpicture onto a picture.
@@ -244,8 +242,7 @@ VLC_API int picture_Setup( picture_t *, vlc_fourcc_t i_chroma, int i_width, int 
  *  - not have the fade flag.
  *  - contains only picture (no text rendering).
  */
-VLC_API void picture_BlendSubpicture( picture_t *, filter_t *p_blend, subpicture_t * );
-
+VLC_API void picture_BlendSubpicture(picture_t *, filter_t *p_blend, subpicture_t *);
 
 /*****************************************************************************
  * Shortcuts to access image components
@@ -261,14 +258,14 @@ enum
 };
 
 /* Shortcuts */
-#define Y_PIXELS     p[Y_PLANE].p_pixels
-#define Y_PITCH      p[Y_PLANE].i_pitch
-#define U_PIXELS     p[U_PLANE].p_pixels
-#define U_PITCH      p[U_PLANE].i_pitch
-#define V_PIXELS     p[V_PLANE].p_pixels
-#define V_PITCH      p[V_PLANE].i_pitch
-#define A_PIXELS     p[A_PLANE].p_pixels
-#define A_PITCH      p[A_PLANE].i_pitch
+#define Y_PIXELS p[Y_PLANE].p_pixels
+#define Y_PITCH p[Y_PLANE].i_pitch
+#define U_PIXELS p[U_PLANE].p_pixels
+#define U_PITCH p[U_PLANE].i_pitch
+#define V_PIXELS p[V_PLANE].p_pixels
+#define V_PITCH p[V_PLANE].i_pitch
+#define A_PIXELS p[A_PLANE].p_pixels
+#define A_PITCH p[A_PLANE].i_pitch
 
 /**@}*/
 

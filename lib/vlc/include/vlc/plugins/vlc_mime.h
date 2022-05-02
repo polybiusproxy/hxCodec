@@ -26,6 +26,6 @@
  * Mime type recognition helpers.
  */
 
-VLC_API const char * vlc_mime_Ext2Mime( const char *psz_url );
+VLC_API const char *vlc_mime_Ext2Mime(const char *psz_url);
 
 #endif /* _VLC_MIME_H */

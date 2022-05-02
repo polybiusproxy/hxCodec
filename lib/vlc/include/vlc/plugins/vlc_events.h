@@ -23,7 +23,7 @@
  *****************************************************************************/
 
 #ifndef VLC_EVENTS_H
-# define VLC_EVENTS_H
+#define VLC_EVENTS_H
 
 #include <vlc_arrays.h>
 #include <vlc_meta.h>
@@ -92,7 +92,7 @@
  * }
  * */
 
-  /*****************************************************************************
+/*****************************************************************************
  * Event Type
  *****************************************************************************/
 
@@ -102,14 +102,16 @@ struct vlc_event_listeners_group_t;
 /* Event manager type */
 typedef struct vlc_event_manager_t
 {
-    void * p_obj;
+    void *p_obj;
     vlc_mutex_t object_lock;
     vlc_mutex_t event_sending_lock;
-    DECL_ARRAY(struct vlc_event_listeners_group_t *) listeners_groups;
+    DECL_ARRAY(struct vlc_event_listeners_group_t *)
+    listeners_groups;
 } vlc_event_manager_t;
 
 /* List of event */
-typedef enum vlc_event_type_t {
+typedef enum vlc_event_type_t
+{
     /* Input (thread) events */
     vlc_InputStateChanged,
     vlc_InputSelectedStreamChanged,
@@ -136,7 +138,7 @@ typedef enum vlc_event_type_t {
 typedef struct vlc_event_t
 {
     vlc_event_type_t type;
-    void * p_obj; /* Sender object, automatically filled by vlc_event_send() */
+    void *p_obj; /* Sender object, automatically filled by vlc_event_send() */
     union vlc_event_type_specific
     {
         /* Input (thread) events */
@@ -146,7 +148,7 @@ typedef struct vlc_event_t
         } input_state_changed;
         struct vlc_input_selected_stream_changed
         {
-            void * unused;
+            void *unused;
         } input_selected_stream_changed;
 
         /* Input item events */
@@ -156,11 +158,11 @@ typedef struct vlc_event_t
         } input_item_meta_changed;
         struct vlc_input_item_subitem_added
         {
-            input_item_t * p_new_child;
+            input_item_t *p_new_child;
         } input_item_subitem_added;
         struct vlc_input_item_subitem_tree_added
         {
-            input_item_node_t * p_root;
+            input_item_node_t *p_root;
         } input_item_subitem_tree_added;
         struct vlc_input_item_duration_changed
         {
@@ -172,11 +174,11 @@ typedef struct vlc_event_t
         } input_item_preparsed_changed;
         struct vlc_input_item_name_changed
         {
-            const char * new_name;
+            const char *new_name;
         } input_item_name_changed;
         struct vlc_input_item_info_changed
         {
-            void * unused;
+            void *unused;
         } input_item_info_changed;
         struct input_item_error_when_reading_changed
         {
@@ -186,29 +188,29 @@ typedef struct vlc_event_t
         /* Service discovery events */
         struct vlc_services_discovery_item_added
         {
-            input_item_t * p_new_item;
-            const char * psz_category;
+            input_item_t *p_new_item;
+            const char *psz_category;
         } services_discovery_item_added;
         struct vlc_services_discovery_item_removed
         {
-            input_item_t * p_item;
+            input_item_t *p_item;
         } services_discovery_item_removed;
         struct vlc_services_discovery_started
         {
-            void * unused;
+            void *unused;
         } services_discovery_started;
         struct vlc_services_discovery_ended
         {
-            void * unused;
+            void *unused;
         } services_discovery_ended;
 
     } u;
 } vlc_event_t;
 
 /* Event callback type */
-typedef void ( *vlc_event_callback_t )( const vlc_event_t *, void * );
+typedef void (*vlc_event_callback_t)(const vlc_event_t *, void *);
 
- /*****************************************************************************
+/*****************************************************************************
  * Event manager
  *****************************************************************************/
 
@@ -216,38 +218,38 @@ typedef void ( *vlc_event_callback_t )( const vlc_event_t *, void * );
  * p_obj points to the object that owns the event manager, and from
  * which events are sent
  */
-VLC_API int vlc_event_manager_init( vlc_event_manager_t * p_em, void * p_obj );
+VLC_API int vlc_event_manager_init(vlc_event_manager_t *p_em, void *p_obj);
 
 /*
  * Destroy
  */
-VLC_API void vlc_event_manager_fini( vlc_event_manager_t * p_em );
+VLC_API void vlc_event_manager_fini(vlc_event_manager_t *p_em);
 
 /*
  * Tells a specific event manager that it will handle event_type object
  */
-VLC_API int vlc_event_manager_register_event_type( vlc_event_manager_t * p_em,
-                                                   vlc_event_type_t );
+VLC_API int vlc_event_manager_register_event_type(vlc_event_manager_t *p_em,
+                                                  vlc_event_type_t);
 
 /*
  * Send an event to the listener attached to this p_em.
  */
-VLC_API void vlc_event_send( vlc_event_manager_t * p_em, vlc_event_t * );
+VLC_API void vlc_event_send(vlc_event_manager_t *p_em, vlc_event_t *);
 
 /*
  * Add a callback for an event.
  */
-VLC_API int vlc_event_attach( vlc_event_manager_t * p_event_manager,
-                              vlc_event_type_t event_type,
-                              vlc_event_callback_t pf_callback,
-                              void *p_user_data );
+VLC_API int vlc_event_attach(vlc_event_manager_t *p_event_manager,
+                             vlc_event_type_t event_type,
+                             vlc_event_callback_t pf_callback,
+                             void *p_user_data);
 
 /*
  * Remove a callback for an event.
  */
-VLC_API void vlc_event_detach( vlc_event_manager_t *p_event_manager,
-                               vlc_event_type_t event_type,
-                               vlc_event_callback_t pf_callback,
-                               void *p_user_data );
+VLC_API void vlc_event_detach(vlc_event_manager_t *p_event_manager,
+                              vlc_event_type_t event_type,
+                              vlc_event_callback_t pf_callback,
+                              void *p_user_data);
 
 #endif /* VLC_EVENTS_H */

@@ -42,10 +42,10 @@
  * leaving the buffer allocated but unreferenced. vlc_realloc() is a
  * drop-in replacement for that use case (and only that use case).
  */
-static inline void *realloc_or_free( void *p, size_t sz )
+static inline void *realloc_or_free(void *p, size_t sz)
 {
-    void *n = realloc(p,sz);
-    if( !n )
+    void *n = realloc(p, sz);
+    if (!n)
         free(p);
     return n;
 }
