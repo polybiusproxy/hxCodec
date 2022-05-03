@@ -132,7 +132,7 @@ sudo apt-get install libvlccore-dev
 ```
 
 ### Android
-Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.(whatever format it has)`), one more thing you need to put the location manualy in paths.
+Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.(whatever format it has)`), one more thing, you need to put the location manualy in paths.
 This is not suitable for games and will be fixed soon.
 
 ## Credits
