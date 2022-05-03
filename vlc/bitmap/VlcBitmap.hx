@@ -65,16 +65,11 @@ class VlcBitmap extends Bitmap {
 	// Variables
 	//-----------------------------------------------------------------------------------
 	var frameSize:Int;
+	var oldTime:Int;
 	var _width:Null<Float>;
 	var _height:Null<Float>;
 	var texture:RectangleTexture;
-	var bmdBuf:BitmapData;
-	var bmdBuf2:BitmapData;
-	var oldTime:Int;
-	var flipBuffer:Bool;
 	var frameRect:Rectangle;
-	var screenWidth:Float;
-	var screenHeight:Float;
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
@@ -213,29 +208,33 @@ class VlcBitmap extends Bitmap {
 	}
 
 	public function getFPS():Float {
-		if (libvlc != null && initComplete)
-			return libvlc.getFPS();
-		else
-			return 0;
+		if (libvlc != null && initComplete) {
+			#if debug
+			trace(libvlc.getFPS());
+			#end
 
-		#if debug
-		trace(libvlc.getFPS());
-		#end
+			return libvlc.getFPS();
+		} else
+			return 0;
 	}
 
 	public function setTime(time:Int) {
+		#if debug
+		trace("the new time is: " + time);
+		#end
+
 		libvlc.setTime(time);
 	}
 
 	public function getTime():Int {
-		if (libvlc != null && initComplete)
-			return libvlc.getTime();
-		else
-			return 0;
+		if (libvlc != null && initComplete) {
+			#if debug
+			trace(libvlc.getTime());
+			#end
 
-		#if debug
-		trace(libvlc.getTime());
-		#end
+			return libvlc.getTime();
+		} else
+			return 0;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -294,6 +293,10 @@ class VlcBitmap extends Bitmap {
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	function videoInitComplete() {
+		#if debug
+		trace("the video is starting");
+		#end
+
 		videoWidth = libvlc.getWidth();
 		videoHeight = libvlc.getHeight();
 
@@ -331,10 +334,6 @@ class VlcBitmap extends Bitmap {
 
 		initComplete = true;
 
-		#if debug
-		trace("the video is starting");
-		#end
-
 		if (onVideoReady != null)
 			onVideoReady();
 	}
@@ -358,6 +357,10 @@ class VlcBitmap extends Bitmap {
 			if (isPlaying) {
 				try {
 					#if cpp
+					#if debug
+					trace("rendering...");
+					#end
+
 					NativeArray.setUnmanagedData(bufferMem, libvlc.getPixelData(), frameSize);
 					if (bufferMem != null) {
 						// BitmapData
@@ -377,18 +380,23 @@ class VlcBitmap extends Bitmap {
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	function setVolume(vol:Float) {
-		#if debug
-		trace("new volume: " + vol * 100);
-		#end
+		if (libvlc != null && initComplete) {
+			#if debug
+			trace("new volume: " + vol * 100);
+			#end
 
-		if (libvlc != null && initComplete)
 			libvlc.setVolume(vol * 100);
+		}
 	}
 
 	public function getVolume():Float {
-		if (libvlc != null && initComplete)
+		if (libvlc != null && initComplete) {
+			#if debug
+			trace("the volume is: " + libvlc.getVolume());
+			#end
+
 			return libvlc.getVolume();
-		else
+		} else
 			return 0;
 	}
 
@@ -475,7 +483,7 @@ class VlcBitmap extends Bitmap {
 
 	function statusOnSeekableChanged(newPos:Int) {
 		#if debug
-		trace("new Seek Pos: " + newPos);
+		trace("new Seeked Pos: " + newPos);
 		#end
 
 		if (onSeek != null)
@@ -500,28 +508,54 @@ class VlcBitmap extends Bitmap {
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	private override function get_width():Float {
+		#if debug
+		trace(_width);
+		#end
+
 		return _width;
 	}
 
 	public override function set_width(value:Float):Float {
 		_width = value;
+
+		#if debug
+		trace("new width is " + value);
+		#end
+
 		return super.set_width(value);
 	}
 
 	private override function get_height():Float {
+		#if debug
+		trace(_height);
+		#end
+
 		return _height;
 	}
 
 	public override function set_height(value:Float):Float {
 		_height = value;
+
+		#if debug
+		trace("new height is " + value);
+		#end
+
 		return super.set_height(value);
 	}
 
 	function get_volume():Float {
+		#if debug
+		trace("the volume is " + volume);
+		#end
+
 		return volume;
 	}
 
 	function set_volume(value:Float):Float {
+		#if debug
+		trace("the new volume is " + value);
+		#end
+
 		setVolume(value);
 		return volume = value;
 	}
@@ -531,6 +565,10 @@ class VlcBitmap extends Bitmap {
 	//-----------------------------------------------------------------------------------
 
 	public function dispose() {
+		#if debug
+		trace("disposeing the hole thing lol");
+		#end
+
 		libvlc.stop();
 
 		stage.removeEventListener(Event.ENTER_FRAME, vLoop);
