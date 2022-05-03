@@ -32,7 +32,7 @@ haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
 ```haxe
 inline static public function video(key:String)
 {
-	return 'assets/videos/$key;
+	return 'assets/videos/$key';
 }
 ```
 
