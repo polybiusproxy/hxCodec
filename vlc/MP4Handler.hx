@@ -12,6 +12,7 @@ class MP4Handler extends VlcBitmap
 {
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
+
 	public var canSkip:Bool = true;
 	public var canHaveSound:Bool = true;
 
@@ -44,10 +45,13 @@ class MP4Handler extends VlcBitmap
 		if (canSkip && (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && isPlaying)
 			finishVideo();
 
-		if (canHaveSound && (FlxG.sound.muted || FlxG.sound.volume <= 0))
-			volume = 0;
-		else
-			volume = FlxG.sound.volume + 0.4;
+		if (canHaveSound)
+		{
+			if (FlxG.sound.muted || FlxG.sound.volume <= 0)
+				volume = 0;
+			else
+				volume = FlxG.sound.volume + 0.4;
+		}
 	}
 
 	#if sys
