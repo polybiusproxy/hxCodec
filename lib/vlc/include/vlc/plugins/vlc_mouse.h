@@ -2,7 +2,7 @@
  * vlc_mouse.h: mouse related structures and functions
  *****************************************************************************
  * Copyright (C) 2009 Laurent Aimar
- * $Id: b48853570a09ad1d77cc95cda0c5b04b5028ee80 $
+ * $Id: 481c3598e905db66805cf9a8ca58f6702921e4f0 $
  *
  * Authors: Laurent Aimar <fenrir _AT_ videolan _DOT_ org>
  *
@@ -42,7 +42,7 @@ enum
 /**
  * Mouse state
  */
-typedef struct
+typedef struct vlc_mouse_t
 {
     /* Coordinate */
     int i_x;
