@@ -39,11 +39,9 @@ class LibVLC
 		int getHeight();
 		int isPlaying();
 		void useHWacceleration(bool hwAcc);
-		//char *str LibVLC::getMeta(libvlc_media_t media);
 		uint8_t* getPixelData();
 		void setVolume(float volume);
 		float getVolume();
-		//void setCallback(cpp::Function<void (String)> callback, int cbIndex);
 		libvlc_time_t getTime(); // This caused building issues.
 		void setTime(libvlc_time_t time);
 		float getPosition();
@@ -72,7 +70,6 @@ class LibVLC
 		int repeat;
 		int callbackIndex;
 		cpp::Function<Void (String)> vlcCallbackMth;
-		// float vol = 1.0; -- why was this made??? wtf
 };
 
 #endif
