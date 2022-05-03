@@ -3,7 +3,7 @@
 [Original Repository](https://github.com/polybiusproxy/PolyEngine).  
 [Click here to check the roadmap of hxCodec](https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/projects/1).
 
-## This Extension is using VLC 3.0.9.2 (the latest version then is having sdk)
+## This Haxelib is using VLC 3.0.9.2 (the latest version then is having sdk)
 
 ## Table of Contents
 - [Instructions](#instructions)  
