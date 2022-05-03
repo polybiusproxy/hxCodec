@@ -12,6 +12,7 @@ class MP4Handler extends VlcBitmap {
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
 	public var canSkip:Bool = true;
+	public var canHaveSound:Bool = true;
 
 	var pauseMusic:Bool;
 
@@ -40,7 +41,7 @@ class MP4Handler extends VlcBitmap {
 			&& isPlaying)
 			finishVideo();
 
-		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
+		if (canHaveSound && (FlxG.sound.muted || FlxG.sound.volume <= 0))
 			volume = 0;
 		else
 			volume = FlxG.sound.volume + 0.4;

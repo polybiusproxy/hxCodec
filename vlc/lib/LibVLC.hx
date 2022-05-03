@@ -11,109 +11,107 @@ import cpp.UInt8;
  */
 //
 @:buildXml('<include name="${haxelib:hxCodec}/vlc/lib/LibVLCBuild.xml" />')
+
 @:include("LibVLC.h")
 @:unreflective
 @:keep
 @:native("LibVLC*")
-extern class LibVLC {
+extern class LibVLC
+{
 	@:native("LibVLC::create")
 	public static function create():LibVLC;
 
-	@:native("LibVLC::setPath")
+	@:native("setPath")
 	public function setPath(path:String):Void;
 
-	@:native("LibVLC::openMedia")
+	@:native("openMedia")
 	public function openMedia(path:String):Void;
 
-	@:native("LibVLC::play")
-	@:overload(function():Void {})
+	@:native("play")
+	@:overload(function():Void{})
 	public function play(path:String):Void;
 
-	@:native("LibVLC::playInWindow")
-	@:overload(function():Void {})
+	@:native("playInWindow")
+	@:overload(function():Void{})
 	public function playInWindow(path:String):Void;
 
-	@:native("LibVLC::stop")
+	@:native("stop")
 	public function stop():Void;
 
-	@:native("LibVLC::pause")
+	@:native("pause")
 	public function pause():Void;
 
-	@:native("LibVLC::resume")
+	@:native("resume")
 	public function resume():Void;
 
-	@:native("LibVLC::togglePause")
+	@:native("togglePause")
 	public function togglePause():Void;
 
-	@:native("LibVLC::fullscreen")
+	@:native("fullscreen")
 	public function setWindowFullscreen(fullscreen:Bool):Void;
 
-	@:native("LibVLC::showMainWindow")
+	@:native("showMainWindow")
 	public function showMainWindow(show:Bool):Void;
 
-	@:native("LibVLC::getLength")
+	@:native("getLength")
 	public function getLength():Float;
 
-	@:native("LibVLC::getDuration")
+	@:native("getDuration")
 	public function getDuration():Float;
 
-	@:native("LibVLC::getWidth")
+	@:native("getWidth")
 	public function getWidth():Int;
 
-	@:native("LibVLC::getHeight")
+	@:native("getHeight")
 	public function getHeight():Int;
 
-	@:native("LibVLC::getMeta")
+	@:native("getMeta")
 	public function getMeta(meta:Dynamic):String;
 
-	@:native("LibVLC::isPlaying")
+	@:native("isPlaying")
 	public function isPlaying():Bool;
 
-	@:native("LibVLC::isSeekable")
+	@:native("isSeekable")
 	public function isSeekable():Bool;
 
-	@:native("LibVLC::setVolume")
+	@:native("setVolume")
 	public function setVolume(volume:Float):Void;
 
-	@:native("LibVLC::getVolume")
+	@:native("getVolume")
 	public function getVolume():Float;
 
-	@:native("LibVLC::getTime")
+	@:native("getTime")
 	public function getTime():Int;
 
-	@:native("LibVLC::setTime")
+	@:native("setTime")
 	public function setTime(time:Int):Void;
 
-	@:native("LibVLC::getPosition")
+	@:native("getPosition")
 	public function getPosition():Float;
 
-	@:native("LibVLC::setPosition")
+	@:native("setPosition")
 	public function setPosition(pos:Float):Void;
 
-	@:native("LibVLC::useHWacceleration")
+	@:native("useHWacceleration")
 	public function useHWacceleration(hwAcc:Bool):Void;
 
-	@:native("LibVLC::getLastError")
+	@:native("getLastError")
 	public function getLastError():String;
 
-	@:native("LibVLC::getRepeat")
+	@:native("getRepeat")
 	public function getRepeat():Int;
 
-	@:native("LibVLC::setRepeat")
+	@:native("setRepeat")
 	public function setRepeat(repeat:Int = 1):Void;
 
 	#if cpp
-	@:native("LibVLC::getPixelData")
+	@:native("getPixelData")
 	public function getPixelData():Pointer<UInt8>;
 	#end
 
-	@:native("LibVLC::getFPS")
+	@:native("getFPS")
 	public function getFPS():Float;
 
-	@:native("LibVLC::flags")
+	@:native("flags")
 	public var flags:Array<Int>;
-
-	public inline function dispose():Void {
-		// untyped __cpp__('::delete this');
-	}
 }
