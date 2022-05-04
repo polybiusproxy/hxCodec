@@ -50,7 +50,7 @@ class VideoSprite extends FlxSprite
 	}
 
 	/**
-	 * You can use it like MP4Sprite.bitmap.pause(); aswell
+	 * You can use it like VideoSprite.bitmap.pause(); aswell
 	 */
 	public function pause()
 	{
@@ -58,7 +58,7 @@ class VideoSprite extends FlxSprite
 	}
 
 	/**
-	 * You can use it like MP4Sprite.bitmap.resume(); aswell
+	 * You can use it like VideoSprite.bitmap.resume(); aswell
 	 */
 	public function resume()
 	{
