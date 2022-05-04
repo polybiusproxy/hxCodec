@@ -2,7 +2,7 @@
  * libvlc_media_list.h:  libvlc_media_list API
  *****************************************************************************
  * Copyright (C) 1998-2008 VLC authors and VideoLAN
- * $Id: 015824bf54e656cc67838452c7e99a00a452af6e $
+ * $Id: fa3b90932be8c3a9cce27925d4867aeddde748d7 $
  *
  * Authors: Pierre d'Herbemont
  *
@@ -24,11 +24,6 @@
 #ifndef LIBVLC_MEDIA_LIST_H
 #define LIBVLC_MEDIA_LIST_H 1
 
-/**
- * \file
- * This file defines libvlc_media_list API
- */
-
 # ifdef __cplusplus
 extern "C" {
 # endif
@@ -37,6 +32,8 @@ extern "C" {
  * \ingroup libvlc
  * A LibVLC media list holds multiple @ref libvlc_media_t media descriptors.
  * @{
+ * \file
+ * LibVLC media list (playlist) external API
  */
 
 typedef struct libvlc_media_list_t libvlc_media_list_t;
@@ -65,10 +62,6 @@ LIBVLC_API void
  */
 LIBVLC_API void
     libvlc_media_list_retain( libvlc_media_list_t *p_ml );
-
-LIBVLC_DEPRECATED int
-    libvlc_media_list_add_file_content( libvlc_media_list_t * p_ml,
-                                        const char * psz_uri );
 
 /**
  * Associate media instance with this media list instance.
