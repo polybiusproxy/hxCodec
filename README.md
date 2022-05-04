@@ -135,10 +135,11 @@ This is not suitable for games and will be fixed soon.
 
 ## Credits
 
-- [PolybiusProxy (me!)](https://github.com/polybiusproxy) - Creator of hxCodec.
+- [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [BrightFyre](https://github.com/brightfyregit) - Creator of repository.
 - [GWebDev](https://github.com/GrowtopiaFli) - Inspiring me to do this.
 - [CryBit](https://github.com/CryBitDev) - fixing my shit lolololoolol 
 - [Jigsaw](https://github.com/jigsaw-4277821) - for the Android port
+- [Erizur](https://github.com/Erizur) - Linux Support
 - The contributors.
