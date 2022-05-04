@@ -17,7 +17,7 @@ class VideoSprite extends FlxSprite
 	{
 		super(x, y);
 
-		bitmap = new MP4Handler(width, height, autoScale);
+		bitmap = new VideoHandler(width, height, autoScale);
 		bitmap.alpha = 0;
 		bitmap.canSkip = false;
 
