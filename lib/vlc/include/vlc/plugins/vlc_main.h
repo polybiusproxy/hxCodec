@@ -26,10 +26,6 @@
  * This file defines libvlc_int_t internal libvlc instance
  */
 
-TYPEDEF_ARRAY(input_item_t*, input_item_array_t)
-
-struct hotkey;
-
 /*****************************************************************************
  * libvlc_internal_instance_t
  *****************************************************************************
@@ -38,8 +34,5 @@ struct hotkey;
 struct libvlc_int_t
 {
     VLC_COMMON_MEMBERS
-
-    /* Structure storing the action name / key associations */
-    const struct hotkey *p_hotkeys;
 };
 
