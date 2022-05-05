@@ -18,15 +18,20 @@ You can also install it through git:
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
 ```
 
-### 2. Create a folder called `videos` in your `assets/preload` folder:
+### 2. Create a folder called `videos` in your `assets/preload` folder
 
-### 3. **OPTIONAL: If your PC is ARM64, add this code in `Project.xml`:**
+### 3. add this code in `Project.xml`
+```xml
+<haxelib name="hxcodec"/>
+```
+
+**OPTIONAL: If your PC is ARM64, add this code in `Project.xml`:**
 
 ```xml
 <haxedef name="HXCPP_ARM64" />
 ```
 
-### 3. Edit `Paths.hx`
+### 4. Edit `Paths.hx`
 ```haxe
 inline static public function video(key:String)
 {
@@ -34,16 +39,16 @@ inline static public function video(key:String)
 }
 ```
 
-### 4. Playing videos
+### 5. Playing videos
 
-1. Put your video in the videos folder.
+1. Put your video in the videos folder
 2. Create somewhere in PlayState:
 ```haxe
 import vlc.VideoHandler;
 
 var video:VideoHandler;
 
-function playCutscene(name:String) //the format can be anything then is a video
+function playCutscene(name:String) //supported video formats for VLC can be used
 {
 	inCutscene = true;
 
@@ -55,7 +60,7 @@ function playCutscene(name:String) //the format can be anything then is a video
 	video.playVideo(Paths.video(name));
 }
 
-function playEndCutscene(name:String) //the format can be anything then is a video
+function playEndCutscene(name:String) //supported video formats for VLC can be used
 {
 	inCutscene = true;
 
@@ -63,11 +68,14 @@ function playEndCutscene(name:String) //the format can be anything then is a vid
 	video.finishCallback = function()
 	{
 		SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
-		LoadingState.loadAndSwitchState(new PlayState());
+		FlxG.switchState(new PlayState());
 	}
 	video.playVideo(Paths.video(name));
 }
 ```
+
+**supported formats:**
+ASF, AVI, MP4, MJPEG, OGG, WAV.
 
 ### EXAMPLE (FOR FNF)
 At the PlayState "create()" function:
@@ -75,9 +83,9 @@ At the PlayState "create()" function:
 switch (curSong.toLowerCase())
 {
 	case 'song1':
-		playCutscene('song1scene.mp4');
+		playCutscene('song1scene.asf');
 	case 'song2':
-		playCutscene('song2scene.mp4');
+		playCutscene('song2scene.avi');
 	default:
 		startCountdown();
 }
@@ -88,8 +96,8 @@ generateSong(SONG.songId);
 
 switch (curSong.toLowerCase())
 {
-	case 'bopeebo':
-		playCutscene('gunsCutscene.mp4');
+	case 'song3':
+		playCutscene('song3scene.mp4');
 	default:
 		startCountdown();
 }
@@ -98,21 +106,21 @@ switch (curSong.toLowerCase())
 
 At the PlayState "endSong()" function:
 ```haxe
-if (SONG.song.toLowerCase() == 'pingas')
-	playEndCutscene('pingas.mp4');
+if (SONG.song.toLowerCase() == 'song4')
+	playEndCutscene('song4scene.mjpeg');
 ```
 
-**FOR KADE 1.8 USERS AGAIN**
+**FOR KADE 1.8 USERS**
 ```haxe
 PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
 FlxG.sound.music.stop();
 
 switch (curSong.toLowerCase())
 {
-	case 'deez':
-		playEndCutscene('bigChungus.mp4');
-	case 'nuts':
-		playEndCutscene('bigChungus.mp4');
+	case 'song5':
+		playEndCutscene('song5scene.ogg');
+	case 'song6':
+		playEndCutscene('song6scene.wav');
 }
 ```
 
@@ -130,12 +138,12 @@ sudo apt-get install libvlccore-dev
 ```
 
 ### Android
-Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.(whatever format it has)`), one more thing, you need to put the location manualy in paths.
+Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.(Extension)`), one more thing, you need to put the location manualy in paths.
 This is not suitable for games and will be fixed soon.
 
 ## Credits
 
-- [PolybiusProxy (me!)](https://github.com/polybiusproxy) - Creator of hxCodec.
+- [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [Jigsaw](https://github.com/jigsaw-4277821) - Android Support
 - [Erizur](https://github.com/Erizur) - Linux Support
