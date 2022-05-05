@@ -14,12 +14,7 @@
 	"description": "Native video support for HaxeFlixel & OpenFL",
 	"version": "2.5.1",
 	"releasenote": "fixed: haxelib.json and README.md",
-	"contributors": [
-		"polybiusproxy",
-		"datee",
-		"Jigsaw",
-		"Erizur"
-	],
+	"contributors": ["polybiusproxy"],
 	"dependencies": {
 		"flixel": "",
 		"openfl": ""
