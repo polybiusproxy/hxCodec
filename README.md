@@ -18,13 +18,20 @@ You can also install it through git:
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
 ```
 
-### 2. Create a folder called `videos` in your `assets/preload` folder:
-
-### 3. **OPTIONAL: If your PC is ARM64, add this code in `Project.xml`:**
+### 1a. **OPTIONAL: If your PC is ARM64, add this code in `Project.xml`:**
 
 ```xml
 <haxedef name="HXCPP_ARM64" />
 ```
+
+### 1b. **OPTIONAL: If you want debug traces in your console, add this code in `Project.xml`:**
+
+```xml
+<!--Show debug traces for hxCodec-->
+<haxedef name="HXC_DEBUG_TRACE" if="debug" />
+```
+
+### 2. Create a folder called `videos` in your `assets/preload` folder:
 
 ### 3. Edit `Paths.hx`
 ```haxe

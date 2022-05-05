@@ -123,7 +123,7 @@ class VlcBitmap extends Bitmap
 	{
 		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
 		{
-			#if debug
+			#if HXC_DEBUG_TRACE
 			trace(FlxG.stage.stageHeight * (16 / 9));
 			#end
 
@@ -131,7 +131,7 @@ class VlcBitmap extends Bitmap
 		}
 		else
 		{
-			#if debug
+			#if HXC_DEBUG_TRACE
 			trace(FlxG.stage.stageWidth);
 			#end
 
@@ -143,7 +143,7 @@ class VlcBitmap extends Bitmap
 	{
 		if (FlxG.stage.stageHeight / 9 < FlxG.stage.stageWidth / 16)
 		{
-			#if debug
+			#if HXC_DEBUG_TRACE
 			trace(FlxG.stage.stageHeight);
 			#end
 
@@ -151,7 +151,7 @@ class VlcBitmap extends Bitmap
 		}
 		else
 		{
-			#if debug
+			#if HXC_DEBUG_TRACE
 			trace(FlxG.stage.stageWidth / (16 / 9));
 			#end
 
@@ -170,7 +170,7 @@ class VlcBitmap extends Bitmap
 		else
 			libvlc.play();
 
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("the video is playing");
 		#end
 
@@ -183,8 +183,8 @@ class VlcBitmap extends Bitmap
 		isPlaying = false;
 		libvlc.stop();
 
-		#if debug
-		trace("the video is stoping");
+		#if HXC_DEBUG_TRACE
+		trace("the video is stopping");
 		#end
 
 		if (onStop != null)
@@ -196,7 +196,7 @@ class VlcBitmap extends Bitmap
 		isPlaying = false;
 		libvlc.pause();
 
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("the video is pausing");
 		#end
 
@@ -209,8 +209,8 @@ class VlcBitmap extends Bitmap
 		isPlaying = true;
 		libvlc.resume();
 
-		#if debug
-		trace("the video is resumeing");
+		#if HXC_DEBUG_TRACE
+		trace("the video is resuming");
 		#end
 
 		if (onResume != null)
@@ -221,7 +221,7 @@ class VlcBitmap extends Bitmap
 	{
 		libvlc.setPosition(seekTotime);
 
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("new position: " + seekTotime);
 		#end
 
@@ -233,7 +233,7 @@ class VlcBitmap extends Bitmap
 	{
 		if (libvlc != null && initComplete)
 		{
-			#if debug
+			#if HXC_DEBUG_TRACE
 			trace(libvlc.getFPS());
 			#end
 
@@ -245,7 +245,7 @@ class VlcBitmap extends Bitmap
 
 	public function setTime(time:Int)
 	{
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("the new time is: " + time);
 		#end
 
@@ -256,7 +256,7 @@ class VlcBitmap extends Bitmap
 	{
 		if (libvlc != null && initComplete)
 		{
-			#if debug
+			#if HXC_DEBUG_TRACE
 			trace(libvlc.getTime());
 			#end
 
@@ -337,7 +337,7 @@ class VlcBitmap extends Bitmap
 
 	function videoInitComplete()
 	{
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("the video is starting");
 		#end
 
@@ -405,7 +405,7 @@ class VlcBitmap extends Bitmap
 				try
 				{
 					#if cpp
-					#if debug
+					#if HXC_DEBUG_TRACE
 					trace("rendering...");
 					#end
 
@@ -434,7 +434,7 @@ class VlcBitmap extends Bitmap
 	{
 		if (libvlc != null && initComplete)
 		{
-			#if debug
+			#if HXC_DEBUG_TRACE
 			trace("new volume: " + vol * 100);
 			#end
 
@@ -446,7 +446,7 @@ class VlcBitmap extends Bitmap
 	{
 		if (libvlc != null && initComplete)
 		{
-			#if debug
+			#if HXC_DEBUG_TRACE
 			trace("the volume is: " + libvlc.getVolume());
 			#end
 
@@ -460,7 +460,7 @@ class VlcBitmap extends Bitmap
 
 	function statusOnOpening()
 	{
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("the video is open");
 		#end
 
@@ -470,7 +470,7 @@ class VlcBitmap extends Bitmap
 
 	function statusOnBuffering()
 	{
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("buffering");
 		#end
 
@@ -493,7 +493,7 @@ class VlcBitmap extends Bitmap
 		if (isPlaying)
 			isPlaying = false;
 
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("the video is paused");
 		#end
 
@@ -506,8 +506,8 @@ class VlcBitmap extends Bitmap
 		if (isPlaying)
 			isPlaying = false;
 
-		#if debug
-		trace("the video stoped");
+		#if HXC_DEBUG_TRACE
+		trace("the video stopped");
 		#end
 
 		if (onStop != null)
@@ -519,7 +519,7 @@ class VlcBitmap extends Bitmap
 		if (isPlaying)
 			isPlaying = false;
 
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("end reached!");
 		#end
 
@@ -531,7 +531,7 @@ class VlcBitmap extends Bitmap
 	{
 		time = newTime;
 
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("new Time: " + newTime);
 		#end
 
@@ -540,14 +540,14 @@ class VlcBitmap extends Bitmap
 	}
 
 	function statusOnPositionChanged(newPos:Int){
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("new Pos: " + newPos);
 		#end
 	}
 
 	function statusOnSeekableChanged(newPos:Int)
 	{
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("new Seeked Pos: " + newPos);
 		#end
 
@@ -575,7 +575,7 @@ class VlcBitmap extends Bitmap
 
 	private override function get_width():Float
 	{
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace(_width);
 		#end
 
@@ -586,7 +586,7 @@ class VlcBitmap extends Bitmap
 	{
 		_width = value;
 
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("new width is " + value);
 		#end
 
@@ -595,7 +595,7 @@ class VlcBitmap extends Bitmap
 
 	private override function get_height():Float
 	{
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace(_height);
 		#end
 
@@ -606,7 +606,7 @@ class VlcBitmap extends Bitmap
 	{
 		_height = value;
 
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("new height is " + value);
 		#end
 
@@ -615,7 +615,7 @@ class VlcBitmap extends Bitmap
 
 	function get_volume():Float
 	{
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("the volume is " + volume);
 		#end
 
@@ -624,7 +624,7 @@ class VlcBitmap extends Bitmap
 
 	function set_volume(value:Float):Float
 	{
-		#if debug
+		#if HXC_DEBUG_TRACE
 		trace("the new volume is " + value);
 		#end
 
@@ -638,8 +638,8 @@ class VlcBitmap extends Bitmap
 
 	public function dispose()
 	{
-		#if debug
-		trace("disposeing the hole thing lol");
+		#if HXC_DEBUG_TRACE
+		trace("disposing the whole thing lol");
 		#end
 
 		libvlc.stop();
