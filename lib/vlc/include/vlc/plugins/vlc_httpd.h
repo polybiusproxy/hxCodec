@@ -2,7 +2,7 @@
  * vlc_httpd.h: builtin HTTP/RTSP server.
  *****************************************************************************
  * Copyright (C) 2004-2006 VLC authors and VideoLAN
- * $Id: 6100dd00b2f1a1c957224c5d0af0791ace64551a $
+ * $Id: 29b8229e7b6baa7a8eedf37f6fdb1e97bf6a9ca7 $
  *
  * Authors: Laurent Aimar <fenrir@via.ecp.fr>
  *
@@ -71,6 +71,12 @@ VLC_API httpd_host_t *vlc_rtsp_HostNew( vlc_object_t * ) VLC_USED;
 /* delete a host */
 VLC_API void httpd_HostDelete( httpd_host_t * );
 
+typedef struct
+{
+    char * name;
+    char * value;
+} httpd_header;
+
 typedef struct httpd_message_t
 {
     httpd_client_t *cl; /* NULL if not throught a connection e vlc internal */
@@ -89,10 +95,8 @@ typedef struct httpd_message_t
     uint8_t *psz_args;
 
     /* options */
-    int     i_name;
-    char    **name;
-    int     i_value;
-    char    **value;
+    size_t       i_headers;
+    httpd_header *p_headers;
 
     /* body */
     int64_t i_body_offset;
@@ -124,10 +128,9 @@ VLC_API httpd_file_sys_t * httpd_FileDelete( httpd_file_t * );
 
 
 typedef struct httpd_handler_t  httpd_handler_t;
-typedef struct httpd_handler_sys_t httpd_handler_sys_t;
-typedef int (*httpd_handler_callback_t)( httpd_handler_sys_t *, httpd_handler_t *, char *psz_url, uint8_t *psz_request, int i_type, uint8_t *p_in, int i_in, char *psz_remote_addr, char *psz_remote_host, uint8_t **pp_data, int *pi_data );
-VLC_API httpd_handler_t * httpd_HandlerNew( httpd_host_t *, const char *psz_url, const char *psz_user, const char *psz_password, httpd_handler_callback_t pf_fill, httpd_handler_sys_t * ) VLC_USED;
-VLC_API httpd_handler_sys_t * httpd_HandlerDelete( httpd_handler_t * );
+typedef int (*httpd_handler_callback_t)( void *, httpd_handler_t *, char *psz_url, uint8_t *psz_request, int i_type, uint8_t *p_in, int i_in, char *psz_remote_addr, char *psz_remote_host, uint8_t **pp_data, int *pi_data );
+VLC_API httpd_handler_t * httpd_HandlerNew( httpd_host_t *, const char *psz_url, const char *psz_user, const char *psz_password, httpd_handler_callback_t pf_fill, void * ) VLC_USED;
+VLC_API void * httpd_HandlerDelete( httpd_handler_t * );
 
 typedef struct httpd_redirect_t httpd_redirect_t;
 VLC_API httpd_redirect_t * httpd_RedirectNew( httpd_host_t *, const char *psz_url_dst, const char *psz_url_src ) VLC_USED;
@@ -138,8 +141,8 @@ typedef struct httpd_stream_t httpd_stream_t;
 VLC_API httpd_stream_t * httpd_StreamNew( httpd_host_t *, const char *psz_url, const char *psz_mime, const char *psz_user, const char *psz_password ) VLC_USED;
 VLC_API void httpd_StreamDelete( httpd_stream_t * );
 VLC_API int httpd_StreamHeader( httpd_stream_t *, uint8_t *p_data, int i_data );
-VLC_API int httpd_StreamSend( httpd_stream_t *, uint8_t *p_data, int i_data );
-
+VLC_API int httpd_StreamSend( httpd_stream_t *, const block_t *p_block );
+VLC_API int httpd_StreamSetHTTPHeaders(httpd_stream_t *, const httpd_header *, size_t);
 
 /* Msg functions facilities */
 VLC_API void httpd_MsgAdd( httpd_message_t *, const char *psz_name, const char *psz_value, ... ) VLC_FORMAT( 3, 4 );

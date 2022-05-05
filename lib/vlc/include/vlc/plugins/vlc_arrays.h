@@ -2,7 +2,7 @@
  * vlc_arrays.h : Arrays and data structures handling
  *****************************************************************************
  * Copyright (C) 1999-2004 VLC authors and VideoLAN
- * $Id: 7749140f10f5ce76339559b166d041854bb4a7da $
+ * $Id: 39b69952ffce040330da239f52778c3e82024bc4 $
  *
  * Authors: Samuel Hocevar <sam@zoy.org>
  *          Clément Stenac <zorglub@videolan.org>
@@ -37,45 +37,6 @@ static inline void *realloc_down( void *ptr, size_t size )
     return ret ? ret : ptr;
 }
 
-/**
- * Simple dynamic array handling. Array is realloced at each insert/removal
- */
-#define INSERT_ELEM( p_ar, i_oldsize, i_pos, elem )                           \
-    do                                                                        \
-    {                                                                         \
-        if( !(i_oldsize) ) (p_ar) = NULL;                                       \
-        (p_ar) = realloc( p_ar, ((i_oldsize) + 1) * sizeof(*(p_ar)) ); \
-        if( !(p_ar) ) abort();                                                \
-        if( (i_oldsize) - (i_pos) )                                           \
-        {                                                                     \
-            memmove( (p_ar) + (i_pos) + 1, (p_ar) + (i_pos),                  \
-                     ((i_oldsize) - (i_pos)) * sizeof( *(p_ar) ) );           \
-        }                                                                     \
-        (p_ar)[(i_pos)] = elem;                                                 \
-        (i_oldsize)++;                                                        \
-    }                                                                         \
-    while( 0 )
-
-#define REMOVE_ELEM( p_ar, i_size, i_pos )                                    \
-    do                                                                        \
-    {                                                                         \
-        if( (i_size) - (i_pos) - 1 )                                          \
-        {                                                                     \
-            memmove( (p_ar) + (i_pos),                                        \
-                     (p_ar) + (i_pos) + 1,                                    \
-                     ((i_size) - (i_pos) - 1) * sizeof( *(p_ar) ) );          \
-        }                                                                     \
-        if( i_size > 1 )                                                      \
-            (p_ar) = realloc_down( p_ar, ((i_size) - 1) * sizeof( *(p_ar) ) );\
-        else                                                                  \
-        {                                                                     \
-            free( p_ar );                                                     \
-            (p_ar) = NULL;                                                    \
-        }                                                                     \
-        (i_size)--;                                                           \
-    }                                                                         \
-    while( 0 )
-
 #define TAB_INIT( count, tab )                  \
   do {                                          \
     (count) = 0;                                \
@@ -92,9 +53,9 @@ static inline void *realloc_down( void *ptr, size_t size )
 #define TAB_APPEND_CAST( cast, count, tab, p )             \
   do {                                          \
     if( (count) > 0 )                           \
-        (tab) = cast realloc( tab, sizeof( void ** ) * ( (count) + 1 ) ); \
+        (tab) = cast realloc( tab, sizeof( *(tab) ) * ( (count) + 1 ) ); \
     else                                        \
-        (tab) = cast malloc( sizeof( void ** ) );    \
+        (tab) = cast malloc( sizeof( *(tab) ) );    \
     if( !(tab) ) abort();                       \
     (tab)[count] = (p);                         \
     (count)++;                                  \
@@ -113,37 +74,38 @@ static inline void *realloc_down( void *ptr, size_t size )
   } while(0)
 
 
+#define TAB_ERASE( count, tab, index )      \
+  do {                                      \
+        if( (count) > 1 )                   \
+            memmove( (tab) + (index),       \
+                     (tab) + (index) + 1,   \
+                     ((count) - (index) - 1 ) * sizeof( *(tab) ) );\
+        (count)--;                          \
+        if( (count) == 0 )                  \
+        {                                   \
+            free( tab );                    \
+            (tab) = NULL;                   \
+        }                                   \
+  } while(0)
+
 #define TAB_REMOVE( count, tab, p )             \
   do {                                          \
         int i_index;                            \
         TAB_FIND( count, tab, p, i_index );     \
         if( i_index >= 0 )                      \
-        {                                       \
-            if( (count) > 1 )                   \
-            {                                   \
-                memmove( ((void**)(tab) + i_index),    \
-                         ((void**)(tab) + i_index+1),  \
-                         ( (count) - i_index - 1 ) * sizeof( void* ) );\
-            }                                   \
-            (count)--;                          \
-            if( (count) == 0 )                  \
-            {                                   \
-                free( tab );                    \
-                (tab) = NULL;                   \
-            }                                   \
-        }                                       \
+            TAB_ERASE( count, tab, i_index );   \
   } while(0)
 
 #define TAB_INSERT_CAST( cast, count, tab, p, index ) do { \
     if( (count) > 0 )                           \
-        (tab) = cast realloc( tab, sizeof( void ** ) * ( (count) + 1 ) ); \
+        (tab) = cast realloc( tab, sizeof( *(tab) ) * ( (count) + 1 ) ); \
     else                                        \
-        (tab) = cast malloc( sizeof( void ** ) );       \
+        (tab) = cast malloc( sizeof( *(tab) ) );       \
     if( !(tab) ) abort();                       \
     if( (count) - (index) > 0 )                 \
-        memmove( (void**)(tab) + (index) + 1,   \
-                 (void**)(tab) + (index),       \
-                 ((count) - (index)) * sizeof(*(tab)) );\
+        memmove( (tab) + (index) + 1,           \
+                 (tab) + (index),               \
+                 ((count) - (index)) * sizeof( *(tab) ) );\
     (tab)[(index)] = (p);                       \
     (count)++;                                  \
 } while(0)
@@ -165,7 +127,7 @@ static inline void *realloc_down( void *ptr, size_t size )
     int low = 0, high = count - 1;   \
     answer = -1; \
     while( low <= high ) {\
-        int mid = (low + high ) / 2; /* Just don't care about 2^30 tables */ \
+        int mid = ((unsigned int)low + (unsigned int)high) >> 1;\
         zetype mid_val = entries[mid] elem;\
         if( mid_val < key ) \
             low = mid + 1; \
@@ -195,7 +157,7 @@ static inline void *realloc_down( void *ptr, size_t size )
     if( (array).i_alloc < 10 )                                              \
         _ARRAY_ALLOC(array, 10 )                                            \
     else if( (array).i_alloc == (array).i_size )                            \
-        _ARRAY_ALLOC(array, (int)(array.i_alloc * 1.5) )                    \
+        _ARRAY_ALLOC(array, (int)((array).i_alloc * 1.5) )                    \
 }
 
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
@@ -277,92 +239,119 @@ static inline void *realloc_down( void *ptr, size_t size )
  ************************************************************************/
 typedef struct vlc_array_t
 {
-    int i_count;
+    size_t i_count;
     void ** pp_elems;
 } vlc_array_t;
 
 static inline void vlc_array_init( vlc_array_t * p_array )
 {
-    memset( p_array, 0, sizeof(vlc_array_t) );
+    p_array->i_count = 0;
+    p_array->pp_elems = NULL;
 }
 
 static inline void vlc_array_clear( vlc_array_t * p_array )
 {
     free( p_array->pp_elems );
-    memset( p_array, 0, sizeof(vlc_array_t) );
+    vlc_array_init( p_array );
 }
-
-static inline vlc_array_t * vlc_array_new( void )
-{
-    vlc_array_t * ret = (vlc_array_t *)malloc( sizeof(vlc_array_t) );
-    if( ret ) vlc_array_init( ret );
-    return ret;
-}
-
-static inline void vlc_array_destroy( vlc_array_t * p_array )
-{
-    if( !p_array )
-        return;
-    vlc_array_clear( p_array );
-    free( p_array );
-}
-
 
 /* Read */
-static inline int
-vlc_array_count( vlc_array_t * p_array )
+static inline size_t vlc_array_count( vlc_array_t * p_array )
 {
     return p_array->i_count;
 }
 
-static inline void *
-vlc_array_item_at_index( vlc_array_t * p_array, int i_index )
+#ifndef __cplusplus
+# define vlc_array_item_at_index(ar, idx) \
+    _Generic((ar), \
+        const vlc_array_t *: ((ar)->pp_elems[idx]), \
+        vlc_array_t *: ((ar)->pp_elems[idx]))
+#else
+static inline void *vlc_array_item_at_index( vlc_array_t *ar, size_t idx )
 {
-    return p_array->pp_elems[i_index];
+    return ar->pp_elems[idx];
 }
 
-static inline int
-vlc_array_index_of_item( vlc_array_t * p_array, void * item )
+static inline const void *vlc_array_item_at_index( const vlc_array_t *ar,
+                                                   size_t idx )
 {
-    int i;
-    for( i = 0; i < p_array->i_count; i++)
+    return ar->pp_elems[idx];
+}
+#endif
+
+static inline ssize_t vlc_array_index_of_item( const vlc_array_t *ar,
+                                               const void *elem )
+{
+    for( size_t i = 0; i < ar->i_count; i++ )
     {
-        if( p_array->pp_elems[i] == item )
+        if( ar->pp_elems[i] == elem )
             return i;
     }
     return -1;
 }
 
 /* Write */
-static inline void
-vlc_array_insert( vlc_array_t * p_array, void * p_elem, int i_index )
+static inline int vlc_array_insert( vlc_array_t *ar, void *elem, int idx )
 {
-    TAB_INSERT_CAST( (void **), p_array->i_count, p_array->pp_elems, p_elem, i_index );
+    void **pp = (void **)realloc( ar->pp_elems,
+                                  sizeof( void * ) * (ar->i_count + 1) );
+    if( unlikely(pp == NULL) )
+        return -1;
+
+    size_t tail = ar->i_count - idx;
+    if( tail > 0 )
+        memmove( pp + idx + 1, pp + idx, sizeof( void * ) * tail );
+
+    pp[idx] = elem;
+    ar->i_count++;
+    ar->pp_elems = pp;
+    return 0;
 }
 
-static inline void
-vlc_array_append( vlc_array_t * p_array, void * p_elem )
+static inline void vlc_array_insert_or_abort( vlc_array_t *ar, void *elem, int idx )
 {
-    vlc_array_insert( p_array, p_elem, p_array->i_count );
+    if( vlc_array_insert( ar, elem, idx ) )
+        abort();
 }
 
-static inline void
-vlc_array_remove( vlc_array_t * p_array, int i_index )
+static inline int vlc_array_append( vlc_array_t *ar, void *elem )
 {
-    if( i_index >= 0 )
+    void **pp = (void **)realloc( ar->pp_elems,
+                                  sizeof( void * ) * (ar->i_count + 1) );
+    if( unlikely(pp == NULL) )
+        return -1;
+
+    pp[ar->i_count++] = elem;
+    ar->pp_elems = pp;
+    return 0;
+}
+
+static inline void vlc_array_append_or_abort( vlc_array_t *ar, void *elem )
+{
+    if( vlc_array_append( ar, elem ) != 0 )
+        abort();
+}
+
+static inline void vlc_array_remove( vlc_array_t *ar, size_t idx )
+{
+    void **pp = ar->pp_elems;
+    size_t tail = ar->i_count - idx - 1;
+
+    if( tail > 0 )
+        memmove( pp + idx, pp + idx + 1, sizeof( void * ) * tail );
+
+    ar->i_count--;
+
+    if( ar->i_count > 0 )
     {
-        if( p_array->i_count > 1 )
-        {
-            memmove( p_array->pp_elems + i_index,
-                     p_array->pp_elems + i_index+1,
-                     ( p_array->i_count - i_index - 1 ) * sizeof( void* ) );
-        }
-        p_array->i_count--;
-        if( p_array->i_count == 0 )
-        {
-            free( p_array->pp_elems );
-            p_array->pp_elems = NULL;
-        }
+        pp = (void **)realloc( pp, sizeof( void * ) * ar->i_count );
+        if( likely(pp != NULL) )
+            ar->pp_elems = pp;
+    }
+    else
+    {
+        free( pp );
+        ar->pp_elems = NULL;
     }
 }
 
@@ -451,7 +440,13 @@ vlc_dictionary_has_key( const vlc_dictionary_t * p_dict, const char * psz_key )
         return 0;
 
     int i_pos = DictHash( psz_key, p_dict->i_size );
-    return p_dict->p_entries[i_pos] != NULL;
+    const vlc_dictionary_entry_t * p_entry = p_dict->p_entries[i_pos];
+    for( ; p_entry != NULL; p_entry = p_entry->p_next )
+    {
+        if( !strcmp( psz_key, p_entry->psz_key ) )
+            break;
+    }
+    return p_entry != NULL;
 }
 
 static inline void *
@@ -492,6 +487,16 @@ vlc_dictionary_keys_count( const vlc_dictionary_t * p_dict )
     return count;
 }
 
+static inline bool
+vlc_dictionary_is_empty( const vlc_dictionary_t * p_dict )
+{
+    if( p_dict->p_entries )
+        for( int i = 0; i < p_dict->i_size; i++ )
+            if( p_dict->p_entries[i] )
+                return false;
+    return true;
+}
+
 static inline char **
 vlc_dictionary_all_keys( const vlc_dictionary_t * p_dict )
 {
@@ -514,8 +519,8 @@ vlc_dictionary_all_keys( const vlc_dictionary_t * p_dict )
 }
 
 static inline void
-__vlc_dictionary_insert( vlc_dictionary_t * p_dict, const char * psz_key,
-                         void * p_value, bool rebuild )
+vlc_dictionary_insert_impl_( vlc_dictionary_t * p_dict, const char * psz_key,
+                             void * p_value, bool rebuild )
 {
     if( !p_dict->p_entries )
         vlc_dictionary_init( p_dict, 1 );
@@ -546,7 +551,7 @@ __vlc_dictionary_insert( vlc_dictionary_t * p_dict, const char * psz_key,
                 p_entry = p_dict->p_entries[i];
                 while( p_entry )
                 {
-                    __vlc_dictionary_insert( &new_dict, p_entry->psz_key,
+                    vlc_dictionary_insert_impl_( &new_dict, p_entry->psz_key,
                                              p_entry->p_value,
                                              false /* To avoid multiple rebuild loop */);
                     p_entry = p_entry->p_next;
@@ -563,7 +568,7 @@ __vlc_dictionary_insert( vlc_dictionary_t * p_dict, const char * psz_key,
 static inline void
 vlc_dictionary_insert( vlc_dictionary_t * p_dict, const char * psz_key, void * p_value )
 {
-    __vlc_dictionary_insert( p_dict, psz_key, p_value, true );
+    vlc_dictionary_insert_impl_( p_dict, psz_key, p_value, true );
 }
 
 static inline void
