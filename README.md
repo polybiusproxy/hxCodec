@@ -1,39 +1,40 @@
 # hxCodec - Native video support for OpenFL & HaxeFlixel
 
-[Original Repository](https://github.com/polybiusproxy/PolyEngine).  
+[Original repository](https://github.com/polybiusproxy/PolyEngine).  
 [Click here to check the roadmap of hxCodec](https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/projects/1).
 
-## Table of Contents
-- [Instructions](#instructions)  
-- [Building](#building)  
-- [Credits](#credits)  
+--------------------------
 
-## Instructions
-**These are for Friday Night Funkin' mostly so it may not work for your HaxeFlixel project.**
+## Instructions for Friday Night Funkin'
 
-### 1. Install the Haxelib:
-[Install the Haxelib here](https://lib.haxe.org/p/hxCodec/).
-You can also install it through git:
+**Instructions for regular Haxeflixel projects coming soon!**
+
+### Installing the [Haxelib](https://lib.haxe.org/p/hxCodec)
+
+Use this command:
+```cmd
+haxelib install hxCodec
+```
+
+You can also install it through Git if you want the latest features and fixes:
 ```cmd
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
 ```
 
-### 1a. **OPTIONAL: If your PC is ARM64, add this code in `Project.xml`:**
-
+**OPTIONAL: If your PC is ARM64, add this code in `Project.xml`:**
 ```xml
 <haxedef name="HXCPP_ARM64" />
 ```
 
-### 1b. **OPTIONAL: If you want debug traces in your console, add this code in `Project.xml`:**
-
+**OPTIONAL: If you want debug traces in your console, add this code in `Project.xml`:**
 ```xml
 <!--Show debug traces for hxCodec-->
 <haxedef name="HXC_DEBUG_TRACE" if="debug" />
 ```
 
-### 2. Create a folder called `videos` in your `assets/preload` folder:
+2. Create a folder called `videos` in your `assets/preload` folder.
 
-### 3. Edit `Paths.hx`
+3. Edit `Paths.hx`:
 ```haxe
 inline static public function video(key:String)
 {
@@ -41,9 +42,10 @@ inline static public function video(key:String)
 }
 ```
 
-### 4. Playing videos
+### Playing videos
 
 1. Put your video in the videos folder.
+
 2. Create somewhere in PlayState:
 ```haxe
 import vlc.VideoHandler;
@@ -76,7 +78,8 @@ function playEndCutscene(name:String) //the format can be anything then is a vid
 }
 ```
 
-### EXAMPLE (FOR FNF)
+#### Examples
+
 At the PlayState "create()" function:
 ```haxe
 switch (curSong.toLowerCase())
@@ -89,6 +92,9 @@ switch (curSong.toLowerCase())
 		startCountdown();
 }
 ```
+
+--------------------------
+
 **FOR KADE 1.8 USERS!!**
 ```haxe
 generateSong(SONG.songId);
@@ -109,7 +115,7 @@ if (SONG.song.toLowerCase() == 'pingas')
 	playEndCutscene('pingas.mp4');
 ```
 
-**FOR KADE 1.8 USERS AGAIN**
+**FOR KADE 1.8 USERS AGAIN!!**
 ```haxe
 PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
 FlxG.sound.music.stop();
@@ -123,13 +129,17 @@ switch (curSong.toLowerCase())
 }
 ```
 
-## BUILDING
+## Building
+
 ### Windows
+
 You don't need any special instructions in order to build for Windows.
 Just pull the `lime build windows`.
 
 ### Linux
+
 In order to make your game work with the library, every Linux user (this includes the player) **has to download** "libvlc-dev" and "libvlccore-dev" from your distro's package manager.
+
 You can also install them through the terminal:
 ```bash
 sudo apt-get install libvlc-dev
@@ -137,13 +147,16 @@ sudo apt-get install libvlccore-dev
 ```
 
 ### Android
+
 Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.(whatever format it has)`), one more thing, you need to put the location manualy in paths.
 This is not suitable for games and will be fixed soon.
+
+--------------------------
 
 ## Credits
 
 - [PolybiusProxy (me!)](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Jigsaw](https://github.com/jigsaw-4277821) - Android Support
-- [Erizur](https://github.com/Erizur) - Linux Support
+- [Jigsaw](https://github.com/jigsaw-4277821) - Android support and turning hxCodec into a Haxelib.
+- [Erizur](https://github.com/Erizur) - Linux support.
 - The contributors.
