@@ -1,5 +1,4 @@
 # hxCodec - Native video support for OpenFL & HaxeFlixel
-
 [Original Repository](https://github.com/polybiusproxy/PolyEngine).  
 [Click here to check the roadmap of hxCodec](https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/projects/1).
 
@@ -26,9 +25,14 @@ haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
 ```
 
 **OPTIONAL: If your PC is ARM64, add this code in `Project.xml`:**
-
 ```xml
 <haxedef name="HXCPP_ARM64" />
+```
+
+**OPTIONAL: If you want debug traces in your console, add this code in `Project.xml`:**
+```xml
+<!--Show debug traces for hxCodec-->
+<haxedef name="HXC_DEBUG_TRACE" if="debug" />
 ```
 
 ### 4. Edit `Paths.hx`
@@ -40,7 +44,6 @@ inline static public function video(key:String)
 ```
 
 ### 5. Playing videos
-
 1. Put your video in the videos folder
 2. Create somewhere in PlayState:
 ```haxe
@@ -142,7 +145,6 @@ Currently, hxCodec will search the videos only on the external storage (`/storag
 This is not suitable for games and will be fixed soon.
 
 ## Credits
-
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [Jigsaw](https://github.com/jigsaw-4277821) - Android Support
