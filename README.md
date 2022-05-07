@@ -12,14 +12,18 @@
 
 ### 1. Install the Haxelib:
 [Install the Haxelib here](https://lib.haxe.org/p/hxCodec/).
+
+You can install it through haxelib:
+```cmd
+haxelib install hxCodec 2.5.1 
+```
+
 You can also install it through git:
 ```cmd
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
 ```
 
-### 2. Create a folder called `videos` in your `assets/preload` folder
-
-### 3. add this code in `Project.xml`
+### 2. add this code in `Project.xml`
 ```xml
 <haxelib name="hxcodec"/>
 ```
@@ -35,6 +39,8 @@ haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
 <haxedef name="HXC_DEBUG_TRACE" if="debug" />
 ```
 
+### 3. Create a folder called `videos` in your `assets/preload` folder
+
 ### 4. Edit `Paths.hx`
 ```haxe
 inline static public function video(key:String)
@@ -44,7 +50,7 @@ inline static public function video(key:String)
 ```
 
 ### 5. Playing videos
-1. Put your video in the videos folder
+1. Put your video in the videos folder.
 2. Create somewhere in PlayState:
 ```haxe
 import vlc.VideoHandler;
@@ -76,9 +82,6 @@ function playEndCutscene(name:String) //supported video formats for VLC can be u
 	video.playVideo(Paths.video(name));
 }
 ```
-
-**supported formats:**
-ASF, AVI, MP4, MJPEG, OGG, WAV.
 
 ### EXAMPLE (FOR FNF)
 At the PlayState "create()" function:
