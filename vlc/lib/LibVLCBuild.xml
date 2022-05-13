@@ -7,11 +7,11 @@
 
 	<target id="haxe">
 		<section if="windows">
-			<section if="x64">
+			<section if="64bit">
 				<lib name='${haxelib:hxCodec}/lib/vlc/lib/Windows/x64/libvlc.lib' />
 				<lib name='${haxelib:hxCodec}/lib/vlc/lib/Windows/x64/libvlccore.lib' />
 			</section>
-			<section if="x86">
+			<section if="32bit">
 				<lib name='${haxelib:hxCodec}/lib/vlc/lib/Windows/x86/libvlc.lib' />
 				<lib name='${haxelib:hxCodec}/lib/vlc/lib/Windows/x86/libvlccore.lib' />
 			</section>
