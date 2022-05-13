@@ -2,7 +2,7 @@
 <?xml-model href="include.xsd"?>
 <extension>
 	<assets path="include/" rename='' if="windows" />
-	<assets path="README-LINUX.md" rename='README-LINUX.txt' if="linux" />
+	<assets path="NOTICE-LINUX.md" rename='NOTICE.txt' if="linux" />
 
 	<ndll name="vlc" if="android" />
 	<ndll name="c++_shared" if="android" />
