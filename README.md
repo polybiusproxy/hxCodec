@@ -11,14 +11,12 @@
 **These are for Friday Night Funkin' mostly so it may not work for your HaxeFlixel project.**
 
 ### 1. Install the Haxelib:
-[Install the Haxelib here](https://lib.haxe.org/p/hxCodec/).
-
 You can install it through haxelib:
 ```cmd
 haxelib install hxCodec 2.5.1 
 ```
 
-You can also install it through git:
+You can also install it through git for the latest updates:
 ```cmd
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
 ```
@@ -51,24 +49,28 @@ inline static public function video(key:String)
 
 ### 5. Playing videos
 1. Put your video in the videos folder.
-2. Create somewhere in PlayState:
+2. Add in your imports in PlayState:
 ```haxe
 import vlc.VideoHandler;
+```
 
-var video:VideoHandler = new VideoHandler();
-
+3. Create somewhere in PlayState:
+```haxe
 function playCutscene(name:String, ?end:Bool)
 {
 	inCutscene = true;
 
+	var video:VideoHandler = new VideoHandler();
 	FlxG.sound.music.stop();
 	video.finishCallback = function()
 	{
 		if (end == true)
 		{
 			SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
+			FlxG.switchState(new PlayState());
 		}
-		FlxG.switchState(new PlayState());
+		else
+			startCountdown();
 	}
 	video.playVideo(Paths.video(name));
 }
