@@ -10,12 +10,12 @@
 ### 1. Install the Haxelib:
 You can install it through haxelib:
 ```cmd
-haxelib install hxCodec 2.5.1 
+haxelib install hxCodec
 ```
 
 You can also install it through git for the latest updates:
 ```cmd
-haxelib install hxCodec
+haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
 ```
 
 ### 2. Add this code in `Project.xml`
