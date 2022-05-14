@@ -3,37 +3,40 @@
 [Original Repository](https://github.com/polybiusproxy/PolyEngine).  
 [Click here to check the roadmap of hxCodec](https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/projects/1).
 
-## Table of Contents
-- [Instructions](#instructions)  
-- [Building](#building)  
-- [Credits](#credits)  
+--------------------------
 
-## Instructions
-**These are for Friday Night Funkin' mostly so it may not work for your HaxeFlixel project.**
+## Instructions for Friday Night Funkin'
 
 ### 1. Install the Haxelib:
-[Install the Haxelib here](https://lib.haxe.org/p/hxCodec/).
-You can also install it through git:
+You can install it through haxelib:
 ```cmd
-haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
+haxelib install hxCodec 2.5.1 
 ```
 
-### 1a. **OPTIONAL: If your PC is ARM64, add this code in `Project.xml`:**
+You can also install it through git for the latest updates:
+```cmd
+haxelib install hxCodec
+```
 
+### 2. Add this code in `Project.xml`
+```xml
+<haxelib name="hxcodec"/>
+```
+
+**OPTIONAL: If your PC is ARM64, add this code in `Project.xml`:**
 ```xml
 <haxedef name="HXCPP_ARM64" />
 ```
 
-### 1b. **OPTIONAL: If you want debug traces in your console, add this code in `Project.xml`:**
-
+**OPTIONAL: If you want debug traces in your console, add this code in `Project.xml`:**
 ```xml
 <!--Show debug traces for hxCodec-->
 <haxedef name="HXC_DEBUG_TRACE" if="debug" />
 ```
 
-### 2. Create a folder called `videos` in your `assets/preload` folder:
+### 3. Create a folder called `videos` in your `assets/preload` folder
 
-### 3. Edit `Paths.hx`
+### 4. Edit `Paths.hx`
 ```haxe
 inline static public function video(key:String)
 {
@@ -41,62 +44,63 @@ inline static public function video(key:String)
 }
 ```
 
-### 4. Playing videos
-
+### 5. Playing videos
 1. Put your video in the videos folder.
-2. Create somewhere in PlayState:
+2. Add in your imports in PlayState:
+
+**Note: hxCodec supports all the video formats the VLC video player can use!!**
+
 ```haxe
 import vlc.VideoHandler;
+```
 
-var video:VideoHandler;
-
-function playCutscene(name:String) //the format can be anything then is a video
+3. Create somewhere in PlayState:
+```haxe
+function playCutscene(name:String, ?atend:Bool)
 {
 	inCutscene = true;
 
-	video = new VideoHandler();
+	var video:VideoHandler = new VideoHandler();
+	FlxG.sound.music.stop();
 	video.finishCallback = function()
 	{
-		startCountdown();
-	}
-	video.playVideo(Paths.video(name));
-}
-
-function playEndCutscene(name:String) //the format can be anything then is a video
-{
-	inCutscene = true;
-
-	video = new VideoHandler();
-	video.finishCallback = function()
-	{
-		SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
-		LoadingState.loadAndSwitchState(new PlayState());
+		if (end == true)
+		{
+			SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
+			FlxG.switchState(new PlayState());
+		}
+		else
+			startCountdown();
 	}
 	video.playVideo(Paths.video(name));
 }
 ```
 
-### EXAMPLE (FOR FNF)
+#### Examples
+
 At the PlayState "create()" function:
 ```haxe
 switch (curSong.toLowerCase())
 {
 	case 'song1':
-		playCutscene('song1scene.mp4');
+		playCutscene('song1scene.asf');
 	case 'song2':
-		playCutscene('song2scene.mp4');
+		playCutscene('song2scene.avi');
 	default:
 		startCountdown();
 }
 ```
+
+--------------------------
+
 **FOR KADE 1.8 USERS!!**
 ```haxe
 generateSong(SONG.songId);
 
 switch (curSong.toLowerCase())
 {
-	case 'bopeebo':
-		playCutscene('gunsCutscene.mp4');
+	case 'song3':
+		playCutscene('song3scene.mp4');
 	default:
 		startCountdown();
 }
@@ -105,31 +109,35 @@ switch (curSong.toLowerCase())
 
 At the PlayState "endSong()" function:
 ```haxe
-if (SONG.song.toLowerCase() == 'pingas')
-	playEndCutscene('pingas.mp4');
+if (SONG.song.toLowerCase() == 'song4')
+	playCutscene('song4scene.mjpeg', true);
 ```
 
-**FOR KADE 1.8 USERS AGAIN**
+**FOR KADE 1.8 USERS**
 ```haxe
 PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
 FlxG.sound.music.stop();
 
 switch (curSong.toLowerCase())
 {
-	case 'deez':
-		playEndCutscene('bigChungus.mp4');
-	case 'nuts':
-		playEndCutscene('bigChungus.mp4');
+	case 'song5':
+		playCutscene('song5scene.ogg', true);
+	case 'song6':
+		playCutscene('song6scene.wav', true);
 }
 ```
 
-## BUILDING
+## Building
+
 ### Windows
+
 You don't need any special instructions in order to build for Windows.
 Just pull the `lime build windows`.
 
 ### Linux
+
 In order to make your game work with the library, every Linux user (this includes the player) **has to download** "libvlc-dev" and "libvlccore-dev" from your distro's package manager.
+
 You can also install them through the terminal:
 ```bash
 sudo apt-get install libvlc-dev
@@ -137,13 +145,14 @@ sudo apt-get install libvlccore-dev
 ```
 
 ### Android
-Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.(whatever format it has)`), one more thing, you need to put the location manualy in paths.
+Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.(extension)`), one more thing, you need to put the location manualy in paths.
 This is not suitable for games and will be fixed soon.
 
-## Credits
+--------------------------
 
-- [PolybiusProxy (me!)](https://github.com/polybiusproxy) - Creator of hxCodec.
+## Credits
+- [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Jigsaw](https://github.com/jigsaw-4277821) - Android Support
-- [Erizur](https://github.com/Erizur) - Linux Support
+- [Jigsaw](https://github.com/jigsaw-4277821) - Android support and turning hxCodec into a Haxelib.
+- [Erizur](https://github.com/Erizur) - Linux support.
 - The contributors.
