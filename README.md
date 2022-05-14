@@ -64,7 +64,7 @@ function playCutscene(name:String, ?atend:Bool)
 	FlxG.sound.music.stop();
 	video.finishCallback = function()
 	{
-		if (end == true)
+		if (atend == true)
 		{
 			SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
 			FlxG.switchState(new PlayState());
