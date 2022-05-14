@@ -55,28 +55,19 @@ inline static public function video(key:String)
 ```haxe
 import vlc.VideoHandler;
 
-var video:VideoHandler;
+var video:VideoHandler = new VideoHandler();
 
-function playCutscene(name:String) //supported video formats for VLC can be used
+function playCutscene(name:String, ?end:Bool)
 {
 	inCutscene = true;
 
-	video = new VideoHandler();
+	FlxG.sound.music.stop();
 	video.finishCallback = function()
 	{
-		startCountdown();
-	}
-	video.playVideo(Paths.video(name));
-}
-
-function playEndCutscene(name:String) //supported video formats for VLC can be used
-{
-	inCutscene = true;
-
-	video = new VideoHandler();
-	video.finishCallback = function()
-	{
-		SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
+		if (end == true)
+		{
+			SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
+		}
 		FlxG.switchState(new PlayState());
 	}
 	video.playVideo(Paths.video(name));
