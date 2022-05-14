@@ -56,7 +56,7 @@ import vlc.VideoHandler;
 
 3. Create somewhere in PlayState:
 ```haxe
-function playCutscene(name:String, ?end:Bool)
+function playCutscene(name:String, ?atend:Bool)
 {
 	inCutscene = true;
 
@@ -106,7 +106,7 @@ switch (curSong.toLowerCase())
 At the PlayState "endSong()" function:
 ```haxe
 if (SONG.song.toLowerCase() == 'song4')
-	playEndCutscene('song4scene.mjpeg');
+	playCutscene('song4scene.mjpeg', true);
 ```
 
 **FOR KADE 1.8 USERS**
@@ -117,9 +117,9 @@ FlxG.sound.music.stop();
 switch (curSong.toLowerCase())
 {
 	case 'song5':
-		playEndCutscene('song5scene.ogg');
+		playCutscene('song5scene.ogg', true);
 	case 'song6':
-		playEndCutscene('song6scene.wav');
+		playCutscene('song6scene.wav', true);
 }
 ```
 
