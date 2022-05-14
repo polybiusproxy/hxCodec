@@ -1,14 +1,11 @@
 # hxCodec - Native video support for OpenFL & HaxeFlixel
+
 [Original Repository](https://github.com/polybiusproxy/PolyEngine).  
 [Click here to check the roadmap of hxCodec](https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support/projects/1).
 
-## Table of Contents
-- [Instructions](#instructions)  
-- [Building](#building)  
-- [Credits](#credits)  
+--------------------------
 
-## Instructions
-**These are for Friday Night Funkin' mostly so it may not work for your HaxeFlixel project.**
+## Instructions for Friday Night Funkin'
 
 ### 1. Install the Haxelib:
 You can install it through haxelib:
@@ -18,10 +15,10 @@ haxelib install hxCodec 2.5.1
 
 You can also install it through git for the latest updates:
 ```cmd
-haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
+haxelib install hxCodec
 ```
 
-### 2. add this code in `Project.xml`
+### 2. Add this code in `Project.xml`
 ```xml
 <haxelib name="hxcodec"/>
 ```
@@ -50,6 +47,9 @@ inline static public function video(key:String)
 ### 5. Playing videos
 1. Put your video in the videos folder.
 2. Add in your imports in PlayState:
+
+**Note: hxCodec supports all the video formats the VLC video player can use!!**
+
 ```haxe
 import vlc.VideoHandler;
 ```
@@ -76,7 +76,8 @@ function playCutscene(name:String, ?atend:Bool)
 }
 ```
 
-### EXAMPLE (FOR FNF)
+#### Examples
+
 At the PlayState "create()" function:
 ```haxe
 switch (curSong.toLowerCase())
@@ -89,6 +90,9 @@ switch (curSong.toLowerCase())
 		startCountdown();
 }
 ```
+
+--------------------------
+
 **FOR KADE 1.8 USERS!!**
 ```haxe
 generateSong(SONG.songId);
@@ -123,13 +127,17 @@ switch (curSong.toLowerCase())
 }
 ```
 
-## BUILDING
+## Building
+
 ### Windows
+
 You don't need any special instructions in order to build for Windows.
 Just pull the `lime build windows`.
 
 ### Linux
+
 In order to make your game work with the library, every Linux user (this includes the player) **has to download** "libvlc-dev" and "libvlccore-dev" from your distro's package manager.
+
 You can also install them through the terminal:
 ```bash
 sudo apt-get install libvlc-dev
@@ -140,9 +148,11 @@ sudo apt-get install libvlccore-dev
 Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.(extension)`), one more thing, you need to put the location manualy in paths.
 This is not suitable for games and will be fixed soon.
 
+--------------------------
+
 ## Credits
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Jigsaw](https://github.com/jigsaw-4277821) - Android Support
-- [Erizur](https://github.com/Erizur) - Linux Support
+- [Jigsaw](https://github.com/jigsaw-4277821) - Android support and turning hxCodec into a Haxelib.
+- [Erizur](https://github.com/Erizur) - Linux support.
 - The contributors.
