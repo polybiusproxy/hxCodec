@@ -2,7 +2,7 @@
 	"name": "hxCodec",
 	"url": "https://github.com/polybiusproxy/hxCodec",
 	"license": "MIT",
-	"tags": ["mp4", "video", "haxeflixel", "openfl", "windows", "linux", "android"],
+	"tags": ["video", "haxeflixel", "openfl", "windows", "linux", "android"],
 	"description": "Native video support for HaxeFlixel & OpenFL",
 	"version": "2.5.1",
 	"releasenote": "fixed: haxelib.json and README.md",
