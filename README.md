@@ -147,6 +147,7 @@ Just pull the `lime build windows`.
 ### Mac
 
 Currently, building for Mac isn't supported because we are missing the Mac build of LibVLC.
+
 **However, if you got LibVLC to build and work on Mac, please send us a pull request with the builded files!**
 
 ### Linux
