@@ -1,9 +1,7 @@
 # hxCodec
+A library which adds native video support for OpenFL and HaxeFlixel.
 
-A library which adds native video support for OpenFL and HaxeFlixel. Provides also a Haxe binding over LibVLC.
-
-**[Original repository](https://github.com/polybiusproxy/PolyEngine)**
-
+**[Original repository](https://github.com/polybiusproxy/PolyEngine)**          
 **[Click here to check the roadmap](https://github.com/polybiusproxy/hxCodec/projects/1)**
 
 --------------------------
@@ -70,10 +68,15 @@ function playCutscene(name:String, ?atend:Bool)
 	FlxG.sound.music.stop();
 	video.finishCallback = function()
 	{
-		if (end == true)
+		if (atend == true)
 		{
-			SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
-			FlxG.switchState(new PlayState());
+			if (storyPlaylist.length <= 0)
+				FlxG.switchState(new StoryMenuState());
+			else
+			{
+				SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
+				FlxG.switchState(new PlayState());
+			}
 		}
 		else
 			startCountdown();
@@ -101,8 +104,8 @@ switch (curSong.toLowerCase())
 
 At the PlayState "endSong()" function:
 ```haxe
-if (SONG.song.toLowerCase() == 'song4')
-	playCutscene('song4scene.mjpeg', true);
+if (SONG.song.toLowerCase() == 'song1')
+	playCutscene('song1scene.mjpeg', true);
 ```
 
 #### Examples for Kade Engine 1.8
@@ -114,7 +117,7 @@ generateSong(SONG.songId);
 switch (curSong.toLowerCase())
 {
 	case 'song1':
-		playCutscene('song3scene.mp4');
+		playCutscene('song1scene.mp4');
 	default:
 		startCountdown();
 }
@@ -129,9 +132,9 @@ FlxG.sound.music.stop();
 switch (curSong.toLowerCase())
 {
 	case 'song1':
-		playCutscene('song5scene.ogg', true);
+		playCutscene('song1scene.ogg', true);
 	case 'song2':
-		playCutscene('song6scene.wav', true);
+		playCutscene('song2scene.wav', true);
 }
 ```
 
