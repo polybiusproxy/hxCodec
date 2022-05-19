@@ -1,7 +1,7 @@
 # hxCodec
-A library which adds native video support for OpenFL and HaxeFlixel.
+A library which adds native cpp video support for OpenFL and HaxeFlixel.
 
-**[Original repository](https://github.com/polybiusproxy/PolyEngine)**          
+**[Original repository](https://github.com/polybiusproxy/PolyEngine)**
 **[Click here to check the roadmap](https://github.com/polybiusproxy/hxCodec/projects/1)**
 
 --------------------------
@@ -21,7 +21,7 @@ haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
 
 2. Add this code in `Project.xml`
 ```xml
-<haxelib name="hxcodec"/>
+<haxelib name="hxCodec"/>
 ```
 
 **OPTIONAL: If your PC is ARM64, add this code also:**
@@ -165,6 +165,17 @@ sudo apt-get install libvlccore-dev
 
 ### Android
 
+you have to install a custom library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools)
+
+```cmd
+haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools
+```
+
+and add this code in `Project.xml`
+```xml
+<haxelib name="extension-androidtools" if="android" />
+```
+
 Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.extension`), one more thing, you need to put the location manualy in paths.
 This is not suitable for games and will be fixed soon.
 
@@ -174,6 +185,6 @@ This is not suitable for games and will be fixed soon.
 
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Jigsaw](https://github.com/jigsaw-4277821) - Android support and turning hxCodec into a Haxelib.
+- [Jigsaw](https://github.com/jigsaw-4277821) - Android/Windows32 support, turning hxCodec into a Haxelib and some bugs fixes.
 - [Erizur](https://github.com/Erizur) - Linux support.
 - The contributors.
