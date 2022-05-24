@@ -25,99 +25,98 @@
 #define VLC_ACTIONS_H 1
 
 /* Called from src/libvlc.c */
-int
-libvlc_InternalActionsInit(libvlc_int_t *p_libvlc);
+int libvlc_InternalActionsInit(libvlc_int_t *p_libvlc);
 
 /* Called from src/libvlc.c */
-void
-libvlc_InternalActionsClean(libvlc_int_t *p_libvlc);
+void libvlc_InternalActionsClean(libvlc_int_t *p_libvlc);
 
 /**
  * \file
  * This file defines keys and functions
  */
 
-#define KEY_MODIFIER         0xFF000000
-#define KEY_MODIFIER_ALT     0x01000000
-#define KEY_MODIFIER_SHIFT   0x02000000
-#define KEY_MODIFIER_CTRL    0x04000000
-#define KEY_MODIFIER_META    0x08000000
+#define KEY_MODIFIER 0xFF000000
+#define KEY_MODIFIER_ALT 0x01000000
+#define KEY_MODIFIER_SHIFT 0x02000000
+#define KEY_MODIFIER_CTRL 0x04000000
+#define KEY_MODIFIER_META 0x08000000
 #define KEY_MODIFIER_COMMAND 0x10000000
 
-#define KEY_UNSET            0x00000000
-#define KEY_BACKSPACE              0x08
-#define KEY_TAB                    0x09
-#define KEY_ENTER                  0x0D
-#define KEY_ESC                    0x1B
+#define KEY_UNSET 0x00000000
+#define KEY_BACKSPACE 0x08
+#define KEY_TAB 0x09
+#define KEY_ENTER 0x0D
+#define KEY_ESC 0x1B
 /* End of Unicode range:     0x0010FFFF */
-#define KEY_LEFT             0x00210000
-#define KEY_RIGHT            0x00220000
-#define KEY_UP               0x00230000
-#define KEY_DOWN             0x00240000
-#define KEY_F1               0x00270000
-#define KEY_F2               0x00280000
-#define KEY_F3               0x00290000
-#define KEY_F4               0x002A0000
-#define KEY_F5               0x002B0000
-#define KEY_F6               0x002C0000
-#define KEY_F7               0x002D0000
-#define KEY_F8               0x002E0000
-#define KEY_F9               0x002F0000
-#define KEY_F10              0x00300000
-#define KEY_F11              0x00310000
-#define KEY_F12              0x00320000
-#define KEY_HOME             0x00330000
-#define KEY_END              0x00340000
-#define KEY_INSERT           0x00350000
-#define KEY_DELETE           0x00360000
-#define KEY_MENU             0x00370000
-#define KEY_PAGEUP           0x00390000
-#define KEY_PAGEDOWN         0x003A0000
-#define KEY_PRINT            0x003B0000
-#define KEY_PAUSE            0x003D0000
+#define KEY_LEFT 0x00210000
+#define KEY_RIGHT 0x00220000
+#define KEY_UP 0x00230000
+#define KEY_DOWN 0x00240000
+#define KEY_F1 0x00270000
+#define KEY_F2 0x00280000
+#define KEY_F3 0x00290000
+#define KEY_F4 0x002A0000
+#define KEY_F5 0x002B0000
+#define KEY_F6 0x002C0000
+#define KEY_F7 0x002D0000
+#define KEY_F8 0x002E0000
+#define KEY_F9 0x002F0000
+#define KEY_F10 0x00300000
+#define KEY_F11 0x00310000
+#define KEY_F12 0x00320000
+#define KEY_HOME 0x00330000
+#define KEY_END 0x00340000
+#define KEY_INSERT 0x00350000
+#define KEY_DELETE 0x00360000
+#define KEY_MENU 0x00370000
+#define KEY_PAGEUP 0x00390000
+#define KEY_PAGEDOWN 0x003A0000
+#define KEY_PRINT 0x003B0000
+#define KEY_PAUSE 0x003D0000
 
-#define KEY_BROWSER_BACK     0x003F0000
-#define KEY_BROWSER_FORWARD  0x00400000
-#define KEY_BROWSER_REFRESH  0x00410000
-#define KEY_BROWSER_STOP     0x00420000
-#define KEY_BROWSER_SEARCH   0x00430000
+#define KEY_BROWSER_BACK 0x003F0000
+#define KEY_BROWSER_FORWARD 0x00400000
+#define KEY_BROWSER_REFRESH 0x00410000
+#define KEY_BROWSER_STOP 0x00420000
+#define KEY_BROWSER_SEARCH 0x00430000
 #define KEY_BROWSER_FAVORITES 0x00440000
-#define KEY_BROWSER_HOME     0x00450000
-#define KEY_VOLUME_MUTE      0x00460000
-#define KEY_VOLUME_DOWN      0x00470000
-#define KEY_VOLUME_UP        0x00480000
+#define KEY_BROWSER_HOME 0x00450000
+#define KEY_VOLUME_MUTE 0x00460000
+#define KEY_VOLUME_DOWN 0x00470000
+#define KEY_VOLUME_UP 0x00480000
 #define KEY_MEDIA_NEXT_TRACK 0x00490000
 #define KEY_MEDIA_PREV_TRACK 0x004A0000
-#define KEY_MEDIA_STOP       0x004B0000
+#define KEY_MEDIA_STOP 0x004B0000
 #define KEY_MEDIA_PLAY_PAUSE 0x004C0000
-#define KEY_MEDIA_RECORD     0x004D0000
-#define KEY_MEDIA_REWIND     0x004E0000
-#define KEY_MEDIA_FORWARD    0x004F0000
-#define KEY_MEDIA_REPEAT     0x00500000
-#define KEY_MEDIA_SHUFFLE    0x00510000
-#define KEY_MEDIA_SUBTITLE   0x00520000
-#define KEY_MEDIA_AUDIO      0x00530000
-#define KEY_MEDIA_ANGLE      0x00540000
-#define KEY_MEDIA_TIME       0x00550000
+#define KEY_MEDIA_RECORD 0x004D0000
+#define KEY_MEDIA_REWIND 0x004E0000
+#define KEY_MEDIA_FORWARD 0x004F0000
+#define KEY_MEDIA_REPEAT 0x00500000
+#define KEY_MEDIA_SHUFFLE 0x00510000
+#define KEY_MEDIA_SUBTITLE 0x00520000
+#define KEY_MEDIA_AUDIO 0x00530000
+#define KEY_MEDIA_ANGLE 0x00540000
+#define KEY_MEDIA_TIME 0x00550000
 #define KEY_MEDIA_FRAME_PREV 0x00560000
 #define KEY_MEDIA_FRAME_NEXT 0x00570000
-#define KEY_MEDIA_SELECT     0x00580000
-#define KEY_MEDIA_VIEW       0x00590000
-#define KEY_MEDIA_MENU       0x005A0000
-#define KEY_ZOOM_IN          0x00600000
-#define KEY_ZOOM_OUT         0x00610000
-#define KEY_BRIGHTNESS_UP    0x00620000
-#define KEY_BRIGHTNESS_DOWN  0x00630000
+#define KEY_MEDIA_SELECT 0x00580000
+#define KEY_MEDIA_VIEW 0x00590000
+#define KEY_MEDIA_MENU 0x005A0000
+#define KEY_ZOOM_IN 0x00600000
+#define KEY_ZOOM_OUT 0x00610000
+#define KEY_BRIGHTNESS_UP 0x00620000
+#define KEY_BRIGHTNESS_DOWN 0x00630000
 
-#define KEY_MOUSEWHEELUP     0x00F00000
-#define KEY_MOUSEWHEELDOWN   0x00F10000
-#define KEY_MOUSEWHEELLEFT   0x00F20000
-#define KEY_MOUSEWHEELRIGHT  0x00F30000
+#define KEY_MOUSEWHEELUP 0x00F00000
+#define KEY_MOUSEWHEELDOWN 0x00F10000
+#define KEY_MOUSEWHEELLEFT 0x00F20000
+#define KEY_MOUSEWHEELRIGHT 0x00F30000
 
 VLC_API char *vlc_keycode2str(uint_fast32_t i_key, bool locale) VLC_USED;
 VLC_API uint_fast32_t vlc_str2keycode(const char *str) VLC_USED;
 
-typedef enum vlc_action_id {
+typedef enum vlc_action_id
+{
     ACTIONID_NONE = 0,
     ACTIONID_QUIT,
     ACTIONID_PLAY_PAUSE,
@@ -147,7 +146,7 @@ typedef enum vlc_action_id {
     ACTIONID_FRAME_NEXT,
     ACTIONID_POSITION,
     ACTIONID_VOL_MUTE,
-/* let ACTIONID_SET_BOOMARK* and ACTIONID_PLAY_BOOKMARK* be contiguous */
+    /* let ACTIONID_SET_BOOMARK* and ACTIONID_PLAY_BOOKMARK* be contiguous */
     ACTIONID_SET_BOOKMARK1,
     ACTIONID_SET_BOOKMARK2,
     ACTIONID_SET_BOOKMARK3,
@@ -261,14 +260,14 @@ vlc_actions_get_id(const char *psz_key_name);
  */
 VLC_API size_t
 vlc_actions_get_keycodes(vlc_object_t *p_obj, const char *psz_key_name,
-                        bool b_global, uint_fast32_t **pp_keycodes );
+                         bool b_global, uint_fast32_t **pp_keycodes);
 #define vlc_actions_get_keycodes(a, b, c, d) vlc_actions_get_keycodes(VLC_OBJECT(a), b, c, d)
 
 /**
  * Get a list a key names
  * \return A NULL terminated list of const char *
  */
-VLC_API const char* const*
+VLC_API const char *const *
 vlc_actions_get_key_names(vlc_object_t *p_obj);
 #define vlc_actions_get_key_names(x) vlc_actions_get_key_names(VLC_OBJECT(x))
 

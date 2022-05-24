@@ -39,12 +39,13 @@ typedef struct picture_pool_t picture_pool_t;
 /**
  * Picture pool configuration
  */
-typedef struct {
-    unsigned  picture_count;
+typedef struct
+{
+    unsigned picture_count;
     picture_t *const *picture;
 
-    int       (*lock)(picture_t *);
-    void      (*unlock)(picture_t *);
+    int (*lock)(picture_t *);
+    void (*unlock)(picture_t *);
 } picture_pool_configuration_t;
 
 /**
@@ -66,7 +67,7 @@ typedef struct {
  * @return A pointer to the new pool on success, or NULL on error
  * (pictures are <b>not</b> released on error).
  */
-VLC_API picture_pool_t * picture_pool_NewExtended( const picture_pool_configuration_t * ) VLC_USED;
+VLC_API picture_pool_t *picture_pool_NewExtended(const picture_pool_configuration_t *) VLC_USED;
 
 /**
  * Creates a picture pool with pictures in a given array.
@@ -79,8 +80,8 @@ VLC_API picture_pool_t * picture_pool_NewExtended( const picture_pool_configurat
  * @return a pointer to the new pool on success, or NULL on error
  * (pictures are <b>not</b> released on error)
  */
-VLC_API picture_pool_t * picture_pool_New(unsigned count,
-                                          picture_t *const *tab) VLC_USED;
+VLC_API picture_pool_t *picture_pool_New(unsigned count,
+                                         picture_t *const *tab) VLC_USED;
 
 /**
  * Allocates pictures from the heap and creates a picture pool with them.
@@ -92,8 +93,8 @@ VLC_API picture_pool_t * picture_pool_New(unsigned count,
  *
  * @return a pointer to the new pool on success, NULL on error
  */
-VLC_API picture_pool_t * picture_pool_NewFromFormat(const video_format_t *fmt,
-                                                    unsigned count) VLC_USED;
+VLC_API picture_pool_t *picture_pool_NewFromFormat(const video_format_t *fmt,
+                                                   unsigned count) VLC_USED;
 
 /**
  * Releases a pool created by picture_pool_NewExtended(), picture_pool_New()
@@ -107,7 +108,7 @@ VLC_API picture_pool_t * picture_pool_NewFromFormat(const video_format_t *fmt,
  * pictures will remain valid until the all pending references are dropped by
  * picture_Release().
  */
-VLC_API void picture_pool_Release( picture_pool_t * );
+VLC_API void picture_pool_Release(picture_pool_t *);
 
 /**
  * Obtains a picture from a pool if any is immediately available.
@@ -118,7 +119,7 @@ VLC_API void picture_pool_Release( picture_pool_t * );
  *
  * @note This function is thread-safe.
  */
-VLC_API picture_t * picture_pool_Get( picture_pool_t * ) VLC_USED;
+VLC_API picture_t *picture_pool_Get(picture_pool_t *) VLC_USED;
 
 /**
  * Obtains a picture from a pool.
@@ -142,8 +143,8 @@ VLC_API picture_t *picture_pool_Wait(picture_pool_t *) VLC_USED;
  * typically picture_t.p_sys.
  * Provided those rules are respected, the function is thread-safe.
  */
-VLC_API void picture_pool_Enum( picture_pool_t *,
-                                void (*cb)(void *, picture_t *), void *data );
+VLC_API void picture_pool_Enum(picture_pool_t *,
+                               void (*cb)(void *, picture_t *), void *data);
 
 /**
  * Cancel the picture pool.
@@ -152,14 +153,14 @@ VLC_API void picture_pool_Enum( picture_pool_t *,
  * canceled is true. This function will also unblock picture_pool_Wait.
  * picture_pool_Reset will also reset the cancel state to false.
  */
-void picture_pool_Cancel( picture_pool_t *, bool canceled );
+void picture_pool_Cancel(picture_pool_t *, bool canceled);
 
 /**
  * Test if a picture belongs to the picture pool
  *
  * FIXME: remove this function when the vout_PutPicture() hack is fixed.
  */
-bool picture_pool_OwnsPic( picture_pool_t *, picture_t *);
+bool picture_pool_OwnsPic(picture_pool_t *, picture_t *);
 
 /**
  * Reserves pictures from a pool and creates a new pool with those.
@@ -175,8 +176,8 @@ bool picture_pool_OwnsPic( picture_pool_t *, picture_t *);
  * @note This function is thread-safe (but it might return NULL if other
  * threads have already allocated too many pictures).
  */
-VLC_API picture_pool_t * picture_pool_Reserve(picture_pool_t *, unsigned count)
-VLC_USED;
+VLC_API picture_pool_t *picture_pool_Reserve(picture_pool_t *, unsigned count)
+    VLC_USED;
 
 /**
  * @return the total number of pictures in the given pool
@@ -184,6 +185,4 @@ VLC_USED;
  */
 VLC_API unsigned picture_pool_GetSize(const picture_pool_t *);
 
-
 #endif /* VLC_PICTURE_POOL_H */
-

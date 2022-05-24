@@ -31,18 +31,18 @@
  * Helper functions for nul-terminated strings
  */
 
-static inline int vlc_ascii_toupper( int c )
+static inline int vlc_ascii_toupper(int c)
 {
-    if ( c >= 'a' && c <= 'z' )
-        return c + ( 'A' - 'a' );
+    if (c >= 'a' && c <= 'z')
+        return c + ('A' - 'a');
     else
         return c;
 }
 
-static inline int vlc_ascii_tolower( int c )
+static inline int vlc_ascii_tolower(int c)
 {
-    if ( c >= 'A' && c <= 'Z' )
-        return c + ( 'a' - 'A' );
+    if (c >= 'A' && c <= 'Z')
+        return c + ('a' - 'A');
     else
         return c;
 }
@@ -54,32 +54,32 @@ static inline int vlc_ascii_tolower( int c )
  * characters in the strings, their cases are NOT ignored in the
  * comparison.
  */
-static inline int vlc_ascii_strcasecmp( const char *psz1, const char *psz2 )
+static inline int vlc_ascii_strcasecmp(const char *psz1, const char *psz2)
 {
     const char *s1 = psz1;
     const char *s2 = psz2;
-    int d = vlc_ascii_tolower( *s1 ) - vlc_ascii_tolower( *s2 );
-    while ( *s1 && d == 0)
+    int d = vlc_ascii_tolower(*s1) - vlc_ascii_tolower(*s2);
+    while (*s1 && d == 0)
     {
         s1++;
         s2++;
-        d = vlc_ascii_tolower( *s1 ) - vlc_ascii_tolower( *s2 );
+        d = vlc_ascii_tolower(*s1) - vlc_ascii_tolower(*s2);
     }
 
     return d;
 }
 
-static inline int vlc_ascii_strncasecmp( const char *psz1, const char *psz2, size_t n )
+static inline int vlc_ascii_strncasecmp(const char *psz1, const char *psz2, size_t n)
 {
     const char *s1 = psz1;
     const char *s2 = psz2;
     const char *s1end = psz1 + n;
-    int d = vlc_ascii_tolower( *s1 ) - vlc_ascii_tolower( *s2 );
-    while ( *s1 && s1 < s1end && d == 0)
+    int d = vlc_ascii_tolower(*s1) - vlc_ascii_tolower(*s2);
+    while (*s1 && s1 < s1end && d == 0)
     {
         s1++;
         s2++;
-        d = vlc_ascii_tolower( *s1 ) - vlc_ascii_tolower( *s2 );
+        d = vlc_ascii_tolower(*s1) - vlc_ascii_tolower(*s2);
     }
 
     if (s1 == s1end)
@@ -116,12 +116,12 @@ VLC_API void vlc_xml_decode(char *st);
  */
 VLC_API char *vlc_xml_encode(const char *str) VLC_MALLOC;
 
-VLC_API char * vlc_b64_encode_binary( const uint8_t *, size_t );
-VLC_API char * vlc_b64_encode( const char * );
+VLC_API char *vlc_b64_encode_binary(const uint8_t *, size_t);
+VLC_API char *vlc_b64_encode(const char *);
 
-VLC_API size_t vlc_b64_decode_binary_to_buffer( uint8_t *p_dst, size_t i_dst_max, const char *psz_src );
-VLC_API size_t vlc_b64_decode_binary( uint8_t **pp_dst, const char *psz_src );
-VLC_API char * vlc_b64_decode( const char *psz_src );
+VLC_API size_t vlc_b64_decode_binary_to_buffer(uint8_t *p_dst, size_t i_dst_max, const char *psz_src);
+VLC_API size_t vlc_b64_decode_binary(uint8_t **pp_dst, const char *psz_src);
+VLC_API char *vlc_b64_decode(const char *psz_src);
 
 /**
  * Convenience wrapper for strftime().
@@ -131,20 +131,20 @@ VLC_API char * vlc_b64_decode( const char *psz_src );
  * @param tformat time format (as with C strftime())
  * @return an allocated string (must be free()'d), or NULL on memory error.
  */
-VLC_API char *vlc_strftime( const char * );
+VLC_API char *vlc_strftime(const char *);
 
 /**
  * Formats input meta-data.
  *
  * Formats input and input item meta-informations into a heap-allocated string.
  */
-VLC_API char *vlc_strfinput( input_thread_t *, const char * );
+VLC_API char *vlc_strfinput(input_thread_t *, const char *);
 
-static inline char *str_format( input_thread_t *input, const char *fmt )
+static inline char *str_format(input_thread_t *input, const char *fmt)
 {
-    char *s1 = vlc_strftime( fmt );
-    char *s2 = vlc_strfinput( input, s1 );
-    free( s1 );
+    char *s1 = vlc_strftime(fmt);
+    char *s2 = vlc_strfinput(input, s1);
+    free(s1);
     return s2;
 }
 

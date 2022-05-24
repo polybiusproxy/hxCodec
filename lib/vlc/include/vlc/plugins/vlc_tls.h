@@ -20,7 +20,7 @@
  *****************************************************************************/
 
 #ifndef VLC_TLS_H
-# define VLC_TLS_H
+#define VLC_TLS_H
 
 /**
  * \ingroup net
@@ -37,7 +37,7 @@
  * Transport layer functions
  */
 
-# include <vlc_network.h>
+#include <vlc_network.h>
 
 /** Transport layer socket */
 typedef struct vlc_tls
@@ -73,9 +73,9 @@ typedef struct vlc_tls_creds
 
     vlc_tls_t *(*open)(struct vlc_tls_creds *, vlc_tls_t *sock,
                        const char *host, const char *const *alpn);
-    int  (*handshake)(struct vlc_tls_creds *, vlc_tls_t *session,
-                      const char *hostname, const char *service,
-                      char ** /*restrict*/ alp);
+    int (*handshake)(struct vlc_tls_creds *, vlc_tls_t *session,
+                     const char *hostname, const char *service,
+                     char ** /*restrict*/ alp);
 } vlc_tls_creds_t;
 
 /**
@@ -98,8 +98,8 @@ VLC_API vlc_tls_creds_t *vlc_tls_ClientCreate(vlc_object_t *);
 VLC_API vlc_tls_creds_t *vlc_tls_ServerCreate(vlc_object_t *, const char *cert,
                                               const char *key);
 
-static inline int vlc_tls_SessionHandshake (vlc_tls_creds_t *crd,
-                                            vlc_tls_t *tls)
+static inline int vlc_tls_SessionHandshake(vlc_tls_creds_t *crd,
+                                           vlc_tls_t *tls)
 {
     return crd->handshake(crd, tls, NULL, NULL, NULL);
 }
@@ -182,7 +182,7 @@ VLC_API vlc_tls_t *vlc_tls_ServerSessionCreate(vlc_tls_creds_t *creds,
  *
  * This function is non-blocking and is not a cancellation point.
  */
-VLC_API void vlc_tls_SessionDelete (vlc_tls_t *);
+VLC_API void vlc_tls_SessionDelete(vlc_tls_t *);
 
 static inline int vlc_tls_GetFD(vlc_tls_t *tls)
 {
@@ -262,8 +262,7 @@ static inline void vlc_tls_Close(vlc_tls_t *session)
 
         vlc_tls_SessionDelete(session);
         session = p;
-    }
-    while (session != NULL);
+    } while (session != NULL);
 }
 
 /**

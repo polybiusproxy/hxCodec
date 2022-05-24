@@ -11,13 +11,11 @@ import cpp.UInt8;
  */
 //
 @:buildXml('<include name="${haxelib:hxCodec}/vlc/lib/LibVLCBuild.xml" />')
-
 @:include("LibVLC.h")
 @:unreflective
 @:keep
 @:native("LibVLC*")
-extern class LibVLC
-{
+extern class LibVLC {
 	@:native("LibVLC::create")
 	public static function create():LibVLC;
 

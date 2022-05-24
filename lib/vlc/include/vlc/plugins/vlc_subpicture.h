@@ -56,40 +56,40 @@ typedef struct subpicture_region_private_t subpicture_region_private_t;
  */
 struct subpicture_region_t
 {
-    video_format_t  fmt;                          /**< format of the picture */
-    picture_t       *p_picture;          /**< picture comprising this region */
+  video_format_t fmt;   /**< format of the picture */
+  picture_t *p_picture; /**< picture comprising this region */
 
-    int             i_x;      /**< position of region, relative to alignment */
-    int             i_y;      /**< position of region, relative to alignment */
-    int             i_align;                  /**< alignment flags of region */
-    int             i_alpha;                               /**< transparency */
+  int i_x;     /**< position of region, relative to alignment */
+  int i_y;     /**< position of region, relative to alignment */
+  int i_align; /**< alignment flags of region */
+  int i_alpha; /**< transparency */
 
-    /* Parameters for text regions (p_picture to be rendered) */
-    text_segment_t  *p_text;         /**< subtitle text, made of a list of segments */
-    int             i_text_align;    /**< alignment flags of region content */
-    bool            b_noregionbg;    /**< render background under text only */
-    bool            b_gridmode;      /** if the decoder sends row/cols based output */
-    bool            b_balanced_text; /** try to balance wrapped text lines */
-    int             i_max_width;     /** horizontal rendering/cropping target/limit */
-    int             i_max_height;    /** vertical rendering/cropping target/limit */
+  /* Parameters for text regions (p_picture to be rendered) */
+  text_segment_t *p_text; /**< subtitle text, made of a list of segments */
+  int i_text_align;       /**< alignment flags of region content */
+  bool b_noregionbg;      /**< render background under text only */
+  bool b_gridmode;        /** if the decoder sends row/cols based output */
+  bool b_balanced_text;   /** try to balance wrapped text lines */
+  int i_max_width;        /** horizontal rendering/cropping target/limit */
+  int i_max_height;       /** vertical rendering/cropping target/limit */
 
-    subpicture_region_t *p_next;                /**< next region in the list */
-    subpicture_region_private_t *p_private;  /**< Private data for spu_t *only* */
+  subpicture_region_t *p_next;            /**< next region in the list */
+  subpicture_region_private_t *p_private; /**< Private data for spu_t *only* */
 };
 
 /* Subpicture region position flags */
-#define SUBPICTURE_ALIGN_LEFT       0x1
-#define SUBPICTURE_ALIGN_RIGHT      0x2
-#define SUBPICTURE_ALIGN_TOP        0x4
-#define SUBPICTURE_ALIGN_BOTTOM     0x8
-#define SUBPICTURE_ALIGN_MASK ( SUBPICTURE_ALIGN_LEFT|SUBPICTURE_ALIGN_RIGHT| \
-                                SUBPICTURE_ALIGN_TOP |SUBPICTURE_ALIGN_BOTTOM )
+#define SUBPICTURE_ALIGN_LEFT 0x1
+#define SUBPICTURE_ALIGN_RIGHT 0x2
+#define SUBPICTURE_ALIGN_TOP 0x4
+#define SUBPICTURE_ALIGN_BOTTOM 0x8
+#define SUBPICTURE_ALIGN_MASK (SUBPICTURE_ALIGN_LEFT | SUBPICTURE_ALIGN_RIGHT | \
+                               SUBPICTURE_ALIGN_TOP | SUBPICTURE_ALIGN_BOTTOM)
 /**
  * This function will create a new subpicture region.
  *
  * You must use subpicture_region_Delete to destroy it.
  */
-VLC_API subpicture_region_t * subpicture_region_New( const video_format_t *p_fmt );
+VLC_API subpicture_region_t *subpicture_region_New(const video_format_t *p_fmt);
 
 /**
  * This function will destroy a subpicture region allocated by
@@ -97,7 +97,7 @@ VLC_API subpicture_region_t * subpicture_region_New( const video_format_t *p_fmt
  *
  * You may give it NULL.
  */
-VLC_API void subpicture_region_Delete( subpicture_region_t *p_region );
+VLC_API void subpicture_region_Delete(subpicture_region_t *p_region);
 
 /**
  * This function will destroy a list of subpicture regions allocated by
@@ -105,7 +105,7 @@ VLC_API void subpicture_region_Delete( subpicture_region_t *p_region );
  *
  * Provided for convenience.
  */
-VLC_API void subpicture_region_ChainDelete( subpicture_region_t *p_head );
+VLC_API void subpicture_region_ChainDelete(subpicture_region_t *p_head);
 
 /**
  * This function will copy a subpicture region to a new allocated one
@@ -113,7 +113,7 @@ VLC_API void subpicture_region_ChainDelete( subpicture_region_t *p_head );
  *
  * Provided for convenience.
  */
-VLC_API subpicture_region_t *subpicture_region_Copy( subpicture_region_t *p_region );
+VLC_API subpicture_region_t *subpicture_region_Copy(subpicture_region_t *p_region);
 
 /**
  *
@@ -121,23 +121,23 @@ VLC_API subpicture_region_t *subpicture_region_Copy( subpicture_region_t *p_regi
 typedef struct subpicture_updater_sys_t subpicture_updater_sys_t;
 typedef struct
 {
-    /** Optional pre update callback, usually useful on video format change.
-      * Will skip pf_update on VLC_SUCCESS, or will delete every region before
-      * the call to pf_update */
-    int  (*pf_validate)( subpicture_t *,
-                         bool has_src_changed, const video_format_t *p_fmt_src,
-                         bool has_dst_changed, const video_format_t *p_fmt_dst,
-                         mtime_t);
-    /** Mandatory callback called after pf_validate and doing
-      * the main job of creating the subpicture regions for the
-      * current video_format */
-    void (*pf_update)  ( subpicture_t *,
-                         const video_format_t *p_fmt_src,
-                         const video_format_t *p_fmt_dst,
-                         mtime_t );
-    /** Optional callback for subpicture private data cleanup */
-    void (*pf_destroy) ( subpicture_t * );
-    subpicture_updater_sys_t *p_sys;
+  /** Optional pre update callback, usually useful on video format change.
+   * Will skip pf_update on VLC_SUCCESS, or will delete every region before
+   * the call to pf_update */
+  int (*pf_validate)(subpicture_t *,
+                     bool has_src_changed, const video_format_t *p_fmt_src,
+                     bool has_dst_changed, const video_format_t *p_fmt_dst,
+                     mtime_t);
+  /** Mandatory callback called after pf_validate and doing
+   * the main job of creating the subpicture regions for the
+   * current video_format */
+  void (*pf_update)(subpicture_t *,
+                    const video_format_t *p_fmt_src,
+                    const video_format_t *p_fmt_dst,
+                    mtime_t);
+  /** Optional callback for subpicture private data cleanup */
+  void (*pf_destroy)(subpicture_t *);
+  subpicture_updater_sys_t *p_sys;
 } subpicture_updater_t;
 
 typedef struct subpicture_private_t subpicture_private_t;
@@ -152,44 +152,44 @@ typedef struct subpicture_private_t subpicture_private_t;
  */
 struct subpicture_t
 {
-    /** \name Channel ID */
-    /**@{*/
-    int             i_channel;                    /**< subpicture channel ID */
-    /**@}*/
+  /** \name Channel ID */
+  /**@{*/
+  int i_channel; /**< subpicture channel ID */
+  /**@}*/
 
-    /** \name Type and flags
-       Should NOT be modified except by the vout thread */
-    /**@{*/
-    int64_t         i_order;                 /** an increasing unique number */
-    subpicture_t *  p_next;               /**< next subtitle to be displayed */
-    /**@}*/
+  /** \name Type and flags
+     Should NOT be modified except by the vout thread */
+  /**@{*/
+  int64_t i_order;      /** an increasing unique number */
+  subpicture_t *p_next; /**< next subtitle to be displayed */
+  /**@}*/
 
-    subpicture_region_t *p_region;  /**< region list composing this subtitle */
+  subpicture_region_t *p_region; /**< region list composing this subtitle */
 
-    /** \name Date properties */
-    /**@{*/
-    mtime_t         i_start;                  /**< beginning of display date */
-    mtime_t         i_stop;                         /**< end of display date */
-    bool            b_ephemer;    /**< If this flag is set to true the subtitle
-                                will be displayed until the next one appear */
-    bool            b_fade;                               /**< enable fading */
-    /**@}*/
+  /** \name Date properties */
+  /**@{*/
+  mtime_t i_start; /**< beginning of display date */
+  mtime_t i_stop;  /**< end of display date */
+  bool b_ephemer;  /**< If this flag is set to true the subtitle
+                 will be displayed until the next one appear */
+  bool b_fade;     /**< enable fading */
+  /**@}*/
 
-    /** \name Display properties
-     * These properties are only indicative and may be
-     * changed by the video output thread, or simply ignored depending of the
-     * subtitle type. */
-    /**@{*/
-    bool         b_subtitle;            /**< the picture is a movie subtitle */
-    bool         b_absolute;                       /**< position is absolute */
-    int          i_original_picture_width;  /**< original width of the movie */
-    int          i_original_picture_height;/**< original height of the movie */
-    int          i_alpha;                                  /**< transparency */
-     /**@}*/
+  /** \name Display properties
+   * These properties are only indicative and may be
+   * changed by the video output thread, or simply ignored depending of the
+   * subtitle type. */
+  /**@{*/
+  bool b_subtitle;               /**< the picture is a movie subtitle */
+  bool b_absolute;               /**< position is absolute */
+  int i_original_picture_width;  /**< original width of the movie */
+  int i_original_picture_height; /**< original height of the movie */
+  int i_alpha;                   /**< transparency */
+                                 /**@}*/
 
-    subpicture_updater_t updater;
+  subpicture_updater_t updater;
 
-    subpicture_private_t *p_private;    /* Reserved to the core */
+  subpicture_private_t *p_private; /* Reserved to the core */
 };
 
 /**
@@ -197,13 +197,13 @@ struct subpicture_t
  *
  * You must use subpicture_Delete to destroy it.
  */
-VLC_API subpicture_t * subpicture_New( const subpicture_updater_t * );
+VLC_API subpicture_t *subpicture_New(const subpicture_updater_t *);
 
 /**
  * This function delete a subpicture created by subpicture_New.
  * You may give it NULL.
  */
-VLC_API void subpicture_Delete( subpicture_t *p_subpic );
+VLC_API void subpicture_Delete(subpicture_t *p_subpic);
 
 /**
  * This function will create a subpicture having one region in the requested
@@ -212,13 +212,13 @@ VLC_API void subpicture_Delete( subpicture_t *p_subpic );
  * The picture_t given is not released nor used inside the
  * returned subpicture_t.
  */
-VLC_API subpicture_t * subpicture_NewFromPicture( vlc_object_t *, picture_t *, vlc_fourcc_t i_chroma );
+VLC_API subpicture_t *subpicture_NewFromPicture(vlc_object_t *, picture_t *, vlc_fourcc_t i_chroma);
 
 /**
  * This function will update the content of a subpicture created with
  * a non NULL subpicture_updater_t.
  */
-VLC_API void subpicture_Update( subpicture_t *, const video_format_t *src, const video_format_t *, mtime_t );
+VLC_API void subpicture_Update(subpicture_t *, const video_format_t *src, const video_format_t *, mtime_t);
 
 /**
  * This function will blend a given subpicture onto a picture.
@@ -230,7 +230,7 @@ VLC_API void subpicture_Update( subpicture_t *, const video_format_t *src, const
  *  - contains only picture (no text rendering).
  * \return the number of region(s) successfully blent
  */
-VLC_API unsigned picture_BlendSubpicture( picture_t *, filter_t *p_blend, subpicture_t * );
+VLC_API unsigned picture_BlendSubpicture(picture_t *, filter_t *p_blend, subpicture_t *);
 
 /**@}*/
 

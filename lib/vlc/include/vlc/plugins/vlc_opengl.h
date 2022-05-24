@@ -45,21 +45,24 @@ struct vlc_gl_t
     module_t *module;
     void *sys;
 
-    int  (*makeCurrent)(vlc_gl_t *);
+    int (*makeCurrent)(vlc_gl_t *);
     void (*releaseCurrent)(vlc_gl_t *);
     void (*resize)(vlc_gl_t *, unsigned, unsigned);
     void (*swap)(vlc_gl_t *);
-    void*(*getProcAddress)(vlc_gl_t *, const char *);
+    void *(*getProcAddress)(vlc_gl_t *, const char *);
 
-    enum {
+    enum
+    {
         VLC_GL_EXT_DEFAULT,
         VLC_GL_EXT_EGL,
         VLC_GL_EXT_WGL,
     } ext;
 
-    union {
+    union
+    {
         /* if ext == VLC_GL_EXT_EGL */
-        struct {
+        struct
+        {
             /* call eglQueryString() with current display */
             const char *(*queryString)(vlc_gl_t *, int32_t name);
             /* call eglCreateImageKHR() with current display and context, can
@@ -77,7 +80,8 @@ struct vlc_gl_t
     };
 };
 
-enum {
+enum
+{
     VLC_OPENGL,
     VLC_OPENGL_ES2,
 };

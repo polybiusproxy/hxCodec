@@ -36,10 +36,10 @@
  */
 typedef struct
 {
-    uint32_t          begin;
-    uint32_t          size;
-    uint32_t          capacity;
-    int64_t           *buffer;
+    uint32_t begin;
+    uint32_t size;
+    uint32_t capacity;
+    int64_t *buffer;
 } timestamp_fifo_t;
 
 static inline timestamp_fifo_t *timestamp_FifoNew(uint32_t capacity)
@@ -48,7 +48,8 @@ static inline timestamp_fifo_t *timestamp_FifoNew(uint32_t capacity)
     if (!fifo)
         return NULL;
     fifo->buffer = vlc_alloc(capacity, sizeof(*fifo->buffer));
-    if (!fifo->buffer) {
+    if (!fifo->buffer)
+    {
         free(fifo);
         return NULL;
     }

@@ -129,7 +129,7 @@ VLC_API int
 vlc_rd_get_names(vlc_object_t *p_obj, char ***pppsz_names,
                  char ***pppsz_longnames) VLC_USED;
 #define vlc_rd_get_names(a, b, c) \
-        vlc_rd_get_names(VLC_OBJECT(a), b, c)
+    vlc_rd_get_names(VLC_OBJECT(a), b, c)
 
 /**
  * Create a new renderer discovery module
@@ -164,12 +164,12 @@ struct vlc_renderer_discovery_owner
 struct vlc_renderer_discovery_t
 {
     VLC_COMMON_MEMBERS
-    module_t *          p_module;
+    module_t *p_module;
 
     struct vlc_renderer_discovery_owner owner;
 
-    char *              psz_name;
-    config_chain_t *    p_cfg;
+    char *psz_name;
+    config_chain_t *p_cfg;
 
     vlc_renderer_discovery_sys *p_sys;
 };
@@ -179,8 +179,8 @@ struct vlc_renderer_discovery_t
  *
  * This will send the vlc_RendererDiscoveryItemAdded event
  */
-static inline void vlc_rd_add_item(vlc_renderer_discovery_t * p_rd,
-                                   vlc_renderer_item_t * p_item)
+static inline void vlc_rd_add_item(vlc_renderer_discovery_t *p_rd,
+                                   vlc_renderer_item_t *p_item)
 {
     p_rd->owner.item_added(p_rd, p_item);
 }
@@ -190,8 +190,8 @@ static inline void vlc_rd_add_item(vlc_renderer_discovery_t * p_rd,
  *
  * This will send the vlc_RendererDiscoveryItemRemoved event
  */
-static inline void vlc_rd_remove_item(vlc_renderer_discovery_t * p_rd,
-                                      vlc_renderer_item_t * p_item)
+static inline void vlc_rd_remove_item(vlc_renderer_discovery_t *p_rd,
+                                      vlc_renderer_item_t *p_item)
 {
     p_rd->owner.item_removed(p_rd, p_item);
 }
@@ -203,16 +203,16 @@ VLC_API int
 vlc_rd_probe_add(vlc_probe_t *p_probe, const char *psz_name,
                  const char *psz_longname);
 
-#define VLC_RD_PROBE_HELPER(name, longname) \
-static int vlc_rd_probe_open(vlc_object_t *obj) \
-{ \
-    return vlc_rd_probe_add((struct vlc_probe_t *)obj, name, longname); \
-}
+#define VLC_RD_PROBE_HELPER(name, longname)                                 \
+    static int vlc_rd_probe_open(vlc_object_t *obj)                         \
+    {                                                                       \
+        return vlc_rd_probe_add((struct vlc_probe_t *)obj, name, longname); \
+    }
 
-#define VLC_RD_PROBE_SUBMODULE \
-    add_submodule() \
+#define VLC_RD_PROBE_SUBMODULE                \
+    add_submodule()                           \
         set_capability("renderer probe", 100) \
-        set_callbacks(vlc_rd_probe_open, NULL)
+            set_callbacks(vlc_rd_probe_open, NULL)
 
 /** @} @} */
 

@@ -23,7 +23,7 @@
  *****************************************************************************/
 
 #ifndef VLC_URL_H
-# define VLC_URL_H
+#define VLC_URL_H
 
 /**
  * \file
@@ -152,7 +152,7 @@ struct vlc_url_t
     char *psz_path;
     char *psz_option;
 
-    char *psz_buffer; /* to be freed */
+    char *psz_buffer;     /* to be freed */
     char *psz_pathbuffer; /* to be freed */
 };
 

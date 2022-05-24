@@ -64,15 +64,16 @@ VLC_API stream_t *vlc_access_NewMRL(vlc_object_t *obj, const char *mrl);
 /**
  * Default pf_control callback for directory accesses.
  */
-VLC_API int access_vaDirectoryControlHelper( stream_t *p_access, int i_query, va_list args );
+VLC_API int access_vaDirectoryControlHelper(stream_t *p_access, int i_query, va_list args);
 
-#define ACCESS_SET_CALLBACKS( read, block, control, seek ) \
-    do { \
-        p_access->pf_read = (read); \
-        p_access->pf_block = (block); \
-        p_access->pf_control = (control); \
-        p_access->pf_seek = (seek); \
-    } while(0)
+#define ACCESS_SET_CALLBACKS(read, block, control, seek) \
+    do                                                   \
+    {                                                    \
+        p_access->pf_read = (read);                      \
+        p_access->pf_block = (block);                    \
+        p_access->pf_control = (control);                \
+        p_access->pf_seek = (seek);                      \
+    } while (0)
 
 /**
  * @} @}

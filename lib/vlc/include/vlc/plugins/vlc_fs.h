@@ -28,23 +28,22 @@ struct stat;
 struct iovec;
 
 #ifdef _WIN32
-# include <sys/stat.h>
-# ifndef stat
-#  define stat _stati64
-# endif
-# ifndef fstat
-#  define fstat _fstati64
-# endif
-# ifndef _MSC_VER
-#  undef lseek
-#  define lseek _lseeki64
-# endif
+#include <sys/stat.h>
+#ifndef stat
+#define stat _stati64
+#endif
+#ifndef fstat
+#define fstat _fstati64
+#endif
+#ifndef _MSC_VER
+#undef lseek
+#define lseek _lseeki64
+#endif
 #endif
 
 #ifdef __ANDROID__
-# define lseek lseek64
+#define lseek lseek64
 #endif
-
 
 /**
  * \defgroup os Operating system
@@ -96,7 +95,7 @@ VLC_API int vlc_open(const char *filename, int flags, ...) VLC_USED;
  */
 VLC_API int vlc_openat(int fd, const char *filename, int flags, ...) VLC_USED;
 
-VLC_API int vlc_mkstemp( char * );
+VLC_API int vlc_mkstemp(char *);
 
 /**
  * Duplicates a file descriptor. The new file descriptor has the close-on-exec
@@ -110,7 +109,7 @@ VLC_API int vlc_dup(int) VLC_USED;
  * descriptors have the close-on-exec flag preset.
  * @return 0 on success, -1 on error (see errno)
  */
-VLC_API int vlc_pipe(int [2]) VLC_USED;
+VLC_API int vlc_pipe(int[2]) VLC_USED;
 
 /**
  * Creates an anonymous regular file descriptor, i.e. a descriptor for a
@@ -200,7 +199,7 @@ VLC_API int vlc_unlink(const char *filename);
  */
 VLC_API int vlc_rename(const char *oldpath, const char *newpath);
 
-VLC_API FILE * vlc_fopen( const char *filename, const char *mode ) VLC_USED;
+VLC_API FILE *vlc_fopen(const char *filename, const char *mode) VLC_USED;
 
 /**
  * \defgroup dir Directories
@@ -229,8 +228,8 @@ VLC_API DIR *vlc_opendir(const char *dirname) VLC_USED;
  */
 VLC_API const char *vlc_readdir(DIR *dir) VLC_USED;
 
-VLC_API int vlc_loaddir( DIR *dir, char ***namelist, int (*select)( const char * ), int (*compar)( const char **, const char ** ) );
-VLC_API int vlc_scandir( const char *dirname, char ***namelist, int (*select)( const char * ), int (*compar)( const char **, const char ** ) );
+VLC_API int vlc_loaddir(DIR *dir, char ***namelist, int (*select)(const char *), int (*compar)(const char **, const char **));
+VLC_API int vlc_scandir(const char *dirname, char ***namelist, int (*select)(const char *), int (*compar)(const char **, const char **));
 
 /**
  * Creates a directory.
@@ -253,7 +252,7 @@ VLC_API char *vlc_getcwd(void) VLC_USED;
 /** @} */
 /** @} */
 
-#if defined( _WIN32 )
+#if defined(_WIN32)
 typedef struct vlc_DIR
 {
     _WDIR *wdir; /* MUST be first, see <vlc_fs.h> */
@@ -265,30 +264,30 @@ typedef struct vlc_DIR
     } u;
 } vlc_DIR;
 
-static inline int vlc_closedir( DIR *dir )
+static inline int vlc_closedir(DIR *dir)
 {
     vlc_DIR *vdir = (vlc_DIR *)dir;
     _WDIR *wdir = vdir->wdir;
 
-    free( vdir->entry );
-    free( vdir );
-    return (wdir != NULL) ? _wclosedir( wdir ) : 0;
+    free(vdir->entry);
+    free(vdir);
+    return (wdir != NULL) ? _wclosedir(wdir) : 0;
 }
-# undef closedir
-# define closedir vlc_closedir
+#undef closedir
+#define closedir vlc_closedir
 
-static inline void vlc_rewinddir( DIR *dir )
+static inline void vlc_rewinddir(DIR *dir)
 {
     _WDIR *wdir = *(_WDIR **)dir;
 
-    _wrewinddir( wdir );
+    _wrewinddir(wdir);
 }
-# undef rewinddir
-# define rewinddir vlc_rewinddir
+#undef rewinddir
+#define rewinddir vlc_rewinddir
 #endif
 
 #ifdef __ANDROID__
-# define lseek lseek64
+#define lseek lseek64
 #endif
 
 #endif

@@ -47,12 +47,13 @@
 /**
  * Vout configuration
  */
-typedef struct {
-    vout_thread_t        *vout;
-    vlc_object_t         *input;
-    bool                 change_fmt;
+typedef struct
+{
+    vout_thread_t *vout;
+    vlc_object_t *input;
+    bool change_fmt;
     const video_format_t *fmt;
-    unsigned             dpb_size;
+    unsigned dpb_size;
 } vout_configuration_t;
 
 /**
@@ -67,7 +68,8 @@ typedef struct vout_thread_sys_t vout_thread_sys_t;
  * is represented by a video output thread, and described using the following
  * structure.
  */
-struct vout_thread_t {
+struct vout_thread_t
+{
     VLC_COMMON_MEMBERS
 
     /* Private vout_thread data */
@@ -75,12 +77,12 @@ struct vout_thread_t {
 };
 
 /* Alignment flags */
-#define VOUT_ALIGN_LEFT         0x0001
-#define VOUT_ALIGN_RIGHT        0x0002
-#define VOUT_ALIGN_HMASK        0x0003
-#define VOUT_ALIGN_TOP          0x0004
-#define VOUT_ALIGN_BOTTOM       0x0008
-#define VOUT_ALIGN_VMASK        0x000C
+#define VOUT_ALIGN_LEFT 0x0001
+#define VOUT_ALIGN_RIGHT 0x0002
+#define VOUT_ALIGN_HMASK 0x0003
+#define VOUT_ALIGN_TOP 0x0004
+#define VOUT_ALIGN_BOTTOM 0x0008
+#define VOUT_ALIGN_VMASK 0x000C
 
 /*****************************************************************************
  * Prototypes
@@ -100,8 +102,8 @@ struct vout_thread_t {
  * \param cfg the video configuration requested.
  * \return a vout
  */
-VLC_API vout_thread_t * vout_Request( vlc_object_t *object, const vout_configuration_t *cfg );
-#define vout_Request(a,b) vout_Request(VLC_OBJECT(a),b)
+VLC_API vout_thread_t *vout_Request(vlc_object_t *object, const vout_configuration_t *cfg);
+#define vout_Request(a, b) vout_Request(VLC_OBJECT(a), b)
 
 /**
  * This function will close a vout created by vout_Request.
@@ -111,7 +113,7 @@ VLC_API vout_thread_t * vout_Request( vlc_object_t *object, const vout_configura
  *
  * \param p_vout the vout to close
  */
-VLC_API void vout_Close( vout_thread_t *p_vout );
+VLC_API void vout_Close(vout_thread_t *p_vout);
 
 /**
  * This function will close a vout created by vout_Create
@@ -119,10 +121,10 @@ VLC_API void vout_Close( vout_thread_t *p_vout );
  *
  * \param p_vout the vout to close and release
  */
-static inline void vout_CloseAndRelease( vout_thread_t *p_vout )
+static inline void vout_CloseAndRelease(vout_thread_t *p_vout)
 {
-    vout_Close( p_vout );
-    vlc_object_release( p_vout );
+    vout_Close(p_vout);
+    vlc_object_release(p_vout);
 }
 
 /**
@@ -140,27 +142,27 @@ static inline void vout_CloseAndRelease( vout_thread_t *p_vout )
  * available.
  *
  */
-VLC_API int vout_GetSnapshot( vout_thread_t *p_vout,
-                              block_t **pp_image, picture_t **pp_picture,
-                              video_format_t *p_fmt,
-                              const char *psz_format, mtime_t i_timeout );
+VLC_API int vout_GetSnapshot(vout_thread_t *p_vout,
+                             block_t **pp_image, picture_t **pp_picture,
+                             video_format_t *p_fmt,
+                             const char *psz_format, mtime_t i_timeout);
 
-VLC_API void vout_ChangeAspectRatio( vout_thread_t *p_vout,
-                                     unsigned int i_num, unsigned int i_den );
+VLC_API void vout_ChangeAspectRatio(vout_thread_t *p_vout,
+                                    unsigned int i_num, unsigned int i_den);
 
 /* */
-VLC_API picture_t * vout_GetPicture( vout_thread_t * );
-VLC_API void vout_PutPicture( vout_thread_t *, picture_t * );
+VLC_API picture_t *vout_GetPicture(vout_thread_t *);
+VLC_API void vout_PutPicture(vout_thread_t *, picture_t *);
 
 /* Subpictures channels ID */
-#define VOUT_SPU_CHANNEL_INVALID      (-1) /* Always fails in comparison */
-#define VOUT_SPU_CHANNEL_OSD            1 /* OSD channel is automatically cleared */
-#define VOUT_SPU_CHANNEL_AVAIL_FIRST    8 /* Registerable channels from this offset */
+#define VOUT_SPU_CHANNEL_INVALID (-1)  /* Always fails in comparison */
+#define VOUT_SPU_CHANNEL_OSD 1         /* OSD channel is automatically cleared */
+#define VOUT_SPU_CHANNEL_AVAIL_FIRST 8 /* Registerable channels from this offset */
 
 /* */
-VLC_API void vout_PutSubpicture( vout_thread_t *, subpicture_t * );
-VLC_API int vout_RegisterSubpictureChannel( vout_thread_t * );
-VLC_API void vout_FlushSubpictureChannel( vout_thread_t *, int );
+VLC_API void vout_PutSubpicture(vout_thread_t *, subpicture_t *);
+VLC_API int vout_RegisterSubpictureChannel(vout_thread_t *);
+VLC_API void vout_FlushSubpictureChannel(vout_thread_t *, int);
 
 /**@}*/
 

@@ -57,21 +57,21 @@ struct decoder_t
     VLC_COMMON_MEMBERS
 
     /* Module properties */
-    module_t *          p_module;
-    decoder_sys_t *     p_sys;
+    module_t *p_module;
+    decoder_sys_t *p_sys;
 
     /* Input format ie from demuxer (XXX: a lot of field could be invalid) */
-    es_format_t         fmt_in;
+    es_format_t fmt_in;
 
     /* Output format of decoder/packetizer */
-    es_format_t         fmt_out;
+    es_format_t fmt_out;
 
     /* Tell the decoder if it is allowed to drop frames */
-    bool                b_frame_drop_allowed;
+    bool b_frame_drop_allowed;
 
-#   define VLCDEC_SUCCESS   VLC_SUCCESS
-#   define VLCDEC_ECRITICAL VLC_EGENERIC
-#   define VLCDEC_RELOAD    (-100)
+#define VLCDEC_SUCCESS VLC_SUCCESS
+#define VLCDEC_ECRITICAL VLC_EGENERIC
+#define VLCDEC_RELOAD (-100)
     /* This function is called to decode one packetized block.
      *
      * The module implementation will own the input block (p_block) and should
@@ -93,7 +93,7 @@ struct decoder_t
      *  modify the p_block in argument (The same p_block will be feed to the
      *  next decoder module).
      */
-    int                 ( * pf_decode )   ( decoder_t *, block_t *p_block );
+    int (*pf_decode)(decoder_t *, block_t *p_block);
 
     /* This function is called in a loop with the same pp_block argument until
      * it returns NULL. This allows a module implementation to return more than
@@ -122,9 +122,9 @@ struct decoder_t
      * pf_packetize function will be called as long as the module return an
      * output block).
      */
-    block_t *           ( * pf_packetize )( decoder_t *, block_t **pp_block );
+    block_t *(*pf_packetize)(decoder_t *, block_t **pp_block);
     /* */
-    void                ( * pf_flush ) ( decoder_t * );
+    void (*pf_flush)(decoder_t *);
 
     /* Closed Caption (CEA 608/708) extraction.
      * If set, it *may* be called after pf_packetize returned data. It should
@@ -132,13 +132,13 @@ struct decoder_t
      * channel bitmaps will be used to known which cc channel are present (but
      * globaly, not necessary for the current packet. Video decoders should use
      * the decoder_QueueCc() function to pass closed captions. */
-    block_t *           ( * pf_get_cc )      ( decoder_t *, decoder_cc_desc_t * );
+    block_t *(*pf_get_cc)(decoder_t *, decoder_cc_desc_t *);
 
     /* Meta data at codec level
      *  The decoder owner set it back to NULL once it has retreived what it needs.
      *  The decoder owner is responsible of its release except when you overwrite it.
      */
-    vlc_meta_t          *p_description;
+    vlc_meta_t *p_description;
 
     /*
      * Owner fields
@@ -147,43 +147,43 @@ struct decoder_t
 
     /* Video output callbacks
      * XXX use decoder_NewPicture */
-    int             (*pf_vout_format_update)( decoder_t * );
-    picture_t      *(*pf_vout_buffer_new)( decoder_t * );
+    int (*pf_vout_format_update)(decoder_t *);
+    picture_t *(*pf_vout_buffer_new)(decoder_t *);
 
     /**
      * Number of extra (ie in addition to the DPB) picture buffers
      * needed for decoding.
      */
-    int             i_extra_picture_buffers;
+    int i_extra_picture_buffers;
 
     /* Audio output callbacks */
-    int             (*pf_aout_format_update)( decoder_t * );
+    int (*pf_aout_format_update)(decoder_t *);
 
     /* SPU output callbacks
      * XXX use decoder_NewSubpicture */
-    subpicture_t   *(*pf_spu_buffer_new)( decoder_t *, const subpicture_updater_t * );
+    subpicture_t *(*pf_spu_buffer_new)(decoder_t *, const subpicture_updater_t *);
 
     /* Input attachments
      * XXX use decoder_GetInputAttachments */
-    int             (*pf_get_attachments)( decoder_t *p_dec, input_attachment_t ***ppp_attachment, int *pi_attachment );
+    int (*pf_get_attachments)(decoder_t *p_dec, input_attachment_t ***ppp_attachment, int *pi_attachment);
 
     /* Display date
      * XXX use decoder_GetDisplayDate */
-    mtime_t         (*pf_get_display_date)( decoder_t *, mtime_t );
+    mtime_t (*pf_get_display_date)(decoder_t *, mtime_t);
 
     /* Display rate
      * XXX use decoder_GetDisplayRate */
-    int             (*pf_get_display_rate)( decoder_t * );
+    int (*pf_get_display_rate)(decoder_t *);
 
     /* XXX use decoder_QueueVideo or decoder_QueueVideoWithCc */
-    int             (*pf_queue_video)( decoder_t *, picture_t * );
+    int (*pf_queue_video)(decoder_t *, picture_t *);
     /* XXX use decoder_QueueAudio */
-    int             (*pf_queue_audio)( decoder_t *, block_t * );
+    int (*pf_queue_audio)(decoder_t *, block_t *);
     /* XXX use decoder_QueueCC */
-    int             (*pf_queue_cc)( decoder_t *, block_t *, const decoder_cc_desc_t * );
+    int (*pf_queue_cc)(decoder_t *, block_t *, const decoder_cc_desc_t *);
     /* XXX use decoder_QueueSub */
-    int             (*pf_queue_sub)( decoder_t *, subpicture_t *);
-    void             *p_queue_ctx;
+    int (*pf_queue_sub)(decoder_t *, subpicture_t *);
+    void *p_queue_ctx;
 
     /* Private structure for the owner of the decoder */
     decoder_owner_sys_t *p_owner;
@@ -213,24 +213,24 @@ struct encoder_t
     VLC_COMMON_MEMBERS
 
     /* Module properties */
-    module_t *          p_module;
-    encoder_sys_t *     p_sys;
+    module_t *p_module;
+    encoder_sys_t *p_sys;
 
     /* Properties of the input data fed to the encoder */
-    es_format_t         fmt_in;
+    es_format_t fmt_in;
 
     /* Properties of the output of the encoder */
-    es_format_t         fmt_out;
+    es_format_t fmt_out;
 
-    block_t *           ( * pf_encode_video )( encoder_t *, picture_t * );
-    block_t *           ( * pf_encode_audio )( encoder_t *, block_t * );
-    block_t *           ( * pf_encode_sub )( encoder_t *, subpicture_t * );
+    block_t *(*pf_encode_video)(encoder_t *, picture_t *);
+    block_t *(*pf_encode_audio)(encoder_t *, block_t *);
+    block_t *(*pf_encode_sub)(encoder_t *, subpicture_t *);
 
     /* Common encoder options */
-    int i_threads;               /* Number of threads to use during encoding */
-    int i_iframes;               /* One I frame per i_iframes */
-    int i_bframes;               /* One B frame per i_bframes */
-    int i_tolerance;             /* Bitrate tolerance */
+    int i_threads;   /* Number of threads to use during encoding */
+    int i_iframes;   /* One I frame per i_iframes */
+    int i_bframes;   /* One B frame per i_bframes */
+    int i_tolerance; /* Bitrate tolerance */
 
     /* Encoder config */
     config_chain_t *p_cfg;
@@ -259,11 +259,11 @@ struct encoder_t
  * @return 0 if the video output was set up successfully, -1 otherwise.
  */
 VLC_USED
-static inline int decoder_UpdateVideoFormat( decoder_t *dec )
+static inline int decoder_UpdateVideoFormat(decoder_t *dec)
 {
-    assert( dec->fmt_in.i_cat == VIDEO_ES );
-    if( dec->fmt_in.i_cat == VIDEO_ES && dec->pf_vout_format_update != NULL )
-        return dec->pf_vout_format_update( dec );
+    assert(dec->fmt_in.i_cat == VIDEO_ES);
+    if (dec->fmt_in.i_cat == VIDEO_ES && dec->pf_vout_format_update != NULL)
+        return dec->pf_vout_format_update(dec);
     else
         return -1;
 }
@@ -286,9 +286,9 @@ static inline int decoder_UpdateVideoFormat( decoder_t *dec )
  * \return a picture buffer on success, NULL on error
  */
 VLC_USED
-static inline picture_t *decoder_NewPicture( decoder_t *dec )
+static inline picture_t *decoder_NewPicture(decoder_t *dec)
 {
-    return dec->pf_vout_buffer_new( dec );
+    return dec->pf_vout_buffer_new(dec);
 }
 
 /**
@@ -298,7 +298,7 @@ static inline picture_t *decoder_NewPicture( decoder_t *dec )
  * will be aborted. This function can be used by asynchronous video decoders
  * to unblock a thread that is waiting for a picture.
  */
-VLC_API void decoder_AbortPictures( decoder_t *dec, bool b_abort );
+VLC_API void decoder_AbortPictures(decoder_t *dec, bool b_abort);
 
 /**
  * This function queues a single picture to the video output.
@@ -310,11 +310,11 @@ VLC_API void decoder_AbortPictures( decoder_t *dec, bool b_abort );
  *
  * \return 0 if the picture is queued, -1 on error
  */
-static inline int decoder_QueueVideo( decoder_t *dec, picture_t *p_pic )
+static inline int decoder_QueueVideo(decoder_t *dec, picture_t *p_pic)
 {
-    assert( p_pic->p_next == NULL );
-    assert( dec->pf_queue_video != NULL );
-    return dec->pf_queue_video( dec, p_pic );
+    assert(p_pic->p_next == NULL);
+    assert(dec->pf_queue_video != NULL);
+    return dec->pf_queue_video(dec, p_pic);
 }
 
 /**
@@ -325,15 +325,15 @@ static inline int decoder_QueueVideo( decoder_t *dec, picture_t *p_pic )
  * \param p_desc decoder_cc_desc_t description structure
  * \return 0 if queued, -1 on error
  */
-static inline int decoder_QueueCc( decoder_t *dec, block_t *p_cc,
-                                   const decoder_cc_desc_t *p_desc )
+static inline int decoder_QueueCc(decoder_t *dec, block_t *p_cc,
+                                  const decoder_cc_desc_t *p_desc)
 {
-    if( dec->pf_queue_cc == NULL )
+    if (dec->pf_queue_cc == NULL)
     {
-        block_Release( p_cc );
+        block_Release(p_cc);
         return -1;
     }
-    return dec->pf_queue_cc( dec, p_cc, p_desc );
+    return dec->pf_queue_cc(dec, p_cc, p_desc);
 }
 
 /**
@@ -345,11 +345,11 @@ static inline int decoder_QueueCc( decoder_t *dec, block_t *p_cc,
  *
  * \return 0 if the block is queued, -1 on error
  */
-static inline int decoder_QueueAudio( decoder_t *dec, block_t *p_aout_buf )
+static inline int decoder_QueueAudio(decoder_t *dec, block_t *p_aout_buf)
 {
-    assert( p_aout_buf->p_next == NULL );
-    assert( dec->pf_queue_audio != NULL );
-    return dec->pf_queue_audio( dec, p_aout_buf );
+    assert(p_aout_buf->p_next == NULL);
+    assert(dec->pf_queue_audio != NULL);
+    return dec->pf_queue_audio(dec, p_aout_buf);
 }
 
 /**
@@ -361,11 +361,11 @@ static inline int decoder_QueueAudio( decoder_t *dec, block_t *p_aout_buf )
  *
  * \return 0 if the subtitle is queued, -1 on error
  */
-static inline int decoder_QueueSub( decoder_t *dec, subpicture_t *p_spu )
+static inline int decoder_QueueSub(decoder_t *dec, subpicture_t *p_spu)
 {
-    assert( p_spu->p_next == NULL );
-    assert( dec->pf_queue_sub != NULL );
-    return dec->pf_queue_sub( dec, p_spu );
+    assert(p_spu->p_next == NULL);
+    assert(dec->pf_queue_sub != NULL);
+    return dec->pf_queue_sub(dec, p_spu);
 }
 
 /**
@@ -374,11 +374,11 @@ static inline int decoder_QueueSub( decoder_t *dec, subpicture_t *p_spu )
  * audio output format has changed, a new audio output will be set up.
  * @return 0 if the audio output is working, -1 if not. */
 VLC_USED
-static inline int decoder_UpdateAudioFormat( decoder_t *dec )
+static inline int decoder_UpdateAudioFormat(decoder_t *dec)
 {
     assert(dec->fmt_in.i_cat == AUDIO_ES);
-    if( dec->fmt_in.i_cat == AUDIO_ES && dec->pf_aout_format_update != NULL )
-        return dec->pf_aout_format_update( dec );
+    if (dec->fmt_in.i_cat == AUDIO_ES && dec->pf_aout_format_update != NULL)
+        return dec->pf_aout_format_update(dec);
     else
         return -1;
 }
@@ -388,34 +388,34 @@ static inline int decoder_UpdateAudioFormat( decoder_t *dec )
  * output buffer. It must be released with block_Release() or returned it to
  * the caller as a decoder_QueueAudio parameter.
  */
-VLC_API block_t * decoder_NewAudioBuffer( decoder_t *, int i_nb_samples ) VLC_USED;
+VLC_API block_t *decoder_NewAudioBuffer(decoder_t *, int i_nb_samples) VLC_USED;
 
 /**
  * This function will return a new subpicture usable by a decoder as an output
  * buffer. You have to release it using subpicture_Delete() or by returning
  * it to the caller as a decoder_QueueSub parameter.
  */
-VLC_API subpicture_t * decoder_NewSubpicture( decoder_t *, const subpicture_updater_t * ) VLC_USED;
+VLC_API subpicture_t *decoder_NewSubpicture(decoder_t *, const subpicture_updater_t *) VLC_USED;
 
 /**
  * This function gives all input attachments at once.
  *
  * You MUST release the returned values
  */
-VLC_API int decoder_GetInputAttachments( decoder_t *, input_attachment_t ***ppp_attachment, int *pi_attachment );
+VLC_API int decoder_GetInputAttachments(decoder_t *, input_attachment_t ***ppp_attachment, int *pi_attachment);
 
 /**
  * This function converts a decoder timestamp into a display date comparable
  * to mdate().
  * You MUST use it *only* for gathering statistics about speed.
  */
-VLC_API mtime_t decoder_GetDisplayDate( decoder_t *, mtime_t ) VLC_USED;
+VLC_API mtime_t decoder_GetDisplayDate(decoder_t *, mtime_t) VLC_USED;
 
 /**
  * This function returns the current input rate.
  * You MUST use it *only* for gathering statistics about speed.
  */
-VLC_API int decoder_GetDisplayRate( decoder_t * ) VLC_USED;
+VLC_API int decoder_GetDisplayRate(decoder_t *) VLC_USED;
 
 /** @} */
 /** @} */

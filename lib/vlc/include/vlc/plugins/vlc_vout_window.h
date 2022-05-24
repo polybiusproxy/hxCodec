@@ -46,8 +46,9 @@ struct wl_surface;
 /**
  * Window handle type
  */
-enum vout_window_type {
-    VOUT_WINDOW_TYPE_INVALID=0 /**< Invalid or unspecified window type */,
+enum vout_window_type
+{
+    VOUT_WINDOW_TYPE_INVALID = 0 /**< Invalid or unspecified window type */,
     VOUT_WINDOW_TYPE_XID /**< X11 window */,
     VOUT_WINDOW_TYPE_HWND /**< Win32 or OS/2 window */,
     VOUT_WINDOW_TYPE_NSOBJECT /**< MacOS X view */,
@@ -58,17 +59,19 @@ enum vout_window_type {
 /**
  * Control query for vout_window_t
  */
-enum vout_window_control {
-    VOUT_WINDOW_SET_STATE, /* unsigned state */
-    VOUT_WINDOW_SET_SIZE,   /* unsigned i_width, unsigned i_height */
+enum vout_window_control
+{
+    VOUT_WINDOW_SET_STATE,      /* unsigned state */
+    VOUT_WINDOW_SET_SIZE,       /* unsigned i_width, unsigned i_height */
     VOUT_WINDOW_SET_FULLSCREEN, /* int b_fullscreen */
-    VOUT_WINDOW_HIDE_MOUSE, /* int b_hide */
+    VOUT_WINDOW_HIDE_MOUSE,     /* int b_hide */
 };
 
 /**
  * Window mouse event type for vout_window_mouse_event_t
  */
-enum vout_window_mouse_event_type {
+enum vout_window_mouse_event_type
+{
     VOUT_WINDOW_MOUSE_STATE,
     VOUT_WINDOW_MOUSE_MOVED,
     VOUT_WINDOW_MOUSE_PRESSED,
@@ -87,7 +90,8 @@ typedef struct vout_window_mouse_event_t
     int button_mask;
 } vout_window_mouse_event_t;
 
-typedef struct vout_window_cfg_t {
+typedef struct vout_window_cfg_t
+{
     /* Window handle type */
     unsigned type;
 
@@ -107,7 +111,8 @@ typedef struct vout_window_cfg_t {
 
 } vout_window_cfg_t;
 
-typedef struct vout_window_owner {
+typedef struct vout_window_owner
+{
     void *sys;
     void (*resized)(vout_window_t *, unsigned width, unsigned height);
     void (*closed)(vout_window_t *);
@@ -127,22 +132,23 @@ typedef struct vout_window_owner {
  *
  * Finally, it must support some control requests such as for fullscreen mode.
  */
-struct vout_window_t {
+struct vout_window_t
+{
     VLC_COMMON_MEMBERS
 
-     /**
-      * Window handle type
-      *
-      * This identified the windowing system and protocol that the window
-      * needs to use. This also selects which member of the \ref handle union
-      * and the \ref display union are to be set.
-      *
-      * The possible values are defined in \ref vout_window_type.
-      *
-      * VOUT_WINDOW_TYPE_INVALID is a special placeholder type. It means that
-      * any windowing system is acceptable. In that case, the plugin must set
-      * its actual type during activation.
-      */
+    /**
+     * Window handle type
+     *
+     * This identified the windowing system and protocol that the window
+     * needs to use. This also selects which member of the \ref handle union
+     * and the \ref display union are to be set.
+     *
+     * The possible values are defined in \ref vout_window_type.
+     *
+     * VOUT_WINDOW_TYPE_INVALID is a special placeholder type. It means that
+     * any windowing system is acceptable. In that case, the plugin must set
+     * its actual type during activation.
+     */
     unsigned type;
 
     /**
@@ -153,12 +159,13 @@ struct vout_window_t {
      * Depending on the \ref type above, a different member of this union is
      * used.
      */
-    union {
-        void     *hwnd;          /**< Win32 window handle */
-        uint32_t xid;            /**< X11 windows ID */
-        void     *nsobject;      /**< Mac OSX view object */
-        void     *anativewindow; /**< Android native window */
-        struct wl_surface *wl;   /**< Wayland surface (client pointer) */
+    union
+    {
+        void *hwnd;            /**< Win32 window handle */
+        uint32_t xid;          /**< X11 windows ID */
+        void *nsobject;        /**< Mac OSX view object */
+        void *anativewindow;   /**< Android native window */
+        struct wl_surface *wl; /**< Wayland surface (client pointer) */
     } handle;
 
     /** Display server (mandatory)
@@ -169,8 +176,9 @@ struct vout_window_t {
      * of the display server depends on the window handle type. Not all window
      * handle type provide a display server field.
      */
-    union {
-        char     *x11; /**< X11 display string (NULL = use default) */
+    union
+    {
+        char *x11;             /**< X11 display string (NULL = use default) */
         struct wl_display *wl; /**< Wayland display (client pointer) */
     } display;
 
@@ -185,7 +193,8 @@ struct vout_window_t {
      */
     int (*control)(vout_window_t *, int query, va_list);
 
-    struct {
+    struct
+    {
         bool has_double_click; /**< Whether double click events are sent,
                                     or need to be emulated */
     } info;
@@ -207,7 +216,7 @@ struct vout_window_t {
  / vout_display_NewWindow() and vout_display_DeleteWindow() instead.
  * This enables recycling windows.
  */
-VLC_API vout_window_t * vout_window_New(vlc_object_t *, const char *module, const vout_window_cfg_t *, const vout_window_owner_t *);
+VLC_API vout_window_t *vout_window_New(vlc_object_t *, const char *module, const vout_window_cfg_t *, const vout_window_owner_t *);
 
 /**
  * Deletes a window created by vout_window_New().
@@ -314,8 +323,7 @@ static inline void vout_window_ReportMouseState(vout_window_t *window,
                                                 int x, int y, int button_mask)
 {
     const vout_window_mouse_event_t mouse = {
-        VOUT_WINDOW_MOUSE_STATE, x, y, button_mask
-    };
+        VOUT_WINDOW_MOUSE_STATE, x, y, button_mask};
     vout_window_SendMouseEvent(window, &mouse);
 }
 
@@ -328,8 +336,7 @@ static inline void vout_window_ReportMouseMoved(vout_window_t *window,
                                                 int x, int y)
 {
     const vout_window_mouse_event_t mouse = {
-        VOUT_WINDOW_MOUSE_MOVED, x, y, 0
-    };
+        VOUT_WINDOW_MOUSE_MOVED, x, y, 0};
     vout_window_SendMouseEvent(window, &mouse);
 }
 
@@ -340,7 +347,10 @@ static inline void vout_window_ReportMousePressed(vout_window_t *window,
                                                   int button)
 {
     const vout_window_mouse_event_t mouse = {
-        VOUT_WINDOW_MOUSE_PRESSED, 0, 0, button,
+        VOUT_WINDOW_MOUSE_PRESSED,
+        0,
+        0,
+        button,
     };
     vout_window_SendMouseEvent(window, &mouse);
 }
@@ -349,10 +359,13 @@ static inline void vout_window_ReportMousePressed(vout_window_t *window,
  * Send a mouse released event
  */
 static inline void vout_window_ReportMouseReleased(vout_window_t *window,
-                                                  int button)
+                                                   int button)
 {
     const vout_window_mouse_event_t mouse = {
-        VOUT_WINDOW_MOUSE_RELEASED, 0, 0, button,
+        VOUT_WINDOW_MOUSE_RELEASED,
+        0,
+        0,
+        button,
     };
     vout_window_SendMouseEvent(window, &mouse);
 }
@@ -364,7 +377,10 @@ static inline void vout_window_ReportMouseDoubleClick(vout_window_t *window,
                                                       int button)
 {
     const vout_window_mouse_event_t mouse = {
-        VOUT_WINDOW_MOUSE_DOUBLE_CLICK, 0, 0, button,
+        VOUT_WINDOW_MOUSE_DOUBLE_CLICK,
+        0,
+        0,
+        button,
     };
     vout_window_SendMouseEvent(window, &mouse);
 }

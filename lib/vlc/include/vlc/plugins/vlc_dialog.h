@@ -21,19 +21,17 @@
 
 #ifndef VLC_DIALOG_H_
 #define VLC_DIALOG_H_
-# include <stdarg.h>
+#include <stdarg.h>
 
 typedef struct vlc_dialog_provider vlc_dialog_provider;
 typedef struct vlc_dialog_id vlc_dialog_id;
 typedef struct extension_dialog_t extension_dialog_t;
 
 /* Called from src/libvlc.c */
-int
-libvlc_InternalDialogInit(libvlc_int_t *p_libvlc);
+int libvlc_InternalDialogInit(libvlc_int_t *p_libvlc);
 
 /* Called from src/libvlc.c */
-void
-libvlc_InternalDialogClean(libvlc_int_t *p_libvlc);
+void libvlc_InternalDialogClean(libvlc_int_t *p_libvlc);
 
 /**
  * @defgroup vlc_dialog VLC dialog
@@ -68,7 +66,7 @@ typedef enum vlc_dialog_question_type
  */
 VLC_API int
 vlc_dialog_display_error(vlc_object_t *p_obj, const char *psz_title,
-                         const char *psz_fmt, ...) VLC_FORMAT(3,4);
+                         const char *psz_fmt, ...) VLC_FORMAT(3, 4);
 #define vlc_dialog_display_error(a, b, c, ...) \
     vlc_dialog_display_error(VLC_OBJECT(a), b, c, ##__VA_ARGS__)
 
@@ -107,7 +105,7 @@ vlc_dialog_wait_login(vlc_object_t *p_obj, char **ppsz_username,
                       char **ppsz_password, bool *p_store,
                       const char *psz_default_username,
                       const char *psz_title, const char *psz_fmt, ...)
-                      VLC_FORMAT(7,8);
+    VLC_FORMAT(7, 8);
 #define vlc_dialog_wait_login(a, b, c, d, e, f, g, ...) \
     vlc_dialog_wait_login(VLC_OBJECT(a), b, c, d, e, f, g, ##__VA_ARGS__)
 
@@ -145,7 +143,7 @@ vlc_dialog_wait_question(vlc_object_t *p_obj,
                          vlc_dialog_question_type i_type,
                          const char *psz_cancel, const char *psz_action1,
                          const char *psz_action2, const char *psz_title,
-                         const char *psz_fmt, ...) VLC_FORMAT(7,8);
+                         const char *psz_fmt, ...) VLC_FORMAT(7, 8);
 #define vlc_dialog_wait_question(a, b, c, d, e, f, g, ...) \
     vlc_dialog_wait_question(VLC_OBJECT(a), b, c, d, e, f, g, ##__VA_ARGS__)
 
@@ -181,7 +179,7 @@ VLC_API vlc_dialog_id *
 vlc_dialog_display_progress(vlc_object_t *p_obj, bool b_indeterminate,
                             float f_position, const char *psz_cancel,
                             const char *psz_title, const char *psz_fmt, ...)
-                            VLC_FORMAT(6,7);
+    VLC_FORMAT(6, 7);
 #define vlc_dialog_display_progress(a, b, c, d, e, f, ...) \
     vlc_dialog_display_progress(VLC_OBJECT(a), b, c, d, e, f, ##__VA_ARGS__)
 
@@ -223,7 +221,7 @@ vlc_dialog_update_progress(vlc_object_t *p_obj, vlc_dialog_id *p_id,
 VLC_API int
 vlc_dialog_update_progress_text(vlc_object_t *p_obj, vlc_dialog_id *p_id,
                                 float f_position, const char *psz_fmt, ...)
-                                VLC_FORMAT(4, 5);
+    VLC_FORMAT(4, 5);
 #define vlc_dialog_update_progress_text(a, b, c, d, ...) \
     vlc_dialog_update_progress_text(VLC_OBJECT(a), b, c, d, ##__VA_ARGS__)
 

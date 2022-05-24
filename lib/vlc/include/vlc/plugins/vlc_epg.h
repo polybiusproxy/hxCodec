@@ -31,31 +31,31 @@
 
 typedef struct
 {
-    int64_t  i_start;    /* Interpreted as a value return by time() */
+    int64_t i_start;     /* Interpreted as a value return by time() */
     uint32_t i_duration; /* Duration of the event in second */
     uint16_t i_id;       /* Unique event id withing the event set */
 
-    char    *psz_name;
-    char    *psz_short_description;
-    char    *psz_description;
-    struct               /* Description items in tranmission order */
+    char *psz_name;
+    char *psz_short_description;
+    char *psz_description;
+    struct /* Description items in tranmission order */
     {
         char *psz_key;
         char *psz_value;
     } * description_items;
     int i_description_items;
 
-    uint8_t i_rating;   /* Parental control, set to 0 when undefined */
+    uint8_t i_rating; /* Parental control, set to 0 when undefined */
 } vlc_epg_event_t;
 
 typedef struct
 {
-    char            *psz_name;
-    uint32_t         i_id;       /* Unique identifier for this table / events (partial sets) */
-    uint16_t         i_source_id;/* Channel / Program reference id this epg relates to */
-    size_t            i_event;
+    char *psz_name;
+    uint32_t i_id;        /* Unique identifier for this table / events (partial sets) */
+    uint16_t i_source_id; /* Channel / Program reference id this epg relates to */
+    size_t i_event;
     vlc_epg_event_t **pp_event;
-    bool             b_present;  /* Contains present/following or similar, and sets below */
+    bool b_present;                   /* Contains present/following or similar, and sets below */
     const vlc_epg_event_t *p_current; /* NULL, or equal to one of the entries in pp_event */
 } vlc_epg_t;
 
@@ -68,8 +68,8 @@ typedef struct
  * \p i_start start in epoch time
  * \p i_duration event duration in seconds
  */
-VLC_API vlc_epg_event_t * vlc_epg_event_New(uint16_t i_id,
-                                            int64_t i_start, uint32_t i_duration);
+VLC_API vlc_epg_event_t *vlc_epg_event_New(uint16_t i_id,
+                                           int64_t i_start, uint32_t i_duration);
 
 /**
  * Releases a vlc_epg_event_t*.
@@ -80,7 +80,7 @@ VLC_API void vlc_epg_event_Delete(vlc_epg_event_t *p_event);
  * Returns a vlc_epg_event_t * duplicated from \p p_src.
  *
  */
-VLC_API vlc_epg_event_t * vlc_epg_event_Duplicate(const vlc_epg_event_t *p_src);
+VLC_API vlc_epg_event_t *vlc_epg_event_Duplicate(const vlc_epg_event_t *p_src);
 
 /**
  * It creates a new vlc_epg_t*
@@ -90,7 +90,7 @@ VLC_API vlc_epg_event_t * vlc_epg_event_Duplicate(const vlc_epg_event_t *p_src);
  * \p i_id is computed unique id depending on standard (table id, eit number)
  * \p i_source_id is the associated program number
  */
-VLC_API vlc_epg_t * vlc_epg_New(uint32_t i_id, uint16_t i_source_id);
+VLC_API vlc_epg_t *vlc_epg_New(uint32_t i_id, uint16_t i_source_id);
 
 /**
  * It releases a vlc_epg_t*.
@@ -114,7 +114,6 @@ VLC_API void vlc_epg_SetCurrent(vlc_epg_t *p_epg, int64_t i_start);
  * Returns a duplicated \p p_src and its associated events.
  *
  */
-VLC_API vlc_epg_t * vlc_epg_Duplicate(const vlc_epg_t *p_src);
+VLC_API vlc_epg_t *vlc_epg_Duplicate(const vlc_epg_t *p_src);
 
 #endif
-

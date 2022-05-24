@@ -70,36 +70,40 @@ typedef enum
 /**
  * Window management state.
  */
-enum {
-    VOUT_WINDOW_STATE_NORMAL=0,
-    VOUT_WINDOW_STATE_ABOVE=1,
-    VOUT_WINDOW_STATE_BELOW=2,
-    VOUT_WINDOW_STACK_MASK=3,
+enum
+{
+    VOUT_WINDOW_STATE_NORMAL = 0,
+    VOUT_WINDOW_STATE_ABOVE = 1,
+    VOUT_WINDOW_STATE_BELOW = 2,
+    VOUT_WINDOW_STACK_MASK = 3,
 };
 
 /**
  * Initial/Current configuration for a vout_display_t
  */
-typedef struct {
+typedef struct
+{
 #if defined(_WIN32) || defined(__OS2__)
-    bool is_fullscreen VLC_DEPRECATED;  /* Is the display fullscreen */
+    bool is_fullscreen VLC_DEPRECATED; /* Is the display fullscreen */
 #endif
 
     /* Display properties */
-    struct {
+    struct
+    {
         /* Window title (may be NULL) */
         const char *title;
 
         /* Display size */
-        unsigned  width;
-        unsigned  height;
+        unsigned width;
+        unsigned height;
 
         /* Display SAR */
         vlc_rational_t sar;
     } display;
 
     /* Alignment of the picture inside the display */
-    struct {
+    struct
+    {
         int horizontal;
         int vertical;
     } align;
@@ -110,7 +114,8 @@ typedef struct {
     /* Zoom to use
      * It will be applied to the whole display if b_display_filled is set, otherwise
      * only on the video source */
-    struct {
+    struct
+    {
         int num;
         int den;
     } zoom;
@@ -125,7 +130,8 @@ typedef struct {
  * By default they are all false or NULL.
  *
  */
-typedef struct {
+typedef struct
+{
     bool is_slow;                           /* The picture memory has slow read/write */
     bool has_double_click;                  /* Is double-click generated */
     bool needs_hide_mouse;                  /* Needs VOUT_DISPLAY_HIDE_MOUSE,
@@ -138,7 +144,8 @@ typedef struct {
 /**
  * Control query for vout_display_t
  */
-enum {
+enum
+{
     /* Hide the mouse. It will be sent when
      * vout_display_t::info.needs_hide_mouse is true */
     VOUT_DISPLAY_HIDE_MOUSE VLC_DEPRECATED_ENUM,
@@ -151,14 +158,14 @@ enum {
 #if defined(_WIN32) || defined(__OS2__)
     /* Ask the module to acknowledge/refuse the fullscreen state change after
      * being requested (externally or by VOUT_DISPLAY_EVENT_FULLSCREEN */
-    VOUT_DISPLAY_CHANGE_FULLSCREEN VLC_DEPRECATED_ENUM,     /* bool fs */
+    VOUT_DISPLAY_CHANGE_FULLSCREEN VLC_DEPRECATED_ENUM, /* bool fs */
     /* Ask the module to acknowledge/refuse the window management state change
      * after being requested externally or by VOUT_DISPLAY_WINDOW_STATE */
-    VOUT_DISPLAY_CHANGE_WINDOW_STATE VLC_DEPRECATED_ENUM,   /* unsigned state */
+    VOUT_DISPLAY_CHANGE_WINDOW_STATE VLC_DEPRECATED_ENUM, /* unsigned state */
 #endif
     /* Ask the module to acknowledge/refuse the display size change requested
      * (externally or by VOUT_DISPLAY_EVENT_DISPLAY_SIZE) */
-    VOUT_DISPLAY_CHANGE_DISPLAY_SIZE,   /* const vout_display_cfg_t *p_cfg */
+    VOUT_DISPLAY_CHANGE_DISPLAY_SIZE, /* const vout_display_cfg_t *p_cfg */
 
     /* Ask the module to acknowledge/refuse fill display state change after
      * being requested externally */
@@ -180,7 +187,7 @@ enum {
 
     /* Ask the module to acknowledge/refuse VR/360° viewing direction after
      * being requested externally */
-    VOUT_DISPLAY_CHANGE_VIEWPOINT,   /* const vout_display_cfg_t *p_cfg */
+    VOUT_DISPLAY_CHANGE_VIEWPOINT, /* const vout_display_cfg_t *p_cfg */
 };
 
 /**
@@ -189,19 +196,20 @@ enum {
  * Events modifiying the state may be sent multiple times.
  * Only the transition will be retained and acted upon.
  */
-enum {
+enum
+{
     /* TODO:
      * ZOOM ? DISPLAY_FILLED ? ON_TOP ?
      */
     /* */
-    VOUT_DISPLAY_EVENT_PICTURES_INVALID,    /* The buffer are now invalid and need to be changed */
+    VOUT_DISPLAY_EVENT_PICTURES_INVALID, /* The buffer are now invalid and need to be changed */
 
 #if defined(_WIN32) || defined(__OS2__)
     VOUT_DISPLAY_EVENT_FULLSCREEN,
     VOUT_DISPLAY_EVENT_WINDOW_STATE,
 #endif
 
-    VOUT_DISPLAY_EVENT_DISPLAY_SIZE,        /* The display size need to change : int i_width, int i_height */
+    VOUT_DISPLAY_EVENT_DISPLAY_SIZE, /* The display size need to change : int i_width, int i_height */
 
     /* */
     VOUT_DISPLAY_EVENT_CLOSE,
@@ -226,7 +234,8 @@ enum {
 /**
  * Vout owner structures
  */
-struct vout_display_owner_t {
+struct vout_display_owner_t
+{
     /* Private place holder for the vout_display_t creator
      */
     void *sys;
@@ -242,7 +251,7 @@ struct vout_display_owner_t {
      * Be careful, it does not ensure correct serialization if it is used
      * from multiple threads.
      */
-    void            (*event)(vout_display_t *, int, va_list);
+    void (*event)(vout_display_t *, int, va_list);
 
     /* Window management
      *
@@ -250,10 +259,11 @@ struct vout_display_owner_t {
      * be overwritten nor used directly (use the vout_display_*Window
      * wrapper */
     vout_window_t *(*window_new)(vout_display_t *, unsigned type);
-    void           (*window_del)(vout_display_t *, vout_window_t *);
+    void (*window_del)(vout_display_t *, vout_window_t *);
 };
 
-struct vout_display_t {
+struct vout_display_t
+{
     VLC_COMMON_MEMBERS
 
     /* Module */
@@ -312,7 +322,7 @@ struct vout_display_t {
      * You cannot change the pixel content of the picture_t or of the
      * subpicture_t.
      */
-    void       (*prepare)(vout_display_t *, picture_t *, subpicture_t *);
+    void (*prepare)(vout_display_t *, picture_t *, subpicture_t *);
 
     /* Display a picture and an optional subpicture (mandatory).
      *
@@ -324,13 +334,13 @@ struct vout_display_t {
      * This function gives away the ownership of the picture and of the
      * subpicture, so you must release them as soon as possible.
      */
-    void       (*display)(vout_display_t *, picture_t *, subpicture_t *);
+    void (*display)(vout_display_t *, picture_t *, subpicture_t *);
 
     /* Control on the module (mandatory) */
-    int        (*control)(vout_display_t *, int, va_list);
+    int (*control)(vout_display_t *, int, va_list);
 
     /* Manage pending event (optional) */
-    void       (*manage)(vout_display_t *) VLC_DEPRECATED;
+    void (*manage)(vout_display_t *) VLC_DEPRECATED;
 
     /* Private place holder for the vout_display_t module (optional)
      *
@@ -440,11 +450,11 @@ static inline bool vout_display_IsWindowed(vout_display_t *vd)
  */
 VLC_API void vout_display_GetDefaultDisplaySize(unsigned *width, unsigned *height, const video_format_t *source, const vout_display_cfg_t *);
 
-
 /**
  * Structure used to store the result of a vout_display_PlacePicture.
  */
-typedef struct {
+typedef struct
+{
     int x;
     int y;
     unsigned width;
@@ -462,7 +472,6 @@ typedef struct {
  * \param b_clip If true, prevent the video to go outside the display (break zoom).
  */
 VLC_API void vout_display_PlacePicture(vout_display_place_t *place, const video_format_t *source, const vout_display_cfg_t *cfg, bool do_clipping);
-
 
 /**
  * Helper function that applies the necessary transforms to the mouse position

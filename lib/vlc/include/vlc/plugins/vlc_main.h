@@ -35,4 +35,3 @@ struct libvlc_int_t
 {
     VLC_COMMON_MEMBERS
 };
-

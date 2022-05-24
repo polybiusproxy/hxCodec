@@ -19,7 +19,7 @@
  *****************************************************************************/
 
 #ifndef VLC_KEYSTORE_H
-# define VLC_KEYSTORE_H
+#define VLC_KEYSTORE_H
 
 #include <vlc_common.h>
 
@@ -28,12 +28,10 @@ typedef struct vlc_keystore_entry vlc_keystore_entry;
 typedef struct vlc_credential vlc_credential;
 
 /* Called from src/libvlc.c */
-int
-libvlc_InternalKeystoreInit(libvlc_int_t *p_libvlc);
+int libvlc_InternalKeystoreInit(libvlc_int_t *p_libvlc);
 
 /* Called from src/libvlc.c */
-void
-libvlc_InternalKeystoreClean(libvlc_int_t *p_libvlc);
+void libvlc_InternalKeystoreClean(libvlc_int_t *p_libvlc);
 
 /**
  * @defgroup keystore Keystore and credential API
@@ -47,7 +45,8 @@ libvlc_InternalKeystoreClean(libvlc_int_t *p_libvlc);
 /**
  * List of keys that can be stored via the keystore API
  */
-enum vlc_keystore_key {
+enum vlc_keystore_key
+{
     KEY_PROTOCOL,
     KEY_USER,
     KEY_SERVER,
@@ -65,11 +64,11 @@ enum vlc_keystore_key {
 struct vlc_keystore_entry
 {
     /** Set of key/values. Values can be NULL */
-    char *              ppsz_values[KEY_MAX];
+    char *ppsz_values[KEY_MAX];
     /** Secret password */
-    uint8_t *           p_secret;
+    uint8_t *p_secret;
     /** Length of the secret */
-    size_t              i_secret_len;
+    size_t i_secret_len;
 };
 
 /**
@@ -95,7 +94,6 @@ vlc_keystore_create(vlc_object_t *p_parent);
 VLC_API void
 vlc_keystore_release(vlc_keystore *p_keystore);
 
-
 /**
  * Store a secret associated with a set of key/values
  *
@@ -112,7 +110,7 @@ vlc_keystore_release(vlc_keystore *p_keystore);
 VLC_API int
 vlc_keystore_store(vlc_keystore *p_keystore,
                    const char *const ppsz_values[KEY_MAX],
-                   const uint8_t* p_secret, ssize_t i_secret_len,
+                   const uint8_t *p_secret, ssize_t i_secret_len,
                    const char *psz_label);
 
 /**
@@ -175,7 +173,8 @@ struct vlc_credential
     const char *psz_password;
 
     /* internal */
-    enum {
+    enum
+    {
         GET_FROM_URL,
         GET_FROM_OPTION,
         GET_FROM_MEMORY_KEYSTORE,
@@ -270,7 +269,7 @@ static inline int
 vlc_keystore_entry_set_secret(vlc_keystore_entry *p_entry,
                               const uint8_t *p_secret, size_t i_secret_len)
 {
-    p_entry->p_secret = (uint8_t*) malloc(i_secret_len);
+    p_entry->p_secret = (uint8_t *)malloc(i_secret_len);
     if (!p_entry->p_secret)
         return VLC_EGENERIC;
     memcpy(p_entry->p_secret, p_secret, i_secret_len);
@@ -294,22 +293,22 @@ typedef struct vlc_keystore_sys vlc_keystore_sys;
 struct vlc_keystore
 {
     VLC_COMMON_MEMBERS
-    module_t            *p_module;
-    vlc_keystore_sys    *p_sys;
+    module_t *p_module;
+    vlc_keystore_sys *p_sys;
 
     /** See vlc_keystore_store() */
-    int                 (*pf_store)(vlc_keystore *p_keystore,
-                                    const char *const ppsz_values[KEY_MAX],
-                                    const uint8_t *p_secret,
-                                    size_t i_secret_len, const char *psz_label);
+    int (*pf_store)(vlc_keystore *p_keystore,
+                    const char *const ppsz_values[KEY_MAX],
+                    const uint8_t *p_secret,
+                    size_t i_secret_len, const char *psz_label);
     /**  See vlc_keystore_find() */
-    unsigned int        (*pf_find)(vlc_keystore *p_keystore,
-                                   const char *const ppsz_values[KEY_MAX],
-                                   vlc_keystore_entry **pp_entries);
+    unsigned int (*pf_find)(vlc_keystore *p_keystore,
+                            const char *const ppsz_values[KEY_MAX],
+                            vlc_keystore_entry **pp_entries);
 
     /** See vlc_keystore_remove() */
-    unsigned int        (*pf_remove)(vlc_keystore *p_keystore,
-                                     const char *const ppsz_values[KEY_MAX]);
+    unsigned int (*pf_remove)(vlc_keystore *p_keystore,
+                              const char *const ppsz_values[KEY_MAX]);
 };
 
 /** @} @} */
