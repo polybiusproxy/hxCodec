@@ -8,8 +8,14 @@
 
 	<target id="haxe">
 		<section if="windows">
-			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Windows/libvlc.lib' />
-			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Windows/libvlccore.lib' />
+			<section if="HXCPP_M64">
+				<lib name='${haxelib:hxvlc}/lib/vlc/lib/Windows64/libvlc.lib' />
+				<lib name='${haxelib:hxvlc}/lib/vlc/lib/Windows64/libvlccore.lib' />
+			</section>
+			<section if="HXCPP_M32">
+				<lib name='${haxelib:hxvlc}/lib/vlc/lib/Windows/libvlc.lib' />
+				<lib name='${haxelib:hxvlc}/lib/vlc/lib/Windows/libvlccore.lib' />
+			</section>
 		</section>
 		<section if="linux">
 			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlc.so.5' />

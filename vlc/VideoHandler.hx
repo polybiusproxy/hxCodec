@@ -1,15 +1,19 @@
 package vlc;
 
+#if android
+import android.AndroidTools;
+#end
 import openfl.events.Event;
 import flixel.FlxG;
-import vlc.bitmap.VlcBitmap;
+import vlc.bitmap.LibVLCBitmap;
 
 /**
  * Play a video using cpp.
  * Use bitmap to connect to a graphic or use `VideoSprite`.
  */
-class VideoHandler extends VlcBitmap
-{
+class VideoHandler extends LibVLCBitmap {
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	public var readyCallback:Void->Void;
 	public var finishCallback:Void->Void;
 
@@ -18,86 +22,69 @@ class VideoHandler extends VlcBitmap
 
 	var pauseMusic:Bool;
 
-	public function new(width:Float = 320, height:Float = 240, autoScale:Bool = true)
-	{
-		super(width, height, autoScale);
+	public function new(width:Float = 320, height:Float = 240, autoResize:Bool = true, smooting:Bool = true) {
+		super(width, height, autoResize, smooting);
 
-		onVideoReady = onVLCVideoReady;
-		onComplete = finishVideo;
+		onReady = onVLCVideoReady;
+		onComplete = onVLCComplete;
 		onError = onVLCError;
 
 		FlxG.addChildBelowMouse(this);
 
-		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
+		FlxG.stage.addEventListener(Event.ENTER_FRAME, onFrame);
 
-		FlxG.signals.focusGained.add(function()
-		{
-			resume();
+		FlxG.signals.focusGained.add(function() {
+			togglePause();
 		});
-		FlxG.signals.focusLost.add(function()
-		{
-			pause();
+		FlxG.signals.focusLost.add(function() {
+			togglePause();
 		});
 	}
 
-	function update(e:Event)
-	{
+	function onFrame(e:Event) {
 		if (canSkip && (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && isPlaying)
-			finishVideo();
+			onVLCComplete();
 
-		if (canHaveSound)
-		{
-			if (FlxG.sound.muted || FlxG.sound.volume <= 0)
-				volume = 0;
-			else
-				volume = FlxG.sound.volume + 0.4;
-		}
+		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
+			volume = 0;
+		else if (canHaveSound)
+			volume = FlxG.sound.volume + 0.4;
 	}
 
-	#if sys
-	function checkFile(fileName:String):String
-	{
-		#if !android
-		var pDir = "";
-		var appDir = "file:///" + Sys.getCwd() + "/";
+	/////////////////////////////////////////////////////////////////////////////////////
 
-		if (fileName.indexOf(":") == -1) // Not a path
-			pDir = appDir;
-		else if (fileName.indexOf("file://") == -1 || fileName.indexOf("http") == -1) // C:, D: etc? ..missing "file:///" ?
-			pDir = "file:///";
-
-		return pDir + fileName;
+	function createUrl(fileName:String):String {
+		#if android
+		var fileUrl:String = AndroidTools.getFileUrl(fileName);
+		return fileUrl;
 		#else
-		return "file://" + fileName;
+		var fileUrl:String = 'file:///' + Sys.getCwd() + fileName;
+		return fileUrl;
 		#end
 	}
-	#end
 
-	function onVLCVideoReady()
-	{
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	function onVLCVideoReady() {
 		trace("Video loaded!");
 
 		if (readyCallback != null)
 			readyCallback();
 	}
 
-	function onVLCError()
-	{
-		// TODO: Catch the error
-		throw "VLC caught an error!";
+	function onVLCError(error:String) {
+		throw "VLC caught an error! :" + error;
 	}
 
-	public function finishVideo()
-	{
+	public function onVLCComplete() {
 		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.resume();
 
-		FlxG.stage.removeEventListener(Event.ENTER_FRAME, update);
+		FlxG.stage.removeEventListener(Event.ENTER_FRAME, onFrame);
 
 		dispose();
 
-		if (FlxG.game.contains(this))
-		{
+		if (FlxG.game.contains(this)) {
 			FlxG.game.removeChild(this);
 
 			if (finishCallback != null)
@@ -105,25 +92,23 @@ class VideoHandler extends VlcBitmap
 		}
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * Native video support for Flixel & OpenFL
 	 * @param path Example: `your/video/here.mp4`
 	 * @param repeat Repeat the video.
 	 * @param pauseMusic Pause music until done video.
 	 */
-	public function playVideo(path:String, ?repeat:Bool = false, pauseMusic:Bool = false)
-	{
+	public function playVideo(path:String, repeat:Bool = false, pauseMusic:Bool = false):Void {
 		this.pauseMusic = pauseMusic;
 
 		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.pause();
 
-		#if sys
-		play(checkFile(path));
-
 		this.repeat = repeat ? -1 : 0;
-		#else
-		throw "Doesn't support sys";
-		#end
+		play(createUrl(path));
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 }

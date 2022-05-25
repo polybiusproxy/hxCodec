@@ -2,7 +2,7 @@
  * vlc_fourcc.h: Definition of various FOURCC and helpers
  *****************************************************************************
  * Copyright (C) 2009 Laurent Aimar
- * $Id: 9042a48a9bd206c8fb6228bbb04dbde136c25499 $
+ * $Id: 7fad8b2290f64d016f2834f5774a5d19a8043b49 $
  *
  * Authors: Laurent Aimar <fenrir _AT_ videolan _DOT_ com>
  *
@@ -400,6 +400,7 @@
 #define VLC_CODEC_PCX             VLC_FOURCC('p','c','x',' ')
 #define VLC_CODEC_XWD             VLC_FOURCC('X','W','D',' ')
 #define VLC_CODEC_TXD             VLC_FOURCC('T','X','D',' ')
+#define VLC_CODEC_WEBP            VLC_FOURCC('W','E','B','P')
 
 
 /* Audio codec */
