@@ -149,7 +149,10 @@ Just pull the `lime build windows`.
 
 ### Mac
 
-Currently, building for Mac isn't supported because we are missing the Mac build of LibVLC.
+To build for vlc you will need to git clone the vlc https://github.com/videolan/vlc.git
+1.Xcode 
+2.python3 
+3.Java 8 JDK
 
 **However, if you got LibVLC to build and work on Mac, please send us a pull request with the builded files!**
 
