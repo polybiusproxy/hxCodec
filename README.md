@@ -21,7 +21,7 @@ haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
 
 2. Add this code in `Project.xml`
 ```xml
-<haxelib name="hxcodec"/>
+<haxelib name="hxCodec"/>
 ```
 
 **OPTIONAL: If your PC is ARM64, add this code also:**

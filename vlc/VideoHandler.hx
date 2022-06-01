@@ -54,12 +54,12 @@ class VideoHandler extends VlcBitmap {
 	function checkFile(fileName:String):String {
 		#if !android
 		var pDir = "";
-		var appDir = "file:///" + Sys.getCwd() + "/";
+		var appDir = #if !linux "file:///" + Sys.getCwd() + "/" #else "file://" + Sys.getCwd() #end;
 
 		if (fileName.indexOf(":") == -1) // Not a path
 			pDir = appDir;
 		else if (fileName.indexOf("file://") == -1 || fileName.indexOf("http") == -1) // C:, D: etc? ..missing "file:///" ?
-			pDir = "file:///";
+			pDir = #if !linux "file:///" #else "file://" #end;
 
 		return pDir + fileName;
 		#else
