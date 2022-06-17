@@ -3,7 +3,7 @@
  *****************************************************************************
  * Copyright (C) 1999-2010 VLC authors and VideoLAN
  * Copyright (C) 2010 Laurent Aimar
- * $Id: 510ee151ec907da9fb6ac88b38cf7ef68a5c4af8 $
+ * $Id: d448d06f8c9f9c91d70239ff0d07cb5ceac06423 $
  *
  * Authors: Gildas Bazin <gbazin@videolan.org>
  *          Laurent Aimar <fenrir _AT_ videolan _DOT_ org>
@@ -32,14 +32,21 @@
 extern "C" {
 #endif
 
+/**********************************************************************
+ * Base SPU structures
+ **********************************************************************/
 /**
- * \defgroup spu Sub-picture channels
- * \ingroup video_output
+ * \defgroup spu Subpicture Unit
+ * This module describes the programming interface for the subpicture unit.
+ * It includes functions allowing to create/destroy an spu, and render
+ * subpictures.
  * @{
- * \file
  */
 
 typedef struct spu_private_t spu_private_t;
+
+/* Default subpicture channel ID */
+#define SPU_DEFAULT_CHANNEL (1)
 
 /**
  * Subpicture unit descriptor
@@ -51,8 +58,8 @@ struct spu_t
     spu_private_t *p;
 };
 
-    VLC_API spu_t * spu_Create( vlc_object_t *, vout_thread_t * );
-#define spu_Create(a,b) spu_Create(VLC_OBJECT(a),b)
+VLC_API spu_t * spu_Create( vlc_object_t * );
+#define spu_Create(a) spu_Create(VLC_OBJECT(a))
 VLC_API void spu_Destroy( spu_t * );
 
 /**

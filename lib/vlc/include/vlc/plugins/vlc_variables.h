@@ -2,7 +2,7 @@
  * vlc_variables.h: variables handling
  *****************************************************************************
  * Copyright (C) 2002-2004 VLC authors and VideoLAN
- * $Id: 83752b171f82c86164142a6254f513fc9cb7a324 $
+ * $Id: 241185d2eb9a7314258ed8f523e607c7efcca600 $
  *
  * Authors: Samuel Hocevar <sam@zoy.org>
  *          Gildas Bazin <gbazin@netcourrier.com>
@@ -26,14 +26,19 @@
 #define VLC_VARIABLES_H 1
 
 /**
+ * \file
+ * This file defines functions and structures for dynamic variables in vlc
+ */
+
+/**
  * \defgroup variables Variables
- * \ingroup vlc_object
  *
- * VLC object variables and callbacks
+ * Functions for using the object variables in vlc.
+ *
+ * Vlc have a very powerful "object variable" infrastructure useful
+ * for many things.
  *
  * @{
- * \file
- * VLC object variables and callbacks interface
  */
 
 #define VLC_VAR_TYPE      0x00ff
@@ -48,8 +53,11 @@
 #define VLC_VAR_VOID      0x0010
 #define VLC_VAR_BOOL      0x0020
 #define VLC_VAR_INTEGER   0x0030
+#define VLC_VAR_HOTKEY    0x0031
 #define VLC_VAR_STRING    0x0040
+#define VLC_VAR_VARIABLE  0x0044
 #define VLC_VAR_FLOAT     0x0050
+#define VLC_VAR_TIME      0x0060
 #define VLC_VAR_ADDRESS   0x0070
 #define VLC_VAR_COORDS    0x00A0
 /**@}*/
@@ -60,6 +68,9 @@
  * @{
  */
 #define VLC_VAR_HASCHOICE 0x0100
+#define VLC_VAR_HASMIN    0x0200
+#define VLC_VAR_HASMAX    0x0400
+#define VLC_VAR_HASSTEP   0x0800
 
 #define VLC_VAR_ISCOMMAND 0x2000
 
@@ -77,6 +88,18 @@
  * @{
  */
 
+/**
+ * Set the minimum value of this variable
+ * \param p_val The new minimum value
+ * \param p_val2 Unused
+ */
+#define VLC_VAR_SETMIN              0x0010
+/**
+ * Set the maximum value of this variable
+ * \param p_val The new maximum value
+ * \param p_val2 Unused
+ */
+#define VLC_VAR_SETMAX              0x0011
 #define VLC_VAR_SETSTEP             0x0012
 
 /**
@@ -96,11 +119,12 @@
 #define VLC_VAR_ADDCHOICE           0x0020
 #define VLC_VAR_DELCHOICE           0x0021
 #define VLC_VAR_CLEARCHOICES        0x0022
+#define VLC_VAR_SETDEFAULT          0x0023
 #define VLC_VAR_GETCHOICES          0x0024
-
+#define VLC_VAR_GETLIST             0x0025
 #define VLC_VAR_CHOICESCOUNT        0x0026
-#define VLC_VAR_SETMINMAX           0x0027
 
+#define VLC_VAR_SETISCOMMAND        0x0040
 /**@}*/
 
 /** \defgroup var_GetAndSet Variable actions
@@ -121,7 +145,7 @@ enum {
 VLC_API int var_Create( vlc_object_t *, const char *, int );
 #define var_Create(a,b,c) var_Create( VLC_OBJECT(a), b, c )
 
-VLC_API void var_Destroy( vlc_object_t *, const char * );
+VLC_API int var_Destroy( vlc_object_t *, const char * );
 #define var_Destroy(a,b) var_Destroy( VLC_OBJECT(a), b )
 
 VLC_API int var_Change( vlc_object_t *, const char *, int, vlc_value_t *, vlc_value_t * );
@@ -156,19 +180,13 @@ VLC_API void var_FreeList( vlc_value_t *, vlc_value_t * );
  *                 vlc_value_t newvalue,
  *                 void *p_data);
  *****************************************************************************/
-VLC_API void var_AddCallback( vlc_object_t *, const char *, vlc_callback_t, void * );
-VLC_API void var_DelCallback( vlc_object_t *, const char *, vlc_callback_t, void * );
-VLC_API void var_TriggerCallback( vlc_object_t *, const char * );
-
-VLC_API void var_AddListCallback( vlc_object_t *, const char *, vlc_list_callback_t, void * );
-VLC_API void var_DelListCallback( vlc_object_t *, const char *, vlc_list_callback_t, void * );
+VLC_API int var_AddCallback( vlc_object_t *, const char *, vlc_callback_t, void * );
+VLC_API int var_DelCallback( vlc_object_t *, const char *, vlc_callback_t, void * );
+VLC_API int var_TriggerCallback( vlc_object_t *, const char * );
 
 #define var_AddCallback(a,b,c,d) var_AddCallback( VLC_OBJECT(a), b, c, d )
 #define var_DelCallback(a,b,c,d) var_DelCallback( VLC_OBJECT(a), b, c, d )
 #define var_TriggerCallback(a,b) var_TriggerCallback( VLC_OBJECT(a), b )
-
-#define var_AddListCallback(a,b,c,d) var_AddListCallback( VLC_OBJECT(a), b, c, d )
-#define var_DelListCallback(a,b,c,d) var_DelListCallback( VLC_OBJECT(a), b, c, d )
 
 /*****************************************************************************
  * helpers functions
@@ -201,6 +219,20 @@ static inline int var_SetBool( vlc_object_t *p_obj, const char *psz_name, bool b
     vlc_value_t val;
     val.b_bool = b;
     return var_SetChecked( p_obj, psz_name, VLC_VAR_BOOL, val );
+}
+
+/**
+ * Set the value of a time variable
+ *
+ * \param p_obj The object that holds the variable
+ * \param psz_name The name of the variable
+ * \param i The new time value of this variable
+ */
+static inline int var_SetTime( vlc_object_t *p_obj, const char *psz_name, int64_t i )
+{
+    vlc_value_t val;
+    val.i_time = i;
+    return var_SetChecked( p_obj, psz_name, VLC_VAR_TIME, val );
 }
 
 static inline int var_SetCoords( vlc_object_t *obj, const char *name,
@@ -258,6 +290,7 @@ int var_SetAddress( vlc_object_t *p_obj, const char *psz_name, void *ptr )
 
 #define var_SetInteger(a,b,c)   var_SetInteger( VLC_OBJECT(a),b,c)
 #define var_SetBool(a,b,c)      var_SetBool( VLC_OBJECT(a),b,c)
+#define var_SetTime(a,b,c)      var_SetTime( VLC_OBJECT(a),b,c)
 #define var_SetFloat(a,b,c)     var_SetFloat( VLC_OBJECT(a),b,c)
 #define var_SetString(a,b,c)    var_SetString( VLC_OBJECT(a),b,c)
 #define var_SetAddress(o, n, p) var_SetAddress(VLC_OBJECT(o), n, p)
@@ -294,6 +327,22 @@ static inline bool var_GetBool( vlc_object_t *p_obj, const char *psz_name )
         return val.b_bool;
     else
         return false;
+}
+
+/**
+ * Get a time value
+ *
+ * \param p_obj The object that holds the variable
+ * \param psz_name The name of the variable
+ */
+VLC_USED
+static inline int64_t var_GetTime( vlc_object_t *p_obj, const char *psz_name )
+{
+    vlc_value_t val; val.i_time = 0L;
+    if( !var_GetChecked( p_obj, psz_name, VLC_VAR_TIME, &val ) )
+        return val.i_time;
+    else
+        return 0;
 }
 
 static inline void var_GetCoords( vlc_object_t *obj, const char *name,
@@ -374,8 +423,7 @@ static inline int64_t var_IncInteger( vlc_object_t *p_obj, const char *psz_name 
 {
     vlc_value_t val;
     val.i_int = 1;
-    if( var_GetAndSet( p_obj, psz_name, VLC_VAR_INTEGER_ADD, &val ) )
-        return 0;
+    var_GetAndSet( p_obj, psz_name, VLC_VAR_INTEGER_ADD, &val );
     return val.i_int;
 }
 #define var_IncInteger(a,b) var_IncInteger( VLC_OBJECT(a), b )
@@ -389,8 +437,7 @@ static inline int64_t var_DecInteger( vlc_object_t *p_obj, const char *psz_name 
 {
     vlc_value_t val;
     val.i_int = -1;
-    if( var_GetAndSet( p_obj, psz_name, VLC_VAR_INTEGER_ADD, &val ) )
-        return 0;
+    var_GetAndSet( p_obj, psz_name, VLC_VAR_INTEGER_ADD, &val );
     return val.i_int;
 }
 #define var_DecInteger(a,b) var_DecInteger( VLC_OBJECT(a), b )
@@ -400,8 +447,7 @@ static inline uint64_t var_OrInteger( vlc_object_t *obj, const char *name,
 {
     vlc_value_t val;
     val.i_int = v;
-    if( var_GetAndSet( obj, name, VLC_VAR_INTEGER_OR, &val ) )
-        return 0;
+    var_GetAndSet( obj, name, VLC_VAR_INTEGER_OR, &val );
     return val.i_int;
 }
 #define var_OrInteger(a,b,c) var_OrInteger(VLC_OBJECT(a),b,c)
@@ -411,8 +457,7 @@ static inline uint64_t var_NAndInteger( vlc_object_t *obj, const char *name,
 {
     vlc_value_t val;
     val.i_int = v;
-    if( var_GetAndSet( obj, name, VLC_VAR_INTEGER_NAND, &val ) )
-        return 0;
+    var_GetAndSet( obj, name, VLC_VAR_INTEGER_NAND, &val );
     return val.i_int;
 }
 #define var_NAndInteger(a,b,c) var_NAndInteger(VLC_OBJECT(a),b,c)
@@ -441,6 +486,19 @@ static inline bool var_CreateGetBool( vlc_object_t *p_obj, const char *psz_name 
 {
     var_Create( p_obj, psz_name, VLC_VAR_BOOL | VLC_VAR_DOINHERIT );
     return var_GetBool( p_obj, psz_name );
+}
+
+/**
+ * Create a time variable with inherit and get its value.
+ *
+ * \param p_obj The object that holds the variable
+ * \param psz_name The name of the variable
+ */
+VLC_USED
+static inline int64_t var_CreateGetTime( vlc_object_t *p_obj, const char *psz_name )
+{
+    var_Create( p_obj, psz_name, VLC_VAR_TIME | VLC_VAR_DOINHERIT );
+    return var_GetTime( p_obj, psz_name );
 }
 
 /**
@@ -494,6 +552,7 @@ static inline void *var_CreateGetAddress( vlc_object_t *p_obj,
 
 #define var_CreateGetInteger(a,b)   var_CreateGetInteger( VLC_OBJECT(a),b)
 #define var_CreateGetBool(a,b)   var_CreateGetBool( VLC_OBJECT(a),b)
+#define var_CreateGetTime(a,b)   var_CreateGetTime( VLC_OBJECT(a),b)
 #define var_CreateGetFloat(a,b)   var_CreateGetFloat( VLC_OBJECT(a),b)
 #define var_CreateGetString(a,b)   var_CreateGetString( VLC_OBJECT(a),b)
 #define var_CreateGetNonEmptyString(a,b)   var_CreateGetNonEmptyString( VLC_OBJECT(a),b)
@@ -525,6 +584,20 @@ static inline bool var_CreateGetBoolCommand( vlc_object_t *p_obj, const char *ps
     var_Create( p_obj, psz_name, VLC_VAR_BOOL | VLC_VAR_DOINHERIT
                                    | VLC_VAR_ISCOMMAND );
     return var_GetBool( p_obj, psz_name );
+}
+
+/**
+ * Create a time command variable with inherit and get its value.
+ *
+ * \param p_obj The object that holds the variable
+ * \param psz_name The name of the variable
+ */
+VLC_USED
+static inline int64_t var_CreateGetTimeCommand( vlc_object_t *p_obj, const char *psz_name )
+{
+    var_Create( p_obj, psz_name, VLC_VAR_TIME | VLC_VAR_DOINHERIT
+                                   | VLC_VAR_ISCOMMAND );
+    return var_GetTime( p_obj, psz_name );
 }
 
 /**
@@ -567,6 +640,7 @@ static inline char *var_CreateGetNonEmptyStringCommand( vlc_object_t *p_obj,
 
 #define var_CreateGetIntegerCommand(a,b)   var_CreateGetIntegerCommand( VLC_OBJECT(a),b)
 #define var_CreateGetBoolCommand(a,b)   var_CreateGetBoolCommand( VLC_OBJECT(a),b)
+#define var_CreateGetTimeCommand(a,b)   var_CreateGetTimeCommand( VLC_OBJECT(a),b)
 #define var_CreateGetFloatCommand(a,b)   var_CreateGetFloatCommand( VLC_OBJECT(a),b)
 #define var_CreateGetStringCommand(a,b)   var_CreateGetStringCommand( VLC_OBJECT(a),b)
 #define var_CreateGetNonEmptyStringCommand(a,b)   var_CreateGetNonEmptyStringCommand( VLC_OBJECT(a),b)
@@ -585,8 +659,7 @@ static inline int var_CountChoices( vlc_object_t *p_obj, const char *psz_name )
 static inline bool var_ToggleBool( vlc_object_t *p_obj, const char *psz_name )
 {
     vlc_value_t val;
-    if( var_GetAndSet( p_obj, psz_name, VLC_VAR_BOOL_TOGGLE, &val ) )
-        return false;
+    var_GetAndSet( p_obj, psz_name, VLC_VAR_BOOL_TOGGLE, &val );
     return val.b_bool;
 }
 #define var_ToggleBool(a,b) var_ToggleBool( VLC_OBJECT(a),b )
@@ -642,6 +715,17 @@ static inline char *var_InheritString( vlc_object_t *obj, const char *name )
 #define var_InheritString(o, n) var_InheritString(VLC_OBJECT(o), n)
 
 VLC_USED
+static inline mtime_t var_InheritTime( vlc_object_t *obj, const char *name )
+{
+    vlc_value_t val;
+
+    if( var_Inherit( obj, name, VLC_VAR_TIME, &val ) )
+        val.i_time = 0;
+    return val.i_time;
+}
+#define var_InheritTime(o, n) var_InheritTime(VLC_OBJECT(o), n)
+
+VLC_USED
 static inline void *var_InheritAddress( vlc_object_t *obj, const char *name )
 {
     vlc_value_t val;
@@ -657,6 +741,7 @@ VLC_API int var_InheritURational( vlc_object_t *, unsigned *num, unsigned *den, 
 
 #define var_GetInteger(a,b)   var_GetInteger( VLC_OBJECT(a),b)
 #define var_GetBool(a,b)   var_GetBool( VLC_OBJECT(a),b)
+#define var_GetTime(a,b)   var_GetTime( VLC_OBJECT(a),b)
 #define var_GetFloat(a,b)   var_GetFloat( VLC_OBJECT(a),b)
 #define var_GetString(a,b)   var_GetString( VLC_OBJECT(a),b)
 #define var_GetNonEmptyString(a,b)   var_GetNonEmptyString( VLC_OBJECT(a),b)

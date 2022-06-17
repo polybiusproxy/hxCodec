@@ -51,14 +51,9 @@ inline static public function video(key:String)
 
 1. Put your video in the videos folder.
 
-2. Add your imports in `PlayState.hx`:
-```haxe
-import vlc.VideoHandler;
-```
-
 **Note: hxCodec supports all the video formats the VLC video player can use!!**
 
-3. Add somewhere in PlayState:
+2. Add somewhere in PlayState:
 ```haxe
 function playCutscene(name:String, ?atend:Bool)
 {
@@ -166,7 +161,18 @@ sudo apt-get install libvlccore-dev
 ### Android
 
 Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.extension`), one more thing, you need to put the location manualy in paths.
-This is not suitable for games and will be fixed soon.
+
+Also if you need this extension called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools)
+
+To install it open cmd or powershell and type
+```shell
+haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
+```
+
+Add this code in `Project.xml`
+```xml
+<haxelib name="extension-androidtools" if="android" />
+```
 
 --------------------------
 

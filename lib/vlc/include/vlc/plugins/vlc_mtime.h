@@ -10,7 +10,7 @@
  * Functions prototyped are implemented in interface/mtime.c.
  *****************************************************************************
  * Copyright (C) 1996, 1997, 1998, 1999, 2000 VLC authors and VideoLAN
- * $Id: 311eb670eb7b9f35668196b78c9fa3c5cf1779db $
+ * $Id: ab89a972120c8ee3f45d9823994eac584f8fe527 $
  *
  * Authors: Vincent Seguin <seguin@via.ecp.fr>
  *
@@ -54,6 +54,7 @@
 /*****************************************************************************
  * Prototypes
  *****************************************************************************/
+VLC_API char * mstrtime( char *psz_buffer, mtime_t date );
 VLC_API char * secstotimestr( char *psz_buffer, int32_t secs );
 
 /*****************************************************************************

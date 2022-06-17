@@ -1,5 +1,5 @@
 /*****************************************************************************
- * vlc_avcodec.h: VLC thread support for libavcodec
+ * vlc_avcodec.h: VLC thread support for FFMPEG/libavcodec
  *****************************************************************************
  * Copyright (C) 2009-2010 Rémi Denis-Courmont
  *

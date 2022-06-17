@@ -26,20 +26,13 @@
  * Atomic operations do not require locking, but they are not very powerful.
  */
 
-/* Clang older versions support atomics but lacks the stdatomic.h header */
-#if defined(__clang__)
-# if !defined(__has_include) || !__has_include(<stdatomic.h>)
-#  define __STDC_NO_ATOMICS__ 1
-# endif
-#endif
+# if !defined (__cplusplus) && (__STDC_VERSION__ >= 201112L) \
+  && !defined (__STDC_NO_ATOMICS__)
 
-# ifndef __cplusplus
-#  if !defined (__STDC_NO_ATOMICS__)
 /*** Native C11 atomics ***/
-#   include <stdatomic.h>
+#  include <stdatomic.h>
 
-#  else
-/*** Intel/GCC atomics ***/
+# else
 
 #  define ATOMIC_FLAG_INIT false
 
@@ -60,6 +53,10 @@
 #  define atomic_is_lock_free(obj) \
     false
 
+/* In principles, __sync_*() only supports int, long and long long and their
+ * unsigned equivalents, i.e. 4-bytes and 8-bytes types, although GCC also
+ * supports 1 and 2-bytes types. Some non-x86 architectures do not support
+ * 8-byte atomic types (or not efficiently). */
 typedef          bool      atomic_flag;
 typedef          bool      atomic_bool;
 typedef          char      atomic_char;
@@ -98,6 +95,10 @@ typedef            size_t atomic_size_t;
 typedef         ptrdiff_t atomic_ptrdiff_t;
 typedef          intmax_t atomic_intmax_t;
 typedef         uintmax_t atomic_uintmax_t;
+
+# if defined (__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) || (defined (__clang__) && (defined (__x86_64__) || defined (__i386__)))
+
+/*** Intel/GCC atomics ***/
 
 #  define atomic_store(object,desired) \
     do { \
@@ -138,13 +139,13 @@ typedef         uintmax_t atomic_uintmax_t;
 #  define atomic_compare_exchange_strong(object,expected,desired) \
     atomic_compare_exchange(object, expected, desired)
 
-#  define atomic_compare_exchange_strong_explicit(object,expected,desired,order,order_different) \
+#  define atomic_compare_exchange_strong_explicit(object,expected,desired,order) \
     atomic_compare_exchange_strong(object, expected, desired)
 
 #  define atomic_compare_exchange_weak(object,expected,desired) \
     atomic_compare_exchange(object, expected, desired)
 
-#  define atomic_compare_exchange_weak_explicit(object,expected,desired,order_equal,order_different) \
+#  define atomic_compare_exchange_weak_explicit(object,expected,desired,order) \
     atomic_compare_exchange_weak(object, expected, desired)
 
 #  define atomic_fetch_add(object,operand) \
@@ -189,19 +190,182 @@ typedef         uintmax_t atomic_uintmax_t;
 #  define atomic_flag_clear_explicit(object,order) \
     atomic_flag_clear(object)
 
-# endif /* !C11 */
+# elif defined (__GNUC__)
+
+/*** No atomics ***/
+
+#  define atomic_store(object,desired) \
+    do { \
+        typeof (object) _obj = (object); \
+        typeof (*object) _des = (desired); \
+        vlc_global_lock(VLC_ATOMIC_MUTEX); \
+        *_obj = _des; \
+        vlc_global_unlock(VLC_ATOMIC_MUTEX); \
+    } while (0)
+#  define atomic_store_explicit(object,desired,order) \
+    atomic_store(object,desired)
+
+#  define atomic_load(object) \
+({ \
+    typeof (object) _obj = (object); \
+    typeof (*object) _old; \
+    vlc_global_lock(VLC_ATOMIC_MUTEX); \
+    _old = *_obj; \
+    vlc_global_unlock(VLC_ATOMIC_MUTEX); \
+    _old; \
+})
+#  define atomic_load_explicit(object,order) \
+    atomic_load(object)
+
+#  define atomic_exchange(object,desired) \
+({ \
+    typeof (object) _obj = (object); \
+    typeof (*object) _des = (desired); \
+    typeof (*object) _old; \
+    vlc_global_lock(VLC_ATOMIC_MUTEX); \
+    _old = *_obj; \
+    *_obj = _des; \
+    vlc_global_unlock(VLC_ATOMIC_MUTEX); \
+    _old; \
+})
+#  define atomic_exchange_explicit(object,desired,order) \
+    atomic_exchange(object,desired)
+
+#  define atomic_compare_exchange_strong(object,expected,desired) \
+({ \
+    typeof (object) _obj = (object); \
+    typeof (object) _exp = (expected); \
+    typeof (*object) _des = (desired); \
+    bool ret; \
+    vlc_global_lock(VLC_ATOMIC_MUTEX); \
+    ret = *_obj == *_exp; \
+    if (ret) \
+        *_obj = _des; \
+    else \
+        *_exp = *_obj; \
+    vlc_global_unlock(VLC_ATOMIC_MUTEX); \
+    ret; \
+})
+#  define atomic_compare_exchange_strong_explicit(object,expected,desired,order) \
+    atomic_compare_exchange_strong(object, expected, desired)
+#  define atomic_compare_exchange_weak(object,expected,desired) \
+    atomic_compare_exchange_strong(object, expected, desired)
+#  define atomic_compare_exchange_weak_explicit(object,expected,desired,order) \
+    atomic_compare_exchange_weak(object, expected, desired)
+
+#  define atomic_fetch_OP(object,desired,op) \
+({ \
+    typeof (object) _obj = (object); \
+    typeof (*object) _des = (desired); \
+    typeof (*object) _old; \
+    vlc_global_lock(VLC_ATOMIC_MUTEX); \
+    _old = *_obj; \
+    *_obj = (*_obj) op (_des); \
+    vlc_global_unlock(VLC_ATOMIC_MUTEX); \
+    _old; \
+})
+
+#  define atomic_fetch_add(object,operand) \
+    atomic_fetch_OP(object,operand,+)
+#  define atomic_fetch_add_explicit(object,operand,order) \
+    atomic_fetch_add(object,operand)
+
+#  define atomic_fetch_sub(object,operand) \
+    atomic_fetch_OP(object,operand,-)
+#  define atomic_fetch_sub_explicit(object,operand,order) \
+    atomic_fetch_sub(object,operand)
+
+#  define atomic_fetch_or(object,operand) \
+    atomic_fetch_OP(object,operand,|)
+#  define atomic_fetch_or_explicit(object,operand,order) \
+    atomic_fetch_or(object,operand)
+
+#  define atomic_fetch_xor(object,operand) \
+    atomic_fetch_OP(object,operand,^)
+#  define atomic_fetch_xor_explicit(object,operand,order) \
+    atomic_fetch_sub(object,operand)
+
+#  define atomic_fetch_and(object,operand) \
+    atomic_fetch_OP(object,operand,&)
+#  define atomic_fetch_and_explicit(object,operand,order) \
+    atomic_fetch_and(object,operand)
+
+#  define atomic_flag_test_and_set(object) \
+    atomic_exchange(object, true)
+
+#  define atomic_flag_test_and_set_explicit(object,order) \
+    atomic_flag_test_and_set(object)
+
+#  define atomic_flag_clear(object) \
+    atomic_store(object, false)
+
+#  define atomic_flag_clear_explicit(object,order) \
+    atomic_flag_clear(object)
+
+# else
+#  error FIXME: implement atomic operations for this compiler.
+# endif
+# endif
+
+/**
+ * Memory storage space for an atom. Never access it directly.
+ */
+typedef union
+{
+    atomic_uintptr_t u;
+} vlc_atomic_t;
+
+/** Static initializer for \ref vlc_atomic_t */
+# define VLC_ATOMIC_INIT(val) { (val) }
+
+/* All functions return the atom value _after_ the operation. */
+static inline uintptr_t vlc_atomic_get(vlc_atomic_t *atom)
+{
+    return atomic_load(&atom->u);
+}
+
+static inline uintptr_t vlc_atomic_set(vlc_atomic_t *atom, uintptr_t v)
+{
+    atomic_store(&atom->u, v);
+    return v;
+}
+
+static inline uintptr_t vlc_atomic_add(vlc_atomic_t *atom, uintptr_t v)
+{
+    return atomic_fetch_add(&atom->u, v) + v;
+}
+
+static inline uintptr_t vlc_atomic_sub (vlc_atomic_t *atom, uintptr_t v)
+{
+    return atomic_fetch_sub (&atom->u, v) - v;
+}
+
+static inline uintptr_t vlc_atomic_inc (vlc_atomic_t *atom)
+{
+    return vlc_atomic_add (atom, 1);
+}
+
+static inline uintptr_t vlc_atomic_dec (vlc_atomic_t *atom)
+{
+    return vlc_atomic_sub (atom, 1);
+}
+
+static inline uintptr_t vlc_atomic_swap(vlc_atomic_t *atom, uintptr_t v)
+{
+    return atomic_exchange(&atom->u, v);
+}
+
+static inline uintptr_t vlc_atomic_compare_swap(vlc_atomic_t *atom,
+                                                uintptr_t u, uintptr_t v)
+{
+    atomic_compare_exchange_strong(&atom->u, &u, v);
+    return u;
+}
 
 typedef atomic_uint_least32_t vlc_atomic_float;
 
-static inline void vlc_atomic_init_float(vlc_atomic_float *var, float f)
-{
-    union { float f; uint32_t i; } u;
-    u.f = f;
-    atomic_init(var, u.i);
-}
-
 /** Helper to retrieve a single precision from an atom. */
-static inline float vlc_atomic_load_float(vlc_atomic_float *atom)
+static inline float vlc_atomic_loadf(vlc_atomic_float *atom)
 {
     union { float f; uint32_t i; } u;
     u.i = atomic_load(atom);
@@ -209,16 +373,11 @@ static inline float vlc_atomic_load_float(vlc_atomic_float *atom)
 }
 
 /** Helper to store a single precision into an atom. */
-static inline void vlc_atomic_store_float(vlc_atomic_float *atom, float f)
+static inline void vlc_atomic_storef(vlc_atomic_float *atom, float f)
 {
     union { float f; uint32_t i; } u;
     u.f = f;
     atomic_store(atom, u.i);
 }
-
-# else /* C++ */
-/*** Native C++11 atomics ***/
-#   include <atomic>
-# endif /* C++ */
 
 #endif

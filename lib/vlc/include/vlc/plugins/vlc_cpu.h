@@ -50,7 +50,11 @@ VLC_API unsigned vlc_CPU(void);
 #  define VLC_MMX
 # else
 #  define vlc_CPU_MMX() ((vlc_CPU() & VLC_CPU_MMX) != 0)
-#  define VLC_MMX __attribute__ ((__target__ ("mmx")))
+#  if VLC_GCC_VERSION(4, 4) || defined(__clang__)
+#   define VLC_MMX __attribute__ ((__target__ ("mmx")))
+#  else
+#   define VLC_MMX VLC_MMX_is_not_implemented_on_this_compiler
+#  endif
 # endif
 
 # if defined (__SSE__)
@@ -60,7 +64,11 @@ VLC_API unsigned vlc_CPU(void);
 # else
 #  define vlc_CPU_MMXEXT() ((vlc_CPU() & VLC_CPU_MMXEXT) != 0)
 #  define vlc_CPU_SSE() ((vlc_CPU() & VLC_CPU_SSE) != 0)
-#  define VLC_SSE __attribute__ ((__target__ ("sse")))
+#  if VLC_GCC_VERSION(4, 4) || defined(__clang__)
+#   define VLC_SSE __attribute__ ((__target__ ("sse")))
+#  else
+#   define VLC_SSE VLC_SSE_is_not_implemented_on_this_compiler
+#  endif
 # endif
 
 # ifdef __SSE2__
@@ -170,8 +178,6 @@ VLC_API unsigned vlc_CPU(void);
 
 # elif defined (__aarch64__)
 #  define HAVE_FPU 1
-// NEON is mandatory for general purpose ARMv8-a CPUs
-#  define vlc_CPU_ARM64_NEON() (1)
 
 # elif defined (__sparc__)
 #  define HAVE_FPU 1

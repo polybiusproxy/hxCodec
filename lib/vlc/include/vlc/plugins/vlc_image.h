@@ -2,7 +2,7 @@
  * vlc_image.h : wrapper for image reading/writing facilities
  *****************************************************************************
  * Copyright (C) 2004 VLC authors and VideoLAN
- * $Id: 2b308fd0e52f4d4d6e20f95d08e0d63c53822eef $
+ * $Id: 52bce1f24495ffdbadfb6d0aef0953577992b9a2 $
  *
  * Authors: Gildas Bazin <gbazin@videolan.org>
  *
@@ -24,13 +24,12 @@
 #ifndef VLC_IMAGE_H
 #define VLC_IMAGE_H 1
 
-# include <vlc_picture.h>
-# include <vlc_picture_fifo.h>
-
 /**
  * \file
  * This file defines functions and structures for image conversions in vlc
  */
+
+#include <vlc_vout.h>
 
 # ifdef __cplusplus
 extern "C" {
@@ -39,25 +38,25 @@ extern "C" {
 struct image_handler_t
 {
     picture_t * (*pf_read)      ( image_handler_t *, block_t *,
-                                  const video_format_t *, video_format_t * );
+                                  video_format_t *, video_format_t * );
     picture_t * (*pf_read_url)  ( image_handler_t *, const char *,
                                   video_format_t *, video_format_t * );
     block_t * (*pf_write)       ( image_handler_t *, picture_t *,
-                                  const video_format_t *, const video_format_t * );
+                                  video_format_t *, video_format_t * );
     int (*pf_write_url)         ( image_handler_t *, picture_t *,
-                                  const video_format_t *, video_format_t *,
+                                  video_format_t *, video_format_t *,
                                   const char * );
 
     picture_t * (*pf_convert)   ( image_handler_t *, picture_t *,
-                                  const video_format_t *, video_format_t * );
+                                  video_format_t *, video_format_t * );
+    picture_t * (*pf_filter)    ( image_handler_t *, picture_t *,
+                                  video_format_t *, const char * );
 
     /* Private properties */
     vlc_object_t *p_parent;
     decoder_t *p_dec;
     encoder_t *p_enc;
     filter_t  *p_filter;
-
-    picture_fifo_t *outfifo;
 };
 
 VLC_API image_handler_t * image_HandlerCreate( vlc_object_t * ) VLC_USED;
@@ -69,6 +68,7 @@ VLC_API void image_HandlerDelete( image_handler_t * );
 #define image_Write( a, b, c, d ) a->pf_write( a, b, c, d )
 #define image_WriteUrl( a, b, c, d, e ) a->pf_write_url( a, b, c, d, e )
 #define image_Convert( a, b, c, d ) a->pf_convert( a, b, c, d )
+#define image_Filter( a, b, c, d ) a->pf_filter( a, b, c, d )
 
 VLC_API vlc_fourcc_t image_Type2Fourcc( const char *psz_name );
 VLC_API vlc_fourcc_t image_Ext2Fourcc( const char *psz_name );

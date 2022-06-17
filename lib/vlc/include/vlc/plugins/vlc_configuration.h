@@ -4,7 +4,7 @@
  * It includes functions allowing to declare, get or set configuration options.
  *****************************************************************************
  * Copyright (C) 1999-2006 VLC authors and VideoLAN
- * $Id: 209168615be2a7bc5db889282b32389093ab262e $
+ * $Id: fe0aba5ca8b9d5bb60afd0ac9027d023b1862f2f $
  *
  * Authors: Gildas Bazin <gbazin@videolan.org>
  *
@@ -67,10 +67,10 @@ struct module_config_t
     unsigned    b_safe:1;       /* Safe in web plugins and playlists */
     unsigned    b_removed:1;                           /* Deprecated */
 
-    const char *psz_type;                           /* Configuration subtype */
-    const char *psz_name;                                     /* Option name */
-    const char *psz_text;       /* Short comment on the configuration option */
-    const char *psz_longtext;    /* Long comment on the configuration option */
+    char *psz_type;                                 /* Configuration subtype */
+    char *psz_name;                                           /* Option name */
+    char *psz_text;             /* Short comment on the configuration option */
+    char *psz_longtext;          /* Long comment on the configuration option */
 
     module_value_t value;                                    /* Option value */
     module_value_t orig;
@@ -81,21 +81,19 @@ struct module_config_t
     uint16_t list_count;                                /* Options list size */
     union
     {
-        const char **psz;          /* List of possible values for the option */
-        const int  *i;
+        char **psz;               /* List of possible values for the option */
+        int   *i;
         vlc_string_list_cb psz_cb;
         vlc_integer_list_cb i_cb;
     } list;
-    const char **list_text;                /* Friendly names for list values */
-    const char *list_cb_name;
-    void *owner;
+    char **list_text;                      /* Friendly names for list values */
 };
 
 /*****************************************************************************
  * Prototypes - these methods are used to get, set or manipulate configuration
  * data.
  *****************************************************************************/
-VLC_API int config_GetType(const char *) VLC_USED;
+VLC_API int config_GetType(vlc_object_t *, const char *) VLC_USED;
 VLC_API int64_t config_GetInt(vlc_object_t *, const char *) VLC_USED;
 VLC_API void config_PutInt(vlc_object_t *, const char *, int64_t);
 VLC_API float config_GetFloat(vlc_object_t *, const char *) VLC_USED;
@@ -113,7 +111,7 @@ VLC_API int config_SaveConfigFile( vlc_object_t * );
 VLC_API void config_ResetAll( vlc_object_t * );
 #define config_ResetAll(a) config_ResetAll(VLC_OBJECT(a))
 
-VLC_API module_config_t * config_FindConfig(const char *) VLC_USED;
+VLC_API module_config_t * config_FindConfig( vlc_object_t *, const char * ) VLC_USED;
 VLC_API char * config_GetDataDir(void) VLC_USED VLC_MALLOC;
 VLC_API char *config_GetLibDir(void) VLC_USED;
 
@@ -140,6 +138,7 @@ VLC_API void config_AddIntf( vlc_object_t *, const char * );
 VLC_API void config_RemoveIntf( vlc_object_t *, const char * );
 VLC_API bool config_ExistIntf( vlc_object_t *, const char * ) VLC_USED;
 
+#define config_GetType(a,b) config_GetType(VLC_OBJECT(a),b)
 #define config_GetInt(a,b) config_GetInt(VLC_OBJECT(a),b)
 #define config_PutInt(a,b,c) config_PutInt(VLC_OBJECT(a),b,c)
 #define config_GetFloat(a,b) config_GetFloat(VLC_OBJECT(a),b)
