@@ -2,7 +2,7 @@
  * vlc_aout_volume.h: audio volume module
  *****************************************************************************
  * Copyright (C) 2002-2009 VLC authors and VideoLAN
- * $Id: df85b8fd14e00454e88c08061e3059fa67927dab $
+ * $Id: 051413ba105d5f7ee552679bf7fcd3a053db112c $
  *
  * Authors: Christophe Massiot <massiot@via.ecp.fr>
  *          Laurent Aimar <fenrir _AT_ videolan _DOT_ org>
@@ -25,17 +25,14 @@
 #ifndef VLC_AOUT_MIXER_H
 #define VLC_AOUT_MIXER_H 1
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
- * \defgroup audio_volume Audio output volume
- * \ingroup audio_output
- * @{
  * \file
  * This file defines functions, structures and macros for audio output mixer object
  */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct audio_volume audio_volume_t;
 
@@ -49,8 +46,6 @@ struct audio_volume
     vlc_fourcc_t format; /**< Audio samples format */
     void (*amplify)(audio_volume_t *, block_t *, float); /**< Amplifier */
 };
-
-/** @} */
 
 #ifdef __cplusplus
 }

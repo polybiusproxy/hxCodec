@@ -34,8 +34,6 @@
 extern "C" {
 # endif
 
-typedef struct libvlc_renderer_item_t libvlc_renderer_item_t;
-
 /**
  * \ingroup libvlc_event
  * @{
@@ -75,23 +73,11 @@ enum libvlc_event_e {
     libvlc_MediaPlayerSnapshotTaken,
     libvlc_MediaPlayerLengthChanged,
     libvlc_MediaPlayerVout,
-    libvlc_MediaPlayerScrambledChanged,
-    libvlc_MediaPlayerESAdded,
-    libvlc_MediaPlayerESDeleted,
-    libvlc_MediaPlayerESSelected,
-    libvlc_MediaPlayerCorked,
-    libvlc_MediaPlayerUncorked,
-    libvlc_MediaPlayerMuted,
-    libvlc_MediaPlayerUnmuted,
-    libvlc_MediaPlayerAudioVolume,
-    libvlc_MediaPlayerAudioDevice,
-    libvlc_MediaPlayerChapterChanged,
 
     libvlc_MediaListItemAdded=0x200,
     libvlc_MediaListWillAddItem,
     libvlc_MediaListItemDeleted,
     libvlc_MediaListWillDeleteItem,
-    libvlc_MediaListEndReached,
 
     libvlc_MediaListViewItemAdded=0x300,
     libvlc_MediaListViewWillAddItem,
@@ -102,19 +88,8 @@ enum libvlc_event_e {
     libvlc_MediaListPlayerNextItemSet,
     libvlc_MediaListPlayerStopped,
 
-    /**
-     * \deprecated Useless event, it will be triggered only when calling
-     * libvlc_media_discoverer_start()
-     */
     libvlc_MediaDiscovererStarted=0x500,
-    /**
-     * \deprecated Useless event, it will be triggered only when calling
-     * libvlc_media_discoverer_stop()
-     */
     libvlc_MediaDiscovererEnded,
-
-    libvlc_RendererDiscovererItemAdded,
-    libvlc_RendererDiscovererItemDeleted,
 
     libvlc_VlmMediaAdded=0x600,
     libvlc_VlmMediaRemoved,
@@ -153,7 +128,7 @@ typedef struct libvlc_event_t
         } media_duration_changed;
         struct
         {
-            int new_status; /**< see @ref libvlc_media_parsed_status_t */
+            int new_status;
         } media_parsed_changed;
         struct
         {
@@ -161,7 +136,7 @@ typedef struct libvlc_event_t
         } media_freed;
         struct
         {
-            int new_state; /**< see @ref libvlc_state_t */
+            libvlc_state_t new_state;
         } media_state_changed;
         struct
         {
@@ -173,10 +148,6 @@ typedef struct libvlc_event_t
         {
             float new_cache;
         } media_player_buffering;
-        struct
-        {
-            int new_chapter;
-        } media_player_chapter_changed;
         struct
         {
             float new_position;
@@ -197,10 +168,6 @@ typedef struct libvlc_event_t
         {
             int new_pausable;
         } media_player_pausable_changed;
-        struct
-        {
-            int new_scrambled;
-        } media_player_scrambled_changed;
         struct
         {
             int new_count;
@@ -258,31 +225,6 @@ typedef struct libvlc_event_t
         {
             libvlc_media_t * new_media;
         } media_player_media_changed;
-
-        struct
-        {
-            libvlc_track_type_t i_type;
-            int                 i_id;
-        } media_player_es_changed;
-
-        struct
-        {
-            float volume;
-        } media_player_audio_volume;
-
-        struct
-        {
-            const char *device;
-        } media_player_audio_device;
-
-        struct
-        {
-            libvlc_renderer_item_t *item;
-        } renderer_discoverer_item_added;
-        struct
-        {
-            libvlc_renderer_item_t *item;
-        } renderer_discoverer_item_deleted;
     } u; /**< Type-dependent event description */
 } libvlc_event_t;
 

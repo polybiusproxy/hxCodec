@@ -2,7 +2,7 @@
  * vlc_config_cat.h : Definition of configuration categories
  *****************************************************************************
  * Copyright (C) 2003 VLC authors and VideoLAN
- * $Id: 55d2e468d1ccc3fcd8d165dcecc10ec753021a5e $
+ * $Id: 7cb796b4794b98f1267747d590cdc3922371f742 $
  *
  * Authors: Clément Stenac <zorglub@videolan.org>
  *          Anil Daoud <anil@videolan.org>
@@ -58,8 +58,6 @@
 #define AFILTER_TITLE N_("Filters")
 #define AFILTER_HELP N_( "Audio filters are used to process the audio stream." )
 
-#define ARESAMPLER_TITLE N_("Audio resampler")
-
 #define AVISUAL_TITLE N_("Visualizations")
 #define AVISUAL_HELP N_( "Audio visualizations" )
 
@@ -76,18 +74,16 @@
 #define VIDEO_GENERAL_HELP N_( "General video settings" )
 
 #define _VOUT_TITLE N_("Output modules" )
-#define VOUT_HELP N_("General settings for video output modules.")
+#define VOUT_HELP N_( \
+    "Choose your preferred video output and configure it here." )
 
 #define VFILTER_TITLE N_("Filters" )
-#define VFILTER_HELP N_("Video filters are used to process the video stream." )
+#define VFILTER_HELP N_( \
+    "Video filters are used to process the video stream." )
 
 #define SUBPIC_TITLE N_( "Subtitles / OSD")
 #define SUBPIC_HELP N_( "Settings related to On-Screen-Display,"\
         " subtitles and \"overlay subpictures\"")
-
-#define SPLITTER_TITLE N_("Splitters")
-#define SPLITTER_HELP N_("Video splitters separate the stream into multiple videos.")
-
 /*
 #define TEXT_HELP N_( \
     "Use the settings of the \"freetype\" module to choose the font you " \
@@ -186,6 +182,32 @@
 
 #define MISC_TITLE N_( "Advanced settings" )
 
+
+/* OLD */
+#if 0
+#define NETWORK_TITLE N_( "Network" )
+#define NETWORK_HELP N_( "These modules provide network functions to all " \
+                "other parts of VLC." )
+
+#define PACKETIZER_HELP "These are general settings for the "\
+        "packetizers used in VLC's stream output subsystem."
+
+#define ENCODER_HELP N_( \
+    "These are general settings for video/audio/subtitle encoding modules.")
+
+#define DIALOGS_HELP  N_( \
+    "Dialog providers can be configured here.")
+
+#define SUBTITLE_DEMUX_HELP N_( \
+    "In this section you can force the behavior of the subtitle demuxer, " \
+    "for example by setting the subtitle type or file name.")
+
+/*
+ *  A little help for modules with unknown capabilities
+ */
+
+#endif
+
 /* This function is deprecated and is kept only for compatibility */
 static const struct config_category_t categories_array[] =
 {
@@ -200,7 +222,6 @@ static const struct config_category_t categories_array[] =
     { SUBCAT_AUDIO_GENERAL, AUDIO_TITLE, AUDIO_GENERAL_HELP },
     { SUBCAT_AUDIO_AOUT, AOUT_TITLE, AOUT_HELP },
     { SUBCAT_AUDIO_AFILTER, AFILTER_TITLE, AFILTER_HELP },
-    { SUBCAT_AUDIO_RESAMPLER, ARESAMPLER_TITLE, AFILTER_HELP },
     { SUBCAT_AUDIO_VISUAL, AVISUAL_TITLE, AVISUAL_HELP },
     { SUBCAT_AUDIO_MISC, AMISC_TITLE, AMISC_HELP },
 
@@ -209,7 +230,6 @@ static const struct config_category_t categories_array[] =
     { SUBCAT_VIDEO_VOUT, _VOUT_TITLE, VOUT_HELP },
     { SUBCAT_VIDEO_VFILTER, VFILTER_TITLE, VFILTER_HELP },
     { SUBCAT_VIDEO_SUBPIC, SUBPIC_TITLE, SUBPIC_HELP },
-    { SUBCAT_VIDEO_SPLITTER, SPLITTER_TITLE, SPLITTER_HELP },
 
     { CAT_INPUT, INPUT_TITLE, INPUT_HELP },
     { SUBCAT_INPUT_GENERAL, INPUT_TITLE, INPUT_HELP },

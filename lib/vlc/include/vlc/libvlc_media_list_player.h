@@ -2,7 +2,7 @@
  * libvlc_media_list_player.h:  libvlc_media_list API
  *****************************************************************************
  * Copyright (C) 1998-2008 VLC authors and VideoLAN
- * $Id: 04f7d9b9f0d47e1b8304b51ca20fd2b1045a0ff2 $
+ * $Id: c95ad972c7dcf380ef62e60d821af726848dae48 $
  *
  * Authors: Pierre d'Herbemont
  *
@@ -24,10 +24,18 @@
 #ifndef LIBVLC_MEDIA_LIST_PLAYER_H
 #define LIBVLC_MEDIA_LIST_PLAYER_H 1
 
+/**
+ * \file
+ * This file defines libvlc_media_list_player API
+ */
+
 # ifdef __cplusplus
 extern "C" {
 # endif
 
+/*****************************************************************************
+ * Media List Player
+ *****************************************************************************/
 /** \defgroup libvlc_media_list_player LibVLC media list player
  * \ingroup libvlc
  * The LibVLC media list player plays a @ref libvlc_media_list_t list of media,
@@ -36,8 +44,6 @@ extern "C" {
  * The normal @ref libvlc_media_player_t LibVLC media player can only play a
  * single media, and does not handle playlist files properly.
  * @{
- * \file
- * LibVLC media list player external API
  */
 
 typedef struct libvlc_media_list_player_t libvlc_media_list_player_t;
@@ -103,16 +109,6 @@ LIBVLC_API void
                                      libvlc_media_player_t * p_mi );
 
 /**
- * Get media player of the media_list_player instance.
- *
- * \param p_mlp media list player instance
- * \return media player instance
- * \note the caller is responsible for releasing the returned instance
- */
-LIBVLC_API libvlc_media_player_t *
-    libvlc_media_list_player_get_media_player(libvlc_media_list_player_t * p_mlp);
-
-/**
  * Set the media list associated with the player
  *
  * \param p_mlp media list player instance
@@ -138,17 +134,6 @@ void libvlc_media_list_player_play(libvlc_media_list_player_t * p_mlp);
  */
 LIBVLC_API
 void libvlc_media_list_player_pause(libvlc_media_list_player_t * p_mlp);
-
-/**
- * Pause or resume media list
- *
- * \param p_mlp media list player instance
- * \param do_pause play/resume if zero, pause if non-zero
- * \version LibVLC 3.0.0 or later
- */
-LIBVLC_API
-void libvlc_media_list_player_set_pause(libvlc_media_list_player_t * p_mlp,
-                                        int do_pause);
 
 /**
  * Is media list playing?
