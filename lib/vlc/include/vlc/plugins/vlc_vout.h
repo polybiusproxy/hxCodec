@@ -2,7 +2,7 @@
  * vlc_vout.h: common video definitions
  *****************************************************************************
  * Copyright (C) 1999 - 2008 VLC authors and VideoLAN
- * $Id: 627f6cec2e3b96eea04f9566ef799ed5b3a93b2a $
+ * $Id: 2d6c180bfc1dcdf2d57277a44508dcda5d8f17de $
  *
  * Authors: Vincent Seguin <seguin@via.ecp.fr>
  *          Samuel Hocevar <sam@via.ecp.fr>
@@ -26,22 +26,25 @@
 #ifndef VLC_VOUT_H_
 #define VLC_VOUT_H_ 1
 
-#include <vlc_es.h>
+/**
+ * \file
+ * This file defines common video output structures and functions in vlc
+ */
+
 #include <vlc_picture.h>
+#include <vlc_filter.h>
 #include <vlc_subpicture.h>
 
+/*****************************************************************************
+ * Prototypes
+ *****************************************************************************/
+
 /**
- * \defgroup output Output
- * \defgroup video_output Video output
- * \ingroup output
- * Video rendering, output and window management
- *
+ * \defgroup video_output Video Output
  * This module describes the programming interface for video output threads.
  * It includes functions allowing to open a new thread, send pictures to a
  * thread, and destroy a previously opened video output thread.
  * @{
- * \file
- * Video output thread interface
  */
 
 /**
@@ -133,9 +136,6 @@ static inline void vout_CloseAndRelease( vout_thread_t *p_vout )
  *
  * pp_image will hold an encoded picture in psz_format format.
  *
- * p_fmt can be NULL otherwise it will be set with the format used for the
- * picture before encoding.
- *
  * i_timeout specifies the time the function will wait for a snapshot to be
  * available.
  *
@@ -145,22 +145,19 @@ VLC_API int vout_GetSnapshot( vout_thread_t *p_vout,
                               video_format_t *p_fmt,
                               const char *psz_format, mtime_t i_timeout );
 
-VLC_API void vout_ChangeAspectRatio( vout_thread_t *p_vout,
-                                     unsigned int i_num, unsigned int i_den );
-
 /* */
 VLC_API picture_t * vout_GetPicture( vout_thread_t * );
 VLC_API void vout_PutPicture( vout_thread_t *, picture_t * );
 
-/* Subpictures channels ID */
-#define VOUT_SPU_CHANNEL_INVALID      (-1) /* Always fails in comparison */
-#define VOUT_SPU_CHANNEL_OSD            1 /* OSD channel is automatically cleared */
-#define VOUT_SPU_CHANNEL_AVAIL_FIRST    8 /* Registerable channels from this offset */
+VLC_API void vout_HoldPicture( vout_thread_t *, picture_t * );
+VLC_API void vout_ReleasePicture( vout_thread_t *, picture_t * );
 
 /* */
 VLC_API void vout_PutSubpicture( vout_thread_t *, subpicture_t * );
 VLC_API int vout_RegisterSubpictureChannel( vout_thread_t * );
 VLC_API void vout_FlushSubpictureChannel( vout_thread_t *, int );
+
+VLC_API void vout_EnableFilter( vout_thread_t *, const char *,bool , bool  );
 
 /**@}*/
 

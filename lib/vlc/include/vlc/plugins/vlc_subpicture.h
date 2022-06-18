@@ -2,7 +2,7 @@
  * vlc_subpicture.h: subpicture definitions
  *****************************************************************************
  * Copyright (C) 1999 - 2009 VLC authors and VideoLAN
- * $Id: b9de52c0493687f2f9920753562e2f1eebfd1b7b $
+ * $Id: 6bfede171002b78b80c7635e87fdd51ea7d15ea4 $
  *
  * Authors: Vincent Seguin <seguin@via.ecp.fr>
  *          Samuel Hocevar <sam@via.ecp.fr>
@@ -27,19 +27,19 @@
 #define VLC_SUBPICTURE_H 1
 
 /**
+ * \file
+ * This file defines subpicture structures and functions in vlc
  */
 
 #include <vlc_picture.h>
 #include <vlc_text_style.h>
 
 /**
- * \defgroup subpicture Video sub-pictures
- * \ingroup video_output
+ * \defgroup subpicture Video Subpictures
  * Subpictures are pictures that should be displayed on top of the video, like
  * subtitles and OSD
+ * \ingroup video_output
  * @{
- * \file
- * Subpictures functions
  */
 
 /**
@@ -59,31 +59,29 @@ struct subpicture_region_t
     video_format_t  fmt;                          /**< format of the picture */
     picture_t       *p_picture;          /**< picture comprising this region */
 
-    int             i_x;      /**< position of region, relative to alignment */
-    int             i_y;      /**< position of region, relative to alignment */
-    int             i_align;                  /**< alignment flags of region */
+    int             i_x;                             /**< position of region */
+    int             i_y;                             /**< position of region */
+    int             i_align;                  /**< alignment within a region */
     int             i_alpha;                               /**< transparency */
 
-    /* Parameters for text regions (p_picture to be rendered) */
-    text_segment_t  *p_text;         /**< subtitle text, made of a list of segments */
-    int             i_text_align;    /**< alignment flags of region content */
-    bool            b_noregionbg;    /**< render background under text only */
-    bool            b_gridmode;      /** if the decoder sends row/cols based output */
-    bool            b_balanced_text; /** try to balance wrapped text lines */
-    int             i_max_width;     /** horizontal rendering/cropping target/limit */
-    int             i_max_height;    /** vertical rendering/cropping target/limit */
+    char            *psz_text;       /**< text string comprising this region */
+    char            *psz_html;       /**< HTML version of subtitle (NULL = use psz_text) */
+    text_style_t    *p_style;        /**< a description of the text style formatting */
+    bool            b_renderbg;      /**< render black background under text */
 
     subpicture_region_t *p_next;                /**< next region in the list */
     subpicture_region_private_t *p_private;  /**< Private data for spu_t *only* */
 };
 
 /* Subpicture region position flags */
-#define SUBPICTURE_ALIGN_LEFT       0x1
-#define SUBPICTURE_ALIGN_RIGHT      0x2
-#define SUBPICTURE_ALIGN_TOP        0x4
-#define SUBPICTURE_ALIGN_BOTTOM     0x8
+#define SUBPICTURE_ALIGN_LEFT 0x1
+#define SUBPICTURE_ALIGN_RIGHT 0x2
+#define SUBPICTURE_ALIGN_TOP 0x4
+#define SUBPICTURE_ALIGN_BOTTOM 0x8
+#define SUBPICTURE_ALIGN_LEAVETEXT 0x10 /**< Align the subpicture, but not the text inside */
 #define SUBPICTURE_ALIGN_MASK ( SUBPICTURE_ALIGN_LEFT|SUBPICTURE_ALIGN_RIGHT| \
-                                SUBPICTURE_ALIGN_TOP |SUBPICTURE_ALIGN_BOTTOM )
+                                SUBPICTURE_ALIGN_TOP |SUBPICTURE_ALIGN_BOTTOM| \
+                                SUBPICTURE_ALIGN_LEAVETEXT )
 /**
  * This function will create a new subpicture region.
  *
@@ -108,34 +106,19 @@ VLC_API void subpicture_region_Delete( subpicture_region_t *p_region );
 VLC_API void subpicture_region_ChainDelete( subpicture_region_t *p_head );
 
 /**
- * This function will copy a subpicture region to a new allocated one
- * and transfer all the properties
- *
- * Provided for convenience.
- */
-VLC_API subpicture_region_t *subpicture_region_Copy( subpicture_region_t *p_region );
-
-/**
  *
  */
 typedef struct subpicture_updater_sys_t subpicture_updater_sys_t;
 typedef struct
 {
-    /** Optional pre update callback, usually useful on video format change.
-      * Will skip pf_update on VLC_SUCCESS, or will delete every region before
-      * the call to pf_update */
     int  (*pf_validate)( subpicture_t *,
                          bool has_src_changed, const video_format_t *p_fmt_src,
                          bool has_dst_changed, const video_format_t *p_fmt_dst,
                          mtime_t);
-    /** Mandatory callback called after pf_validate and doing
-      * the main job of creating the subpicture regions for the
-      * current video_format */
     void (*pf_update)  ( subpicture_t *,
                          const video_format_t *p_fmt_src,
                          const video_format_t *p_fmt_dst,
                          mtime_t );
-    /** Optional callback for subpicture private data cleanup */
     void (*pf_destroy) ( subpicture_t * );
     subpicture_updater_sys_t *p_sys;
 } subpicture_updater_t;
@@ -171,7 +154,7 @@ struct subpicture_t
     mtime_t         i_start;                  /**< beginning of display date */
     mtime_t         i_stop;                         /**< end of display date */
     bool            b_ephemer;    /**< If this flag is set to true the subtitle
-                                will be displayed until the next one appear */
+                                will be displayed untill the next one appear */
     bool            b_fade;                               /**< enable fading */
     /**@}*/
 
@@ -219,18 +202,6 @@ VLC_API subpicture_t * subpicture_NewFromPicture( vlc_object_t *, picture_t *, v
  * a non NULL subpicture_updater_t.
  */
 VLC_API void subpicture_Update( subpicture_t *, const video_format_t *src, const video_format_t *, mtime_t );
-
-/**
- * This function will blend a given subpicture onto a picture.
- *
- * The subpicture and all its region must:
- *  - be absolute.
- *  - not be ephemere.
- *  - not have the fade flag.
- *  - contains only picture (no text rendering).
- * \return the number of region(s) successfully blent
- */
-VLC_API unsigned picture_BlendSubpicture( picture_t *, filter_t *p_blend, subpicture_t * );
 
 /**@}*/
 

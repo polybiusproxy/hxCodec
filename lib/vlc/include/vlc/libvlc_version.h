@@ -33,13 +33,13 @@
 # define LIBVLC_VERSION_H 1
 
 /** LibVLC major version number */
-# define LIBVLC_VERSION_MAJOR    (3)
+# define LIBVLC_VERSION_MAJOR    (@VERSION_MAJOR@)
 
 /** LibVLC minor version number */
-# define LIBVLC_VERSION_MINOR    (0)
+# define LIBVLC_VERSION_MINOR    (@VERSION_MINOR@)
 
 /** LibVLC revision */
-# define LIBVLC_VERSION_REVISION (9)
+# define LIBVLC_VERSION_REVISION (@VERSION_REVISION@)
 
 # define LIBVLC_VERSION_EXTRA    (0)
 

@@ -2,7 +2,7 @@
  * vlc_picture.h: picture definitions
  *****************************************************************************
  * Copyright (C) 1999 - 2009 VLC authors and VideoLAN
- * $Id: 74f156fbbd6e6a4479754c0e79fbd5374a4a1e2e $
+ * $Id: c99f54d7212b39689a8027c64cc92b40442cf080 $
  *
  * Authors: Vincent Seguin <seguin@via.ecp.fr>
  *          Samuel Hocevar <sam@via.ecp.fr>
@@ -32,6 +32,7 @@
  */
 
 #include <vlc_es.h>
+#include <vlc_atomic.h>
 
 /** Description of a planar graphic field */
 typedef struct plane_t
@@ -56,11 +57,11 @@ typedef struct plane_t
  */
 #define PICTURE_PLANE_MAX (VOUT_MAX_PLANES)
 
-typedef struct picture_context_t
-{
-    void (*destroy)(struct picture_context_t *);
-    struct picture_context_t *(*copy)(struct picture_context_t *);
-} picture_context_t;
+
+/**
+ * A private definition to help overloading picture release
+ */
+typedef struct picture_gc_sys_t picture_gc_sys_t;
 
 /**
  * Video picture
@@ -90,12 +91,19 @@ struct picture_t
     bool            b_progressive;          /**< is it a progressive frame ? */
     bool            b_top_field_first;             /**< which field is first */
     unsigned int    i_nb_fields;                  /**< # of displayed fields */
-    picture_context_t *context;      /**< video format-specific data pointer */
     /**@}*/
 
     /** Private data - the video output plugin might want to put stuff here to
      * keep track of the picture */
     picture_sys_t * p_sys;
+
+    /** This way the picture_Release can be overloaded */
+    struct
+    {
+        vlc_atomic_t refcount;
+        void (*pf_destroy)( picture_t * );
+        picture_gc_sys_t *p_sys;
+    } gc;
 
     /** Next picture in a FIFO a pictures */
     struct picture_t *p_next;
@@ -123,7 +131,6 @@ VLC_API picture_t * picture_NewFromFormat( const video_format_t *p_fmt ) VLC_USE
 typedef struct
 {
     picture_sys_t *p_sys;
-    void (*pf_destroy)(picture_t *);
 
     /* Plane resources
      * XXX all fields MUST be set to the right value.
@@ -159,6 +166,14 @@ VLC_API picture_t *picture_Hold( picture_t *p_picture );
 VLC_API void picture_Release( picture_t *p_picture );
 
 /**
+ * This function will return true if you are not the only owner of the
+ * picture.
+ *
+ * It is only valid if it is created using picture_New.
+ */
+VLC_API bool picture_IsReferenced( picture_t *p_picture );
+
+/**
  * This function will copy all picture dynamic properties.
  */
 VLC_API void picture_CopyProperties( picture_t *p_dst, const picture_t *p_src );
@@ -189,17 +204,6 @@ VLC_API void plane_CopyPixels( plane_t *p_dst, const plane_t *p_src );
 VLC_API void picture_Copy( picture_t *p_dst, const picture_t *p_src );
 
 /**
- * Perform a shallow picture copy
- *
- * This function makes a shallow copy of an existing picture. The same planes
- * and resources will be used, and the cloned picture reference count will be
- * incremented.
- *
- * \return A clone picture on success, NULL on error.
- */
-VLC_API picture_t *picture_Clone(picture_t *pic);
-
-/**
  * This function will export a picture to an encoded bitstream.
  *
  * pp_image will contain the encoded bitstream in psz_format format.
@@ -228,7 +232,19 @@ VLC_API int picture_Export( vlc_object_t *p_obj, block_t **pp_image, video_forma
  *
  * It can be useful to get the properties of planes.
  */
-VLC_API int picture_Setup( picture_t *, const video_format_t * );
+VLC_API int picture_Setup( picture_t *, vlc_fourcc_t i_chroma, int i_width, int i_height, int i_sar_num, int i_sar_den );
+
+
+/**
+ * This function will blend a given subpicture onto a picture.
+ *
+ * The subpicture and all its region must:
+ *  - be absolute.
+ *  - not be ephemere.
+ *  - not have the fade flag.
+ *  - contains only picture (no text rendering).
+ */
+VLC_API void picture_BlendSubpicture( picture_t *, filter_t *p_blend, subpicture_t * );
 
 
 /*****************************************************************************

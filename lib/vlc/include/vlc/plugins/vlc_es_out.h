@@ -2,7 +2,7 @@
  * vlc_es_out.h: es_out (demuxer output) descriptor, queries and methods
  *****************************************************************************
  * Copyright (C) 1999-2004 VLC authors and VideoLAN
- * $Id: fe53c2a3d34f76eec76d83032cd0d3111be915aa $
+ * $Id: cf1abcec08467eb495ad62474e055c1500f358b6 $
  *
  * Authors: Laurent Aimar <fenrir@via.ecp.fr>
  *
@@ -25,31 +25,27 @@
 #define VLC_ES_OUT_H 1
 
 /**
- * \defgroup es_out ES output
- * \ingroup input
- * Elementary streams output
- * @{
  * \file
- * Elementary streams output interface
+ * This file defines functions and structures for handling es_out in stream output
+ */
+
+/**
+ * \defgroup es out Es Out
+ * @{
  */
 
 enum es_out_query_e
 {
-    /* set or change the selected ES in its category (audio/video/spu) */
+    /* set ES selected for the es category (audio/video/spu) */
     ES_OUT_SET_ES,      /* arg1= es_out_id_t*                   */
     ES_OUT_RESTART_ES,  /* arg1= es_out_id_t*                   */
-    ES_OUT_RESTART_ALL_ES, /* Deprecated, no effect */
 
     /* set 'default' tag on ES (copied across from container) */
     ES_OUT_SET_ES_DEFAULT, /* arg1= es_out_id_t*                */
 
-    /* force (un)selection of the ES (bypass current mode)
-       XXX: this will not change the state of any other ES ! (see SET_ES) */
+    /* force selection/unselection of the ES (bypass current mode) */
     ES_OUT_SET_ES_STATE,/* arg1= es_out_id_t* arg2=bool   */
     ES_OUT_GET_ES_STATE,/* arg1= es_out_id_t* arg2=bool*  */
-
-    /* sets es selection policy when in auto mode */
-    ES_OUT_SET_ES_CAT_POLICY, /* arg1=es_format_category_e arg2=es_out_policy_e */
 
     /* */
     ES_OUT_SET_GROUP,   /* arg1= int                            */
@@ -72,10 +68,7 @@ enum es_out_query_e
     /* Set meta data for group (dynamic) (The vlc_meta_t is not modified nor released) */
     ES_OUT_SET_GROUP_META,  /* arg1=int i_group arg2=const vlc_meta_t */
     /* Set epg for group (dynamic) (The vlc_epg_t is not modified nor released) */
-    ES_OUT_SET_GROUP_EPG,       /* arg1=int i_group arg2=const vlc_epg_t * */
-    ES_OUT_SET_GROUP_EPG_EVENT, /* arg1=int i_group arg2=const vlc_epg_event_t * */
-    ES_OUT_SET_EPG_TIME,        /* arg1=int int64_t */
-
+    ES_OUT_SET_GROUP_EPG,   /* arg1=int i_group arg2=const vlc_epg_t */
     /* */
     ES_OUT_DEL_GROUP,       /* arg1=int i_group */
 
@@ -96,16 +89,8 @@ enum es_out_query_e
     ES_OUT_GET_PCR_SYSTEM, /* arg1=mtime_t *, arg2=mtime_t * res=can fail */
     ES_OUT_MODIFY_PCR_SYSTEM, /* arg1=int is_absolute, arg2=mtime_t, res=can fail */
 
-    ES_OUT_POST_SUBNODE, /* arg1=input_item_node_t *, res=can fail */
-
     /* First value usable for private control */
     ES_OUT_PRIVATE_START = 0x10000,
-};
-
-enum es_out_policy_e
-{
-    ES_OUT_ES_POLICY_EXCLUSIVE = 0,/* Enforces single ES selection only */
-    ES_OUT_ES_POLICY_SIMULTANEOUS, /* Allows multiple ES per cat */
 };
 
 struct es_out_t
@@ -155,11 +140,6 @@ static inline int es_out_Control( es_out_t *out, int i_query, ... )
 static inline void es_out_Delete( es_out_t *p_out )
 {
     p_out->pf_destroy( p_out );
-}
-
-static inline int es_out_SetPCR( es_out_t *out, int64_t pcr )
-{
-    return es_out_Control( out, ES_OUT_SET_PCR, pcr );
 }
 
 static inline int es_out_ControlSetMeta( es_out_t *out, const vlc_meta_t *p_meta )

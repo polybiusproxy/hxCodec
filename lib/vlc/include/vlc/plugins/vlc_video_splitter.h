@@ -2,7 +2,7 @@
  * vlc_video_splitter.h: "video splitter" related structures and functions
  *****************************************************************************
  * Copyright (C) 2009 Laurent Aimar
- * $Id: a5afba5230b0fb5b42c5cff3daab70a1e527f9eb $
+ * $Id: eb2bf00f85a3ee2df1c35a90f12da4099a95a463 $
  *
  * Authors: Laurent Aimar <fenrir _AT_ videolan _DOT_ org>
  *
@@ -133,8 +133,8 @@ static inline void video_splitter_DeletePicture( video_splitter_t *p_splitter,
 }
 
 /* */
-video_splitter_t * video_splitter_New( vlc_object_t *, const char *psz_name, const video_format_t * );
-void video_splitter_Delete( video_splitter_t * );
+VLC_API video_splitter_t * video_splitter_New( vlc_object_t *, const char *psz_name, const video_format_t * );
+VLC_API void video_splitter_Delete( video_splitter_t * );
 
 static inline int video_splitter_Filter( video_splitter_t *p_splitter,
                                          picture_t *pp_dst[], picture_t *p_src )

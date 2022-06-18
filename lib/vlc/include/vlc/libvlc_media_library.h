@@ -2,7 +2,7 @@
  * libvlc_media_library.h:  libvlc external API
  *****************************************************************************
  * Copyright (C) 1998-2009 VLC authors and VideoLAN
- * $Id: facbf813aa16140461c6e72f166d2985c52b1d6f $
+ * $Id: fa7094a6a8aac42607490c9982d9f4d082c2794c $
  *
  * Authors: Clément Stenac <zorglub@videolan.org>
  *          Jean-Paul Saman <jpsaman@videolan.org>
@@ -23,6 +23,11 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
+/**
+ * \file
+ * This file defines libvlc_media_library external API
+ */
+
 #ifndef VLC_LIBVLC_MEDIA_LIBRARY_H
 #define VLC_LIBVLC_MEDIA_LIBRARY_H 1
 
@@ -33,8 +38,6 @@ extern "C" {
 /** \defgroup libvlc_media_library LibVLC media library
  * \ingroup libvlc
  * @{
- * \file
- * LibVLC media library external API
  */
 
 typedef struct libvlc_media_library_t libvlc_media_library_t;

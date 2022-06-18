@@ -2,7 +2,7 @@
  * vlc_picture_pool.h: picture pool definitions
  *****************************************************************************
  * Copyright (C) 2009 VLC authors and VideoLAN
- * $Id: 8b04370bfb320749eec6bcf09aaf0ba76b78058f $
+ * $Id: d4574dc5a1dfd2d873c6f286ee612462f886bb33 $
  *
  * Authors: Laurent Aimar <fenrir _AT_ videolan _DOT_ org>
  *
@@ -33,6 +33,9 @@
 
 /**
  * Picture pool handle
+ *
+ * XXX it is not thread safe, all pool manipulations and picture_Release
+ * must be properly locked if needed.
  */
 typedef struct picture_pool_t picture_pool_t;
 
@@ -40,149 +43,83 @@ typedef struct picture_pool_t picture_pool_t;
  * Picture pool configuration
  */
 typedef struct {
-    unsigned  picture_count;
-    picture_t *const *picture;
+    int       picture_count;
+    picture_t **picture;
 
     int       (*lock)(picture_t *);
     void      (*unlock)(picture_t *);
 } picture_pool_configuration_t;
 
 /**
- * Creates a pool of preallocated pictures. Free pictures can be allocated from
- * the pool, and are returned to the pool when they are no longer referenced.
+ * It creates a picture_pool_t wrapping the given configuration.
  *
- * This avoids allocating and deallocationg pictures repeatedly, and ensures
- * that memory consumption remains within limits.
- *
- * To obtain a picture from the pool, use picture_pool_Get(). To increase and
- * decrease the reference count, use picture_Hold() and picture_Release()
- * respectively.
- *
+ * It avoids useless picture creations/destructions.
+ * The given picture must not have a reference count greater than 1.
+ * The pool takes ownership of the picture and MUST not be used directly.
+ * When deleted, the pool will release the pictures using picture_Release.
  * If defined, picture_pool_configuration_t::lock will be called before
  * a picture is used, and picture_pool_configuration_t::unlock will be called
- * as soon as a picture is returned to the pool.
- * Those callbacks can modify picture_t::p and access picture_t::p_sys.
- *
- * @return A pointer to the new pool on success, or NULL on error
- * (pictures are <b>not</b> released on error).
+ * as soon as a picture is unused. They are allowed to modify picture_t::p and
+ * access picture_t::p_sys.
  */
 VLC_API picture_pool_t * picture_pool_NewExtended( const picture_pool_configuration_t * ) VLC_USED;
 
 /**
- * Creates a picture pool with pictures in a given array.
- * This is a convenience wrapper for picture_pool_NewExtended() without the
- * lock and unlock callbacks.
+ * It creates a picture_pool_t wrapping the given arrays of picture.
  *
- * @param count number of pictures in the array
- * @param tab array of pictures
- *
- * @return a pointer to the new pool on success, or NULL on error
- * (pictures are <b>not</b> released on error)
+ * It is provided as convenience.
  */
-VLC_API picture_pool_t * picture_pool_New(unsigned count,
-                                          picture_t *const *tab) VLC_USED;
+VLC_API picture_pool_t * picture_pool_New( int picture_count, picture_t *picture[] ) VLC_USED;
 
 /**
- * Allocates pictures from the heap and creates a picture pool with them.
- * This is a convenience wrapper for picture_NewFromFormat() and
- * picture_pool_New().
+ * It creates a picture_pool_t creating images using the given format.
  *
- * @param fmt video format of pictures to allocate from the heap
- * @param count number of pictures to allocate
- *
- * @return a pointer to the new pool on success, NULL on error
+ * Provided for convenience.
  */
-VLC_API picture_pool_t * picture_pool_NewFromFormat(const video_format_t *fmt,
-                                                    unsigned count) VLC_USED;
+VLC_API picture_pool_t * picture_pool_NewFromFormat( const video_format_t *, int picture_count ) VLC_USED;
 
 /**
- * Releases a pool created by picture_pool_NewExtended(), picture_pool_New()
- * or picture_pool_NewFromFormat().
+ * It destroys a pool created by picture_pool_New.
  *
- * @note If there are no pending references to the pooled pictures, and the
- * picture_resource_t.pf_destroy callback was not NULL, it will be invoked.
- * Otherwise the default callback will be used.
- *
- * @warning If there are pending references (a.k.a. late pictures), the
- * pictures will remain valid until the all pending references are dropped by
- * picture_Release().
+ * All pictures must already be released to the pool. The pool will then
+ * released them.
  */
-VLC_API void picture_pool_Release( picture_pool_t * );
+VLC_API void picture_pool_Delete( picture_pool_t * );
 
 /**
- * Obtains a picture from a pool if any is immediately available.
+ * It retreives a picture_t from a pool.
  *
- * The picture must be released with picture_Release().
- *
- * @return a picture, or NULL if all pictures in the pool are allocated
- *
- * @note This function is thread-safe.
+ * The picture must be release by using picture_Release.
  */
 VLC_API picture_t * picture_pool_Get( picture_pool_t * ) VLC_USED;
 
 /**
- * Obtains a picture from a pool.
+ * It forces the next picture_pool_Get to return a picture even if no
+ * pictures are free.
  *
- * The picture must be released with picture_Release().
+ * If b_reset is true, all pictures will be marked as free.
  *
- * @return a picture or NULL on memory error
- *
- * @note This function is thread-safe.
+ * It does it by releasing itself the oldest used picture if none is
+ * available.
+ * XXX it should be used with great care, the only reason you may need
+ * it is to workaround a bug.
  */
-VLC_API picture_t *picture_pool_Wait(picture_pool_t *) VLC_USED;
+VLC_API void picture_pool_NonEmpty( picture_pool_t *, bool reset );
 
 /**
- * Enumerates all pictures in a pool, both free and allocated.
+ * It reserves picture_count pictures from the given pool and returns
+ * a new pool with thoses pictures.
  *
- * @param cb callback to invoke once for each picture
- * @param data opaque data parameter for the callback (first argument)
- *
- * @note Allocated pictures may be accessed asynchronously by other threads.
- * Therefore, only read-only picture parameters can be read by the callback,
- * typically picture_t.p_sys.
- * Provided those rules are respected, the function is thread-safe.
+ * The master pool must be full.
+ * The returned pool must be deleted before the master pool.
+ * When deleted, all pictures return to the master pool.
  */
-VLC_API void picture_pool_Enum( picture_pool_t *,
-                                void (*cb)(void *, picture_t *), void *data );
+VLC_API picture_pool_t * picture_pool_Reserve(picture_pool_t *, int picture_count) VLC_USED;
 
 /**
- * Cancel the picture pool.
- *
- * It won't return any pictures via picture_pool_Get or picture_pool_Wait if
- * canceled is true. This function will also unblock picture_pool_Wait.
- * picture_pool_Reset will also reset the cancel state to false.
+ * It returns the size of the given pool.
  */
-void picture_pool_Cancel( picture_pool_t *, bool canceled );
-
-/**
- * Test if a picture belongs to the picture pool
- *
- * FIXME: remove this function when the vout_PutPicture() hack is fixed.
- */
-bool picture_pool_OwnsPic( picture_pool_t *, picture_t *);
-
-/**
- * Reserves pictures from a pool and creates a new pool with those.
- *
- * When the new pool is released, pictures are returned to the master pool.
- * If the master pool was already released, pictures will be destroyed.
- *
- * @param count number of picture to reserve
- *
- * @return the new pool, or NULL if there were not enough pictures available
- * or on error
- *
- * @note This function is thread-safe (but it might return NULL if other
- * threads have already allocated too many pictures).
- */
-VLC_API picture_pool_t * picture_pool_Reserve(picture_pool_t *, unsigned count)
-VLC_USED;
-
-/**
- * @return the total number of pictures in the given pool
- * @note This function is thread-safe.
- */
-VLC_API unsigned picture_pool_GetSize(const picture_pool_t *);
+VLC_API int picture_pool_GetSize(picture_pool_t *);
 
 
 #endif /* VLC_PICTURE_POOL_H */
