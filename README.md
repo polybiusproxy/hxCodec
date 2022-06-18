@@ -162,7 +162,7 @@ sudo apt-get install libvlccore-dev
 
 Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.extension`), one more thing, you need to put the location manualy in paths.
 
-Also if you need this extension called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools)
+Also you will need this extension called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools)
 
 To install it open cmd or powershell and type
 ```shell
