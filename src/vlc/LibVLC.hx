@@ -1,7 +1,7 @@
 package vlc;
 
 #if !(windows || linux || android)
-	#error "Target not supported only windows, linux and android, sorry but for now hxCodec does't support your os";
+	#error "The current target platform isn't supported by hxCodec. If you are targeting Windows/Linux/Android and you are getting this message, please contact us.";
 #end
 
 import cpp.Pointer;
