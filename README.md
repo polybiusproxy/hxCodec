@@ -51,7 +51,7 @@ inline static public function video(key:String)
 
 1. Put your video in the videos folder.
 
-**Note: hxCodec supports all the video formats then VLC video player can use!!**
+**Note: hxCodec supports all the video formats VLC can play!**
 
 2. Add somewhere in PlayState:
 ```haxe
