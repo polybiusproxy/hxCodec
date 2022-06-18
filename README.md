@@ -51,14 +51,9 @@ inline static public function video(key:String)
 
 1. Put your video in the videos folder.
 
-2. Add your imports in `PlayState.hx`:
-```haxe
-import vlc.VideoHandler;
-```
+**Note: hxCodec supports all the video formats VLC can play!**
 
-**Note: hxCodec supports all the video formats the VLC video player can use!!**
-
-3. Add somewhere in PlayState:
+2. Add somewhere in PlayState:
 ```haxe
 function playCutscene(name:String, ?atend:Bool)
 {
@@ -145,13 +140,13 @@ switch (curSong.toLowerCase())
 ### Windows
 
 You don't need any special instructions in order to build for Windows.
-Just pull the `lime build windows`.
+Just pull the `lime build windows` command and the library will be building with your game.
 
-### Mac
+### macOS
 
-Currently, building for Mac isn't supported because we are missing the Mac build of LibVLC.
+Currently, building for macOS isn't supported because we are missing the macOS build of LibVLC.
 
-**However, if you got LibVLC to build and work on Mac, please send us a pull request with the builded files!**
+**However, if you got LibVLC to build and work on Mac, please make a pull request!**
 
 ### Linux
 
@@ -165,8 +160,21 @@ sudo apt-get install libvlccore-dev
 
 ### Android
 
-Currently, hxCodec will search the videos only on the external storage (`/storage/emulated/0/appname/assets/videos/yourvideo.extension`), one more thing, you need to put the location manualy in paths.
-This is not suitable for games and will be fixed soon.
+In order for hxCodec to work on Android,
+you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
+
+To install it, open the command prompt of your desire and enter:
+```shell
+haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
+```
+
+Next, add this into `Project.xml`
+```xml
+<haxelib name="extension-androidtools" if="android" />
+```
+
+**Currently, hxCodec will search the videos only on the external storage of the device (`/storage/emulated/0/MyAppName/assets/videos/yourvideo.mp4`).**
+**You will also have to put the location manually in the paths.**
 
 --------------------------
 
@@ -174,6 +182,6 @@ This is not suitable for games and will be fixed soon.
 
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Jigsaw](https://github.com/jigsaw-4277821) - Android support and turning hxCodec into a Haxelib.
+- [Jigsaw](https://github.com/jigsaw-4277821) - Android support.
 - [Erizur](https://github.com/Erizur) - Linux support.
 - The contributors.
