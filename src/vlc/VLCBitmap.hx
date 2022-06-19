@@ -414,6 +414,9 @@ class VLCBitmap extends Bitmap
 		if (bufferMemory != null)
 			bufferMemory = null;
 
+		if (libvlc != null)
+			libvlc.dispose();
+
 		initComplete = false;
 		isDisposed = true;
 	}
