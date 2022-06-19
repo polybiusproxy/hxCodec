@@ -8,15 +8,15 @@ struct libvlc_instance_t;
 struct libvlc_media_t;
 struct libvlc_media_player_t;
 
-typedef struct ctx {
+typedef struct ctx
+{
 	unsigned char *pixeldata;
-	std::mutex imagemutex;
 } t_ctx;
 
-class LibVLC {
+class LibVLC
+{
 	public:
 		LibVLC();
-		~LibVLC();
 		static LibVLC* create();
 		void playFile(const char * path, bool loop, bool haccelerated);
 		void play();
@@ -24,6 +24,7 @@ class LibVLC {
 		void pause();
 		void resume();
 		void togglePause();
+		void dispose();
 		float getLength();
 		float getDuration();
 		float getFPS();
@@ -39,13 +40,16 @@ class LibVLC {
 		void setPosition(float pos);
 		float getPosition();
 		uint8_t* getPixelData();
-		int flags[11]={-1};
+		int flags[12] = {-1};
 		t_ctx ctx;
 	private:
 		libvlc_instance_t* libVlcInstance = nullptr;
 		libvlc_media_t* libVlcMediaItem = nullptr;
 		libvlc_media_player_t* libVlcMediaPlayer = nullptr;
-		libvlc_event_manager_t* eventManager = nullptr;
-		static void callbacks(const libvlc_event_t* event, void* self);
+		libvlc_event_manager_t* libVlcEventManager = nullptr;
+
+		void attachEvents();
+		void detachEvents();
+		static void callBacks(const libvlc_event_t* event, void* self);
 };
 #endif
