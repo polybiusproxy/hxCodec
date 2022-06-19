@@ -68,13 +68,13 @@ void LibVLC::playFile(const char* path, bool loop, bool haccelerated)
 
 	if (haccelerated)
 	{
-		libvlc_media_add_option(libVlcMediaItem, ":hwdec = vaapi");
+		libvlc_media_add_option(libVlcMediaItem, ":hwdec=vaapi");
 		libvlc_media_add_option(libVlcMediaItem, ":ffmpeg-hw");
-		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw = dxva2.lo");
-		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw = any");
-		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw = dxva2");
-		libvlc_media_add_option(libVlcMediaItem, "--avcodec-hw = dxva2");
-		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw = vaapi");
+		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw=dxva2.lo");
+		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw=any");
+		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw=dxva2");
+		libvlc_media_add_option(libVlcMediaItem, "--avcodec-hw=dxva2");
+		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw=vaapi");
 	}
 
 	libvlc_video_set_format_callbacks(libVlcMediaPlayer, format_setup, NULL);
