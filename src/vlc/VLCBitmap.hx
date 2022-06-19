@@ -83,7 +83,7 @@ class VLCBitmap extends Bitmap
 		if (libvlc != null && path != null)
 		{
 			#if HXC_DEBUG_TRACE
-			trace("Video path: " + path)
+			trace("Video path: " + path);
 			#end
 
 			libvlc.playFile(path, loop, haccelerated);
@@ -242,7 +242,7 @@ class VLCBitmap extends Bitmap
 			untyped __cpp__('libvlc -> flags[3] = -1');
 
 			#if HXC_DEBUG_TRACE
-			trace("The Video got done!")
+			trace("The Video got done!");
 			#end
 
 			if (onComplete != null)
@@ -252,7 +252,7 @@ class VLCBitmap extends Bitmap
 			var newTime:Int = untyped __cpp__('libvlc -> flags[4]');
 
 			#if HXC_DEBUG_TRACE
-			trace("the time of the video now is: " + newTime)
+			trace("video time now is: " + newTime);
 			#end
 
 			if (onTimeChanged != null)
@@ -262,7 +262,7 @@ class VLCBitmap extends Bitmap
 			var newPos:Int = untyped __cpp__('libvlc -> flags[5]');
 
 			#if HXC_DEBUG_TRACE
-			trace("the position of the video now is: " + newPos)
+			trace("the position of the video now is: " + newPos);
 			#end
 
 			if (onPositionChanged != null)
@@ -272,7 +272,7 @@ class VLCBitmap extends Bitmap
 			var newPos:Int = untyped __cpp__('libvlc -> flags[6]');
 
 			#if HXC_DEBUG_TRACE
-			trace("the seeked pos of the video now is: " + newPos)
+			trace("the seeked pos of the video now is: " + newPos);
 			#end
 
 			if (onSeekableChanged != null)
@@ -332,7 +332,7 @@ class VLCBitmap extends Bitmap
 			onReady();
 
 		#if HXC_DEBUG_TRACE
-		trace("Video Loaded!")
+		trace("Video Loaded!");
 		#end
 	}
 
@@ -364,7 +364,7 @@ class VLCBitmap extends Bitmap
 				oldTime = cTime;
 
 				#if HXC_DEBUG_TRACE
-				trace("rendering...")
+				trace("rendering...");
 				#end
 
 				if (libvlc.getPixelData() != null) // libvlc.getPixelData() sometimes is null and the app hangs ...
@@ -382,7 +382,7 @@ class VLCBitmap extends Bitmap
 	public function dispose():Void
 	{
 		#if HXC_DEBUG_TRACE
-		trace("Disposing the bitmap!")
+		trace("Disposing the bitmap!");
 		#end
 
 		libvlc.stop();
