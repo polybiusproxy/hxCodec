@@ -44,6 +44,9 @@ extern class LibVLC
 	@:native("togglePause")
 	public function togglePause():Void;
 
+	@:native("dispose")
+	public function dispose():Void;
+
 	@:native("getLength")
 	public function getLength():Float;
 
