@@ -11,38 +11,14 @@ LibVLC::LibVLC(void)
 	libVlcInstance = libvlc_new(0, NULL);
 }
 
-LibVLC::~LibVLC(void)
+LibVLC* LibVLC::create()
 {
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerPlaying, callbacks, this);
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerStopped, callbacks, this);
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerEndReached, callbacks, this);
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerTimeChanged, callbacks, this);
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerPositionChanged, callbacks, this);
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerSeekableChanged, callbacks, this);
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerPlaying, callbacks, this);
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerEncounteredError, callbacks, this);
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerOpening, callbacks, this);
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerBuffering, callbacks, this);
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerForward, callbacks, this);
-	libvlc_event_detach(eventManager, libvlc_MediaPlayerBackward, callbacks, this);
-
-	libvlc_media_player_release(libVlcMediaPlayer);	
-	libvlc_release(libVlcInstance);
-
-	delete libVlcInstance;
-	delete libVlcMediaItem;
-	delete libVlcMediaPlayer;
-	delete ctx.pixeldata;
-}
-
-LibVLC* LibVLC::create() {
     return new LibVLC;
 }
 
 static void *lock(void *data, void **p_pixels)
 {
 	t_ctx *ctx = (t_ctx*)data;
-	ctx->imagemutex.lock();
 	*p_pixels = ctx -> pixeldata;
 	return NULL;
 }
@@ -50,7 +26,6 @@ static void *lock(void *data, void **p_pixels)
 static void unlock(void *data, void *id, void *const *p_pixels)
 {
 	t_ctx *ctx = (t_ctx *)data;
-	ctx->imagemutex.unlock();
 }
 
 static unsigned format_setup(void** opaque, char* chroma, unsigned* width, unsigned* height, unsigned* pitches, unsigned* lines)
@@ -70,7 +45,7 @@ static unsigned format_setup(void** opaque, char* chroma, unsigned* width, unsig
 
 	if (callback -> pixeldata != 0)
 		delete callback -> pixeldata;
-		
+
 	callback->pixeldata = new unsigned char[_frame];
 	return 1;
 }
@@ -80,7 +55,6 @@ void LibVLC::playFile(const char* path, bool loop, bool haccelerated)
 	ctx.pixeldata = 0;
 
 	libVlcMediaItem = libvlc_media_new_location(libVlcInstance, path);
-
 	libVlcMediaPlayer = libvlc_media_player_new_from_media(libVlcMediaItem);
 
 	libvlc_media_parse(libVlcMediaItem);
@@ -94,32 +68,21 @@ void LibVLC::playFile(const char* path, bool loop, bool haccelerated)
 
 	if (haccelerated)
 	{
-		libvlc_media_add_option(libVlcMediaItem, ":hwdec=vaapi");
+		libvlc_media_add_option(libVlcMediaItem, ":hwdec = vaapi");
 		libvlc_media_add_option(libVlcMediaItem, ":ffmpeg-hw");
-		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw=dxva2.lo");
-		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw=any");
-		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw=dxva2");
-		libvlc_media_add_option(libVlcMediaItem, "--avcodec-hw=dxva2");
-		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw=vaapi");
+		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw = dxva2.lo");
+		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw = any");
+		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw = dxva2");
+		libvlc_media_add_option(libVlcMediaItem, "--avcodec-hw = dxva2");
+		libvlc_media_add_option(libVlcMediaItem, ":avcodec-hw = vaapi");
 	}
 
 	libvlc_video_set_format_callbacks(libVlcMediaPlayer, format_setup, NULL);
 	libvlc_video_set_callbacks(libVlcMediaPlayer, lock, unlock, NULL, &ctx);
 
-	eventManager = libvlc_media_player_event_manager(libVlcMediaPlayer);
+	libVlcEventManager = libvlc_media_player_event_manager(libVlcMediaPlayer);
 
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerPlaying, callbacks, this);
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerStopped, callbacks, this);
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerEndReached, callbacks, this);
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerTimeChanged, callbacks, this);
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerPositionChanged, callbacks, this);
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerSeekableChanged, callbacks, this);
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerPlaying, callbacks, this);
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerEncounteredError, callbacks, this);
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerOpening, callbacks, this);
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerBuffering, callbacks, this);
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerForward, callbacks, this);
-	libvlc_event_attach(eventManager, libvlc_MediaPlayerBackward, callbacks, this);
+	attachEvents();
 
 	libvlc_media_player_play(libVlcMediaPlayer);
 	libvlc_audio_set_volume(libVlcMediaPlayer, 0);
@@ -153,6 +116,11 @@ void LibVLC::togglePause()
 {
 	if (libVlcMediaPlayer != NULL && libVlcMediaPlayer != nullptr)
 		libvlc_media_player_pause(libVlcMediaPlayer);
+}
+
+void LibVLC::dispose()
+{
+	detachEvents();
 }
 
 float LibVLC::getLength()
@@ -238,7 +206,7 @@ float LibVLC::getVolume()
 
 void LibVLC::setTime(int time)
 {
-	if (libVlcMediaPlayer!=NULL && libVlcMediaPlayer!=nullptr)
+	if (libVlcMediaPlayer != NULL && libVlcMediaPlayer != nullptr)
 		libvlc_media_player_set_time(libVlcMediaPlayer, time);
 }
 
@@ -269,11 +237,12 @@ uint8_t* LibVLC::getPixelData()
 	return ctx.pixeldata;
 }
 
-void LibVLC::callbacks(const libvlc_event_t* event, void* ptr)
+void LibVLC::callBacks(const libvlc_event_t* event, void* ptr)
 {
 	LibVLC* self = reinterpret_cast<LibVLC*>(ptr);
 
-	switch (event -> type){
+	switch (event -> type)
+	{
 		case libvlc_MediaPlayerPlaying:
 			self -> flags[1] = 1;
 			break;
@@ -310,4 +279,36 @@ void LibVLC::callbacks(const libvlc_event_t* event, void* ptr)
 		default:
 			break;
 	}
+}
+
+void LibVLC::attachEvents()
+{
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerPlaying, callBacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerStopped, callBacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerEndReached, callBacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerTimeChanged, callBacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerPositionChanged, callBacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerSeekableChanged, callBacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerPlaying, callBacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerEncounteredError, callBacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerOpening, callBacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerBuffering, callBacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerForward, callBacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerBackward, callBacks, this);
+}
+
+void LibVLC::detachEvents()
+{
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerPlaying, callBacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerStopped, callBacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerEndReached, callBacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerTimeChanged, callBacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerPositionChanged, callBacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerSeekableChanged, callBacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerPlaying, callBacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerEncounteredError, callBacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerOpening, callBacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerBuffering, callBacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerForward, callBacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerBackward, callBacks, this);
 }
