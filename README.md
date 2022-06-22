@@ -173,4 +173,5 @@ Next, add this into `Project.xml`
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [Jigsaw](https://github.com/jigsaw-4277821) - Android support.
 - [Erizur](https://github.com/Erizur) - Linux support.
+- [TheRealJake_12](https://github.com/TheRealJake12) - Kade Engine Documentation. 
 - The contributors.
