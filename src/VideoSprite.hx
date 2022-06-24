@@ -2,9 +2,6 @@ package;
 
 import flixel.FlxSprite;
 
-/**
- * Compared to `VideoHandler`. This loads slower!!
- */
 class VideoSprite extends FlxSprite
 {
 	public var readyCallback:Void->Void = null;
@@ -17,7 +14,7 @@ class VideoSprite extends FlxSprite
 		super(x, y);
 
 		bitmap = new VideoHandler();
-		bitmap.alpha = 0;
+		bitmap.visible = false;// more performance -saw
 
 		bitmap.readyCallback = function()
 		{
