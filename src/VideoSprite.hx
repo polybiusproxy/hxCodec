@@ -14,7 +14,7 @@ class VideoSprite extends FlxSprite
 		super(x, y);
 
 		bitmap = new VideoHandler();
-		bitmap.visible = false;// more performance -saw
+		bitmap.visible = false;
 
 		bitmap.readyCallback = function()
 		{
