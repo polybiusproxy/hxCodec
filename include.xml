@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="include.xsd"?>
 <extension>
-	<assets path="include/" rename='' if="windows" />
+	<assets path="include/Windows" rename='' if="windows" unless="64bit" />
+	<assets path="include/Windows64" rename='' if="windows" unless="32bit" />
+
 	<assets path="NOTICE-LINUX.md" rename='NOTICE.txt' if="linux" />
 
 	<source path="src" />
