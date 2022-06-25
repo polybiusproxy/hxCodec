@@ -28,21 +28,23 @@ LibVLC::~LibVLC(void)
 
 	libvlc_media_player_release(libVlcMediaPlayer);	
 	libvlc_release(libVlcInstance);
-
-	delete libVlcInstance;
-	delete libVlcMediaItem;
-	delete libVlcMediaPlayer;
-	delete ctx.pixeldata;
+	
+	/*
+		delete libVlcInstance;
+		delete libVlcMediaItem;
+		delete libVlcMediaPlayer;
+		delete ctx.pixeldata;
+	*/
 }
 
-LibVLC* LibVLC::create() {
+LibVLC* LibVLC::create()
+{
     return new LibVLC;
 }
 
 static void *lock(void *data, void **p_pixels)
 {
 	t_ctx *ctx = (t_ctx*)data;
-	ctx->imagemutex.lock();
 	*p_pixels = ctx -> pixeldata;
 	return NULL;
 }
@@ -50,7 +52,6 @@ static void *lock(void *data, void **p_pixels)
 static void unlock(void *data, void *id, void *const *p_pixels)
 {
 	t_ctx *ctx = (t_ctx *)data;
-	ctx->imagemutex.unlock();
 }
 
 static unsigned format_setup(void** opaque, char* chroma, unsigned* width, unsigned* height, unsigned* pitches, unsigned* lines)
