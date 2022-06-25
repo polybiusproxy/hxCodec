@@ -2,7 +2,6 @@
 #define LIBVLC_H
 
 #include "vlc/vlc.h"
-#include <mutex>
 
 struct libvlc_instance_t;
 struct libvlc_media_t;
@@ -10,7 +9,6 @@ struct libvlc_media_player_t;
 
 typedef struct ctx {
 	unsigned char *pixeldata;
-	std::mutex imagemutex;
 } t_ctx;
 
 class LibVLC {
@@ -39,7 +37,7 @@ class LibVLC {
 		void setPosition(float pos);
 		float getPosition();
 		uint8_t* getPixelData();
-		int flags[11]={-1};
+		int flags[12]={-1};
 		t_ctx ctx;
 	private:
 		libvlc_instance_t* libVlcInstance = nullptr;

@@ -182,6 +182,6 @@ Next, add this into `Project.xml`
 
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Jigsaw](https://github.com/jigsaw-4277821) - Android support.
+- [Jigsaw](https://github.com/jigsaw-4277821) - Android support and x86 Support.
 - [Erizur](https://github.com/Erizur) - Linux support.
 - The contributors.
