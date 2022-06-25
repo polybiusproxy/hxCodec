@@ -28,6 +28,13 @@ LibVLC::~LibVLC(void)
 
 	libvlc_media_player_release(libVlcMediaPlayer);	
 	libvlc_release(libVlcInstance);
+	
+	/*
+		delete libVlcInstance;
+		delete libVlcMediaItem;
+		delete libVlcMediaPlayer;
+		delete ctx.pixeldata;
+	*/
 }
 
 LibVLC* LibVLC::create()
