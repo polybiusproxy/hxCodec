@@ -55,15 +55,15 @@ inline static public function video(key:String)
 
 2. Add somewhere in PlayState:
 ```haxe
-function playCutscene(name:String, ?atend:Bool)
+function playCutscene(name:String, atEndOfSong:Bool = false)
 {
 	inCutscene = true;
+	FlxG.sound.music.stop();
 
 	var video:VideoHandler = new VideoHandler();
-	FlxG.sound.music.stop();
 	video.finishCallback = function()
 	{
-		if (atend == true)
+		if (atEndOfSong)
 		{
 			if (storyPlaylist.length <= 0)
 				FlxG.switchState(new StoryMenuState());
