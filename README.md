@@ -140,7 +140,7 @@ switch (curSong.toLowerCase())
 ### Windows & macOS
 
 You don't need any special instructions in order to build for Windows / macOS.
-Just pull the `lime build windows` or 'lime build mac' command and the library will be building with your game.
+Just pull the `lime build windows` or `lime build mac` command and the library will be building with your game.
 
 ### Linux
 
