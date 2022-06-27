@@ -144,9 +144,7 @@ Just pull the `lime build windows` command and the library will be building with
 
 ### macOS
 
-Currently, building for macOS isn't supported because we are missing the macOS build of LibVLC.
-
-**However, if you got LibVLC to build and work on Mac, please make a pull request!**
+macOS libs are found but being worked on for it to work
 
 ### Linux
 
@@ -184,4 +182,5 @@ Next, add this into `Project.xml`
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [Jigsaw](https://github.com/jigsaw-4277821) - Android support and x86 Support.
 - [Erizur](https://github.com/Erizur) - Linux support.
+- [BushTrain460615](https://github.com/BushTrain460615) - Mac Support.
 - The contributors.
