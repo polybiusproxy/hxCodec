@@ -10,12 +10,12 @@ A library which adds native video support for OpenFL and HaxeFlixel.
 
 1. Install the Haxelib
 You can install it through haxelib:
-```cmd
+```
 haxelib install hxCodec
 ```
 
 You can also install it through Git for the latest updates:
-```cmd
+```
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
 ```
 
@@ -55,15 +55,15 @@ inline static public function video(key:String)
 
 2. Add somewhere in PlayState:
 ```haxe
-function playCutscene(name:String, ?atend:Bool)
+function playCutscene(name:String, atEndOfSong:Bool = false)
 {
 	inCutscene = true;
+	FlxG.sound.music.stop();
 
 	var video:VideoHandler = new VideoHandler();
-	FlxG.sound.music.stop();
 	video.finishCallback = function()
 	{
-		if (atend == true)
+		if (atEndOfSong)
 		{
 			if (storyPlaylist.length <= 0)
 				FlxG.switchState(new StoryMenuState());
@@ -153,7 +153,7 @@ Currently, building for macOS isn't supported because we are missing the macOS b
 In order to make your game work with the library, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
 
 Example with APT:
-```bash
+```
 sudo apt-get install libvlc-dev
 sudo apt-get install libvlccore-dev
 sudo apt-get install vlc-bin
@@ -161,11 +161,10 @@ sudo apt-get install vlc-bin
 
 ### Android
 
-In order for hxCodec to work on Android,
-you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
+In order for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
 
-To install it, open the command prompt of your desire and enter:
-```shell
+To install it, enter the following in a terminal:
+```
 haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
 ```
 
@@ -174,8 +173,8 @@ Next, add this into `Project.xml`
 <haxelib name="extension-androidtools" if="android" />
 ```
 
-**Currently, hxCodec will search the videos only on the external storage of the device (`/storage/emulated/0/MyAppName/assets/videos/yourvideo.mp4`).**
-**You will also have to put the location manually in the paths.**
+**Currently, hxCodec will search the videos only on the external storage of the device (`/storage/emulated/0/MyAppName/assets/videos/yourvideo.mp4`).
+You will also have to put the location manually in the paths.**
 
 --------------------------
 
