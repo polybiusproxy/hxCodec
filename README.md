@@ -162,7 +162,7 @@ sudo apt-get install libvlccore-dev
 
 In order for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
 
-To install it, enter thie following in a terminal:
+To install it, enter the following in a terminal:
 ```
 haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
 ```
