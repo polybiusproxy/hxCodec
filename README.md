@@ -156,6 +156,7 @@ Example with APT:
 ```bash
 sudo apt-get install libvlc-dev
 sudo apt-get install libvlccore-dev
+sudo apt-get install vlc-bin
 ```
 
 ### Android
