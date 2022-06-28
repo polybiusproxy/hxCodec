@@ -4,7 +4,7 @@
 	<assets path="include/Windows" rename='' if="windows" unless="64bit" />
 	<assets path="include/Windows64" rename='' if="windows" unless="32bit" />
 
-	<assets path="NOTICE-LINUX.md" rename='NOTICE.txt' if="linux" />
+	<!-- <assets path="NOTICE-LINUX.md" rename='NOTICE.txt' if="linux" /> -->
 
 	<source path="src" />
 
