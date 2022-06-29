@@ -12,13 +12,17 @@
 	</files>
 
 	<target id='haxe' tool='linker' if='android'>
-		<lib name='${haxelib:hxCodec}/ndll/Android/libvlc-v7.so' if='HXCPP_ARMV7' />
-		<lib name='${haxelib:hxCodec}/ndll/Android/libvlc-64.so' if='HXCPP_ARM64' />
+		<section>
+			<lib name='${haxelib:hxCodec}/ndll/Android/libvlc-v7.so' if='HXCPP_ARMV7' />
+			<lib name='${haxelib:hxCodec}/ndll/Android/libvlc-64.so' if='HXCPP_ARM64' />
+		</section>
 	</target>
 
 	<target id='haxe' tool='linker' if='linux'>
-		<lib name='${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlc.so.5' />
-		<lib name='${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlccore.so.9' />
+		<section>
+			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlc.so.5' />
+			<lib name='${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlccore.so.9' />
+		</section>
 	</target>
 
 	<target id='haxe' tool='linker' toolid='exe' if='windows'>
