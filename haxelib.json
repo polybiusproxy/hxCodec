@@ -5,7 +5,7 @@
 	"tags": ["vlc", "video", "haxeflixel", "openfl", "windows", "mac", "linux", "android"],
 	"description": "Native video support for HaxeFlixel & OpenFL",
 	"version": "2.6.0",
-	"releasenote": "Made MP4 work on MacOS",
+	"releasenote": "Updated VLC and added support for non-mp4 video formats",
 	"contributors": ["polybiusproxy"],
 	"dependencies": {
 		"flixel": "",
