@@ -11,8 +11,7 @@ import vlc.VLCBitmap;
  * Play a video using cpp.
  * Use bitmap to connect to a graphic or use `VideoSprite`.
  */
-class VideoHandler extends VLCBitmap
-{
+class VideoHandler extends VLCBitmap {
 	public var readyCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
 
@@ -22,8 +21,7 @@ class VideoHandler extends VLCBitmap
 
 	private var pauseMusic:Bool = false;
 
-	public function new()
-	{
+	public function new() {
 		super();
 
 		onReady = onVLCReady;
@@ -33,9 +31,11 @@ class VideoHandler extends VLCBitmap
 		FlxG.addChildBelowMouse(this);
 	}
 
-	private function update(?e:Event):Void
-	{
-		if (canSkip && ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT) || FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && initComplete)
+	private function update(?e:Event):Void {
+		if (canSkip
+			&& ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT)
+				|| FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)
+			&& initComplete)
 			onVLCComplete();
 
 		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
@@ -44,17 +44,14 @@ class VideoHandler extends VLCBitmap
 			volume = FlxG.sound.volume;
 	}
 
-	private function resize(?e:Event):Void
-	{
-		if (canUseAutoResize)
-		{
+	private function resize(?e:Event):Void {
+		if (canUseAutoResize) {
 			set_width(calc(0));
 			set_height(calc(1));
 		}
 	}
 
-	private function createUrl(fileName:String):String
-	{
+	private function createUrl(fileName:String):String {
 		#if android
 		var filePath:String = Tools.getFileUrl(fileName);
 		return filePath;
@@ -67,19 +64,16 @@ class VideoHandler extends VLCBitmap
 		#end
 	}
 
-	private function onVLCReady():Void
-	{
+	private function onVLCReady():Void {
 		if (readyCallback != null)
 			readyCallback();
 	}
 
-	private function onVLCError(e:String):Void
-	{
+	private function onVLCError(e:String):Void {
 		throw "VLC caught an error: " + e;
 	}
 
-	private function onVLCComplete()
-	{
+	private function onVLCComplete() {
 		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.resume();
 
@@ -89,10 +83,15 @@ class VideoHandler extends VLCBitmap
 		if (FlxG.stage.hasEventListener(Event.RESIZE))
 			FlxG.stage.removeEventListener(Event.RESIZE, resize);
 
+		if (FlxG.signals.focusGained.has(resume))
+			FlxG.signals.focusGained.remove(resume);
+
+		if (FlxG.signals.focusLost.has(pause))
+			FlxG.signals.focusLost.remove(pause);
+
 		dispose();
 
-		if (FlxG.game.contains(this))
-		{
+		if (FlxG.game.contains(this)) {
 			FlxG.game.removeChild(this);
 
 			if (finishCallback != null)
@@ -107,8 +106,7 @@ class VideoHandler extends VLCBitmap
 	 * @param haccelerated if you want the hardware to accelerated for the video.
 	 * @param pauseMusic Pause music until done video.
 	 */
-	public function playVideo(path:String, loop:Bool = false, haccelerated:Bool = true, pauseMusic:Bool = false):Void
-	{
+	public function playVideo(path:String, loop:Bool = false, haccelerated:Bool = true, pauseMusic:Bool = false):Void {
 		this.pauseMusic = pauseMusic;
 
 		if (FlxG.sound.music != null && pauseMusic)
@@ -119,29 +117,22 @@ class VideoHandler extends VLCBitmap
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 		FlxG.stage.addEventListener(Event.RESIZE, resize);
-		FlxG.signals.focusGained.add(function()
-		{
-			resume();
-		});
-		FlxG.signals.focusLost.add(function()
-		{
-			pause();
-		});
+
+		FlxG.signals.focusGained.add(resume);
+		FlxG.signals.focusLost.add(pause);
 	}
 
-	private function calc(ind:Int):Float
-	{
+	private function calc(ind:Int):Float {
 		var appliedWidth:Float = FlxG.stage.stageHeight * (FlxG.width / FlxG.height);
 		var appliedHeight:Float = FlxG.stage.stageWidth * (FlxG.height / FlxG.width);
 
 		if (appliedHeight > FlxG.stage.stageHeight)
 			appliedHeight = FlxG.stage.stageHeight;
-		
+
 		if (appliedWidth > FlxG.stage.stageWidth)
 			appliedWidth = FlxG.stage.stageWidth;
 
-		switch(ind)
-		{
+		switch (ind) {
 			case 0:
 				return appliedWidth;
 			case 1:
