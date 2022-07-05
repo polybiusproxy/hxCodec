@@ -3,11 +3,12 @@
 	<xs:element name="extension">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="assets">
+				<xs:element name="assets" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:attribute name="path" use="required" />
 						<xs:attribute name="rename" use="required" />
 						<xs:attribute name="if" use="required" />
+						<xs:attribute name="unless" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="source">
