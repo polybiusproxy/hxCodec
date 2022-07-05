@@ -1,9 +1,8 @@
 package vlc;
 
 #if !(windows || linux || android)
-	#error "The current target platform isn't supported by hxCodec. If you are targeting Windows/Linux/Android and you are getting this message, please contact us.";
+#error "The current target platform isn't supported by hxCodec. If you are targeting Windows/Linux/Android and you are getting this message, please contact us.";
 #end
-
 import cpp.Pointer;
 import cpp.UInt8;
 
@@ -11,18 +10,15 @@ import cpp.UInt8;
  * ...
  * @author Tommy Svensson
  */
-
 /**
  * This class lets you to use the c++ code of libvlc as a extern class which you can use in HaxeFlixel
  */
-
 @:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
 @:include("LibVLC.h")
 @:unreflective
 @:keep
 @:native("LibVLC*")
-extern class LibVLC 
-{
+extern class LibVLC {
 	@:native("LibVLC::create")
 	public static function create():LibVLC;
 
