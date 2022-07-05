@@ -10,6 +10,7 @@ import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.PixelSnapping;
+import openfl.utils.ByteArray;
 import openfl.errors.Error;
 import openfl.events.Event;
 import openfl.geom.Rectangle;
@@ -367,11 +368,18 @@ class VLCBitmap extends Bitmap
 				trace("rendering...");
 				#end
 
+				var width = libvlc.getWidth();
+				var height = libvlc.getHeight();
+				
+				var length = width * height * 4;
 				if (libvlc.getPixelData() != null) // libvlc.getPixelData() sometimes is null and the app hangs ...
-					NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), libvlc.getWidth() * libvlc.getHeight() * 4);
+					NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), length);
 
-				if (bufferMemory != null && bitmapData != null)
-					bitmapData.setPixels(new Rectangle(0, 0, libvlc.getWidth(), libvlc.getHeight()), Bytes.ofData(cast(bufferMemory)));
+				if (bufferMemory != null && bitmapData != null) {
+					var bytes:ByteArray = Bytes.ofData(cast(bufferMemory));
+					if (bytes.bytesAvailable >= length)
+						bitmapData.setPixels(new Rectangle(0, 0, width, height), bytes);
+				}
 			}
 		}
 	}
