@@ -17,8 +17,8 @@
 	</target>
 	
 	<target id='haxe' tool='linker' if='mac'>
-		<lib name='${haxelib:hxCodec}lib/vlc/lib/Mac/libvlc.a'/>
-		<lib name='${haxelib:hxCodec}lib/vlc/lib/Mac/libvlccore.a'/>
+		<lib name='${haxelib:hxCodec}/lib/vlc/lib/Mac/libvlc.a'/>
+		<lib name='${haxelib:hxCodec}/lib/vlc/lib/Mac/libvlccore.a'/>
 	</target>
 
 	<target id='haxe' tool='linker' if='linux'>
