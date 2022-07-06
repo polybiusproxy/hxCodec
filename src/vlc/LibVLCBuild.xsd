@@ -3,7 +3,7 @@
 	<xs:element name="xml">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="files">
+				<xs:element name="files" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="compilervalue" maxOccurs="unbounded">
@@ -16,7 +16,7 @@
 						<xs:attribute name="id" use="required" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="target">
+				<xs:element name="target" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="section" maxOccurs="unbounded">
@@ -29,11 +29,14 @@
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
-									<xs:attribute name="if" use="required" />
+									<xs:attribute name="if" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
 						<xs:attribute name="id" use="required" />
+						<xs:attribute name="tool" use="required" />
+						<xs:attribute name="if" use="required" />
+						<xs:attribute name="toollid" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
