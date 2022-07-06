@@ -8,9 +8,15 @@
 						<xs:attribute name="path" use="required" />
 						<xs:attribute name="rename" use="required" />
 						<xs:attribute name="if" use="required" />
+						<xs:attribute name="unless" use="required" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="ndll" maxOccurs="unbounded">
+				<xs:element name="source">
+					<xs:complexType>
+						<xs:attribute name="path" use="required" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ndll">
 					<xs:complexType>
 						<xs:attribute name="name" use="required" />
 						<xs:attribute name="if" use="required" />
