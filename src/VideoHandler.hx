@@ -61,6 +61,9 @@ class VideoHandler extends VLCBitmap {
 		#elseif windows
 		var filePath:String = 'file:///' + Sys.getCwd() + fileName;
 		return filePath;
+		#elseif mac
+		var filePath:String = 'file:///' + Sys.getCwd() + fileName;
+		return filePath;
 		#end
 	}
 
