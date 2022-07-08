@@ -11,5 +11,5 @@
 		"flixel": "",
 		"openfl": ""
 	},
-	"main": "vlc.VideoHandler"
+	"main": "VideoHandler"
 }
