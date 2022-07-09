@@ -103,22 +103,6 @@ if (SONG.song.toLowerCase() == 'song1')
 	playCutscene('song1scene.mjpeg', true);
 ```
 
-#### Examples for Kade Engine 1.8
-
-At the PlayState "create()" function:
-```haxe
-generateSong(SONG.songId);
-
-switch (curSong.toLowerCase())
-{
-	case 'song1':
-		playCutscene('song1scene.mp4');
-	default:
-		startCountdown();
-}
-
-```
-
 At the PlayState "endSong()" function:
 ```haxe
 PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
@@ -132,6 +116,11 @@ switch (curSong.toLowerCase())
 		playCutscene('song2scene.wav', true);
 }
 ```
+
+## For Kade Engine Users : 
+The Way Kade Engine 1.8 (and 1.7 too I think) Is Pretty Weird. You Have To Remove Multiple Lines Of Code Everywhere.
+I'd Recommend Looking At [This](https://github.com/TheRealJake12/Kade-Engine-Community/blob/master/source/PlayState.hx). 
+Just Search For `playCutscene` And Copy The Code. Otherwise, Use That As A Replacement For 1.8.  
 
 --------------------------
 
@@ -184,4 +173,5 @@ You will also have to put the location manually in the paths.**
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [Jigsaw](https://github.com/jigsaw-4277821) - Android support and x86 Support.
 - [Erizur](https://github.com/Erizur) - Linux support.
+- [TheRealJake_12](https://github.com/TheRealJake12) - Kade Engine Documentation. 
 - The contributors.
