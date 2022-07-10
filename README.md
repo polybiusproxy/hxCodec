@@ -145,6 +145,7 @@ Just pull the `lime build windows` command and the library will be building with
 ### MacOS
 Put the plugins folder into the MacOS folder.
 and make a folder called "lib" and put the dylib into it and then your videos should load
+![The correct libs](photo's/Screenshot 2022-07-10 at 11.28.13 AM.png)
 
 ### Linux
 
