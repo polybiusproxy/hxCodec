@@ -41,7 +41,7 @@ class VideoHandler extends VLCBitmap {
 		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
 			volume = 0;
 		else if (canUseSound)
-			volume = FlxG.sound.volume;
+			volume = FlxG.sound.volume + 0.4;
 	}
 
 	private function resize(?e:Event):Void {
