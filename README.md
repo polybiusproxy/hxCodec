@@ -143,8 +143,9 @@ You don't need any special instructions in order to build for Windows.
 Just pull the `lime build windows` command and the library will be building with your game.
 
 ### MacOS
-Put the plugins folder into the MacOS folder.
-and make a folder called "lib" and put the dylib into it and then your videos should load
+* Put the plugins folder into the MacOS folder.
+* make a folder called "lib" and put the dylib into it and then your videos should load.
+* look in photos so you can see what to do
 
 ### Linux
 
