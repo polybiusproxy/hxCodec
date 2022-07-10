@@ -137,10 +137,14 @@ switch (curSong.toLowerCase())
 
 ## Building
 
-### Windows & macOS
+### Windows
 
-You don't need any special instructions in order to build for Windows / macOS.
-Just pull the `lime build windows` or `lime build mac` command and the library will be building with your game.
+You don't need any special instructions in order to build for Windows.
+Just pull the `lime build windows` command and the library will be building with your game.
+
+### MacOS
+Put the plugins folder into the MacOS folder.
+and make a folder called "lib" and put the dylib into it and then your videos should load
 
 ### Linux
 
