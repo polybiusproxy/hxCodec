@@ -83,11 +83,13 @@ class VideoHandler extends VLCBitmap {
 		if (FlxG.stage.hasEventListener(Event.RESIZE))
 			FlxG.stage.removeEventListener(Event.RESIZE, resize);
 
-		if (FlxG.signals.focusGained.has(resume))
-			FlxG.signals.focusGained.remove(resume);
+		if (FlxG.autoPause) {
+			if (FlxG.signals.focusGained.has(resume))
+				FlxG.signals.focusGained.remove(resume);
 
-		if (FlxG.signals.focusLost.has(pause))
-			FlxG.signals.focusLost.remove(pause);
+			if (FlxG.signals.focusLost.has(pause))
+				FlxG.signals.focusLost.remove(pause);
+		}
 
 		dispose();
 
@@ -118,8 +120,10 @@ class VideoHandler extends VLCBitmap {
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 		FlxG.stage.addEventListener(Event.RESIZE, resize);
 
-		FlxG.signals.focusGained.add(resume);
-		FlxG.signals.focusLost.add(pause);
+		if (FlxG.autoPause) {
+			FlxG.signals.focusGained.add(resume);
+			FlxG.signals.focusLost.add(pause);
+		}
 	}
 
 	private function calc(ind:Int):Float {
