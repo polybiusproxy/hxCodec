@@ -1,7 +1,7 @@
 package vlc;
 
-#if !(windows || linux || android)
-#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Linux/Android and getting this message, please contact us.";
+#if !(desktop || android)
+#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
 #end
 import cpp.NativeArray;
 import cpp.UInt8;
