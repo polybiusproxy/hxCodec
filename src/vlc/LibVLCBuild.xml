@@ -15,6 +15,11 @@
 		<lib name='${haxelib:hxCodec}/ndll/Android/libvlc-v7.so' if='HXCPP_ARMV7' />
 		<lib name='${haxelib:hxCodec}/ndll/Android/libvlc-64.so' if='HXCPP_ARM64' />
 	</target>
+	
+	<target id='haxe' tool='linker' if='mac'>
+		<lib name='${haxelib:hxCodec}/lib/vlc/lib/Mac/libvlc.5.dylib'/>
+		<lib name='${haxelib:hxCodec}/lib/vlc/lib/Mac/libvlccore.7.dylib'/>
+	</target>
 
 	<target id='haxe' tool='linker' if='linux'>
 		<lib name='${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlc.so.5' />

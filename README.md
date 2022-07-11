@@ -137,16 +137,10 @@ switch (curSong.toLowerCase())
 
 ## Building
 
-### Windows
+### Windows and MacOS
 
-You don't need any special instructions in order to build for Windows.
-Just pull the `lime build windows` command and the library will be building with your game.
-
-### macOS
-
-Currently, building for macOS isn't supported because we are missing the macOS build of LibVLC.
-
-**However, if you got LibVLC to build and work on Mac, please make a pull request!**
+You don't need any special instructions in order to build for Windows or MacOS.
+Just pull the `lime build windows` / `lime build mac` command and the library will be building with your game.
 
 ### Linux
 
@@ -184,4 +178,5 @@ You will also have to put the location manually in the paths.**
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [Jigsaw](https://github.com/jigsaw-4277821) - Android support and x86 Support.
 - [Erizur](https://github.com/Erizur) - Linux support.
+- [BushTrain460615](https://github.com/BushTrain460615) - macOS Support.
 - The contributors.
