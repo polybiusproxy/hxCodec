@@ -89,9 +89,9 @@ At the PlayState "create()" function:
 switch (curSong.toLowerCase())
 {
 	case 'song1':
-		playCutscene('song1scene.asf');
+		playCutscene('song1scene');
 	case 'song2':
-		playCutscene('song2scene.avi');
+		playCutscene('song2scene');
 	default:
 		startCountdown();
 }
@@ -100,7 +100,7 @@ switch (curSong.toLowerCase())
 At the PlayState "endSong()" function:
 ```haxe
 if (SONG.song.toLowerCase() == 'song1')
-	playCutscene('song1scene.mjpeg', true);
+	playCutscene('song1scene', true);
 ```
 
 #### Examples for Kade Engine 1.8
@@ -112,7 +112,7 @@ generateSong(SONG.songId);
 switch (curSong.toLowerCase())
 {
 	case 'song1':
-		playCutscene('song1scene.mp4');
+		playCutscene('song1scene');
 	default:
 		startCountdown();
 }
@@ -121,15 +121,15 @@ switch (curSong.toLowerCase())
 
 At the PlayState "endSong()" function:
 ```haxe
-PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
+PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0]);
 FlxG.sound.music.stop();
 
 switch (curSong.toLowerCase())
 {
 	case 'song1':
-		playCutscene('song1scene.ogg', true);
+		playCutscene('song1scene', true);
 	case 'song2':
-		playCutscene('song2scene.wav', true);
+		playCutscene('song2scene', true);
 }
 ```
 
