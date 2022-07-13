@@ -111,8 +111,10 @@ class VideoHandler extends VLCBitmap {
 	public function playVideo(path:String, loop:Bool = false, haccelerated:Bool = true, pauseMusic:Bool = false):Void {
 		this.pauseMusic = pauseMusic;
 
-		if (FlxG.sound.music != null && pauseMusic)
+		if (FlxG.sound.music != null && pauseMusic){ 
+
 			FlxG.sound.music.pause();
+		}
 
 		resize();
 		playFile(createUrl(path), loop, haccelerated);
