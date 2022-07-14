@@ -1,7 +1,7 @@
 package;
 
 #if android
-import android.Tools;
+import android.net.Uri;
 #end
 import flixel.FlxG;
 import openfl.events.Event;
@@ -53,7 +53,7 @@ class VideoHandler extends VLCBitmap {
 
 	private function createUrl(fileName:String):String {
 		#if android
-		var filePath:String = Tools.getFileUrl(fileName);
+		var filePath:String = Uri.fromFile(fileName);
 		return filePath;
 		#elseif linux
 		var filePath:String = 'file://' + Sys.getCwd() + fileName;
