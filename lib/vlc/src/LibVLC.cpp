@@ -123,7 +123,6 @@ void LibVLC::playFile(const char* path, bool loop, bool haccelerated)
 	libvlc_event_attach(eventManager, libvlc_MediaPlayerBackward, callbacks, this);
 
 	libvlc_media_player_play(libVlcMediaPlayer);
-	libvlc_audio_set_volume(libVlcMediaPlayer, 0);
 }
 
 void LibVLC::play()
