@@ -86,10 +86,17 @@ void LibVLC::playFile(const char* path, bool loop, bool haccelerated)
 
 	libvlc_media_parse(libVlcMediaItem);
 
+	#ifdef ANDROID
+	if (loop)
+		libvlc_media_add_option(libVlcMediaItem, "input-repeat=65535");
+	else
+		libvlc_media_add_option(libVlcMediaItem, "input-repeat=0");
+	#else
 	if (loop)
 		libvlc_media_add_option(libVlcMediaItem, "input-repeat=-1");
 	else
 		libvlc_media_add_option(libVlcMediaItem, "input-repeat=0");
+	#endif
 
 	libvlc_media_release(libVlcMediaItem);
 
