@@ -10,5 +10,6 @@
 
 	<source path="src" />
 
+	<ndll name="c++_shared" if="android" />
 	<ndll name="vlc" if="android" />
 </extension>

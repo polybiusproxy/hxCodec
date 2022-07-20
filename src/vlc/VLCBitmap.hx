@@ -341,18 +341,15 @@ class VLCBitmap extends Bitmap {
 				#if HXC_DEBUG_TRACE
 				trace("rendering...");
 				#end
-
-				var width = libvlc.getWidth();
-				var height = libvlc.getHeight();
 				
-				var length = width * height * 4;
+				var length:Int = libvlc.getWidth() * libvlc.getHeight() * 4;
 				if (libvlc.getPixelData() != null) // libvlc.getPixelData() sometimes is null and the app hangs ...
 					NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), length);
 
 				if (bufferMemory != null && bitmapData != null) {
 					var bytes:ByteArray = Bytes.ofData(cast(bufferMemory));
-					if (bytes.bytesAvailable >= length)
-						bitmapData.setPixels(new Rectangle(0, 0, width, height), bytes);
+					if (bytes.bytesAvailable >= length) // kinda a stupid way to be honest but works -saw
+						bitmapData.setPixels(new Rectangle(0, 0, width, height), Bytes.ofData(cast(bufferMemory)));
 				}
 			}
 		}
