@@ -36,7 +36,7 @@
 						<xs:attribute name="id" use="required" />
 						<xs:attribute name="tool" use="required" />
 						<xs:attribute name="if" use="required" />
-						<xs:attribute name="toollid" />
+						<xs:attribute name="toolid" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
