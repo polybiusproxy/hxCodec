@@ -76,6 +76,7 @@ class VideoHandler extends VLCBitmap
 	private function onVLCError(E:String):Void
 	{
 		Application.current.window.alert(E, "VLC caught an error");
+		onVLCComplete();
 	}
 
 	private function onVLCComplete()
