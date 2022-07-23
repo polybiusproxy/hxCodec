@@ -176,7 +176,7 @@ You will also have to put the location manually in the paths.**
 
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Jigsaw](https://github.com/jigsaw-4277821) - Android support and x86 Support.
+- [Jigsaw](https://github.com/jigsaw-4277821) - Coder for the library, Android support and x86 Support (x86 isn't working for now).
 - [Erizur](https://github.com/Erizur) - Linux support.
 - [BushTrain460615](https://github.com/BushTrain460615) - macOS Support.
 - The contributors.
