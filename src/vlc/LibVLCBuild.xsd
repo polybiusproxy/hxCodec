@@ -19,22 +19,10 @@
         <xs:element maxOccurs="unbounded" name="target">
           <xs:complexType>
             <xs:sequence>
-              <xs:element minOccurs="0" maxOccurs="unbounded" name="section">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element maxOccurs="unbounded" name="lib">
-                      <xs:complexType>
-                        <xs:attribute name="name" type="xs:string" use="required" />
-                      </xs:complexType>
-                    </xs:element>
-                  </xs:sequence>
-                  <xs:attribute name="if" type="xs:string" use="required" />
-                </xs:complexType>
-              </xs:element>
-              <xs:element minOccurs="0" maxOccurs="unbounded" name="lib">
+              <xs:element maxOccurs="unbounded" name="lib">
                 <xs:complexType>
                   <xs:attribute name="name" type="xs:string" use="required" />
-                  <xs:attribute name="if" type="xs:string" use="optional" />
+                  <xs:attribute name="if" type="xs:string" use="required" />
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
