@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="include.xsd"?>
 <extension>
-	<!-- doesn't work for now, switch which one to use by commenting, decommenting which line for now ig-->
-	<!--<assets path="include/Windows" rename='' if="windows" unless="64bit" />-->
-	<!--<assets path="include/Windows64" rename="" if="windows" unless="32bit" />-->
+
 	<!--<assets path="NOTICE-LINUX.md" rename='NOTICE.txt' if="linux" />-->
 
-	<assets path="include/Windows64" rename="" if="windows" />
 	<assets path="include/Mac" rename="../MacOS" if="mac" />
+	<assets path="include/Windows" rename='' if="windows" />
 
 	<source path="src" />
 
