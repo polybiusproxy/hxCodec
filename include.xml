@@ -7,7 +7,8 @@
 	<!--<assets path="NOTICE-LINUX.md" rename='NOTICE.txt' if="linux" />-->
 
 	<assets path="include/Windows64" rename="" if="windows" />
-	<assets path="include/Mac" rename="../MacOS" if="mac" />
+	<assets path="include/Mac64" rename="../MacOS" if="mac" unless="32bit"  />
+	<assets path="include/Mac32" rename="../MacOS" if="mac" unless="64bit" />
 
 	<source path="src" />
 
