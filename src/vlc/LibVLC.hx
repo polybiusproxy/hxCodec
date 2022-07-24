@@ -18,7 +18,8 @@ import cpp.UInt8;
 @:unreflective
 @:keep
 @:native("LibVLC*")
-extern class LibVLC {
+extern class LibVLC
+{
 	@:native("LibVLC::create")
 	public static function create():LibVLC;
 

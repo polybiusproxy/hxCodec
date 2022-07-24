@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 #include <stdint.h>
-
 using std::string;
 using namespace std;
 
@@ -26,9 +25,9 @@ LibVLC::~LibVLC(void)
 	libvlc_event_detach(eventManager, libvlc_MediaPlayerForward, callbacks, this);
 	libvlc_event_detach(eventManager, libvlc_MediaPlayerBackward, callbacks, this);
 
-	libvlc_media_player_release(libVlcMediaPlayer);	
+	libvlc_media_player_release(libVlcMediaPlayer);
 	libvlc_release(libVlcInstance);
-	
+
 	/*
 		delete libVlcInstance;
 		delete libVlcMediaItem;
@@ -37,51 +36,49 @@ LibVLC::~LibVLC(void)
 	*/
 }
 
-LibVLC* LibVLC::create()
+LibVLC *LibVLC::create()
 {
-    return new LibVLC;
+	return new LibVLC;
 }
 
 static void *lock(void *data, void **p_pixels)
 {
-	t_ctx *ctx = (t_ctx*)data;
-	*p_pixels = ctx -> pixeldata;
+	t_ctx *ctx = (t_ctx*) data;
+	*p_pixels = ctx->pixeldata;
 	return NULL;
 }
 
 static void unlock(void *data, void *id, void *const *p_pixels)
 {
-	t_ctx *ctx = (t_ctx *)data;
+	t_ctx *ctx = (t_ctx*) data;
 }
 
-static unsigned format_setup(void** opaque, char* chroma, unsigned* width, unsigned* height, unsigned* pitches, unsigned* lines)
+static unsigned format_setup(void **opaque, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
-	struct ctx *callback = reinterpret_cast<struct ctx *>(*opaque);	
+	struct ctx *callback = reinterpret_cast< struct ctx*> (*opaque);
 
 	unsigned _w = (*width);
 	unsigned _h = (*height);
-
-	unsigned _pitch = _w*4;
-	unsigned _frame = _w*_h*4;
+	unsigned _pitch = _w * 4;
+	unsigned _frame = _w *_h * 4;
 
 	(*pitches) = _pitch;
 	(*lines) = _h;
 
 	memcpy(chroma, "RV32", 4);
 
-	if (callback -> pixeldata != 0)
-		delete callback -> pixeldata;
-		
+	if (callback->pixeldata != 0)
+		delete callback->pixeldata;
+
 	callback->pixeldata = new unsigned char[_frame];
 	return 1;
 }
 
-void LibVLC::playFile(const char* path, bool loop, bool haccelerated)
+void LibVLC::playFile(const char *path, bool loop, bool haccelerated)
 {
 	ctx.pixeldata = 0;
 
 	libVlcMediaItem = libvlc_media_new_location(libVlcInstance, path);
-
 	libVlcMediaPlayer = libvlc_media_player_new_from_media(libVlcMediaItem);
 
 	libvlc_media_parse(libVlcMediaItem);
@@ -218,10 +215,10 @@ bool LibVLC::isSeekable()
 		return false;
 }
 
-const char* LibVLC::getLastError()
+const char *LibVLC::getLastError()
 {
 	if (libVlcMediaPlayer != NULL && libVlcMediaPlayer != nullptr)
-		return libvlc_errmsg();	
+		return libvlc_errmsg();
 	else
 		return "";
 }
@@ -245,7 +242,7 @@ float LibVLC::getVolume()
 
 void LibVLC::setTime(int time)
 {
-	if (libVlcMediaPlayer!=NULL && libVlcMediaPlayer!=nullptr)
+	if (libVlcMediaPlayer != NULL && libVlcMediaPlayer != nullptr)
 		libvlc_media_player_set_time(libVlcMediaPlayer, time);
 }
 
@@ -271,48 +268,49 @@ float LibVLC::getPosition()
 		return 0;
 }
 
-uint8_t* LibVLC::getPixelData()
+uint8_t *LibVLC::getPixelData()
 {
 	return ctx.pixeldata;
 }
 
-void LibVLC::callbacks(const libvlc_event_t* event, void* ptr)
+void LibVLC::callbacks(const libvlc_event_t *event, void *ptr)
 {
-	LibVLC* self = reinterpret_cast<LibVLC*>(ptr);
+	LibVLC *self = reinterpret_cast<LibVLC*> (ptr);
 
-	switch (event -> type){
+	switch (event->type)
+	{
 		case libvlc_MediaPlayerPlaying:
-			self -> flags[1] = 1;
+			self->flags[1] = 1;
 			break;
 		case libvlc_MediaPlayerStopped:
-			self -> flags[2] = 1;
+			self->flags[2] = 1;
 			break;
 		case libvlc_MediaPlayerEndReached:
-			self -> flags[3] = 1;
+			self->flags[3] = 1;
 			break;
 		case libvlc_MediaPlayerTimeChanged:
-			self -> flags[4] = event -> u.media_player_time_changed.new_time;
+			self->flags[4] = event->u.media_player_time_changed.new_time;
 			break;
 		case libvlc_MediaPlayerPositionChanged:
-			self -> flags[5] = event -> u.media_player_position_changed.new_position;
+			self->flags[5] = event->u.media_player_position_changed.new_position;
 			break;
 		case libvlc_MediaPlayerSeekableChanged:
-			self -> flags[6] = event -> u.media_player_seekable_changed.new_seekable;
+			self->flags[6] = event->u.media_player_seekable_changed.new_seekable;
 			break;
 		case libvlc_MediaPlayerEncounteredError:
-			self -> flags[7] = 1;
+			self->flags[7] = 1;
 			break;
 		case libvlc_MediaPlayerOpening:
-			self -> flags[8] = 1;
+			self->flags[8] = 1;
 			break;
 		case libvlc_MediaPlayerBuffering:
-			self -> flags[9] = 1;
+			self->flags[9] = 1;
 			break;
 		case libvlc_MediaPlayerForward:
-			self -> flags[10] = 1;
+			self->flags[10] = 1;
 			break;
 		case libvlc_MediaPlayerBackward:
-			self -> flags[11] = 1;
+			self->flags[11] = 1;
 			break;
 		default:
 			break;
