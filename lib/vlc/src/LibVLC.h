@@ -1,5 +1,3 @@
-#ifndef LIBVLC_H
-#define LIBVLC_H
 #include "vlc/vlc.h"
 #include "stdint.h"
 
@@ -50,4 +48,3 @@ class LibVLC
 		libvlc_event_manager_t *eventManager = nullptr;
 		static void callbacks(const libvlc_event_t *event, void *self);
 };
-#endif

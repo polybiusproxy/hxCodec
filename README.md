@@ -24,7 +24,7 @@ haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
 <haxelib name="hxCodec" if="desktop || android" />
 ```
 
-**OPTIONAL: If you want debug traces in your console, add this code also:**
+**OPTIONAL: If you want debug traces in your console, add this code:**
 ```xml
 <!-- Show debug traces for hxCodec -->
 <haxedef name="HXC_DEBUG_TRACE" if="debug" />

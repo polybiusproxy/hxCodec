@@ -16,24 +16,18 @@
 		<lib name="${haxelib:hxCodec}/ndll/Android/libvlc-64.so" if="HXCPP_ARM64" />
 	</target>
 
-	<target id="haxe" tool="linker" if="mac">
-		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Mac/libvlc.5.dylib" />
-		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Mac/libvlccore.7.dylib" />
+	<target id="haxe" tool="linker" if="linux">
+		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlc.so.5" if="HXCPP_M64" />
+		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlccore.so.9" if="HXCPP_M64" />
 	</target>
 
-	<target id="haxe" tool="linker" if="linux">
-		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlc.so.5" />
-		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Linux/libvlccore.so.9" />
+	<target id="haxe" tool="linker" if="mac">
+		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Mac/libvlc.5.dylib" if="HXCPP_M64" />
+		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Mac/libvlccore.7.dylib" if="HXCPP_M64" />
 	</target>
 
 	<target id="haxe" tool="linker" toolid="exe" if="windows">
-		<section if="HXCPP_M32">
-			<lib name="${haxelib:hxCodec}/lib/vlc/lib/Windows/libvlc.lib" />
-			<lib name="${haxelib:hxCodec}/lib/vlc/lib/Windows/libvlccore.lib" />
-		</section>
-		<section if="HXCPP_M64">
-			<lib name="${haxelib:hxCodec}/lib/vlc/lib/Windows64/libvlc.lib" />
-			<lib name="${haxelib:hxCodec}/lib/vlc/lib/Windows64/libvlccore.lib" />
-		</section>
+		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Windows/libvlc.lib" if="HXCPP_M64" />
+		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Windows/libvlccore.lib" if="HXCPP_M64" />
 	</target>
 </xml>
