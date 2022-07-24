@@ -17,8 +17,14 @@
 	</target>
 
 	<target id="haxe" tool="linker" if="mac">
+	<section if="HXCPP_M32">
+		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Mac32/libvlc.5.dylib" />
+		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Mac6432/libvlccore.5.dylib" />
+	</section>
+	<section if="HXCPP_M64">
 		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Mac/libvlc.5.dylib" />
 		<lib name="${haxelib:hxCodec}/lib/vlc/lib/Mac/libvlccore.7.dylib" />
+	</section>
 	</target>
 
 	<target id="haxe" tool="linker" if="linux">
