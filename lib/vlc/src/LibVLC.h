@@ -1,22 +1,26 @@
 #ifndef LIBVLC_H
 #define LIBVLC_H
-
 #include "vlc/vlc.h"
+#include "stdint.h"
 
 struct libvlc_instance_t;
 struct libvlc_media_t;
 struct libvlc_media_player_t;
 
-typedef struct ctx {
+typedef struct ctx
+{
 	unsigned char *pixeldata;
-} t_ctx;
+}
 
-class LibVLC {
+t_ctx;
+
+class LibVLC
+{
 	public:
 		LibVLC();
 		~LibVLC();
 		static LibVLC* create();
-		void playFile(const char * path, bool loop, bool haccelerated);
+		void playFile(const char *path, bool loop, bool haccelerated);
 		void play();
 		void stop();
 		void pause();
@@ -29,7 +33,7 @@ class LibVLC {
 		int getHeight();
 		bool isPlaying();
 		bool isSeekable();
-		const char* getLastError();
+		const char *getLastError();
 		void setVolume(float volume);
 		float getVolume();
 		void setTime(int time);
@@ -37,13 +41,13 @@ class LibVLC {
 		void setPosition(float pos);
 		float getPosition();
 		uint8_t* getPixelData();
-		int flags[12]={-1};
+		int flags[12] = { -1 };
 		t_ctx ctx;
 	private:
-		libvlc_instance_t* libVlcInstance = nullptr;
-		libvlc_media_t* libVlcMediaItem = nullptr;
-		libvlc_media_player_t* libVlcMediaPlayer = nullptr;
-		libvlc_event_manager_t* eventManager = nullptr;
-		static void callbacks(const libvlc_event_t* event, void* self);
+		libvlc_instance_t *libVlcInstance = nullptr;
+		libvlc_media_t *libVlcMediaItem = nullptr;
+		libvlc_media_player_t *libVlcMediaPlayer = nullptr;
+		libvlc_event_manager_t *eventManager = nullptr;
+		static void callbacks(const libvlc_event_t *event, void *self);
 };
 #endif
