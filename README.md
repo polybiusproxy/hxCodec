@@ -170,7 +170,7 @@ You will also have to put the location manually in the paths.**
 ## Credits
 
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
-- [Jigsaw](https://github.com/jigsaw-4277821) - Programmer, Android support and x86 Support.
+- [Jigsaw](https://github.com/jigsaw-4277821) - Programmer and Android support.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [Erizur](https://github.com/Erizur) - Linux support.
 - [BushTrain460615](https://github.com/BushTrain460615) - macOS Support.
