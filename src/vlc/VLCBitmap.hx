@@ -9,10 +9,9 @@ import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.PixelSnapping;
-import openfl.utils.ByteArray;
+import openfl.display3D.textures.RectangleTexture;
 import openfl.errors.Error;
 import openfl.events.Event;
-import openfl.geom.Rectangle;
 import haxe.io.Bytes;
 import vlc.LibVLC;
 
@@ -23,8 +22,7 @@ import vlc.LibVLC;
 /** 
  * This class lets you to use libvlc as a bitmap then you can displaylist along other items.
  * `Bitmap` extend this class. Because without it we cant display the video.
- */
-/**
+ *
  * We need to inject the cpp code to the bitmap
  */
 @:cppFileCode("#include <LibVLC.cpp>")
@@ -39,6 +37,7 @@ class VLCBitmap extends Bitmap
 	private var _height:Null<Float>;
 
 	private var libvlc:LibVLC = LibVLC.create();
+	private var texture:RectangleTexture;
 	private var bufferMemory:Array<UInt8> = [];
 
 	public var initComplete:Bool = false;
@@ -60,7 +59,7 @@ class VLCBitmap extends Bitmap
 
 	public function new():Void
 	{
-		super(bitmapData, PixelSnapping.AUTO, false);
+		super(bitmapData, PixelSnapping.AUTO, true);
 
 		if (stage != null) init();
 		else
@@ -302,7 +301,8 @@ class VLCBitmap extends Bitmap
 	{
 		if (bitmapData != null) bitmapData.dispose();
 
-		bitmapData = new BitmapData(libvlc.getWidth(), libvlc.getHeight(), true, 0);
+		texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
+		bitmapData = BitmapData.fromTexture(texture);
 
 		if (bufferMemory != []) bufferMemory = [];
 
@@ -339,25 +339,27 @@ class VLCBitmap extends Bitmap
 		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null) render();
 	}
 
-	/**
-	 * This is a rewrite for the original render function.
-	 * Im sure theres a better way to do this but i'll let anyone to moddify it because this buffer isn't the best.
-	 * 
-	 * Cya -saw
-	**/
 	private function render():Void
 	{
-		#if HXC_DEBUG_TRACE
-		trace("rendering...");
-		#end
+		final cTime = Lib.getTimer();
 
-		NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), (libvlc.getWidth() * libvlc.getHeight() * 4));
-
-		if (bitmapData != null && (bufferMemory != null && bufferMemory != []))
+		// with fast gpu rendering now i think we can make the fps higher (35 to 60)
+		if ((cTime - oldTime) > 16)
 		{
-			bitmapData.image.buffer.data.buffer = Bytes.ofData(cast(bufferMemory));
-			bitmapData.image.buffer.format = ARGB32;
-			bitmapData.image.version++;
+			oldTime = cTime;
+
+			#if HXC_DEBUG_TRACE
+			trace("rendering...");
+			#end
+
+			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), (libvlc.getWidth() * libvlc.getHeight() * 4));
+
+			if (texture != null && (bufferMemory != null && bufferMemory != []))
+			{
+				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMem)), 0);
+				width++; //This is a horrible hack to force the texture to update... Surely there is a better way...
+				width--;
+			}
 		}
 	}
 
@@ -373,6 +375,12 @@ class VLCBitmap extends Bitmap
 		if (libvlc.isPlaying()) libvlc.stop();
 
 		if (stage.hasEventListener(Event.ENTER_FRAME)) stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
 
 		if (bitmapData != null)
 		{
@@ -399,6 +407,10 @@ class VLCBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 		onError = null;
+
+		#if HXC_DEBUG_TRACE
+		trace("Disposing Done!");
+		#end
 	}
 
 	@:noCompletion private function get_videoHeight():Int
