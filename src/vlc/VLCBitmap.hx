@@ -339,7 +339,7 @@ class VLCBitmap extends Bitmap
 		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null) render();
 	}
 
-	public var oldTime:Int = 0;
+	private var oldTime:Int = 0;
 	private function render():Void
 	{
 		var cTime:Int = Lib.getTimer();
@@ -358,7 +358,7 @@ class VLCBitmap extends Bitmap
 			if (texture != null && (bufferMemory != null && bufferMemory != []))
 			{
 				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
-				width++; //This is a horrible hack to force the texture to update... Surely there is a better way...
+				width++; // This is a horrible hack to force the texture to update... Surely there is a better way...
 				width--;
 			}
 		}
