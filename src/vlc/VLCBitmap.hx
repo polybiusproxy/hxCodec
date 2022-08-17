@@ -339,9 +339,10 @@ class VLCBitmap extends Bitmap
 		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null) render();
 	}
 
+	private var oldTime:Int = 0;
 	private function render():Void
 	{
-		final cTime = Lib.getTimer();
+		var cTime:Int = Lib.getTimer();
 
 		// with fast gpu rendering now i think we can make the fps higher (35 to 60)
 		if ((cTime - oldTime) > 16)
@@ -356,8 +357,8 @@ class VLCBitmap extends Bitmap
 
 			if (texture != null && (bufferMemory != null && bufferMemory != []))
 			{
-				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMem)), 0);
-				width++; //This is a horrible hack to force the texture to update... Surely there is a better way...
+				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
+				width++; // This is a horrible hack to force the texture to update... Surely there is a better way...
 				width--;
 			}
 		}
