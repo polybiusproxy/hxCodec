@@ -339,9 +339,10 @@ class VLCBitmap extends Bitmap
 		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null) render();
 	}
 
+	public var oldTime:Int = 0;
 	private function render():Void
 	{
-		final cTime = Lib.getTimer();
+		var cTime:Int = Lib.getTimer();
 
 		// with fast gpu rendering now i think we can make the fps higher (35 to 60)
 		if ((cTime - oldTime) > 16)
