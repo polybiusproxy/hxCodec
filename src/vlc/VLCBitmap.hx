@@ -357,7 +357,7 @@ class VLCBitmap extends Bitmap
 
 			if (texture != null && (bufferMemory != null && bufferMemory != []))
 			{
-				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMem)), 0);
+				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
 				width++; //This is a horrible hack to force the texture to update... Surely there is a better way...
 				width--;
 			}
