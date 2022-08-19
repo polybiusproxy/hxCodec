@@ -301,7 +301,7 @@ class VLCBitmap extends Bitmap
 	{
 		if (bitmapData != null) bitmapData.dispose();
 
-		texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
+		texture = Lib.current.stage.context3D.createRectangleTexture(libvlc.getWidth(), libvlc.getHeight(), BGRA, true);
 		bitmapData = BitmapData.fromTexture(texture);
 
 		if (bufferMemory != []) bufferMemory = [];
