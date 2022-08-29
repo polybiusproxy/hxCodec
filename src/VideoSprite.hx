@@ -4,7 +4,7 @@ import flixel.FlxSprite;
 
 /**
  * Make a video sprite.
- * you can use this to play a video as a sprite.
+ * You can use this to play a video as a sprite.
  */
 
 class VideoSprite extends FlxSprite
