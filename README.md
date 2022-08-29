@@ -154,7 +154,7 @@ In order for hxCodec to work on Android, you will need a library called [extensi
 
 To install it, enter the following in a terminal:
 ```
-haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
+haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
 ```
 
 Next, add this into `Project.xml`
@@ -170,7 +170,7 @@ You will also have to put the location manually in the paths.**
 ## Credits
 
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
-- [Jigsaw](https://github.com/jigsaw-4277821) - Programmer and Android support.
+- [Jigsaw](https://github.com/MAJigsaw77) - Programmer and Android support.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [Erizur](https://github.com/Erizur) - Linux support.
 - [BushTrain460615](https://github.com/BushTrain460615) - macOS Support.
