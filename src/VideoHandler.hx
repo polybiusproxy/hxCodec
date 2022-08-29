@@ -114,8 +114,8 @@ class VideoHandler extends VLCBitmap
 	 * Native video support for Flixel & OpenFL
 	 * @param Path Example: `your/video/here.mp4`
 	 * @param Loop Loop the video.
-	 * @param Haccelerated if you want the hardware to accelerated for the video.
-	 * @param PauseMusic Pause music until done video.
+	 * @param Haccelerated if you want the video to be hardware accelerated.
+	 * @param PauseMusic Pause music until the video ends.
 	 */
 	public function playVideo(Path:String, Loop:Bool = false, Haccelerated:Bool = true, PauseMusic:Bool = false):Void
 	{

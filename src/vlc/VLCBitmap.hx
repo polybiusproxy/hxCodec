@@ -69,9 +69,9 @@ class VLCBitmap extends Bitmap
 	/**
 		Play's the video file you put.
 
-		@param	path	The video path (where the video is located in the files).
+		@param	path	The video path (the location of the video in the files).
 		@param	loop	If you want to loop the video.
-		@param	haccelerated	If you want to have hardware accelerated enable for the video.
+		@param	haccelerated	If you want to have hardware acceleration enabled for the video.
 	**/
 	public function playFile(path:String, loop:Bool = false, haccelerated:Bool = true):Void
 	{
@@ -196,7 +196,7 @@ class VLCBitmap extends Bitmap
 	}
 
 	/**
-		Returns the frame per second of the video.
+		Returns the frames per second of the video.
 	**/
 	public function getFPS():Float
 	{
@@ -344,13 +344,13 @@ class VLCBitmap extends Bitmap
 	{
 		var cTime:Int = Lib.getTimer();
 
-		// with fast gpu rendering now i think we can make the fps higher (35 to 60)
+		// with fast gpu rendering now i think we can increase the fps (35 to 60)
 		if ((cTime - oldTime) > 16)
 		{
 			oldTime = cTime;
 
 			#if HXC_DEBUG_TRACE
-			trace("rendering...");
+			trace("Rendering...");
 			#end
 
 			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), (libvlc.getWidth() * libvlc.getHeight() * 4));
@@ -365,7 +365,7 @@ class VLCBitmap extends Bitmap
 	}
 
 	/**
-		Dispose the hole bitmap.
+		Dispose the whole bitmap.
 	**/
 	public function dispose():Void
 	{
