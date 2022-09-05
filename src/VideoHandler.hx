@@ -14,6 +14,7 @@ import vlc.VLCBitmap;
  */
 class VideoHandler extends VLCBitmap
 {
+	public var isPlaying:Bool = false;
 	public var canSkip:Bool = true;
 	public var canUseSound:Bool = true;
 	public var canUseAutoResize:Bool = true;
@@ -35,6 +36,7 @@ class VideoHandler extends VLCBitmap
 
 	private function update(?E:Event):Void
 	{
+		isPlaying = libvlc.isPlaying();
 		if (canSkip
 			&& ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT)
 				|| FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)
