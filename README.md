@@ -56,6 +56,7 @@ function playCutscene(name:String, atEndOfSong:Bool = false)
 	FlxG.sound.music.stop();
 
 	var video:VideoHandler = new VideoHandler();
+	VideoHandler.canCrash == false;
 	video.finishCallback = function()
 	{
 		if (atEndOfSong)
@@ -100,31 +101,37 @@ if (SONG.song.toLowerCase() == 'song1')
 
 #### Examples for Kade Engine 1.8
 
-At the PlayState "create()" function:
-```haxe
-generateSong(SONG.songId);
+Kade Engine Has A Few Flaws With Its System. You Must Remove A Few Things To Get It Working Properly.
+Look For The `StartCountdown` Function And See Where It Is Used If You Have A Bug With The Song Starting While The Video Is Playing.
 
-switch (curSong.toLowerCase())
-{
-	case 'song1':
-		playCutscene('song1scene.mp4');
-	default:
-		startCountdown();
-}
-
+As For The `playCutscene` Function, Use This Instead.
 ```
+function playCutscene(name:String, ?atend:Bool)
+	{
+		inCutscene = true;
 
-At the PlayState "endSong()" function:
-```haxe
-PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
-FlxG.sound.music.stop();
+		var diff:String = ["-easy", "", "-hard"][storyDifficulty];
 
-switch (curSong.toLowerCase())
-{
-	case 'song1':
-		playCutscene('song1scene.ogg', true);
-	case 'song2':
-		playCutscene('song2scene.wav', true);
+		var video:VideoHandler = new VideoHandler();
+		FlxG.sound.music.stop();
+		VideoHandler.canCrash == false;
+		video.finishCallback = function()
+		{
+			if (atend == true)
+			{
+				if (storyPlaylist.length <= 0)
+					LoadingState.loadAndSwitchState(new StoryMenuState());
+				else
+				{
+					SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase(), diff);
+					LoadingState.loadAndSwitchState(new PlayState());
+				}
+			}
+			else
+				startCountdown();
+		}
+		video.playVideo(Paths.video(name));
+	}
 }
 ```
 
