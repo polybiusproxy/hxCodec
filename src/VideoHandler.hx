@@ -20,6 +20,7 @@ class VideoHandler extends VLCBitmap
 	public var canUseAutoResize:Bool = true;
 	public var readyCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
+	public var canCrash:Bool = false;
 
 	private var pauseMusic:Bool = false;
 
@@ -37,6 +38,7 @@ class VideoHandler extends VLCBitmap
 	private function update(?E:Event):Void
 	{
 		isPlaying = libvlc.isPlaying();
+		canCrash = libvlc.canCrash();
 		if (canSkip
 			&& ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT)
 				|| FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)
