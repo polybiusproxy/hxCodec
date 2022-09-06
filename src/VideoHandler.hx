@@ -39,10 +39,7 @@ class VideoHandler extends VLCBitmap
 	private function update(?E:Event):Void
 	{
 		isPlaying = libvlc.isPlaying();
-		if (canSkip && ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT) || FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)&& initComplete)
-			{
-				canCrash = false;	
-			}	
+		if (canSkip && ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT) || FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)&& initComplete)	
 			onVLCComplete();
 
 		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
