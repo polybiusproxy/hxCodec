@@ -39,10 +39,10 @@ class VideoHandler extends VLCBitmap
 	{
 		isPlaying = libvlc.isPlaying();
 		canCrash = libvlc.canCrash();
-		if (canSkip
-			&& ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT)
-				|| FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)
-			&& initComplete)
+		if (canSkip && ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT) || FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)&& initComplete)
+			{
+				canCrash = false;	
+			}	
 			onVLCComplete();
 
 		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
@@ -85,6 +85,11 @@ class VideoHandler extends VLCBitmap
 
 	private function onVLCComplete()
 	{
+		if(canCrash)
+		{
+			System.exit(0);
+		}
+		else{
 		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.resume();
 
@@ -111,6 +116,7 @@ class VideoHandler extends VLCBitmap
 
 			if (finishCallback != null)
 				finishCallback();
+		}
 		}
 	}
 
