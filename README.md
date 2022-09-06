@@ -105,7 +105,7 @@ Kade Engine Has A Few Flaws With Its System. You Must Remove A Few Things To Get
 Look For The `StartCountdown` Function And See Where It Is Used If You Have A Bug With The Song Starting While The Video Is Playing.
 
 As For The `playCutscene` Function, Use This Instead.
-```
+```Haxe
 function playCutscene(name:String, ?atend:Bool)
 	{
 		inCutscene = true;
