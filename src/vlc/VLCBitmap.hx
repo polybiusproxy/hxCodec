@@ -20,10 +20,7 @@ import vlc.LibVLC;
  * @author Tommy Svensson
  */
 /** 
- * This class lets you to use libvlc as a bitmap then you can displaylist along other items.
- * `Bitmap` extend this class. Because without it we cant display the video.
- *
- * We need to inject the cpp code to the bitmap
+ * This class lets you to use `libvlc` as a bitmap then you can displaylist along other items.
  */
 @:cppFileCode("#include <LibVLC.cpp>")
 class VLCBitmap extends Bitmap
@@ -32,6 +29,8 @@ class VLCBitmap extends Bitmap
 
 	public var videoHeight(get, never):Int;
 	public var videoWidth(get, never):Int;
+
+	public var videoFPS:Int = 60;
 
 	private var _width:Null<Float>;
 	private var _height:Null<Float>;
@@ -183,6 +182,24 @@ class VLCBitmap extends Bitmap
 		if (libvlc != null && libvlc.isPlaying()) return libvlc.getVolume();
 		else
 			return 0;
+	}
+
+	/**
+		Sets the FPS of the video.
+
+		@param	fps	 The video FPS you want to set.
+	**/
+	public function setVideoFPS(fps:Int):Void
+	{
+		videoFPS = fps;
+	}
+
+	/**
+		Returns the FPS of the video.
+	**/
+	public function getVideoFPS():Int
+	{
+		return videoFPS;
 	}
 
 	/**
@@ -344,8 +361,7 @@ class VLCBitmap extends Bitmap
 	{
 		var cTime:Int = Lib.getTimer();
 
-		// with fast gpu rendering now i think we can increase the fps (35 to 60)
-		if ((cTime - oldTime) > 16)
+		if ((cTime - oldTime) > (1000.0 / videoFPS))
 		{
 			oldTime = cTime;
 

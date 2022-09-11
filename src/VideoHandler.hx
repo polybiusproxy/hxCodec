@@ -9,7 +9,7 @@ import lime.app.Application;
 import vlc.VLCBitmap;
 
 /**
- * Play a video using cpp.
+ * Handles video playback.
  * Use bitmap to connect to a graphic or use `VideoSprite`.
  */
 class VideoHandler extends VLCBitmap
@@ -53,8 +53,8 @@ class VideoHandler extends VLCBitmap
 	{
 		if (canUseAutoResize)
 		{
-			set_width(calc(0));
-			set_height(calc(1));
+			set_width(calcSize(0));
+			set_height(calcSize(1));
 		}
 	}
 
@@ -113,13 +113,14 @@ class VideoHandler extends VLCBitmap
 	}
 
 	/**
-	 * Native video support for Flixel & OpenFL
+	 * Plays a video.
+
 	 * @param Path Example: `your/video/here.mp4`
 	 * @param Loop Loop the video.
 	 * @param Haccelerated if you want the video to be hardware accelerated.
 	 * @param PauseMusic Pause music until the video ends.
 	 */
-	public function playVideo(Path:String, Loop:Bool = false, Haccelerated:Bool = true, PauseMusic:Bool = false):Void
+	public function playVideo(Path:String, Loop:Bool = false, hwAccelerated:Bool = true, PauseMusic:Bool = false):Void
 	{
 		pauseMusic = PauseMusic;
 
@@ -127,7 +128,7 @@ class VideoHandler extends VLCBitmap
 			FlxG.sound.music.pause();
 
 		resize();
-		playFile(createUrl(Path), Loop, Haccelerated);
+		playFile(createUrl(Path), Loop, hwAccelerated);
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 		FlxG.stage.addEventListener(Event.RESIZE, resize);
@@ -139,7 +140,7 @@ class VideoHandler extends VLCBitmap
 		}
 	}
 
-	private function calc(Ind:Int):Float
+	public function calcSize(Ind:Int):Float
 	{
 		var appliedWidth:Float = FlxG.stage.stageHeight * (FlxG.width / FlxG.height);
 		var appliedHeight:Float = FlxG.stage.stageWidth * (FlxG.height / FlxG.width);
