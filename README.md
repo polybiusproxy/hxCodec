@@ -1,6 +1,8 @@
 # hxCodec
 A library which adds native video support for OpenFL and HaxeFlixel.
 
+Using [libVLC](https://www.videolan.org/vlc/libvlc.html), hxCodec allows to play hundreds of video codecs.
+
 **[Original repository](https://github.com/polybiusproxy/PolyEngine)**          
 **[Click here to check the roadmap](https://github.com/polybiusproxy/hxCodec/projects/1)**
 
