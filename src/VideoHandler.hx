@@ -69,10 +69,13 @@ class VideoHandler extends VLCBitmap
 		#end
 	}
 
-	private function onVLCReady():Void
-	{
-		if (readyCallback != null)
-			readyCallback();
+	private function onVLCReady():Void 
+	{        
+		trace("Video loaded!"); 
+		if (readyCallback != null){   
+		    readyCallback();
+		}
+		
 	}
 
 	private function onVLCError(E:String):Void
