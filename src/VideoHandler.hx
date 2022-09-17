@@ -32,6 +32,11 @@ class VideoHandler extends VLCBitmap
 		onError = onVLCError;
 
 		FlxG.addChildBelowMouse(this);
+		
+		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
+			volume = 0;
+		else if (canUseSound)
+			volume = FlxG.sound.volume;
 	}
 
 	private function update(?E:Event):Void
