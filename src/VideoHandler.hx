@@ -126,7 +126,7 @@ class VideoHandler extends VLCBitmap
 
 	 * @param Path Example: `your/video/here.mp4`
 	 * @param Loop Loop the video.
-	 * @param Haccelerated if you want the video to be hardware accelerated.
+	 * @param hwAccelerated if you want the video to be hardware accelerated.
 	 * @param PauseMusic Pause music until the video ends.
 	 */
 	public function playVideo(Path:String, Loop:Bool = false, hwAccelerated:Bool = true, PauseMusic:Bool = false):Void
