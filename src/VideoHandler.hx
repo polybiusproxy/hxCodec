@@ -68,9 +68,9 @@ class VideoHandler extends VLCBitmap
 		#if android
 		return Uri.fromFile(FileName);
 		#elseif linux
-		return 'file://' + Sys.getCwd() + FileName;
+		return "file://" + Sys.getCwd() + Sys.setCwd() + FileName;
 		#elseif (windows || mac)
-		return 'file:///' + Sys.getCwd() + FileName;
+		return "file:///" + Sys.getCwd() + Sys.setCwd() + FileName;
 		#end
 	}
 
