@@ -20,7 +20,7 @@ class VideoHandler extends VLCBitmap
 	public var canUseAutoResize:Bool = true;
 	public var readyCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
-
+        public var FileName:String = "";
 	private var pauseMusic:Bool = false;
 
 	public function new()
@@ -63,14 +63,14 @@ class VideoHandler extends VLCBitmap
 		}
 	}
 
-	private function createUrl(FileName:String):String
+	private function createUrl():String
 	{
 		#if android
 		return Uri.fromFile(FileName);
 		#elseif linux
-		return 'file://' + Sys.getCwd() + FileName;
+		return "file://" + Sys.getCwd() + FileName;
 		#elseif (windows || mac)
-		return 'file:///' + Sys.getCwd() + FileName;
+		return "file:///" + Sys.getCwd() + FileName;
 		#end
 	}
 
