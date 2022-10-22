@@ -371,7 +371,7 @@ class VLCBitmap extends Bitmap
 
 			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), (libvlc.getWidth() * libvlc.getHeight() * 4));
 
-			if (texture != null && (bufferMemory != null && bufferMemory != []))
+			if ((texture != null && bitmapData != null) && (bufferMemory != null && bufferMemory != []))
 			{
 				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
 				width++; // This is a horrible hack to force the texture to update... Surely there is a better way...
