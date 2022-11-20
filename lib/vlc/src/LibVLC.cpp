@@ -2,8 +2,6 @@
 #include <iostream>
 #include <string>
 #include <stdint.h>
-using std::string;
-using namespace std;
 
 LibVLC::LibVLC(void)
 {
@@ -185,16 +183,28 @@ float LibVLC::getFPS()
 
 int LibVLC::getWidth()
 {
+	unsigned int width;
+	unsigned int height;
+
 	if (libVlcMediaPlayer != NULL && libVlcMediaPlayer != nullptr)
-		return libvlc_video_get_width(libVlcMediaPlayer);
+	{
+		libvlc_video_get_size(libVlcMediaPlayer, 0, &width, &height);
+		return width;
+	}
 	else
 		return 0;
 }
 
 int LibVLC::getHeight()
 {
+	unsigned int width;
+	unsigned int height;
+
 	if (libVlcMediaPlayer != NULL && libVlcMediaPlayer != nullptr)
-		return libvlc_video_get_height(libVlcMediaPlayer);
+	{
+		libvlc_video_get_size(libVlcMediaPlayer, 0, &width, &height);
+		return height;
+	}
 	else
 		return 0;
 }
