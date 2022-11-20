@@ -1,6 +1,3 @@
-#include <mutex>
-#include <iostream>
-#include <string>
 #include <stdint.h>
 
 LibVLC::LibVLC(void)
