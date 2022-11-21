@@ -17,11 +17,5 @@
 	"releasenote":"Updated VLC and added support for non-mp4 video formats",
 	"contributors":[
 		"polybiusproxy"
-	],
-	"dependencies":{
-		"flixel":"",
-		"lime":"",
-		"openfl":""
-	},
-	"main":"VideoHandler"
+	]
 }
