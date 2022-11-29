@@ -5,21 +5,20 @@ package vlc;
 #end
 import cpp.NativeArray;
 import cpp.UInt8;
-import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.PixelSnapping;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.errors.Error;
 import openfl.events.Event;
+import haxe.Timer;
 import haxe.io.Bytes;
 import vlc.LibVLC;
 
 /**
  * ...
  * @author Tommy Svensson
- */
-/** 
+ *
  * This class lets you to use `libvlc` as a bitmap then you can displaylist along other items.
  */
 @:cppFileCode("#include <LibVLC.cpp>")
@@ -321,7 +320,7 @@ class VLCBitmap extends Bitmap
 		texture = Lib.current.stage.context3D.createRectangleTexture(libvlc.getWidth(), libvlc.getHeight(), BGRA, true);
 		bitmapData = BitmapData.fromTexture(texture);
 
-		if (bufferMemory != []) bufferMemory = [];
+		if (bufferMemory.length > 0) bufferMemory = [];
 
 		if (_width != null) width = _width;
 		else
@@ -356,14 +355,14 @@ class VLCBitmap extends Bitmap
 		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null) render();
 	}
 
-	private var oldTime:Int = 0;
+	private var oldTime:Float = 0;
 	private function render():Void
 	{
-		var cTime:Int = Lib.getTimer();
+		var timeNow:Float = Timer.stamp();
 
-		if ((cTime - oldTime) > (1000.0 / videoFPS))
+		if ((timeNow - oldTime) > (1000.0 / videoFPS))
 		{
-			oldTime = cTime;
+			oldTime = timeNow;
 
 			#if HXC_DEBUG_TRACE
 			trace("Rendering...");
@@ -371,12 +370,8 @@ class VLCBitmap extends Bitmap
 
 			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), (libvlc.getWidth() * libvlc.getHeight() * 4));
 
-			if ((texture != null && bitmapData != null) && (bufferMemory != null && bufferMemory != []))
-			{
+			if ((texture != null && bitmapData != null) && (bufferMemory != null && bufferMemory.length > 0))
 				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
-				width++; // This is a horrible hack to force the texture to update... Surely there is a better way...
-				width--;
-			}
 		}
 	}
 
@@ -470,6 +465,7 @@ class VLCBitmap extends Bitmap
 	{
 		return volume;
 	}
+
 
 	private function set_volume(value:Float):Float
 	{
