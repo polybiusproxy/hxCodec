@@ -12,7 +12,6 @@ import openfl.display.PixelSnapping;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.errors.Error;
 import openfl.events.Event;
-import haxe.Timer;
 import haxe.io.Bytes;
 import vlc.LibVLC;
 
@@ -348,29 +347,30 @@ class VLCBitmap extends Bitmap
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
+	private var currentTime:Int = 0;
 	private function onEnterFrame(?e:Event):Void
 	{
 		checkFlags();
 
 		// libvlc.getPixelData() sometimes is null and the app hangs ...
-		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null) render();
+		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null)
+		{
+			var timeNow:Int = Lib.getTimer();
+			renderToTexture(timeNow - currentTime);			
+		}
 	}
 
-	private var oldTime:Float = 0;
-	private function render():Void
+	private function renderToTexture(deltaTime:Float):Void
 	{
-		var timeNow:Float = Timer.stamp();
-
-		if ((timeNow - oldTime) > (1000.0 / videoFPS))
+		if (deltaTime > (1000 / videoFPS))
 		{
-			oldTime = timeNow;
+			currentTime = timeNow;
 
 			#if HXC_DEBUG_TRACE
 			trace("Rendering...");
 			#end
 
 			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), (libvlc.getWidth() * libvlc.getHeight() * 4));
-
 			if ((texture != null && bitmapData != null) && (bufferMemory != null && bufferMemory.length > 0))
 				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
 		}
@@ -401,7 +401,7 @@ class VLCBitmap extends Bitmap
 			bitmapData = null;
 		}
 
-		if (bufferMemory != null && bufferMemory != []) bufferMemory = null;
+		if (bufferMemory.length > 0) bufferMemory = [];
 
 		initComplete = false;
 		isDisposed = true;
