@@ -5,6 +5,7 @@ package vlc;
 #end
 import cpp.NativeArray;
 import cpp.UInt8;
+import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.PixelSnapping;
