@@ -4,8 +4,8 @@ package;
 import android.net.Uri;
 #end
 import flixel.FlxG;
+import openfl.Lib;
 import openfl.events.Event;
-import lime.app.Application;
 import vlc.VLCBitmap;
 
 /**
@@ -32,11 +32,6 @@ class VideoHandler extends VLCBitmap
 		onError = onVLCError;
 
 		FlxG.addChildBelowMouse(this);
-		
-		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
-			volume = 0;
-		else if (canUseSound)
-			volume = FlxG.sound.volume;
 	}
 
 	private function update(?E:Event):Void
@@ -76,17 +71,14 @@ class VideoHandler extends VLCBitmap
 
 	private function onVLCReady():Void 
 	{        
-		trace("Video loaded!"); 
-		
-		if (readyCallback != null){   
+		trace("Video loaded!");
+		if (readyCallback != null)
 		    readyCallback();
-		}
-		
 	}
 
 	private function onVLCError(E:String):Void
 	{
-		Application.current.window.alert(E, "VLC caught an error");
+		Lib.application.window.alert(E, "VLC caught an error!");
 		onVLCComplete();
 	}
 
@@ -123,7 +115,7 @@ class VideoHandler extends VLCBitmap
 
 	/**
 	 * Plays a video.
-
+	 *
 	 * @param Path Example: `your/video/here.mp4`
 	 * @param Loop Loop the video.
 	 * @param hwAccelerated if you want the video to be hardware accelerated.
@@ -137,6 +129,12 @@ class VideoHandler extends VLCBitmap
 			FlxG.sound.music.pause();
 
 		resize();
+
+		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
+			volume = 0;
+		else if (canUseSound)
+			volume = FlxG.sound.volume;
+
 		playFile(createUrl(Path), Loop, hwAccelerated);
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
@@ -151,14 +149,14 @@ class VideoHandler extends VLCBitmap
 
 	public function calcSize(Ind:Int):Float
 	{
-		var appliedWidth:Float = FlxG.stage.stageHeight * (FlxG.width / FlxG.height);
-		var appliedHeight:Float = FlxG.stage.stageWidth * (FlxG.height / FlxG.width);
+		var appliedWidth:Float = Lib.current.stage.stageHeight * (FlxG.width / FlxG.height);
+		var appliedHeight:Float = Lib.current.stage.stageWidth * (FlxG.height / FlxG.width);
 
-		if (appliedHeight > FlxG.stage.stageHeight)
-			appliedHeight = FlxG.stage.stageHeight;
+		if (appliedHeight > Lib.current.stage.stageHeight)
+			appliedHeight = Lib.current.stage.stageHeight;
 
-		if (appliedWidth > FlxG.stage.stageWidth)
-			appliedWidth = FlxG.stage.stageWidth;
+		if (appliedWidth > Lib.current.stage.stageWidth)
+			appliedWidth = Lib.current.stage.stageWidth;
 
 		switch (Ind)
 		{
