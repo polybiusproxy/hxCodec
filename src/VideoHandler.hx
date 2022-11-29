@@ -1,8 +1,5 @@
 package;
 
-#if android
-import android.net.Uri;
-#end
 import flixel.FlxG;
 import openfl.Lib;
 import openfl.events.Event;
@@ -56,17 +53,6 @@ class VideoHandler extends VLCBitmap
 			set_width(calcSize(0));
 			set_height(calcSize(1));
 		}
-	}
-
-	private function createUrl(FileName:String):String
-	{
-		#if android
-		return Uri.fromFile(FileName);
-		#elseif linux
-		return 'file://' + Sys.getCwd() + FileName;
-		#elseif (windows || mac)
-		return 'file:///' + Sys.getCwd() + FileName;
-		#end
 	}
 
 	private function onVLCReady():Void 
@@ -135,7 +121,7 @@ class VideoHandler extends VLCBitmap
 		else if (canUseSound)
 			volume = FlxG.sound.volume;
 
-		playFile(createUrl(Path), Loop, hwAccelerated);
+		playFile(#if desktop Sys.getCwd() + #end Path, Loop, hwAccelerated);
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 		FlxG.stage.addEventListener(Event.RESIZE, resize);
@@ -149,14 +135,14 @@ class VideoHandler extends VLCBitmap
 
 	public function calcSize(Ind:Int):Float
 	{
-		var appliedWidth:Float = Lib.current.stage.stageHeight * (FlxG.width / FlxG.height);
-		var appliedHeight:Float = Lib.current.stage.stageWidth * (FlxG.height / FlxG.width);
+		var appliedWidth:Float = FlxG.stage.stageHeight * (FlxG.width / FlxG.height);
+		var appliedHeight:Float = FlxG.stage.stageWidth * (FlxG.height / FlxG.width);
 
-		if (appliedHeight > Lib.current.stage.stageHeight)
-			appliedHeight = Lib.current.stage.stageHeight;
+		if (appliedHeight > FlxG.stage.stageHeight)
+			appliedHeight = FlxG.stage.stageHeight;
 
-		if (appliedWidth > Lib.current.stage.stageWidth)
-			appliedWidth = Lib.current.stage.stageWidth;
+		if (appliedWidth > FlxG.stage.stageWidth)
+			appliedWidth = FlxG.stage.stageWidth;
 
 		switch (Ind)
 		{
