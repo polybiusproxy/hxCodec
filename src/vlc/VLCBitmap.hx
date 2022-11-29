@@ -347,7 +347,7 @@ class VLCBitmap extends Bitmap
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
-	private var currentTime:Int = 0;
+	private var currentTime:Float = 0;
 	private function onEnterFrame(?e:Event):Void
 	{
 		checkFlags();
