@@ -355,8 +355,8 @@ class VLCBitmap extends Bitmap
 		// libvlc.getPixelData() sometimes is null and the app hangs ...
 		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null)
 		{
-			var timeNow:Int = Lib.getTimer();
-			renderToTexture(timeNow - currentTime);			
+			var time:Int = Lib.getTimer();
+			renderToTexture(time - currentTime);			
 		}
 	}
 
@@ -364,7 +364,7 @@ class VLCBitmap extends Bitmap
 	{
 		if (deltaTime > (1000 / videoFPS))
 		{
-			currentTime = timeNow;
+			currentTime = deltaTime;
 
 			#if HXC_DEBUG_TRACE
 			trace("Rendering...");
