@@ -12,6 +12,7 @@ import openfl.display.PixelSnapping;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.errors.Error;
 import openfl.events.Event;
+import openfl.utils.ByteArray;
 import haxe.io.Bytes;
 import vlc.LibVLC;
 
