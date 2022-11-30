@@ -152,7 +152,7 @@ sudo apt-get install vlc-bin
 
 ### Android
 
-**Currently, hxCodec can load videos only on internal / external storage (not on the application storage).**
+**Currently, hxCodec can load videos only from internal / external storage (not on the application storage).**
 
 In order this method for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
 
