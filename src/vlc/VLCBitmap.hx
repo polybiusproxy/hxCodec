@@ -12,7 +12,6 @@ import openfl.display.PixelSnapping;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.errors.Error;
 import openfl.events.Event;
-import openfl.utils.ByteArray;
 import haxe.io.Bytes;
 import vlc.LibVLC;
 
@@ -357,12 +356,11 @@ class VLCBitmap extends Bitmap
 		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null)
 		{
 			var time:Int = Lib.getTimer();
-			var elements:Int = libvlc.getWidth() * libvlc.getHeight() * 4;
 			renderToTexture(time - currentTime, elements);			
 		}
 	}
 
-	private function renderToTexture(deltaTime:Float, elementsCount:Int):Void
+	private function renderToTexture(deltaTime:Float):Void
 	{
 		if (deltaTime > (1000 / videoFPS))
 		{
@@ -372,14 +370,10 @@ class VLCBitmap extends Bitmap
 			trace("Rendering...");
 			#end
 
-			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), elementsCount);
+			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), libvlc.getWidth() * libvlc.getHeight() * 4);
 
 			if ((texture != null && bitmapData != null) && (bufferMemory != null && bufferMemory.length > 0))
-			{
-				var bytes:ByteArray = Bytes.ofData(cast(bufferMemory));
-				if (bytes.bytesAvailable >= elementsCount)
-					texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
-			}
+				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
 		}
 	}
 
