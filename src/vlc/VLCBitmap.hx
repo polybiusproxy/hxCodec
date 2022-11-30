@@ -356,11 +356,12 @@ class VLCBitmap extends Bitmap
 		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null)
 		{
 			var time:Int = Lib.getTimer();
-			renderToTexture(time - currentTime);			
+			var elements:Int = libvlc.getWidth() * libvlc.getHeight() * 4;
+			renderToTexture(time - currentTime, elements);			
 		}
 	}
 
-	private function renderToTexture(deltaTime:Float):Void
+	private function renderToTexture(deltaTime:Float, elementsCount:Int):Void
 	{
 		if (deltaTime > (1000 / videoFPS))
 		{
@@ -370,9 +371,14 @@ class VLCBitmap extends Bitmap
 			trace("Rendering...");
 			#end
 
-			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), (libvlc.getWidth() * libvlc.getHeight() * 4));
+			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), elementsCount);
+
 			if ((texture != null && bitmapData != null) && (bufferMemory != null && bufferMemory.length > 0))
-				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
+			{
+				var bytes:ByteArray = Bytes.ofData(cast(bufferMemory));
+				if (bytes.bytesAvailable >= elementsCount)
+					texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
+			}
 		}
 	}
 
