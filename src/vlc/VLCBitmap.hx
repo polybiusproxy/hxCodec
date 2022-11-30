@@ -356,7 +356,7 @@ class VLCBitmap extends Bitmap
 		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null)
 		{
 			var time:Int = Lib.getTimer();
-			renderToTexture(time - currentTime, elements);			
+			renderToTexture(time - currentTime);			
 		}
 	}
 
