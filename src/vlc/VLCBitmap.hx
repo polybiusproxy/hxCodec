@@ -18,8 +18,7 @@ import vlc.LibVLC;
 /**
  * ...
  * @author Tommy Svensson
- */
-/** 
+ *
  * This class lets you to use `libvlc` as a bitmap then you can displaylist along other items.
  */
 @:cppFileCode("#include <LibVLC.cpp>")
@@ -321,7 +320,7 @@ class VLCBitmap extends Bitmap
 		texture = Lib.current.stage.context3D.createRectangleTexture(libvlc.getWidth(), libvlc.getHeight(), BGRA, true);
 		bitmapData = BitmapData.fromTexture(texture);
 
-		if (bufferMemory != []) bufferMemory = [];
+		if (bufferMemory.length > 0) bufferMemory = [];
 
 		if (_width != null) width = _width;
 		else
@@ -348,35 +347,33 @@ class VLCBitmap extends Bitmap
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
+	private var currentTime:Float = 0;
 	private function onEnterFrame(?e:Event):Void
 	{
 		checkFlags();
 
 		// libvlc.getPixelData() sometimes is null and the app hangs ...
-		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null) render();
+		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null)
+		{
+			var time:Int = Lib.getTimer();
+			renderToTexture(time - currentTime);			
+		}
 	}
 
-	private var oldTime:Int = 0;
-	private function render():Void
+	private function renderToTexture(deltaTime:Float):Void
 	{
-		var cTime:Int = Lib.getTimer();
-
-		if ((cTime - oldTime) > (1000.0 / videoFPS))
+		if (deltaTime > (1000 / videoFPS))
 		{
-			oldTime = cTime;
+			currentTime = deltaTime;
 
 			#if HXC_DEBUG_TRACE
 			trace("Rendering...");
 			#end
 
-			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), (libvlc.getWidth() * libvlc.getHeight() * 4));
+			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), libvlc.getWidth() * libvlc.getHeight() * 4);
 
-			if ((texture != null && bitmapData != null) && (bufferMemory != null && bufferMemory != []))
-			{
+			if ((texture != null && bitmapData != null) && (bufferMemory != null && bufferMemory.length > 0))
 				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
-				width++; // This is a horrible hack to force the texture to update... Surely there is a better way...
-				width--;
-			}
 		}
 	}
 
@@ -405,7 +402,7 @@ class VLCBitmap extends Bitmap
 			bitmapData = null;
 		}
 
-		if (bufferMemory != null && bufferMemory != []) bufferMemory = null;
+		if (bufferMemory.length > 0) bufferMemory = [];
 
 		initComplete = false;
 		isDisposed = true;
@@ -470,6 +467,7 @@ class VLCBitmap extends Bitmap
 	{
 		return volume;
 	}
+
 
 	private function set_volume(value:Float):Float
 	{

@@ -73,7 +73,7 @@ void LibVLC::playFile(const char *path, bool loop, bool haccelerated)
 {
 	ctx.pixeldata = 0;
 
-	libVlcMediaItem = libvlc_media_new_location(libVlcInstance, path);
+	libVlcMediaItem = libvlc_media_new_path(libVlcInstance, path);
 	libVlcMediaPlayer = libvlc_media_player_new_from_media(libVlcMediaItem);
 
 	libvlc_media_parse(libVlcMediaItem);

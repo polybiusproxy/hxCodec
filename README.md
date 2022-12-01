@@ -152,7 +152,9 @@ sudo apt-get install vlc-bin
 
 ### Android
 
-In order for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
+**Currently, hxCodec can load videos only from internal / external storage (not on the application storage).**
+
+In order this method for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
 
 To install it, enter the following in a terminal:
 ```
@@ -164,8 +166,17 @@ Next, add this into `Project.xml`
 <haxelib name="extension-androidtools" if="android" />
 ```
 
-**Currently, hxCodec will search the videos only on the external storage of the device (`/storage/emulated/0/MyAppName/assets/videos/yourvideo.mp4`).
-You will also have to put the location manually in the paths.**
+You can can choose whether you want to use after you inport this in your code.
+
+```haxe
+import android.content.Context;
+```
+
+* From internal storage, `Context.getFilesDir()` or `Context.getCacheDir()`
+
+* From external storage, `Context.getExternalFilesDir()` or `Context.getExternalCacheDir()`.
+
+You will also have to put the location manually in the paths and to copy that video to the respective path.
 
 --------------------------
 
