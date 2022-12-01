@@ -1,11 +1,8 @@
 package;
 
-#if android
-import android.net.Uri;
-#end
 import flixel.FlxG;
+import openfl.Lib;
 import openfl.events.Event;
-import lime.app.Application;
 import vlc.VLCBitmap;
 
 /**
@@ -32,11 +29,6 @@ class VideoHandler extends VLCBitmap
 		onError = onVLCError;
 
 		FlxG.addChildBelowMouse(this);
-		
-		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
-			volume = 0;
-		else if (canUseSound)
-			volume = FlxG.sound.volume;
 	}
 
 	private function update(?E:Event):Void
@@ -63,30 +55,16 @@ class VideoHandler extends VLCBitmap
 		}
 	}
 
-	private function createUrl(FileName:String):String
-	{
-		#if android
-		return Uri.fromFile(FileName);
-		#elseif linux
-		return 'file://' + Sys.getCwd() + FileName;
-		#elseif (windows || mac)
-		return 'file:///' + Sys.getCwd() + FileName;
-		#end
-	}
-
 	private function onVLCReady():Void 
 	{        
-		trace("Video loaded!"); 
-		
-		if (readyCallback != null){   
+		trace("Video loaded!");
+		if (readyCallback != null)
 		    readyCallback();
-		}
-		
 	}
 
 	private function onVLCError(E:String):Void
 	{
-		Application.current.window.alert(E, "VLC caught an error");
+		Lib.application.window.alert(E, "VLC caught an error!");
 		onVLCComplete();
 	}
 
@@ -123,7 +101,7 @@ class VideoHandler extends VLCBitmap
 
 	/**
 	 * Plays a video.
-
+	 *
 	 * @param Path Example: `your/video/here.mp4`
 	 * @param Loop Loop the video.
 	 * @param hwAccelerated if you want the video to be hardware accelerated.
@@ -137,7 +115,13 @@ class VideoHandler extends VLCBitmap
 			FlxG.sound.music.pause();
 
 		resize();
-		playFile(createUrl(Path), Loop, hwAccelerated);
+
+		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
+			volume = 0;
+		else if (canUseSound)
+			volume = FlxG.sound.volume;
+
+		playFile(#if desktop Sys.getCwd() + #end Path, Loop, hwAccelerated);
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 		FlxG.stage.addEventListener(Event.RESIZE, resize);
