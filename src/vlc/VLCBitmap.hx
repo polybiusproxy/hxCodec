@@ -12,6 +12,7 @@ import openfl.display.PixelSnapping;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.errors.Error;
 import openfl.events.Event;
+import openfl.utils.ByteArray;
 import haxe.io.Bytes;
 import vlc.LibVLC;
 
@@ -315,9 +316,12 @@ class VLCBitmap extends Bitmap
 
 	private function videoInitComplete():Void
 	{
-		if (bitmapData != null) bitmapData.dispose();
+		if (texture != null) texture.dispose();
 
 		texture = Lib.current.stage.context3D.createRectangleTexture(libvlc.getWidth(), libvlc.getHeight(), BGRA, true);
+
+		if (bitmapData != null) bitmapData.dispose();
+
 		bitmapData = BitmapData.fromTexture(texture);
 
 		if (bufferMemory.length > 0) bufferMemory = [];
@@ -356,11 +360,12 @@ class VLCBitmap extends Bitmap
 		if ((libvlc.isPlaying() && initComplete && !isDisposed) && libvlc.getPixelData() != null)
 		{
 			var time:Int = Lib.getTimer();
-			renderToTexture(time - currentTime);			
+			var elements:Int = libvlc.getWidth() * libvlc.getHeight() * 4;
+			renderToTexture(time - currentTime, elements);			
 		}
 	}
 
-	private function renderToTexture(deltaTime:Float):Void
+	private function renderToTexture(deltaTime:Float, elementsCount:Int):Void
 	{
 		if (deltaTime > (1000 / videoFPS))
 		{
@@ -370,10 +375,14 @@ class VLCBitmap extends Bitmap
 			trace("Rendering...");
 			#end
 
-			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), libvlc.getWidth() * libvlc.getHeight() * 4);
+			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), elementsCount);
 
-			if ((texture != null && bitmapData != null) && (bufferMemory != null && bufferMemory.length > 0))
-				texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
+			if (bitmapData != null && (bufferMemory != null && bufferMemory.length > 0))
+			{
+				var bytes:ByteArray = Bytes.ofData(cast(bufferMemory));
+				if (bytes.bytesAvailable > elementsCount)
+					texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
+			}
 		}
 	}
 
