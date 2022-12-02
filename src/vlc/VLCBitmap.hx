@@ -29,18 +29,18 @@ class VLCBitmap extends Bitmap
 
 	public var videoHeight(get, never):Int;
 	public var videoWidth(get, never):Int;
-
 	public var videoFPS:Int = 60;
 
 	private var _width:Null<Float>;
 	private var _height:Null<Float>;
 
 	private var libvlc:LibVLC = LibVLC.create();
-	private var texture:RectangleTexture;
 	private var bufferMemory:Array<UInt8> = [];
+	private var texture:RectangleTexture;
 
 	public var initComplete:Bool = false;
 	public var isDisposed:Bool = false;
+
 	public var onReady:Void->Void = null;
 	public var onPlay:Void->Void = null;
 	public var onStop:Void->Void = null;
@@ -476,7 +476,6 @@ class VLCBitmap extends Bitmap
 	{
 		return volume;
 	}
-
 
 	private function set_volume(value:Float):Float
 	{
