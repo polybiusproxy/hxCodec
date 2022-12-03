@@ -377,7 +377,7 @@ class VLCBitmap extends Bitmap
 
 			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), elementsCount);
 
-			if (bitmapData != null && (bufferMemory != null && bufferMemory.length > 0))
+			if (texture != null && (bufferMemory != null && bufferMemory.length > 0))
 			{
 				var bytes:ByteArray = Bytes.ofData(cast(bufferMemory));
 				if (bytes.length >= elementsCount)
