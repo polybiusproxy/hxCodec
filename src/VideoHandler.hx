@@ -20,9 +20,9 @@ class VideoHandler extends VLCBitmap
 
 	private var pauseMusic:Bool = false;
 
-	public function new()
+	public function new(?smoothing:Bool = true)
 	{
-		super();
+		super(smoothing);
 
 		onReady = onVLCReady;
 		onComplete = onVLCComplete;
@@ -34,13 +34,14 @@ class VideoHandler extends VLCBitmap
 	private function update(?E:Event):Void
 	{
 		isPlaying = libvlc.isPlaying();
+
 		if (canSkip
 			&& ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT)
 				|| FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)
 			&& initComplete)
 			onVLCComplete();
 
-		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
+		if ((FlxG.sound.muted || FlxG.sound.volume <= 0) || !canUseSound)
 			volume = 0;
 		else if (canUseSound)
 			volume = FlxG.sound.volume;
@@ -50,14 +51,14 @@ class VideoHandler extends VLCBitmap
 	{
 		if (canUseAutoResize)
 		{
-			set_width(calcSize(0));
-			set_height(calcSize(1));
+			width = calcSize(0);
+			height = calcSize(1);
 		}
 	}
 
 	private function onVLCReady():Void 
 	{        
-		trace("Video loaded!");
+		trace("video loaded!");
 		if (readyCallback != null)
 		    readyCallback();
 	}
@@ -116,12 +117,12 @@ class VideoHandler extends VLCBitmap
 
 		resize();
 
-		if (FlxG.sound.muted || FlxG.sound.volume <= 0)
+		if ((FlxG.sound.muted || FlxG.sound.volume <= 0) || !canUseSound)
 			volume = 0;
 		else if (canUseSound)
 			volume = FlxG.sound.volume;
 
-		playFile(#if desktop Sys.getCwd() + #end Path, Loop, hwAccelerated);
+		play(#if desktop Sys.getCwd() + #end Path, Loop, hwAccelerated);
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 		FlxG.stage.addEventListener(Event.RESIZE, resize);
