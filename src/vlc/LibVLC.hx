@@ -23,11 +23,9 @@ extern class LibVLC
 	@:native("LibVLC::create")
 	public static function create():LibVLC;
 
-	@:native("playFile")
-	public function playFile(path:String, loop:Bool, haccelerated:Bool):Void;
-
 	@:native("play")
-	public function play():Void;
+	@:overload(function():Void {})
+	public function play(path:String, loop:Bool, haccelerated:Bool):Void;
 
 	@:native("stop")
 	public function stop():Void;
@@ -55,6 +53,12 @@ extern class LibVLC
 
 	@:native("getHeight")
 	public function getHeight():Int;
+
+	@:native("isMediaPlayerAlive")
+	public function isMediaPlayerAlive():Bool;
+
+	@:native("isMediaItemAlive")
+	public function isMediaItemAlive():Bool;
 
 	@:native("isPlaying")
 	public function isPlaying():Bool;
