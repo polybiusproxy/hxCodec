@@ -16,7 +16,7 @@ import vlc.LibVLC;
 
 /**
  * ...
- * @author Tommy Svensson
+ * @author Datee
  *
  * This class lets you to use LibVLC as a bitmap then you can displaylist along other items.
  */
@@ -65,7 +65,7 @@ class VLCBitmap extends Bitmap
 	}
 
 	/**
-		Play's the video file you put.
+		Play's the video file you put if the the path isn't null.
 
 		@param	path	The video path (the location of the video in the files).
 		@param	loop	If you want to loop the video.
@@ -270,7 +270,7 @@ class VLCBitmap extends Bitmap
 			var newTime:Int = untyped __cpp__('libvlc -> flags[3]');
 
 			#if HXC_DEBUG_TRACE
-			trace("video time now is: " + newTime);
+			trace("the time of the video now is: " + newTime);
 			#end
 
 			if (onTimeChanged != null)
