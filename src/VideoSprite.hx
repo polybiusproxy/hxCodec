@@ -23,7 +23,7 @@ class VideoSprite extends FlxSprite
 		bitmap.visible = false;
 		bitmap.readyCallback = function()
 		{
-			makeGraphic(bitmap.bitmapData.width, bitmap.bitmapData.height, FlxColor.TRANSPARENT);
+			makeGraphic(getBitmapDataFromTexture().width, getBitmapDataFromTexture().height, FlxColor.TRANSPARENT);
 
 			startDrawing = true;
 
