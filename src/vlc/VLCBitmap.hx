@@ -411,7 +411,7 @@ class VLCBitmap extends Bitmap
 
 			if (texture != null && (bufferMemory != null && bufferMemory.length > 0))
 			{
-				var bytes:Bytes = Bytes.ofData(cast(bufferMemory, BytesData));
+				var bytes:Bytes = Bytes.ofData(bufferMemory);
 				if (bytes.length >= elementsCount)
 					texture.uploadFromByteArray(bytes, 0);
 			}
