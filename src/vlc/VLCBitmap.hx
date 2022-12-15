@@ -4,14 +4,13 @@ package vlc;
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
 #end
 import cpp.NativeArray;
-import cpp.UInt8;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
-import openfl.utils.ByteArray;
 import haxe.io.Bytes;
+import haxe.io.BytesData;
 import vlc.LibVLC;
 
 /**
@@ -31,7 +30,7 @@ class VLCBitmap extends Bitmap
 	private var _width:Null<Float>;
 	private var _height:Null<Float>;
 	private var libvlc:LibVLC;
-	private var bufferMemory:Array<UInt8> = [];
+	private var bufferMemory:BytesData = [];
 	private var texture:RectangleTexture;
 
 	public var initComplete:Bool = false;
@@ -412,9 +411,9 @@ class VLCBitmap extends Bitmap
 
 			if (texture != null && (bufferMemory != null && bufferMemory.length > 0))
 			{
-				var bytes:ByteArray = Bytes.ofData(cast(bufferMemory));
+				var bytes:Bytes = Bytes.ofData(cast(bufferMemory, BytesData));
 				if (bytes.length >= elementsCount)
-					texture.uploadFromByteArray(Bytes.ofData(cast(bufferMemory)), 0);
+					texture.uploadFromByteArray(bytes, 0);
 			}
 		}
 	}
