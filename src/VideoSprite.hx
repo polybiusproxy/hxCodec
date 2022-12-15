@@ -10,6 +10,8 @@ import openfl.display.BitmapData;
 class VideoSprite extends FlxSprite
 {
 	public var bitmap:VideoHandler;
+	public var bitmapdata:BitmapData;
+
 	public var readyCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
 
@@ -23,7 +25,10 @@ class VideoSprite extends FlxSprite
 		bitmap.visible = false;
 		bitmap.readyCallback = function()
 		{
-			makeGraphic(getBitmapDataFromTexture().width, getBitmapDataFromTexture().height, FlxColor.TRANSPARENT);
+			@:privateAccess
+			bitmapdata = BitmapData.fromTexture(bitmap.texture);
+
+			makeGraphic(bitmapdata.width, bitmapdata.height, FlxColor.TRANSPARENT);
 
 			startDrawing = true;
 
@@ -59,15 +64,9 @@ class VideoSprite extends FlxSprite
 			frameCount += elapsed;
 			if (frameCount >= 1 / bitmap.getVideoFPS())
 			{
-				pixels.draw(getBitmapDataFromTexture()); // im not sure how good the performance will be but ok
+				pixels.draw(bitmapdata); // im not sure how good the performance will be but ok
 				frameCount = 0;
 			}
 		}
-	}
-
-	private function getBitmapDataFromTexture():BitmapData
-	{
-		@:privateAccess
-		return BitmapData.fromTexture(bitmap.texture);
 	}
 }
