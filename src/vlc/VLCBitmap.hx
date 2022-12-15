@@ -30,7 +30,7 @@ class VLCBitmap extends Bitmap
 	private var _width:Null<Float>;
 	private var _height:Null<Float>;
 	private var libvlc:LibVLC;
-	private var bufferMemory:BytesData = [];
+	private var buffer:BytesData;
 	private var texture:RectangleTexture;
 
 	public var initComplete:Bool = false;
@@ -352,8 +352,8 @@ class VLCBitmap extends Bitmap
 
 		bitmapData = BitmapData.fromTexture(texture);
 
-		if (bufferMemory.length > 0)
-			bufferMemory = [];
+		if (buffer == null || (buffer != null && buffer.length > 0))
+			buffer = [];
 
 		if (_width != null)
 			width = _width;
@@ -407,11 +407,11 @@ class VLCBitmap extends Bitmap
 			trace("rendering...");
 			#end
 
-			NativeArray.setUnmanagedData(bufferMemory, libvlc.getPixelData(), elementsCount);
+			NativeArray.setUnmanagedData(buffer, libvlc.getPixelData(), elementsCount);
 
-			if (texture != null && (bufferMemory != null && bufferMemory.length > 0))
+			if (texture != null && (buffer != null && buffer.length > 0))
 			{
-				var bytes:Bytes = Bytes.ofData(bufferMemory);
+				var bytes:Bytes = Bytes.ofData(buffer);
 				if (bytes.length >= elementsCount)
 					texture.uploadFromByteArray(bytes, 0);
 			}
@@ -445,8 +445,8 @@ class VLCBitmap extends Bitmap
 			bitmapData = null;
 		}
 
-		if (bufferMemory.length > 0)
-			bufferMemory = [];
+		if (buffer != null && buffer.length > 0)
+			buffer = [];
 
 		initComplete = false;
 
