@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
+import openfl.display.BitmapData;
 
 /**
  * This class allows you to play videos using sprites (FlxSprite).
@@ -58,9 +59,15 @@ class VideoSprite extends FlxSprite
 			frameCount += elapsed;
 			if (frameCount >= 1 / bitmap.getVideoFPS())
 			{
-				pixels.draw(bitmap.bitmapData);
+				pixels.draw(getBitmapDataFromTexture()); // im not sure how good the performance will be but ok
 				frameCount = 0;
 			}
 		}
+	}
+
+	private function getBitmapDataFromTexture():BitmapData
+	{
+		@:privateAccess
+		return BitmapData.fromTexture(bitmap.texture);
 	}
 }
