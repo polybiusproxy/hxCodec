@@ -2,7 +2,6 @@ package;
 
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
-import openfl.display.BitmapData;
 
 /**
  * This class allows you to play videos using sprites (FlxSprite).
@@ -10,7 +9,6 @@ import openfl.display.BitmapData;
 class VideoSprite extends FlxSprite
 {
 	public var bitmap:VideoHandler;
-	public var bitmapdata:BitmapData;
 
 	public var readyCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
@@ -21,14 +19,13 @@ class VideoSprite extends FlxSprite
 	{
 		super(X, Y);
 
+		makeGraphic(1, 1, FlxColor.TRANSPARENT);
+
 		bitmap = new VideoHandler();
 		bitmap.visible = false;
 		bitmap.readyCallback = function()
 		{
-			@:privateAccess
-			bitmapdata = BitmapData.fromTexture(bitmap.texture);
-
-			makeGraphic(bitmapdata.width, bitmapdata.height, FlxColor.TRANSPARENT);
+			makeGraphic(bitmap.bitmapData.width, bitmap.bitmapData.height, FlxColor.TRANSPARENT);
 
 			startDrawing = true;
 
@@ -64,7 +61,7 @@ class VideoSprite extends FlxSprite
 			frameCount += elapsed;
 			if (frameCount >= 1 / bitmap.getVideoFPS())
 			{
-				pixels.draw(bitmapdata); // im not sure how good the performance will be but ok
+				pixels.draw(bitmap.bitmapData); // im not sure how good the performance will be but ok
 				frameCount = 0;
 			}
 		}
