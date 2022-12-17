@@ -15,7 +15,7 @@ import cpp.UInt32;
  * @author Datee
  * @additional coding M.A. Jigsaw
  *
- * This class lets you to use the C++ code of libvlc as a extern class which you can use in Haxe.
+ * This class contains some LibVLC externs whitch you can use in Haxe.
  */
 @:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
 @:include("vlc/vlc.h")
