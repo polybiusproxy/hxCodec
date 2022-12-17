@@ -114,20 +114,18 @@ extern class LibVLC
 	static function set_exit_handler(p_instance:LibVLC_Instance, cb:Star<cpp.Void>, opaque:Star<cpp.Void>):Void;
 }
 
+typedef LibVLC_Callback = Callable<(p_event:ConstStar<LibVLC_Event>, p_data:Star<cpp.Void>) -> Void>;
+typedef LibVLC_Video_Format_Callback = Callable<(opaque:Star<Star<cpp.Void>>, chroma:Star<cpp.Char>, width:Star<UInt32>, height:Star<UInt32>, pitches:Star<UInt32>, lines:Star<UInt32>) -> UInt32>;
+typedef LibVLC_Video_Cleanup_Callback = Callable<(opaque:Star<cpp.Void>) -> Void>;
+typedef LibVLC_Video_Lock_Callback = Callable<(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>) -> Star<cpp.Void>>;
+typedef LibVLC_Video_Unlock_Callback = Callable<(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>) -> Void>;
+typedef LibVLC_Video_Display_Callback = Callable<(opaque:Star<cpp.Void>, picture:Star<cpp.Void>) -> Void>;
+
 typedef LibVLC_Instance = Star<LibVLC_Instance_T>;
 typedef LibVLC_AudioOutput = Star<LibVLC_AudioOutput_T>;
 typedef LibVLC_MediaPlayer = Star<LibVLC_MediaPlayer_T>;
 typedef LibVLC_Media = Star<LibVLC_Media_T>;
 typedef LibVLC_EventManager = Star<LibVLC_EventManager_T>;
-
-typedef LibVLC_Video_Format_Callback = Callable<(opaque:Star<Star<cpp.Void>>, chroma:Star<cpp.Char>, width:Star<UInt32>, height:Star<UInt32>,
-		pitches:Star<UInt32>, lines:Star<UInt32>) -> UInt32>;
-
-typedef LibVLC_Video_Cleanup_Callback = Callable<(opaque:Star<cpp.Void>) -> Void>;
-typedef LibVLC_Video_Lock_Callback = Callable<(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>) -> Star<cpp.Void>>;
-typedef LibVLC_Video_Unlock_Callback = Callable<(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>) -> Void>;
-typedef LibVLC_Video_Display_Callback = Callable<(opaque:Star<cpp.Void>, picture:Star<cpp.Void>) -> Void>;
-typedef LibVLC_Callback = Callable<(p_event:ConstStar<LibVLC_Event>, p_data:Star<cpp.Void>) -> Void>;
 
 @:native("libvlc_instance_t")
 extern class LibVLC_Instance_T {}
