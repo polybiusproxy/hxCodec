@@ -12,6 +12,7 @@ import cpp.UInt32;
 /**
  * ...
  * @author Datee
+ * @additional coding M.A. Jigsaw
  *
  * This class lets you to use the C++ code of libvlc as a extern class which you can use in Haxe.
  */
