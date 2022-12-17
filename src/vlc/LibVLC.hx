@@ -230,7 +230,7 @@ enum abstract LibVLC_EventType(Int) from Int to Int
 	var PlayerEncounteredError = 266;
 	var PlayerTimeChanged = 267;
 	var PlayerPositionChanged = 268;
-	var PlayerSeekableChange = 269;
+	var PlayerSeekableChanged = 269;
 	var PlayerPausableChanged = 270;
 	var PlayerTitleChanged = 271;
 	var PlayerSnapshotTaken = 272;
