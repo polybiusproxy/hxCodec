@@ -156,7 +156,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerOpening, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerBuffering, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerForward, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerBackward, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));##
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerBackward, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerTimeChanged, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerPositionChanged, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerSeekableChanged, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
