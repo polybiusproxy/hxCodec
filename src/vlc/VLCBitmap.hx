@@ -7,8 +7,10 @@ import cpp.Function;
 import cpp.NativeArray;
 import cpp.ConstStar;
 import cpp.Char;
+import cpp.Pointer;
 import cpp.Star;
 import cpp.UInt32;
+import cpp.UInt8;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
@@ -16,6 +18,11 @@ import openfl.events.Event;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import vlc.LibVLC;
+
+class Ctx
+{
+	var pixelData:Pointer<UInt8>:
+}
 
 /**
  * ...
@@ -25,6 +32,7 @@ import vlc.LibVLC;
  */
 class VLCBitmap extends Bitmap
 {
+	private var ctx:Ctx;
 	private var buffer:BytesData;
 	private var texture:RectangleTexture;
 
@@ -56,6 +64,23 @@ class VLCBitmap extends Bitmap
 	static function cleanup(opaque:Star<cpp.Void>):Void
 	{
 		// TODO
+	}
+
+	static function lock(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>):Star<cpp.Void>
+	{
+		var ctx:Pointer<Ctx> = cast data;
+		p_pixels = ctx.pixelData;
+		return 1;
+	}
+
+	static function unlock(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>):Void
+	{
+		var ctx:Pointer<Ctx> = cast data;
+	}
+
+	static function display(opaque:Star<cpp.Void>, picture:Star<cpp.Void>):Void
+	{
+		var ctx:Pointer<Ctx> = cast opaque;
 	}
 
 	static function callbacks(p_event:ConstStar<LibVLC_Event>, p_data:Star<cpp.Void>):Void
@@ -113,8 +138,8 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(media);
 
-		// LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(setup), Function.fromStaticFunction(cleanup));
-		// LibVLC.video_set_callbacks(mediaPlayer, );
+		LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(setup), Function.fromStaticFunction(cleanup));
+		LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), untyped __cpp__("&ctx"));
 
 		setupEvents();
 
