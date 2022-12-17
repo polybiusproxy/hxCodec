@@ -24,13 +24,13 @@ import cpp.UInt32;
 extern class LibVLC
 {
 	@:native("libvlc_new")
-	static function init(argc:Int, argv:ConstStar<ConstCharStar>):Star<LibVLC_Instance>;
+	static function init(argc:Int, argv:ConstStar<ConstCharStar>):LibVLC_Instance;
 
 	@:native("libvlc_release")
-	static function release(p_instance:Star<LibVLC_Instance>):Void;
+	static function release(p_instance:LibVLC_Instance):Void;
 
 	@:native("libvlc_retain")
-	static function retain(p_instance:Star<LibVLC_Instance>):Void;
+	static function retain(p_instance:LibVLC_Instance):Void;
 
 	@:native("libvlc_errmsg")
 	static function errmsg():ConstCharStar;
@@ -42,92 +42,83 @@ extern class LibVLC
 	static function printerr(fmt:ConstCharStar):ConstCharStar;
 
 	@:native("libvlc_audio_output_list_get")
-	static function audio_output_list_get(p_instance:Star<LibVLC_Instance>):Star<LibVLC_AudioOutput>;
+	static function audio_output_list_get(p_instance:LibVLC_Instance):LibVLC_AudioOutput;
 
 	@:native("libvlc_audio_output_set")
-	static function audio_output_set(p_mi:Star<LibVLC_MediaPlayer>, deviceName:ConstCharStar):Void;
+	static function audio_output_set(p_mi:LibVLC_MediaPlayer, deviceName:ConstCharStar):Void;
 
 	@:native("libvlc_event_attach")
-	static function event_attach(p_event_manager:Star<LibVLC_EventManager>, i_event_type:LibVLC_EventType, f_callback:LibVLC_Callback,
+	static function event_attach(p_event_manager:LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Callback,
 		user_data:Star<cpp.Void>):Int;
 
 	@:native("libvlc_event_detach")
-	static function event_detach(p_event_manager:Star<LibVLC_EventManager>, i_event_type:LibVLC_EventType, f_callback:LibVLC_Callback,
+	static function event_detach(p_event_manager:LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Callback,
 		user_data:Star<cpp.Void>):Int;
 
 	@:native("libvlc_audio_get_volume")
-	static function audio_get_volume(p_mi:Star<LibVLC_MediaPlayer>):Int;
+	static function audio_get_volume(p_mi:LibVLC_MediaPlayer):Int;
 
 	@:native("libvlc_audio_set_volume")
-	static function audio_set_volume(p_mi:Star<LibVLC_MediaPlayer>, i_volume:Int):Int;
+	static function audio_set_volume(p_mi:LibVLC_MediaPlayer, i_volume:Int):Int;
 
 	@:native("libvlc_media_new_path")
-	static function media_new_path(p_instance:Star<LibVLC_Instance>, path:ConstCharStar):Star<LibVLC_Media>;
+	static function media_new_path(p_instance:LibVLC_Instance, path:ConstCharStar):LibVLC_Media;
 
 	@:native("libvlc_media_add_option")
-	static function media_add_option(p_md:Star<LibVLC_Media>, psz_options:ConstCharStar):Void;
+	static function media_add_option(p_md:LibVLC_Media, psz_options:ConstCharStar):Void;
 
 	@:native("libvlc_media_get_duration")
-	static function media_get_duration(p_md:Star<LibVLC_Media>):Int64;
+	static function media_get_duration(p_md:LibVLC_Media):Int64;
 
 	@:native("libvlc_media_release")
-	static function media_release(p_md:Star<LibVLC_Media>):Void;
+	static function media_release(p_md:LibVLC_Media):Void;
 
 	@:native("libvlc_media_parse")
-	static function media_parse(p_md:Star<LibVLC_Media>):Void;
+	static function media_parse(p_md:LibVLC_Media):Void;
 
 	@:native("libvlc_media_player_play")
-	static function media_player_play(p_mi:Star<LibVLC_MediaPlayer>):Void;
+	static function media_player_play(p_mi:LibVLC_MediaPlayer):Void;
 
 	@:native("libvlc_media_player_stop")
-	static function media_player_stop(p_mi:Star<LibVLC_MediaPlayer>):Void;
+	static function media_player_stop(p_mi:LibVLC_MediaPlayer):Void;
 
 	@:native("libvlc_media_player_set_pause")
-	static function media_player_set_pause(p_mi:Star<LibVLC_MediaPlayer>, do_pause:Int):Void;
+	static function media_player_set_pause(p_mi:LibVLC_MediaPlayer, do_pause:Int):Void;
 
 	@:native("libvlc_media_player_is_playing")
-	static function media_player_is_playing(p_mi:Star<LibVLC_MediaPlayer>):Bool;
+	static function media_player_is_playing(p_mi:LibVLC_MediaPlayer):Bool;
 
 	@:native("libvlc_media_player_release")
-	static function media_player_release(p_mi:Star<LibVLC_MediaPlayer>):Void;
+	static function media_player_release(p_mi:LibVLC_MediaPlayer):Void;
 
 	@:native("libvlc_media_player_event_manager")
-	static function media_player_event_manager(mp:Star<LibVLC_MediaPlayer>):Star<LibVLC_EventManager>;
+	static function media_player_event_manager(mp:LibVLC_MediaPlayer):LibVLC_EventManager;
 
 	@:native("libvlc_media_player_get_time")
-	static function media_player_get_time(p_mi:Star<LibVLC_MediaPlayer>):Int64;
+	static function media_player_get_time(p_mi:LibVLC_MediaPlayer):Int64;
 
 	@:native("libvlc_media_player_set_time")
-	static function media_player_set_time(p_mi:Star<LibVLC_MediaPlayer>, i_time:Int64):Int;
+	static function media_player_set_time(p_mi:LibVLC_MediaPlayer, i_time:Int64):Int;
 
 	@:native("libvlc_video_set_format_callbacks")
-	static function video_set_format_callbacks(mp:Star<LibVLC_MediaPlayer>, setup:LibVLC_Video_Format_Callback, cleanup:LibVLC_Video_Cleanup_Callback):Void;
+	static function video_set_format_callbacks(mp:LibVLC_MediaPlayer, setup:LibVLC_Video_Format_Callback, cleanup:LibVLC_Video_Cleanup_Callback):Void;
 
 	@:native("libvlc_video_set_callbacks")
-	static function video_set_callbacks(mp:Star<LibVLC_MediaPlayer>, lock:LibVLC_Video_Lock_Callback, unlock:LibVLC_Video_Unlock_Callback,
+	static function video_set_callbacks(mp:LibVLC_MediaPlayer, lock:LibVLC_Video_Lock_Callback, unlock:LibVLC_Video_Unlock_Callback,
 		display:LibVLC_Video_Display_Callback, opaque:Star<cpp.Void>):Void;
 
 	@:native("libvlc_video_get_size")
-	static function video_get_size(p_mi:Star<LibVLC_MediaPlayer>, num:UInt, width:Star<UInt32>, height:Star<UInt32>):Int;
+	static function video_get_size(p_mi:LibVLC_MediaPlayer, num:UInt, width:Star<UInt32>, height:Star<UInt32>):Int;
 
 	@:native("libvlc_set_exit_handler")
-	static function set_exit_handler(p_instance:Star<LibVLC_Instance>, cb:Star<cpp.Void>, opaque:Star<cpp.Void>):Void;
+	static function set_exit_handler(p_instance:LibVLC_Instance, cb:Star<cpp.Void>, opaque:Star<cpp.Void>):Void;
 }
 
-@:native("libvlc_instance_t")
-extern class LibVLC_Instance {}
-
-@:native("libvlc_audio_output_t")
-extern class LibVLC_AudioOutput {}
-
-@:native("libvlc_media_player_t")
-extern class LibVLC_MediaPlayer {}
-
-@:native("libvlc_media_t")
-extern class LibVLC_Media {}
-
-@:native("libvlc_event_manager_t")
-extern class LibVLC_EventManager {}
+typedef LibVLC_Instance = Star<LibVLC_Instance_T>;
+typedef LibVLC_AudioOutput = Star<LibVLC_AudioOutput_T>;
+typedef LibVLC_MediaPlayer = Star<LibVLC_MediaPlayer_T>;
+typedef LibVLC_Media = Star<LibVLC_Media_T>;
+typedef LibVLC_EventManager = Star<LibVLC_EventManager_T>;
 
 typedef LibVLC_Video_Format_Callback = Callable<(opaque:Star<Star<cpp.Void>>, chroma:Star<cpp.Char>, width:Star<UInt32>, height:Star<UInt32>,
 		pitches:Star<UInt32>, lines:Star<UInt32>) -> UInt32>;
@@ -138,9 +129,24 @@ typedef LibVLC_Video_Unlock_Callback = Callable<(data:Star<cpp.Void>, id:Star<cp
 typedef LibVLC_Video_Display_Callback = Callable<(opaque:Star<cpp.Void>, picture:Star<cpp.Void>) -> Void>;
 typedef LibVLC_Callback = Callable<(p_event:ConstStar<LibVLC_Event>, p_data:Star<cpp.Void>) -> Void>;
 
+@:native("libvlc_instance_t")
+extern class LibVLC_Instance_T {}
+
+@:native("libvlc_audio_output_t")
+extern class LibVLC_AudioOutput_T {}
+
+@:native("libvlc_media_t")
+extern class LibVLC_Media_T {}
+
+@:native("libvlc_media_player_t")
+extern class LibVLC_MediaPlayer_T {}
+
+@:native("libvlc_event_manager_t")
+extern class LibVLC_EventManager_T {}
+
 @:native("libvlc_event_t")
 @:structAccess
-extern class LibVLC_Event
+extern class LibVLC_Event_T
 {
 	var type:LibVLC_EventType;
 	var u:LibVLC_Event_U;
