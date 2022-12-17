@@ -69,7 +69,6 @@ class VLCBitmap extends Bitmap
 	static function lock(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>):Star<cpp.Void>
 	{
 		var ctx:Pointer<Ctx> = cast data;
-		p_pixels = ctx.pixelData;
 		return 1;
 	}
 
