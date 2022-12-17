@@ -4,6 +4,7 @@ package vlc;
 #error "The current target platform isn't supported by hxCodec. If you are targeting Windows/Mac/Linux/Android and you are getting this message, please contact us.";
 #end
 import cpp.Callable;
+import cpp.ConstCharStar;
 import cpp.ConstStar;
 import cpp.Int64;
 import cpp.Star;
@@ -23,16 +24,31 @@ import cpp.UInt32;
 extern class LibVLC
 {
 	@:native("libvlc_new")
-	static function New(argc:Int, argv:String):Star<LibVLC_Instance>;
+	static function New(argc:Int, argv:ConstStar<ConstCharStar>):Star<LibVLC_Instance>;
+
+	@:native("libvlc_release")
+	static function release(p_instance:Star<LibVLC_Instance>):Void;
+
+	@:native("libvlc_retain")
+	static function retain(p_instance:Star<LibVLC_Instance>):Void;
+
+	@:native("libvlc_errmsg")
+	static function errmsg():ConstCharStar;
+
+	@:native("libvlc_clearerr")
+	static function clearerr():Void;
+
+	@:native("libvlc_printerr")
+	static function printerr(fmt:ConstCharStar):ConstCharStar;
 
 	@:native("libvlc_media_new_path")
-	static function newMediaPath(p_instance:Star<LibVLC_Instance>, path:String):Star<LibVLC_Media>;
+	static function newMediaPath(p_instance:Star<LibVLC_Instance>, path:ConstCharStar):Star<LibVLC_Media>;
 
 	@:native("libvlc_audio_output_list_get")
 	static function getAudioOutputList(p_instance:Star<LibVLC_Instance>):Star<LibVLC_AudioOutput>;
 
 	@:native("libvlc_audio_output_set")
-	static function setAudioOutput(p_mi:Star<LibVLC_MediaPlayer>, deviceName:String):Void;
+	static function setAudioOutput(p_mi:Star<LibVLC_MediaPlayer>, deviceName:ConstCharStar):Void;
 
 	@:native("libvlc_media_player_play")
 	static function mediaPlayerPlay(p_mi:Star<LibVLC_MediaPlayer>):Void;
@@ -48,12 +64,6 @@ extern class LibVLC
 
 	@:native("libvlc_media_player_release")
 	static function mediaPlayerRelease(p_mi:Star<LibVLC_MediaPlayer>):Void;
-
-	@:native("libvlc_release")
-	static function release(p_instance:Star<LibVLC_Instance>):Void;
-
-	@:native("libvlc_retain")
-	static function retain(p_instance:Star<LibVLC_Instance>):Void;
 
 	@:native("libvlc_audio_get_volume")
 	static function audioGetVolume(p_mi:Star<LibVLC_MediaPlayer>):Int;
@@ -101,16 +111,16 @@ extern class LibVLC
 	static function videoGetSize(p_mi:Star<LibVLC_MediaPlayer>, num:UInt, width:Star<UInt32>, height:Star<UInt32>):Int;
 
 	@:native("libvlc_media_add_option")
-	static function mediaAddOption(p_md:Star<LibVLC_Media>, psz_options:String):Void;
-}
-
-@:native("libvlc_audio_output_t")
-extern class LibVLC_AudioOutput
-{
+	static function mediaAddOption(p_md:Star<LibVLC_Media>, psz_options:ConstCharStar):Void;
 }
 
 @:native("libvlc_instance_t")
 extern class LibVLC_Instance
+{
+}
+
+@:native("libvlc_audio_output_t")
+extern class LibVLC_AudioOutput
 {
 }
 
