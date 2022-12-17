@@ -32,7 +32,7 @@ class Ctx
  */
 class VLCBitmap extends Bitmap
 {
-	private var ctx:Ctx;
+	private var ctx:Pointer<Ctx>;
 	private var buffer:BytesData;
 	private var texture:RectangleTexture;
 
