@@ -41,14 +41,40 @@ extern class LibVLC
 	@:native("libvlc_printerr")
 	static function printerr(fmt:ConstCharStar):ConstCharStar;
 
-	@:native("libvlc_media_new_path")
-	static function media_new_path(p_instance:Star<LibVLC_Instance>, path:ConstCharStar):Star<LibVLC_Media>;
-
 	@:native("libvlc_audio_output_list_get")
 	static function audio_output_list_get(p_instance:Star<LibVLC_Instance>):Star<LibVLC_AudioOutput>;
 
 	@:native("libvlc_audio_output_set")
 	static function audio_output_set(p_mi:Star<LibVLC_MediaPlayer>, deviceName:ConstCharStar):Void;
+
+	@:native("libvlc_event_attach")
+	static function event_attach(p_event_manager:Star<LibVLC_EventManager>, i_event_type:LibVLC_EventType, f_callback:LibVLC_Callback,
+		user_data:Star<cpp.Void>):Int;
+
+	@:native("libvlc_event_detach")
+	static function event_detach(p_event_manager:Star<LibVLC_EventManager>, i_event_type:LibVLC_EventType, f_callback:LibVLC_Callback,
+		user_data:Star<cpp.Void>):Int;
+
+	@:native("libvlc_audio_get_volume")
+	static function audio_get_volume(p_mi:Star<LibVLC_MediaPlayer>):Int;
+
+	@:native("libvlc_audio_set_volume")
+	static function audio_set_volume(p_mi:Star<LibVLC_MediaPlayer>, i_volume:Int):Int;
+
+	@:native("libvlc_media_new_path")
+	static function media_new_path(p_instance:Star<LibVLC_Instance>, path:ConstCharStar):Star<LibVLC_Media>;
+
+	@:native("libvlc_media_add_option")
+	static function media_add_option(p_md:Star<LibVLC_Media>, psz_options:ConstCharStar):Void;
+
+	@:native("libvlc_media_get_duration")
+	static function media_get_duration(p_md:Star<LibVLC_Media>):Int64;
+
+	@:native("libvlc_media_release")
+	static function media_release(p_md:Star<LibVLC_Media>):Void;
+
+	@:native("libvlc_media_parse")
+	static function media_parse(p_md:Star<LibVLC_Media>):Void;
 
 	@:native("libvlc_media_player_play")
 	static function media_player_play(p_mi:Star<LibVLC_MediaPlayer>):Void;
@@ -65,17 +91,14 @@ extern class LibVLC
 	@:native("libvlc_media_player_release")
 	static function media_player_release(p_mi:Star<LibVLC_MediaPlayer>):Void;
 
-	@:native("libvlc_audio_get_volume")
-	static function audio_get_volume(p_mi:Star<LibVLC_MediaPlayer>):Int;
+	@:native("libvlc_media_player_event_manager")
+	static function media_player_event_manager(mp:Star<LibVLC_MediaPlayer>):Star<LibVLC_EventManager>;
 
-	@:native("libvlc_audio_set_volume")
-	static function audio_set_volume(p_mi:Star<LibVLC_MediaPlayer>, i_volume:Int):Int;
+	@:native("libvlc_media_player_get_time")
+	static function media_player_get_time(p_mi:Star<LibVLC_MediaPlayer>):Int64;
 
-	@:native("libvlc_media_release")
-	static function media_release(p_md:Star<LibVLC_Media>):Void;
-
-	@:native("libvlc_media_parse")
-	static function media_parse(p_md:Star<LibVLC_Media>):Void;
+	@:native("libvlc_media_player_set_time")
+	static function media_player_set_time(p_mi:Star<LibVLC_MediaPlayer>, i_time:Int64):Int;
 
 	@:native("libvlc_video_set_format_callbacks")
 	static function video_set_format_callbacks(mp:Star<LibVLC_MediaPlayer>, setup:LibVLC_Video_Format_Callback, cleanup:LibVLC_Video_Cleanup_Callback):Void;
@@ -84,63 +107,31 @@ extern class LibVLC
 	static function video_set_callbacks(mp:Star<LibVLC_MediaPlayer>, lock:LibVLC_Video_Lock_Callback, unlock:LibVLC_Video_Unlock_Callback,
 		display:LibVLC_Video_Display_Callback, opaque:Star<cpp.Void>):Void;
 
-	@:native("libvlc_media_player_event_manager")
-	static function media_player_event_manager(mp:Star<LibVLC_MediaPlayer>):Star<LibVLC_EventManager>;
-
-	@:native("libvlc_event_attach")
-	static function event_attach(p_event_manager:Star<LibVLC_EventManager>, i_event_type:LibVLC_EventType, f_callback:LibVLC_Callback,
-		user_data:Star<cpp.Void>):Int;
-
-	@:native("libvlc_event_detach")
-	static function event_detach(p_event_manager:Star<LibVLC_EventManager>, i_event_type:LibVLC_EventType, f_callback:LibVLC_Callback,
-		user_data:Star<cpp.Void>):Int;
-
-	@:native("libvlc_set_exit_handler")
-	static function set_exit_handler(p_instance:Star<LibVLC_Instance>, cb:Star<cpp.Void>, opaque:Star<cpp.Void>):Void;
-
-	@:native("libvlc_media_get_duration")
-	static function media_get_duration(p_md:Star<LibVLC_Media>):Int64;
-
-	@:native("libvlc_media_player_get_time")
-	static function media_player_get_time(p_mi:Star<LibVLC_MediaPlayer>):Int64;
-
-	@:native("libvlc_media_player_set_time")
-	static function media_player_set_time(p_mi:Star<LibVLC_MediaPlayer>, i_time:Int64):Int;
-
 	@:native("libvlc_video_get_size")
 	static function video_get_size(p_mi:Star<LibVLC_MediaPlayer>, num:UInt, width:Star<UInt32>, height:Star<UInt32>):Int;
 
-	@:native("libvlc_media_add_option")
-	static function media_add_option(p_md:Star<LibVLC_Media>, psz_options:ConstCharStar):Void;
+	@:native("libvlc_set_exit_handler")
+	static function set_exit_handler(p_instance:Star<LibVLC_Instance>, cb:Star<cpp.Void>, opaque:Star<cpp.Void>):Void;
 }
 
 @:native("libvlc_instance_t")
-extern class LibVLC_Instance
-{
-}
+extern class LibVLC_Instance {}
 
 @:native("libvlc_audio_output_t")
-extern class LibVLC_AudioOutput
-{
-}
+extern class LibVLC_AudioOutput {}
 
 @:native("libvlc_media_player_t")
-extern class LibVLC_MediaPlayer
-{
-}
+extern class LibVLC_MediaPlayer {}
 
 @:native("libvlc_media_t")
-extern class LibVLC_Media
-{
-}
+extern class LibVLC_Media {}
 
 @:native("libvlc_event_manager_t")
-extern class LibVLC_EventManager
-{
-}
+extern class LibVLC_EventManager {}
 
-typedef LibVLC_Video_Format_Callback = Callable<(opaque:Star<Star<cpp.Void>>, chroma:Star<cpp.Char>, width:Star<UInt32>, height:Star<UInt32>, pitches:Star<UInt32>,
-		lines:Star<UInt32>) -> UInt32>;
+typedef LibVLC_Video_Format_Callback = Callable<(opaque:Star<Star<cpp.Void>>, chroma:Star<cpp.Char>, width:Star<UInt32>, height:Star<UInt32>,
+		pitches:Star<UInt32>, lines:Star<UInt32>) -> UInt32>;
+
 typedef LibVLC_Video_Cleanup_Callback = Callable<(opaque:Star<cpp.Void>) -> Void>;
 typedef LibVLC_Video_Lock_Callback = Callable<(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>) -> Star<cpp.Void>>;
 typedef LibVLC_Video_Unlock_Callback = Callable<(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>) -> Void>;
