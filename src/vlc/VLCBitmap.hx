@@ -113,8 +113,8 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(media);
 
-		LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(setup), Function.fromStaticFunction(cleanup));
-		// LibVLC.video_set_callbacks();
+		// LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(setup), Function.fromStaticFunction(cleanup));
+		// LibVLC.video_set_callbacks(mediaPlayer, );
 
 		setupEvents();
 
