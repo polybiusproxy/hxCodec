@@ -118,7 +118,7 @@ extern class LibVLC
 	static function set_exit_handler(p_instance:LibVLC_Instance, cb:Star<cpp.Void>, opaque:Star<cpp.Void>):Void;
 }
 
-typedef LibVLC_Callback = Callable<(p_event:ConstStar<LibVLC_Event>, p_data:Star<cpp.Void>) -> Void>;
+typedef LibVLC_Callback = Callable<(p_event:ConstStar<LibVLC_Event_T>, p_data:Star<cpp.Void>) -> Void>;
 typedef LibVLC_Video_Setup_Callback = Callable<(opaque:Star<Star<cpp.Void>>, chroma:Star<Char>, width:Star<UInt32>, height:Star<UInt32>, pitches:Star<UInt32>, lines:Star<UInt32>) -> UInt32>;
 typedef LibVLC_Video_Cleanup_Callback = Callable<(opaque:Star<cpp.Void>) -> Void>;
 typedef LibVLC_Video_Lock_Callback = Callable<(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>) -> Star<cpp.Void>>;
