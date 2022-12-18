@@ -22,7 +22,6 @@ import vlc.LibVLC;
 
 @:headerInclude('vlc/vlc.h')
 @:unreflective
-@:keep
 class VLCBitmap extends Bitmap
 {
 	private var pixels:BytesData;
@@ -62,25 +61,16 @@ class VLCBitmap extends Bitmap
 		return 1;
 	}
 
-	static function cleanup(opaque:Star<cpp.Void>):Void
-	{
-
-	}
+	static function cleanup(opaque:Star<cpp.Void>):Void {}
 
 	static function lock(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>):Star<cpp.Void>
 	{
 		return null;
 	}
 
-	static function unlock(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>):Void
-	{
+	static function unlock(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>):Void {}
 
-	}
-
-	static function display(opaque:Star<cpp.Void>, picture:Star<cpp.Void>):Void
-	{
-
-	}
+	static function display(opaque:Star<cpp.Void>, picture:Star<cpp.Void>):Void {}
 
 	static function callbacks(p_event:ConstStar<LibVLC_Event_T>, p_data:Star<cpp.Void>):Void
 	{
