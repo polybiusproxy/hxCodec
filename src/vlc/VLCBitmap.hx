@@ -96,6 +96,7 @@ class VLCBitmap extends Bitmap
 			case LibVLC_EventType.PlayerTimeChanged:
 			case LibVLC_EventType.PlayerPositionChanged:
 			case LibVLC_EventType.PlayerSeekableChanged:
+			default:
 		}
 	}
 
