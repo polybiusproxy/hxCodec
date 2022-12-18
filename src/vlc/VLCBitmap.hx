@@ -68,15 +68,16 @@ class VLCBitmap extends Bitmap
 		return null;
 	}
 
-	static function unlock(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstPointer<Star<cpp.Void>>):Void {}
+	static function unlock(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>):Void {}
 
 	static function display(opaque:Star<cpp.Void>, picture:Star<cpp.Void>):Void {}
 
-	static function callbacks(p_event:ConstPointer<LibVLC_Event_T>, p_data:Star<cpp.Void>):Void
+	static function callbacks(p_event:ConstStar<LibVLC_Event_T>, p_data:Star<cpp.Void>):Void
 	{
 		var self:VLCBitmap = untyped __cpp__('reinterpret_cast<VLCBitmap_obj*>(p_data)');
+		var event:LibVLC_Event_T = cast p_event;
 
-		switch (p_event.type)
+		switch (event.type)
 		{
 			case LibVLC_EventType.PlayerPlaying:
 			case LibVLC_EventType.PlayerStopped:
