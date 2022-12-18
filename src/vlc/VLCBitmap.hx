@@ -66,7 +66,7 @@ class VLCBitmap extends Bitmap
 
 	static function lock(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>):Star<cpp.Void>
 	{
-
+		return null;
 	}
 
 	static function unlock(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>):Void
