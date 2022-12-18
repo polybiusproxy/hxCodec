@@ -71,7 +71,7 @@ class VLCBitmap extends Bitmap
 
 	static function unlock(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>):Void {}
 
-	static function display(opaque:Star<cpp.Void>, picture:Star<cpp.Void>):Void {}
+	static function display(opaque:Star<cpp.Void>, picture:Star<cpp.Void>):Void {} */
 
 	static function callbacks(p_event:ConstStar<LibVLC_Event_T>, p_data:Star<cpp.Void>):Void
 	{
@@ -93,7 +93,7 @@ class VLCBitmap extends Bitmap
 			case LibVLC_EventType.PlayerSeekableChanged:
 			default:
 		}
-	} */
+	}
 
 	public function play(?path:String = null, loop:Bool = false, haccelerated:Bool = true):Void
 	{
