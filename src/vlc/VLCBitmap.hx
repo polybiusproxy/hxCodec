@@ -8,6 +8,7 @@ import cpp.NativeArray;
 import cpp.ConstStar;
 import cpp.Char;
 import cpp.Pointer;
+import cpp.Native;
 import cpp.Star;
 import cpp.UInt32;
 import cpp.UInt8;
@@ -19,21 +20,9 @@ import haxe.io.Bytes;
 import haxe.io.BytesData;
 import vlc.LibVLC;
 
-class Ctx
-{
-	var pixelData:Pointer<UInt8>:
-}
-
-/**
- * ...
- * @author Datee
- *
- * This class lets you to use LibVLC as a bitmap then you can displaylist along other items.
- */
 class VLCBitmap extends Bitmap
 {
-	private var ctx:Pointer<Ctx>;
-	private var buffer:BytesData;
+	private var pixels:BytesData;
 	private var texture:RectangleTexture;
 
 	private var instance:LibVLC_Instance;
@@ -49,6 +38,8 @@ class VLCBitmap extends Bitmap
 		if (instance == null)
 			instance = LibVLC.init(0, null);
 
+		audioOutput = LibVLC.audio_output_list_get(instance);
+
 		if (stage != null)
 			init();
 		else
@@ -57,29 +48,35 @@ class VLCBitmap extends Bitmap
 
 	static function setup(opaque:Star<Star<cpp.Void>>, chroma:Star<Char>, width:Star<UInt32>, height:Star<UInt32>, pitches:Star<UInt32>, lines:Star<UInt32>):UInt32
 	{
-		// TODO
-		return 1;		
+		var _w:UInt = Pointer.fromStar(width).value;
+		var _h:UInt = Pointer.fromStar(height).value;
+		var _pitch:UInt = _w * 4;
+		var _frame:UInt = _w * _h * 4;
+
+		Pointer.fromStar(pitches).setAt(0, _pitch);
+		Pointer.fromStar(lines).setAt(0, _h);
+
+		return 1;
 	}
 
 	static function cleanup(opaque:Star<cpp.Void>):Void
 	{
-		// TODO
+
 	}
 
 	static function lock(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>):Star<cpp.Void>
 	{
-		var ctx:Pointer<Ctx> = cast data;
-		return 1;
+
 	}
 
 	static function unlock(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>):Void
 	{
-		var ctx:Pointer<Ctx> = cast data;
+
 	}
 
 	static function display(opaque:Star<cpp.Void>, picture:Star<cpp.Void>):Void
 	{
-		var ctx:Pointer<Ctx> = cast opaque;
+
 	}
 
 	static function callbacks(p_event:ConstStar<LibVLC_Event>, p_data:Star<cpp.Void>):Void
@@ -138,7 +135,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.media_release(media);
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(setup), Function.fromStaticFunction(cleanup));
-		LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), untyped __cpp__("&ctx"));
+		LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), untyped __cpp__('this'));
 
 		setupEvents();
 
