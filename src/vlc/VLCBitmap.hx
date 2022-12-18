@@ -146,7 +146,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.media_player_play(mediaPlayer);
 	}
 
-	private function init(?e:Event):Void
+	private function onAddedToStage(?e:Event):Void
 	{
 		if (hasEventListener(Event.ADDED_TO_STAGE))
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
