@@ -57,7 +57,7 @@ class VLCBitmap extends Bitmap
 		Pointer.fromStar(pitches).setAt(0, _pitch);
 		Pointer.fromStar(lines).setAt(0, _h);
 
-		return 1;
+		return cast 1;
 	}
 
 	static function cleanup(opaque:Star<cpp.Void>):Void {}
