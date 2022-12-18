@@ -49,11 +49,11 @@ extern class LibVLC
 	static function audio_output_set(p_mi:LibVLC_MediaPlayer, deviceName:ConstCharStar):Void;
 
 	@:native("libvlc_event_attach")
-	static function event_attach(p_event_manager:LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Callback,
+	static function event_attach(p_event_manager:LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Event_Callback,
 		user_data:Star<cpp.Void>):Int;
 
 	@:native("libvlc_event_detach")
-	static function event_detach(p_event_manager:LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Callback,
+	static function event_detach(p_event_manager:LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Event_Callback,
 		user_data:Star<cpp.Void>):Int;
 
 	@:native("libvlc_audio_get_volume")
@@ -118,7 +118,7 @@ extern class LibVLC
 	static function set_exit_handler(p_instance:LibVLC_Instance, cb:Star<cpp.Void>, opaque:Star<cpp.Void>):Void;
 }
 
-typedef LibVLC_Callback = Callable<(p_event:ConstStar<LibVLC_Event_T>, p_data:Star<cpp.Void>) -> Void>;
+typedef LibVLC_Event_Callback = Callable<(p_event:ConstStar<LibVLC_Event_T>, p_data:Star<cpp.Void>) -> Void>;
 typedef LibVLC_Video_Setup_Callback = Callable<(opaque:Star<Star<cpp.Void>>, chroma:Star<Char>, width:Star<UInt32>, height:Star<UInt32>, pitches:Star<UInt32>, lines:Star<UInt32>) -> UInt32>;
 typedef LibVLC_Video_Cleanup_Callback = Callable<(opaque:Star<cpp.Void>) -> Void>;
 typedef LibVLC_Video_Lock_Callback = Callable<(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>) -> Star<cpp.Void>>;
