@@ -20,6 +20,9 @@ import haxe.io.Bytes;
 import haxe.io.BytesData;
 import vlc.LibVLC;
 
+@:headerInclude('vlc/vlc.h')
+@:unreflective
+@:keep
 class VLCBitmap extends Bitmap
 {
 	private var pixels:BytesData;
