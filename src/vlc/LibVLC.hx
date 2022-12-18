@@ -6,6 +6,7 @@ package vlc;
 import cpp.Callable;
 import cpp.ConstCharStar;
 import cpp.ConstStar;
+import cpp.ConstPointer;
 import cpp.Char;
 import cpp.Int64;
 import cpp.Star;
@@ -118,11 +119,11 @@ extern class LibVLC
 	static function set_exit_handler(p_instance:LibVLC_Instance, cb:Star<cpp.Void>, opaque:Star<cpp.Void>):Void;
 }
 
-typedef LibVLC_Callback = Callable<(p_event:ConstStar<LibVLC_Event_T>, p_data:Star<cpp.Void>) -> Void>;
+typedef LibVLC_Callback = Callable<(p_event:ConstPointer<LibVLC_Event_T>, p_data:Star<cpp.Void>) -> Void>;
 typedef LibVLC_Video_Setup_Callback = Callable<(opaque:Star<Star<cpp.Void>>, chroma:Star<Char>, width:Star<UInt32>, height:Star<UInt32>, pitches:Star<UInt32>, lines:Star<UInt32>) -> UInt32>;
 typedef LibVLC_Video_Cleanup_Callback = Callable<(opaque:Star<cpp.Void>) -> Void>;
 typedef LibVLC_Video_Lock_Callback = Callable<(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>) -> Star<cpp.Void>>;
-typedef LibVLC_Video_Unlock_Callback = Callable<(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>) -> Void>;
+typedef LibVLC_Video_Unlock_Callback = Callable<(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstPointer<Star<cpp.Void>>) -> Void>;
 typedef LibVLC_Video_Display_Callback = Callable<(opaque:Star<cpp.Void>, picture:Star<cpp.Void>) -> Void>;
 
 typedef LibVLC_Instance = Star<LibVLC_Instance_T>;
