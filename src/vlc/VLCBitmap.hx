@@ -79,7 +79,7 @@ class VLCBitmap extends Bitmap
 
 	}
 
-	static function callbacks(p_event:ConstStar<LibVLC_Event>, p_data:Star<cpp.Void>):Void
+	static function callbacks(p_event:ConstStar<LibVLC_Event_T>, p_data:Star<cpp.Void>):Void
 	{
 		var self:VLCBitmap = untyped __cpp__('reinterpret_cast<VLCBitmap_obj*>(p_data)');
 
