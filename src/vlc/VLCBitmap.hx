@@ -148,32 +148,36 @@ class VLCBitmap extends Bitmap
 		if (eventManager == null)
 			eventManager = LibVLC.media_player_event_manager(mediaPlayer);
 
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerPlaying, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerStopped, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerEndReached, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerEncounteredError, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerOpening, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerBuffering, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerForward, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerBackward, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerTimeChanged, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerPositionChanged, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerSeekableChanged, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
+		var callback:LibVLC_Callback = Function.fromStaticFunction(callbacks);
+
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerPlaying, callback, untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerStopped, callback, untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerEndReached, callback, untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerEncounteredError, callback, untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerOpening, callback, untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerBuffering, callback, untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerForward, callback, untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerBackward, callback, untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerTimeChanged, callback, untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerPositionChanged, callback, untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerSeekableChanged, callback, untyped __cpp__('this'));
 	}
 
 	private function cleanupEvents():Void
 	{
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerPlaying, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerStopped, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerEndReached, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerEncounteredError, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerOpening, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerBuffering, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerForward, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerBackward, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerTimeChanged, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerPositionChanged, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerSeekableChanged, Function.fromStaticFunction(callbacks), untyped __cpp__('this'));
+		var callback:LibVLC_Callback = Function.fromStaticFunction(callbacks);
+
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerPlaying, callback, untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerStopped, callback, untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerEndReached, callback, untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerEncounteredError, callback, untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerOpening, callback, untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerBuffering, callback, untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerForward, callback, untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerBackward, callback, untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerTimeChanged, callback, untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerPositionChanged, callback, untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerSeekableChanged, callback, untyped __cpp__('this'));
 
 		if (eventManager != null)
 			eventManager = null;
