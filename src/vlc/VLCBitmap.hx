@@ -44,9 +44,9 @@ class VLCBitmap extends Bitmap
 		audioOutput = LibVLC.audio_output_list_get(instance);
 
 		if (stage != null)
-			init();
+			onAddedToStage();
 		else
-			addEventListener(Event.ADDED_TO_STAGE, init);
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
 	static function setup(opaque:Star<Star<cpp.Void>>, chroma:Star<Char>, width:Star<UInt32>, height:Star<UInt32>, pitches:Star<UInt32>, lines:Star<UInt32>):UInt32
@@ -149,7 +149,7 @@ class VLCBitmap extends Bitmap
 	private function init(?e:Event):Void
 	{
 		if (hasEventListener(Event.ADDED_TO_STAGE))
-			removeEventListener(Event.ADDED_TO_STAGE, init);
+			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
