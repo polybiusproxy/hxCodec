@@ -48,7 +48,7 @@ class VLCBitmap extends Bitmap
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
-	static function setup(opaque:Star<Star<cpp.Void>>, chroma:Star<Char>, width:Star<UInt32>, height:Star<UInt32>, pitches:Star<UInt32>, lines:Star<UInt32>):UInt32
+	/* static function setup(opaque:Star<Star<cpp.Void>>, chroma:Star<Char>, width:Star<UInt32>, height:Star<UInt32>, pitches:Star<UInt32>, lines:Star<UInt32>):UInt32
 	{
 		var _w:UInt = Pointer.fromStar(width).value;
 		var _h:UInt = Pointer.fromStar(height).value;
@@ -92,7 +92,7 @@ class VLCBitmap extends Bitmap
 			case LibVLC_EventType.PlayerSeekableChanged:
 			default:
 		}
-	}
+	} */
 
 	public function play(?path:String = null, loop:Bool = false, haccelerated:Bool = true):Void
 	{
@@ -129,10 +129,13 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(media);
 
+		if (pixels == null || (pixels != null && pixels.length > 0))
+			pixels = [];
+
 		// LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(setup), Function.fromStaticFunction(cleanup));
 		// LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), untyped __cpp__('this'));
 
-		setupEvents();
+		// setupEvents();
 
 		LibVLC.media_player_play(mediaPlayer);
 	}
@@ -145,7 +148,7 @@ class VLCBitmap extends Bitmap
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
-	private function setupEvents():Void
+	/* private function setupEvents():Void
 	{
 		if (eventManager == null)
 			eventManager = LibVLC.media_player_event_manager(mediaPlayer);
@@ -183,7 +186,7 @@ class VLCBitmap extends Bitmap
 
 		if (eventManager != null)
 			eventManager = null;
-	}
+	} */
 
 	private function onEnterFrame(e:Event):Void
 	{
