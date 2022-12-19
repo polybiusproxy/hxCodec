@@ -7,9 +7,7 @@ import cpp.Callable;
 import cpp.ConstCharStar;
 import cpp.ConstStar;
 import cpp.RawConstPointer;
-import cpp.Char;
 import cpp.Int64;
-import cpp.Star;
 import cpp.UInt32;
 
 /**
@@ -51,11 +49,11 @@ extern class LibVLC
 
 	@:native("libvlc_event_attach")
 	static function event_attach(p_event_manager:LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Event_Callback,
-		user_data:Star<cpp.Void>):Int;
+		user_data:cpp.Star<cpp.Void>):Int;
 
 	@:native("libvlc_event_detach")
 	static function event_detach(p_event_manager:LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Event_Callback,
-		user_data:Star<cpp.Void>):Int;
+		user_data:cpp.Star<cpp.Void>):Int;
 
 	@:native("libvlc_audio_get_volume")
 	static function audio_get_volume(p_mi:LibVLC_MediaPlayer):Int;
@@ -110,27 +108,27 @@ extern class LibVLC
 
 	@:native("libvlc_video_set_callbacks")
 	static function video_set_callbacks(mp:LibVLC_MediaPlayer, lock:LibVLC_Video_Lock_Callback, unlock:LibVLC_Video_Unlock_Callback,
-		display:LibVLC_Video_Display_Callback, opaque:Star<cpp.Void>):Void;
+		display:LibVLC_Video_Display_Callback, opaque:cpp.Star<cpp.Void>):Void;
 
 	@:native("libvlc_video_get_size")
-	static function video_get_size(p_mi:LibVLC_MediaPlayer, num:UInt, width:Star<UInt32>, height:Star<UInt32>):Int;
+	static function video_get_size(p_mi:LibVLC_MediaPlayer, num:UInt, width:cpp.Star<UInt32>, height:cpp.Star<UInt32>):Int;
 
 	@:native("libvlc_set_exit_handler")
-	static function set_exit_handler(p_instance:LibVLC_Instance, cb:Star<cpp.Void>, opaque:Star<cpp.Void>):Void;
+	static function set_exit_handler(p_instance:LibVLC_Instance, cb:cpp.Star<cpp.Void>, opaque:cpp.Star<cpp.Void>):Void;
 }
 
-typedef LibVLC_Event_Callback = Callable<(p_event:RawConstPointer<LibVLC_Event_T>, p_data:Star<cpp.Void>) -> Void>;
-typedef LibVLC_Video_Setup_Callback = Callable<(opaque:Star<Star<cpp.Void>>, chroma:Star<Char>, width:Star<UInt32>, height:Star<UInt32>, pitches:Star<UInt32>, lines:Star<UInt32>) -> UInt32>;
-typedef LibVLC_Video_Cleanup_Callback = Callable<(opaque:Star<cpp.Void>) -> Void>;
-typedef LibVLC_Video_Lock_Callback = Callable<(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>) -> Star<cpp.Void>>;
-typedef LibVLC_Video_Unlock_Callback = Callable<(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>) -> Void>;
-typedef LibVLC_Video_Display_Callback = Callable<(opaque:Star<cpp.Void>, picture:Star<cpp.Void>) -> Void>;
+typedef LibVLC_Event_Callback = Callable<(p_event:RawConstPointer<LibVLC_Event_T>, p_data:cpp.Star<cpp.Void>) -> Void>;
+typedef LibVLC_Video_Setup_Callback = Callable<(opaque:cpp.Star<cpp.Star<cpp.Void>>, chroma:cpp.Star<cpp.Char>, width:cpp.Star<UInt32>, height:cpp.Star<UInt32>, pitches:cpp.Star<UInt32>, lines:cpp.Star<UInt32>) -> UInt32>;
+typedef LibVLC_Video_Cleanup_Callback = Callable<(opaque:cpp.Star<cpp.Void>) -> Void>;
+typedef LibVLC_Video_Lock_Callback = Callable<(data:cpp.Star<cpp.Void>, p_pixels:cpp.Star<cpp.Star<cpp.Void>>) -> cpp.Star<cpp.Void>>;
+typedef LibVLC_Video_Unlock_Callback = Callable<(data:cpp.Star<cpp.Void>, id:cpp.Star<cpp.Void>, p_pixels:ConstStar<cpp.Star<cpp.Void>>) -> Void>;
+typedef LibVLC_Video_Display_Callback = Callable<(opaque:cpp.Star<cpp.Void>, picture:cpp.Star<cpp.Void>) -> Void>;
 
-typedef LibVLC_Instance = Star<LibVLC_Instance_T>;
-typedef LibVLC_AudioOutput = Star<LibVLC_AudioOutput_T>;
-typedef LibVLC_MediaPlayer = Star<LibVLC_MediaPlayer_T>;
-typedef LibVLC_Media = Star<LibVLC_Media_T>;
-typedef LibVLC_EventManager = Star<LibVLC_EventManager_T>;
+typedef LibVLC_Instance = cpp.Star<LibVLC_Instance_T>;
+typedef LibVLC_AudioOutput = cpp.Star<LibVLC_AudioOutput_T>;
+typedef LibVLC_MediaPlayer = cpp.Star<LibVLC_MediaPlayer_T>;
+typedef LibVLC_Media = cpp.Star<LibVLC_Media_T>;
+typedef LibVLC_EventManager = cpp.Star<LibVLC_EventManager_T>;
 
 @:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
 @:include("vlc/vlc.h")
