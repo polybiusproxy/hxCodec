@@ -5,7 +5,6 @@ package vlc;
 #end
 import cpp.Callable;
 import cpp.ConstCharStar;
-import cpp.ConstStar;
 import cpp.RawConstPointer;
 import cpp.Int64;
 import cpp.UInt32;
@@ -24,7 +23,7 @@ import cpp.UInt32;
 extern class LibVLC
 {
 	@:native("libvlc_new")
-	static function init(argc:Int, argv:ConstStar<ConstCharStar>):LibVLC_Instance;
+	static function init(argc:Int, argv:RawConstPointer<ConstCharStar>):LibVLC_Instance;
 
 	@:native("libvlc_release")
 	static function release(p_instance:LibVLC_Instance):Void;
