@@ -6,6 +6,7 @@ package vlc;
 import cpp.Function;
 import cpp.NativeArray;
 import cpp.ConstStar;
+import cpp.ConstPointer;
 import cpp.RawConstPointer;
 import cpp.Char;
 import cpp.Pointer;
@@ -76,7 +77,7 @@ class VLCBitmap extends Bitmap
 	static function callbacks(p_event:RawConstPointer<LibVLC_Event_T>, p_data:Star<cpp.Void>):Void
 	{
 		var self:VLCBitmap = untyped __cpp__('reinterpret_cast<VLCBitmap_obj*>(p_data)');
-		var event:LibVLC_Event_T = Pointer.fromRaw(cast p_event).ref;
+		var event:cpp.Star<LibVLC_Event_T> = ConstPointer.fromRaw(p_event).ptr;
 
 		switch (event.type)
 		{
