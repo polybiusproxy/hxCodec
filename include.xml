@@ -4,6 +4,8 @@
 
 	<!--<assets path="NOTICE-LINUX.md" rename='NOTICE.txt' if="linux" />-->
 
+	<include name="src/vlc/LibVLCBuild.xml" />
+
 	<assets path="include/Mac" rename="../MacOS" if="mac" />
 	<assets path="include/Windows" rename='' if="windows" />
 
