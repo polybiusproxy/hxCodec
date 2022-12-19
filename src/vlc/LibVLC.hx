@@ -132,31 +132,59 @@ typedef LibVLC_MediaPlayer = Star<LibVLC_MediaPlayer_T>;
 typedef LibVLC_Media = Star<LibVLC_Media_T>;
 typedef LibVLC_EventManager = Star<LibVLC_EventManager_T>;
 
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
+@:keep
 @:native("libvlc_instance_t")
 extern class LibVLC_Instance_T {}
 
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
+@:keep
 @:native("libvlc_audio_output_t")
 extern class LibVLC_AudioOutput_T {}
 
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
+@:keep
 @:native("libvlc_media_t")
 extern class LibVLC_Media_T {}
 
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
+@:keep
 @:native("libvlc_media_player_t")
 extern class LibVLC_MediaPlayer_T {}
 
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
+@:keep
 @:native("libvlc_event_manager_t")
 extern class LibVLC_EventManager_T {}
 
-@:native("libvlc_event_t")
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
 @:structAccess
+@:keep
+@:native("libvlc_event_t")
 extern class LibVLC_Event_T
 {
 	var type:LibVLC_EventType;
 	var u:LibVLC_Event_U;
 }
 
-@:native("libvlc_event_t::u")
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
 @:structAccess
+@:keep
+@:native("libvlc_event_t::u")
 extern class LibVLC_Event_U
 {
 	var media_player_position_changed:LibVLC_MediaPlayer_PositionChanged;
@@ -167,43 +195,67 @@ extern class LibVLC_Event_U
 	var media_player_pausable_changed:LibVLC_MediaPlayer_PausableChanged;
 }
 
-@:native("media_player_position_changed")
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
 @:structAccess
+@:keep
+@:native("media_player_position_changed")
 extern class LibVLC_MediaPlayer_PositionChanged
 {
 	var new_position:Float;
 }
 
-@:native("media_player_time_changed")
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
 @:structAccess
+@:keep
+@:native("media_player_time_changed")
 extern class LibVLC_MediaPlayer_TimeChanged
 {
 	var new_time:Int64;
 }
 
-@:native("media_player_length_changed")
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
 @:structAccess
+@:keep
+@:native("media_player_length_changed")
 extern class LibVLC_MediaPlayer_LengthChanged
 {
 	var new_length:Int64;
 }
 
-@:native("media_player_buffering")
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
 @:structAccess
+@:keep
+@:native("media_player_buffering")
 extern class LibVLC_MediaPlayer_Buffering
 {
 	var new_cache:Float;
 }
 
-@:native("media_player_seekable_changed")
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
 @:structAccess
+@:keep
+@:native("media_player_seekable_changed")
 extern class LibVLC_MediaPlayer_SeekableChanged
 {
 	var new_seekable:Bool;
 }
 
-@:native("media_player_pausable_changed")
+@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:include("vlc/vlc.h")
+@:unreflective
 @:structAccess
+@:keep
+@:native("media_player_pausable_changed")
 extern class LibVLC_MediaPlayer_PausableChanged
 {
 	var new_pausable:Bool;
