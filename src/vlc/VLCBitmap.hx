@@ -158,7 +158,7 @@ class VLCBitmap extends Bitmap
 		var self:cpp.Star<cpp.Void> = getThisPointer();
 
 		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerPlaying, callback, self);
-		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerStopped, callback, self;
+		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerStopped, callback, self);
 		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerEndReached, callback, self);
 		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerEncounteredError, callback, self);
 		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerOpening, callback, self);
@@ -176,7 +176,7 @@ class VLCBitmap extends Bitmap
 		var self:cpp.Star<cpp.Void> = getThisPointer();
 
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerPlaying, callback, self);
-		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerStopped, callback, self;
+		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerStopped, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerEndReached, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerEncounteredError, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerOpening, callback, self);
