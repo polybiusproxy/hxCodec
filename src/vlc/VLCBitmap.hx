@@ -79,8 +79,8 @@ class VLCBitmap extends Bitmap
 
 	static function callbacks(p_event:RawConstPointer<LibVLC_Event_T>, p_data:cpp.Star<cpp.Void>):Void
 	{
-		var event:LibVLC_Event_T = ConstPointer.fromRaw(p_event).value;
 		var self:Pointer<VLCBitmap> = Pointer.fromStar(p_data).reinterpret();
+		var event:LibVLC_Event_T = ConstPointer.fromRaw(p_event).value;
 
 		switch (event.type)
 		{
@@ -138,7 +138,8 @@ class VLCBitmap extends Bitmap
 			pixels = [];
 
 		// LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(format_setup), Function.fromStaticFunction(format_cleanup));
-		LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), getThisPointer());
+
+		LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), untyped __cpp__('this'));
 
 		// setupEvents();
 
@@ -159,7 +160,7 @@ class VLCBitmap extends Bitmap
 			eventManager = LibVLC.media_player_event_manager(mediaPlayer);
 
 		var callback:LibVLC_Event_Callback = Function.fromStaticFunction(callbacks);
-		var self:cpp.Star<cpp.Void> = getThisPointer();
+		var self:cpp.Star<cpp.Void> = untyped __cpp__('this');
 
 		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerPlaying, callback, self);
 		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerStopped, callback, self);
@@ -177,7 +178,7 @@ class VLCBitmap extends Bitmap
 	private function cleanupEvents():Void
 	{
 		var callback:LibVLC_Event_Callback = Function.fromStaticFunction(callbacks);
-		var self:cpp.Star<cpp.Void> = getThisPointer();
+		var self:cpp.Star<cpp.Void> = untyped __cpp__('this');
 
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerPlaying, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerStopped, callback, self);
@@ -199,8 +200,4 @@ class VLCBitmap extends Bitmap
 	{
 		trace("mmm");
 	}
-
-	@:functionCode('return this;')
-	private function getThisPointer():cpp.Star<cpp.Void>
-		return null;
 }
