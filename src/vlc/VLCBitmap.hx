@@ -5,13 +5,10 @@ package vlc;
 #end
 import cpp.Function;
 import cpp.NativeArray;
-import cpp.ConstStar;
 import cpp.ConstPointer;
 import cpp.RawConstPointer;
-import cpp.Char;
 import cpp.Pointer;
 import cpp.Native;
-import cpp.Star;
 import cpp.UInt32;
 import cpp.UInt8;
 import openfl.display.Bitmap;
@@ -49,7 +46,7 @@ class VLCBitmap extends Bitmap
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
-	/* static function format_setup(opaque:Star<Star<cpp.Void>>, chroma:Star<Char>, width:Star<UInt32>, height:Star<UInt32>, pitches:Star<UInt32>, lines:Star<UInt32>):UInt32
+	/* static function format_setup(opaque:cpp.Star<cpp.Star<cpp.Void>>, chroma:cpp.Star<cpp.Char>, width:cpp.Star<UInt32>, height:cpp.Star<UInt32>, pitches:cpp.Star<UInt32>, lines:cpp.Star<UInt32>):UInt32
 	{
 		var _w:UInt = Pointer.fromStar(width).value;
 		var _h:UInt = Pointer.fromStar(height).value;
@@ -62,25 +59,25 @@ class VLCBitmap extends Bitmap
 		return 1;
 	}
 
-	static function format_cleanup(opaque:Star<cpp.Void>):Void {} */
+	static function format_cleanup(opaque:cpp.Star<cpp.Void>):Void {} */
 
-	static function lock(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>):Star<cpp.Void>
+	static function lock(data:cpp.Star<cpp.Void>, p_pixels:cpp.Star<cpp.Star<cpp.Void>>):cpp.Star<cpp.Void>
 	{
 		var self:Pointer<VLCBitmap> = Pointer.fromStar(data).reinterpret();
 		return null;
 	}
 
-	static function unlock(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>):Void
+	static function unlock(data:cpp.Star<cpp.Void>, id:cpp.Star<cpp.Void>, p_pixels:cpp.ConstStar<cpp.Star<cpp.Void>>):Void
 	{
 		var self:Pointer<VLCBitmap> = Pointer.fromStar(data).reinterpret();
 	}
 
-	static function display(opaque:Star<cpp.Void>, picture:Star<cpp.Void>):Void
+	static function display(opaque:cpp.Star<cpp.Void>, picture:cpp.Star<cpp.Void>):Void
 	{
 		var self:Pointer<VLCBitmap> = Pointer.fromStar(data).reinterpret();
 	}
 
-	static function callbacks(p_event:RawConstPointer<LibVLC_Event_T>, p_data:Star<cpp.Void>):Void
+	static function callbacks(p_event:RawConstPointer<LibVLC_Event_T>, p_data:cpp.Star<cpp.Void>):Void
 	{
 		var event:LibVLC_Event_T = ConstPointer.fromRaw(p_event).value;
 		var self:Pointer<VLCBitmap> = Pointer.fromStar(p_data).reinterpret();
