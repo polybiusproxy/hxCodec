@@ -67,7 +67,7 @@ class VLCBitmap extends Bitmap
 		return null;
 	}
 
-	static function unlock(data:cpp.Star<cpp.Void>, id:cpp.Star<cpp.Void>, p_pixels:RawConstPointer<cpp.Star<cpp.Void>>):Void
+	static function unlock(data:cpp.Star<cpp.Void>, id:cpp.Star<cpp.Void>, p_pixels:cpp.ConstStar<cpp.Star<cpp.Void>>):Void
 	{
 		var self:Pointer<VLCBitmap> = Pointer.fromStar(data).reinterpret();
 	}
