@@ -31,6 +31,9 @@ extern class LibVLC
 	@:native("libvlc_retain")
 	static function retain(p_instance:LibVLC_Instance):Void;
 
+	@:native("libvlc_free")
+	static function free(ptr:cpp.Star<cpp.Void>):Void;
+
 	@:native("libvlc_errmsg")
 	static function errmsg():ConstCharStar;
 
