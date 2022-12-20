@@ -75,8 +75,8 @@ class VLCBitmap extends Bitmap
 
 	static function callbacks(p_event:RawConstPointer<LibVLC_Event_T>, p_data:Star<cpp.Void>):Void
 	{
-		/*var self:cpp.Star<VLCBitmap> = untyped __cpp__('reinterpret_cast<VLCBitmap_obj*>(p_data)');
-		var event:cpp.Star<LibVLC_Event_T> = ConstPointer.fromRaw(p_event).ptr;
+		var event:LibVLC_Event_T = ConstPointer.fromRaw(p_event).value;
+		var self:VLCBitmap = Pointer.fromStar(p_data).reinterpret<VLCBitmap>().value;
 
 		switch (event.type)
 		{
@@ -92,7 +92,7 @@ class VLCBitmap extends Bitmap
 			case LibVLC_EventType.PlayerPositionChanged:
 			case LibVLC_EventType.PlayerSeekableChanged:
 			default:
-		}*/
+		}
 	}
 
 	public function play(?path:String = null, loop:Bool = false, haccelerated:Bool = true):Void
@@ -136,7 +136,7 @@ class VLCBitmap extends Bitmap
 		// LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(format_setup), Function.fromStaticFunction(format_cleanup));
 		// LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), getThisPointer());
 
-		setupEvents();
+		// setupEvents();
 
 		LibVLC.media_player_play(mediaPlayer);
 	}
