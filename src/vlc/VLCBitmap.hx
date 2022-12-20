@@ -59,19 +59,26 @@ class VLCBitmap extends Bitmap
 		Pointer.fromStar(pitches).setAt(0, _pitch);
 		Pointer.fromStar(lines).setAt(0, _h);
 
-		return cast 1;
+		return 1;
 	}
 
-	static function format_cleanup(opaque:Star<cpp.Void>):Void {}
+	static function format_cleanup(opaque:Star<cpp.Void>):Void {} */
 
 	static function lock(data:Star<cpp.Void>, p_pixels:Star<Star<cpp.Void>>):Star<cpp.Void>
 	{
+		var self:Pointer<VLCBitmap> = Pointer.fromStar(data).reinterpret();
 		return null;
 	}
 
-	static function unlock(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>):Void {}
+	static function unlock(data:Star<cpp.Void>, id:Star<cpp.Void>, p_pixels:ConstStar<Star<cpp.Void>>):Void
+	{
+		var self:Pointer<VLCBitmap> = Pointer.fromStar(data).reinterpret();
+	}
 
-	static function display(opaque:Star<cpp.Void>, picture:Star<cpp.Void>):Void {} */
+	static function display(opaque:Star<cpp.Void>, picture:Star<cpp.Void>):Void
+	{
+		var self:Pointer<VLCBitmap> = Pointer.fromStar(data).reinterpret();
+	}
 
 	static function callbacks(p_event:RawConstPointer<LibVLC_Event_T>, p_data:Star<cpp.Void>):Void
 	{
@@ -134,7 +141,7 @@ class VLCBitmap extends Bitmap
 			pixels = [];
 
 		// LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(format_setup), Function.fromStaticFunction(format_cleanup));
-		// LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), getThisPointer());
+		LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), getThisPointer());
 
 		// setupEvents();
 
