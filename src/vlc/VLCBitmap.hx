@@ -76,7 +76,7 @@ class VLCBitmap extends Bitmap
 	static function callbacks(p_event:RawConstPointer<LibVLC_Event_T>, p_data:Star<cpp.Void>):Void
 	{
 		var event:LibVLC_Event_T = ConstPointer.fromRaw(p_event).value;
-		var self:VLCBitmap = Pointer.fromStar(p_data).reinterpret().value;
+		var self:Pointer<VLCBitmap> = Pointer.fromStar(p_data).reinterpret();
 
 		switch (event.type)
 		{
