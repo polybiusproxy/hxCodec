@@ -35,6 +35,8 @@ class LibVLC
 		void setPosition(float pos);
 		float getPosition();
 		uint8_t* getPixelData();
+		void setupEvents();
+		void cleanupEvents();
 		int flags[11] = { -1 };
 	private:
 		t_ctx ctx;
@@ -42,8 +44,5 @@ class LibVLC
 		libvlc_media_t *libVlcMediaItem = nullptr;
 		libvlc_media_player_t *libVlcMediaPlayer = nullptr;
 		libvlc_event_manager_t *libVlcEventManager = nullptr;
-
-		void setupEvents();
-		void cleanupEvents();
 		static void callbacks(const libvlc_event_t *event, void *self);
 };
