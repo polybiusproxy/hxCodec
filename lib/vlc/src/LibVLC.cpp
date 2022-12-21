@@ -7,18 +7,7 @@ LibVLC::LibVLC(void)
 
 LibVLC::~LibVLC(void)
 {
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerPlaying, callbacks, this);
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerStopped, callbacks, this);
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerEndReached, callbacks, this);
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerTimeChanged, callbacks, this);
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerPositionChanged, callbacks, this);
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerSeekableChanged, callbacks, this);
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerPlaying, callbacks, this);
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerEncounteredError, callbacks, this);
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerOpening, callbacks, this);
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerBuffering, callbacks, this);
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerForward, callbacks, this);
-	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerBackward, callbacks, this);
+	cleanupEvents();
 
 	libvlc_media_player_release(libVlcMediaPlayer);
 	libvlc_release(libVlcInstance);
@@ -69,7 +58,7 @@ static unsigned format_setup(void **opaque, char *chroma, unsigned *width, unsig
 
 static void format_cleanup(void *opaque)
 {
-	// Idk what should be here xd
+	struct ctx *callback = reinterpret_cast< struct ctx*> (opaque);
 }
 
 void LibVLC::play()
@@ -80,9 +69,6 @@ void LibVLC::play()
 
 void LibVLC::play(const char *path, bool loop, bool haccelerated)
 {
-	if (ctx.pixeldata != 0)
-		ctx.pixeldata = 0;
-
 	libVlcMediaItem = libvlc_media_new_path(libVlcInstance, path);
 	libVlcMediaPlayer = libvlc_media_player_new_from_media(libVlcMediaItem);
 
@@ -112,23 +98,13 @@ void LibVLC::play(const char *path, bool loop, bool haccelerated)
 
 	libvlc_media_release(libVlcMediaItem);
 
+	if (ctx.pixeldata != 0)
+		ctx.pixeldata = 0;
+
 	libvlc_video_set_format_callbacks(libVlcMediaPlayer, format_setup, format_cleanup);
 	libvlc_video_set_callbacks(libVlcMediaPlayer, lock, unlock, display, &ctx);
 
-	libVlcEventManager = libvlc_media_player_event_manager(libVlcMediaPlayer);
-
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerPlaying, callbacks, this);
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerStopped, callbacks, this);
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerEndReached, callbacks, this);
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerTimeChanged, callbacks, this);
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerPositionChanged, callbacks, this);
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerSeekableChanged, callbacks, this);
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerPlaying, callbacks, this);
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerEncounteredError, callbacks, this);
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerOpening, callbacks, this);
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerBuffering, callbacks, this);
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerForward, callbacks, this);
-	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerBackward, callbacks, this);
+	setupEvents();
 
 	libvlc_media_player_play(libVlcMediaPlayer);
 }
@@ -335,4 +311,42 @@ void LibVLC::callbacks(const libvlc_event_t *event, void *ptr)
 		default:
 			break;
 	}
+}
+
+void LibVLC::setupEvents()
+{
+	if (libVlcEventManager != NULL && libVlcEventManager != nullptr)
+		libVlcEventManager = libvlc_media_player_event_manager(libVlcMediaPlayer);
+
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerPlaying, callbacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerStopped, callbacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerEndReached, callbacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerTimeChanged, callbacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerPositionChanged, callbacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerSeekableChanged, callbacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerPlaying, callbacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerEncounteredError, callbacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerOpening, callbacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerBuffering, callbacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerForward, callbacks, this);
+	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerBackward, callbacks, this);
+}
+
+void LibVLC::cleanupEvents()
+{
+	if (libVlcEventManager == NULL && libVlcEventManager == nullptr)
+		return;
+
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerPlaying, callbacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerStopped, callbacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerEndReached, callbacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerTimeChanged, callbacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerPositionChanged, callbacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerSeekableChanged, callbacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerPlaying, callbacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerEncounteredError, callbacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerOpening, callbacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerBuffering, callbacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerForward, callbacks, this);
+	libvlc_event_detach(libVlcEventManager, libvlc_MediaPlayerBackward, callbacks, this);
 }
