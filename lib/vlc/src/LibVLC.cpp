@@ -221,9 +221,6 @@ const char *LibVLC::getLastError()
 
 void LibVLC::setVolume(float volume)
 {
-	if (volume > 100)
-		volume = 100.0;
-
 	if (libVlcMediaPlayer != NULL && libVlcMediaPlayer != nullptr)
 		libvlc_audio_set_volume(libVlcMediaPlayer, volume);
 }
