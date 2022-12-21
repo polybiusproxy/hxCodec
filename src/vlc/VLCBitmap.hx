@@ -72,13 +72,16 @@ class VLCBitmap extends Bitmap
 	**/
 	public function play(?location:String = null, loop:Bool = false, haccelerated:Bool = true):Void
 	{
-		if (libvlc != null && path != null)
+		if (libvlc != null && location != null)
 		{
 			final path:String = Path.normalize(location);
 
 			#if HXC_DEBUG_TRACE
 			trace("setting path to: " + path);
 			#end
+
+			if (libvlc.isPlaying())
+				libvlc.stop();
 
 			libvlc.play(path, loop, haccelerated);
 		}
