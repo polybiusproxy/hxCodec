@@ -4,13 +4,14 @@ package vlc;
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
 #end
 import cpp.NativeArray;
+import haxe.io.Bytes;
+import haxe.io.BytesData;
+import haxe.io.Path;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
-import haxe.io.Bytes;
-import haxe.io.BytesData;
 import vlc.LibVLC;
 
 /**
@@ -65,14 +66,16 @@ class VLCBitmap extends Bitmap
 	/**
 		Play's the video file you put if the the path isn't null.
 
-		@param	path	The video path (the location of the video in the files).
-		@param	loop	If you want to loop the video.
-		@param	haccelerated	If you want to have hardware acceleration enabled for the video.
+		@param location The video location (the location of the video in the files).
+		@param loop If you want to loop the video.
+		@param haccelerated If you want to have hardware acceleration enabled for the video.
 	**/
-	public function play(?path:String = null, loop:Bool = false, haccelerated:Bool = true):Void
+	public function play(?location:String = null, loop:Bool = false, haccelerated:Bool = true):Void
 	{
 		if (libvlc != null && path != null)
 		{
+			final path:String = Path.normalize(location);
+
 			#if HXC_DEBUG_TRACE
 			trace("setting path to: " + path);
 			#end
@@ -132,7 +135,7 @@ class VLCBitmap extends Bitmap
 	/**
 		Seeking the procent of the video.
 
-		@param	seekProcen  The procent you want to seek the video.
+		@param seekProcent The procent you want to seek the video.
 	**/
 	public function seek(seekProcent:Float):Void
 	{
@@ -143,7 +146,7 @@ class VLCBitmap extends Bitmap
 	/**
 		Setting the time of the video.
 
-		@param	time The video time you want to set.
+		@param time The video time you want to set.
 	**/
 	public function setTime(time:Int):Void
 	{
@@ -165,12 +168,12 @@ class VLCBitmap extends Bitmap
 	/**
 		Setting the volume of the video.
 
-		@param	vol	 The video volume you want to set.
+		@param vol The video volume you want to set.
 	**/
 	public function setVolume(vol:Float):Void
 	{
 		if (libvlc != null && libvlc.isMediaPlayerAlive())
-			libvlc.setVolume(vol * 100);
+			libvlc.setVolume(vol);
 	}
 
 	/**
@@ -187,7 +190,7 @@ class VLCBitmap extends Bitmap
 	/**
 		Sets the FPS of the video.
 
-		@param	fps	 The video FPS you want to set.
+		@param fps The video FPS you want to set.
 	**/
 	public function setVideoFPS(fps:Int):Void
 	{
