@@ -1,11 +1,6 @@
 #include "vlc/vlc.h"
 #include "stdint.h"
 
-struct libvlc_instance_t;
-struct libvlc_media_t;
-struct libvlc_media_player_t;
-struct libvlc_event_manager_t;
-
 typedef struct ctx
 {
 	unsigned char *pixeldata;
@@ -47,5 +42,8 @@ class LibVLC
 		libvlc_media_t *libVlcMediaItem = nullptr;
 		libvlc_media_player_t *libVlcMediaPlayer = nullptr;
 		libvlc_event_manager_t *libVlcEventManager = nullptr;
+
+		void setupEvents();
+		void cleanupEvents();
 		static void callbacks(const libvlc_event_t *event, void *self);
 };
