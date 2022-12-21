@@ -26,15 +26,7 @@ class VLCBitmap extends Bitmap
 	public var videoHeight(get, never):Int;
 	public var videoWidth(get, never):Int;
 	public var volume(default, set):Float;
-
-	private var _width:Null<Float>;
-	private var _height:Null<Float>;
-	private var libvlc:LibVLC;
-	private var buffer:BytesData;
-	private var texture:RectangleTexture;
-
 	public var initComplete:Bool = false;
-
 	public var onReady:Void->Void = null;
 	public var onPlay:Void->Void = null;
 	public var onStop:Void->Void = null;
@@ -49,6 +41,13 @@ class VLCBitmap extends Bitmap
 	public var onSeekableChanged:Int->Void = null;
 	public var onForward:Void->Void = null;
 	public var onBackward:Void->Void = null;
+
+	private var libvlc:LibVLC;
+	private var pixels:BytesData;
+	private var texture:RectangleTexture;
+
+	private var _width:Null<Float>;
+	private var _height:Null<Float>;
 
 	public function new(?smoothing:Bool = true):Void
 	{
@@ -352,8 +351,8 @@ class VLCBitmap extends Bitmap
 
 		bitmapData = BitmapData.fromTexture(texture);
 
-		if (buffer == null || (buffer != null && buffer.length > 0))
-			buffer = [];
+		if (pixels == null || (pixels != null && pixels.length > 0))
+			pixels = [];
 
 		if (_width != null)
 			width = _width;
@@ -407,13 +406,17 @@ class VLCBitmap extends Bitmap
 			trace("rendering...");
 			#end
 
-			NativeArray.setUnmanagedData(buffer, libvlc.getPixelData(), elementsCount);
+			NativeArray.setUnmanagedData(pixels, libvlc.getPixelData(), elementsCount);
 
-			if (texture != null && (buffer != null && buffer.length > 0))
+			if (texture != null && (pixels != null && pixels.length > 0))
 			{
-				var bytes:Bytes = Bytes.ofData(buffer);
+				var bytes:Bytes = Bytes.ofData(pixels);
 				if (bytes.length >= elementsCount)
+				{
 					texture.uploadFromByteArray(bytes, 0);
+					width++;
+					width--;
+				}
 			}
 		}
 	}
@@ -445,8 +448,8 @@ class VLCBitmap extends Bitmap
 			bitmapData = null;
 		}
 
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
+		if (pixels != null && pixels.length > 0)
+			pixels = [];
 
 		initComplete = false;
 
