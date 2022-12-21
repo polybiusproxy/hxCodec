@@ -18,6 +18,7 @@ import openfl.events.Event;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import vlc.LibVLC;
+import vlc.helpers.VoidStarConstStar;
 
 class VLCBitmap extends Bitmap
 {
@@ -67,7 +68,7 @@ class VLCBitmap extends Bitmap
 		return null;
 	}
 
-	static function unlock(data:cpp.Star<cpp.Void>, id:cpp.Star<cpp.Void>, p_pixels:cpp.ConstStar<cpp.Star<cpp.Void>>):Void
+	static function unlock(data:cpp.Star<cpp.Void>, id:cpp.Star<cpp.Void>, p_pixels:VoidStarConstStar):Void
 	{
 		var self:Pointer<VLCBitmap> = Pointer.fromStar(data).reinterpret();
 	}
