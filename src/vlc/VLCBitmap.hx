@@ -49,7 +49,7 @@ class VLCBitmap extends Bitmap
 	private var _width:Null<Float>;
 	private var _height:Null<Float>;
 
-	public function new(?smoothing:Bool = true):Void
+	public function new(?smoothing:Bool = false):Void
 	{
 		super(bitmapData, AUTO, smoothing);
 
