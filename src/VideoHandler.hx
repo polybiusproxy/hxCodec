@@ -119,7 +119,7 @@ class VideoHandler extends VLCBitmap
 		if ((FlxG.sound.muted || FlxG.sound.volume <= 0) || !canUseSound)
 			volume = 0;
 		else if (canUseSound)
-			volume = FlxG.sound.volume;
+			volume = FlxG.sound.volume * 100;
 	}
 
 	private function onFocus(_):Void
