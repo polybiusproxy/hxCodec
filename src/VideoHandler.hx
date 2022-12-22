@@ -12,10 +12,11 @@ import vlc.VLCBitmap;
  */
 class VideoHandler extends VLCBitmap
 {
-	public var isPlaying:Bool = false;
 	public var canSkip:Bool = true;
 	public var canUseSound:Bool = true;
 	public var canUseAutoResize:Bool = true;
+	public var isPlaying:Bool = false;
+
 	public var readyCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
 
@@ -44,7 +45,7 @@ class VideoHandler extends VLCBitmap
 	{
 		pauseMusic = PauseMusic;
 
-		if (FlxG.sound.music != null && PauseMusic)
+		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.pause();
 
 		if (canUseAutoResize)
@@ -59,7 +60,7 @@ class VideoHandler extends VLCBitmap
 		FlxG.stage.addEventListener(Event.RESIZE, onResize);
 
 		// in case if you want to use another dir then the application one.
-		// android can already do this, it can't use application storage.
+		// android can already do this, it can't use the application storage.
 		if (FileSystem.exists(Sys.getCwd() + Path))
 			play(Sys.getCwd() + Path, Loop, hwAccelerated);
 		else
