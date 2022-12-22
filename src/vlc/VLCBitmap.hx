@@ -66,9 +66,9 @@ class VLCBitmap extends Bitmap
 	/**
 		Play's the video file you put if the the path isn't null.
 
-		@param location The video location (the location of the video in the files).
+		@param location The video of the video.
 		@param loop If you want to loop the video.
-		@param haccelerated If you want to have hardware acceleration enabled for the video.
+		@param haccelerated If you want to have hardware acceleration enabled for vlc.
 	**/
 	public function play(?location:String = null, loop:Bool = false, haccelerated:Bool = true):Void
 	{
@@ -398,7 +398,7 @@ class VLCBitmap extends Bitmap
 		{
 			var time:Int = Lib.getTimer();
 			var elements:Int = libvlc.getWidth() * libvlc.getHeight() * 4;
-			renderToTexture(time - currentTime, elements);			
+			renderToTexture(time - currentTime, elements);
 		}
 	}
 
@@ -419,7 +419,7 @@ class VLCBitmap extends Bitmap
 				var bytes:Bytes = Bytes.ofData(pixels);
 				if (bytes.length >= elementsCount)
 				{
-					texture.uploadFromByteArray(bytes, bytes.length);
+					texture.uploadFromByteArray(bytes, 0);
 					width++;
 					width--;
 				}
