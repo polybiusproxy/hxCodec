@@ -59,6 +59,7 @@ class VideoHandler extends VLCBitmap
 		FlxG.stage.addEventListener(Event.RESIZE, onResize);
 
 		// in case if you want to use another dir then the application one.
+		// android can already do this, it can't use application storage.
 		if (FileSystem.exists(Sys.getCwd() + Path))
 			play(Sys.getCwd() + Path, Loop, hwAccelerated);
 		else
@@ -98,12 +99,10 @@ class VideoHandler extends VLCBitmap
 		dispose();
 
 		if (FlxG.game.contains(this))
-		{
 			FlxG.game.removeChild(this);
 
-			if (finishCallback != null)
-				finishCallback();
-		}
+		if (finishCallback != null)
+			finishCallback();
 	}
 
 	private function onUpdate(_):Void
