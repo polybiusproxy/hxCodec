@@ -4,13 +4,14 @@ package vlc;
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
 #end
 import cpp.NativeArray;
+import haxe.io.Bytes;
+import haxe.io.BytesData;
+import haxe.io.Path;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
-import haxe.io.Bytes;
-import haxe.io.BytesData;
 import vlc.LibVLC;
 
 /**
@@ -26,15 +27,7 @@ class VLCBitmap extends Bitmap
 	public var videoHeight(get, never):Int;
 	public var videoWidth(get, never):Int;
 	public var volume(default, set):Float;
-
-	private var _width:Null<Float>;
-	private var _height:Null<Float>;
-	private var libvlc:LibVLC;
-	private var buffer:BytesData;
-	private var texture:RectangleTexture;
-
 	public var initComplete:Bool = false;
-
 	public var onReady:Void->Void = null;
 	public var onPlay:Void->Void = null;
 	public var onStop:Void->Void = null;
@@ -50,7 +43,14 @@ class VLCBitmap extends Bitmap
 	public var onForward:Void->Void = null;
 	public var onBackward:Void->Void = null;
 
-	public function new(?smoothing:Bool = true):Void
+	private var libvlc:LibVLC;
+	private var pixels:BytesData;
+	private var texture:RectangleTexture;
+
+	private var _width:Null<Float>;
+	private var _height:Null<Float>;
+
+	public function new(?smoothing:Bool = false):Void
 	{
 		super(bitmapData, AUTO, smoothing);
 
@@ -66,17 +66,22 @@ class VLCBitmap extends Bitmap
 	/**
 		Play's the video file you put if the the path isn't null.
 
-		@param	path	The video path (the location of the video in the files).
-		@param	loop	If you want to loop the video.
-		@param	haccelerated	If you want to have hardware acceleration enabled for the video.
+		@param location The video of the video.
+		@param loop If you want to loop the video.
+		@param haccelerated If you want to have hardware acceleration enabled for vlc.
 	**/
-	public function play(?path:String = null, loop:Bool = false, haccelerated:Bool = true):Void
+	public function play(?location:String = null, loop:Bool = false, haccelerated:Bool = true):Void
 	{
-		if (libvlc != null && path != null)
+		if (libvlc != null && location != null)
 		{
+			final path:String = Path.normalize(location);
+
 			#if HXC_DEBUG_TRACE
 			trace("setting path to: " + path);
 			#end
+
+			if (libvlc.isPlaying())
+				libvlc.stop();
 
 			libvlc.play(path, loop, haccelerated);
 		}
@@ -133,7 +138,7 @@ class VLCBitmap extends Bitmap
 	/**
 		Seeking the procent of the video.
 
-		@param	seekProcen  The procent you want to seek the video.
+		@param seekProcent The procent you want to seek the video.
 	**/
 	public function seek(seekProcent:Float):Void
 	{
@@ -144,7 +149,7 @@ class VLCBitmap extends Bitmap
 	/**
 		Setting the time of the video.
 
-		@param	time The video time you want to set.
+		@param time The video time you want to set.
 	**/
 	public function setTime(time:Int):Void
 	{
@@ -166,12 +171,12 @@ class VLCBitmap extends Bitmap
 	/**
 		Setting the volume of the video.
 
-		@param	vol	 The video volume you want to set.
+		@param vol The video volume you want to set.
 	**/
 	public function setVolume(vol:Float):Void
 	{
 		if (libvlc != null && libvlc.isMediaPlayerAlive())
-			libvlc.setVolume(vol * 100);
+			libvlc.setVolume(vol);
 	}
 
 	/**
@@ -188,7 +193,7 @@ class VLCBitmap extends Bitmap
 	/**
 		Sets the FPS of the video.
 
-		@param	fps	 The video FPS you want to set.
+		@param fps The video FPS you want to set.
 	**/
 	public function setVideoFPS(fps:Int):Void
 	{
@@ -352,8 +357,8 @@ class VLCBitmap extends Bitmap
 
 		bitmapData = BitmapData.fromTexture(texture);
 
-		if (buffer == null || (buffer != null && buffer.length > 0))
-			buffer = [];
+		if (pixels == null || (pixels != null && pixels.length > 0))
+			pixels = [];
 
 		if (_width != null)
 			width = _width;
@@ -393,7 +398,7 @@ class VLCBitmap extends Bitmap
 		{
 			var time:Int = Lib.getTimer();
 			var elements:Int = libvlc.getWidth() * libvlc.getHeight() * 4;
-			renderToTexture(time - currentTime, elements);			
+			renderToTexture(time - currentTime, elements);
 		}
 	}
 
@@ -407,13 +412,17 @@ class VLCBitmap extends Bitmap
 			trace("rendering...");
 			#end
 
-			NativeArray.setUnmanagedData(buffer, libvlc.getPixelData(), elementsCount);
+			NativeArray.setUnmanagedData(pixels, libvlc.getPixelData(), elementsCount);
 
-			if (texture != null && (buffer != null && buffer.length > 0))
+			if (texture != null && (pixels != null && pixels.length > 0))
 			{
-				var bytes:Bytes = Bytes.ofData(buffer);
+				var bytes:Bytes = Bytes.ofData(pixels);
 				if (bytes.length >= elementsCount)
+				{
 					texture.uploadFromByteArray(bytes, 0);
+					width++;
+					width--;
+				}
 			}
 		}
 	}
@@ -445,8 +454,8 @@ class VLCBitmap extends Bitmap
 			bitmapData = null;
 		}
 
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
+		if (pixels != null && pixels.length > 0)
+			pixels = [];
 
 		initComplete = false;
 
