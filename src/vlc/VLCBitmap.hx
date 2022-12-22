@@ -28,7 +28,7 @@ class VLCBitmap extends Bitmap
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
 	private var mediaPlayer:LibVLC_MediaPlayer;
-	private var media:LibVLC_Media;
+	private var mediaItem:LibVLC_Media;
 	private var eventManager:LibVLC_EventManager; 
 
 	public function new(?smoothing:Bool = true):Void
@@ -106,34 +106,34 @@ class VLCBitmap extends Bitmap
 		trace("setting path to: " + path);
 		#end
 
-		media = LibVLC.media_new_path(instance, path);
-		mediaPlayer = LibVLC.media_player_new_from_media(media);
+		mediaItem = LibVLC.media_new_path(instance, path);
+		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
-		LibVLC.media_parse(media);
+		LibVLC.media_parse(mediaItem);
 
 		if (loop)
 		{
 			#if android
-			LibVLC.media_add_option(media, "input-repeat=65535");
+			LibVLC.media_add_option(mediaItem, "input-repeat=65535");
 			#else
-			LibVLC.media_add_option(media, "input-repeat=-1");
+			LibVLC.media_add_option(mediaItem, "input-repeat=-1");
 			#end
 		}
 		else
-			LibVLC.media_add_option(media, "input-repeat=0");
+			LibVLC.media_add_option(mediaItem, "input-repeat=0");
 
 		if (haccelerated)
 		{
-			LibVLC.media_add_option(media, ":hwdec=vaapi");
-			LibVLC.media_add_option(media, ":ffmpeg-hw");
-			LibVLC.media_add_option(media, ":avcodec-hw=dxva2.lo");
-			LibVLC.media_add_option(media, ":avcodec-hw=any");
-			LibVLC.media_add_option(media, ":avcodec-hw=dxva2");
-			LibVLC.media_add_option(media, "--avcodec-hw=dxva2");
-			LibVLC.media_add_option(media, ":avcodec-hw=vaapi");
+			LibVLC.media_add_option(mediaItem, ":hwdec=vaapi");
+			LibVLC.media_add_option(mediaItem, ":ffmpeg-hw");
+			LibVLC.media_add_option(mediaItem, ":avcodec-hw=dxva2.lo");
+			LibVLC.media_add_option(mediaItem, ":avcodec-hw=any");
+			LibVLC.media_add_option(mediaItem, ":avcodec-hw=dxva2");
+			LibVLC.media_add_option(mediaItem, "--avcodec-hw=dxva2");
+			LibVLC.media_add_option(mediaItem, ":avcodec-hw=vaapi");
 		}
 
-		LibVLC.media_release(media);
+		LibVLC.media_release(mediaItem);
 
 		if (pixels == null || (pixels != null && pixels.length > 0))
 			pixels = [];
