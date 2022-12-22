@@ -1,11 +1,6 @@
 #include "vlc/vlc.h"
 #include "stdint.h"
 
-struct libvlc_instance_t;
-struct libvlc_media_t;
-struct libvlc_media_player_t;
-struct libvlc_event_manager_t;
-
 typedef struct ctx
 {
 	unsigned char *pixeldata;
@@ -40,6 +35,8 @@ class LibVLC
 		void setPosition(float pos);
 		float getPosition();
 		uint8_t* getPixelData();
+		void setupEvents();
+		void cleanupEvents();
 		int flags[11] = { -1 };
 	private:
 		t_ctx ctx;
