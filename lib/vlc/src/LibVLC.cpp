@@ -312,7 +312,7 @@ void LibVLC::callbacks(const libvlc_event_t *event, void *ptr)
 
 void LibVLC::setupEvents()
 {
-	if (libVlcEventManager != NULL && libVlcEventManager != nullptr)
+	if (libVlcEventManager == NULL && libVlcEventManager == nullptr)
 		libVlcEventManager = libvlc_media_player_event_manager(libVlcMediaPlayer);
 
 	libvlc_event_attach(libVlcEventManager, libvlc_MediaPlayerPlaying, callbacks, this);
