@@ -142,7 +142,7 @@ class VLCBitmap extends Bitmap
 
 		// LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), untyped __cpp__('this'));
 
-		setupEvents();
+		// setupEvents();
 
 		LibVLC.media_player_play(mediaPlayer);
 	}
