@@ -72,7 +72,7 @@ class VLCBitmap extends Bitmap
 	public var videoHeight:Int = 0;
 
 	private var pixels:Pointer<UInt8>;
-	private var flags:Array<LibVLC_Event_T>;
+	// private var flags:Array<LibVLC_Event_T>;
 
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
@@ -131,8 +131,8 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(mediaItem);
 
-		if (flags == null || (flags != null && flags.length > 0))
-			flags = [];
+		// if (flags == null || (flags != null && flags.length > 0))
+			// flags = [];
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
@@ -152,7 +152,7 @@ class VLCBitmap extends Bitmap
 
 	private function onEnterFrame(e:Event):Void
 	{
-		if (flags.length > 0)
+		/* if (flags.length > 0)
 		{
 			for (event in flags)
 			{
@@ -173,7 +173,7 @@ class VLCBitmap extends Bitmap
 					default:
 				}
 			}
-		}
+		} */
 	}
 
 	private function setupEvents():Void
