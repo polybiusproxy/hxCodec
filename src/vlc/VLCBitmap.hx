@@ -13,17 +13,72 @@ import cpp.UInt32;
 import cpp.UInt8;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import vlc.LibVLC;
 import vlc.helpers.VoidStarConstStar;
 
+@:cppNamespaceCode('
+unsigned format_setup(void** data, char* chroma, unsigned* width, unsigned* height, unsigned* pitches, unsigned* lines)
+{
+	VLCVideo_obj *callback = (VLCVideo_obj*) (*data);
+
+	unsigned _w = (*width);
+	unsigned _h = (*height);
+	unsigned _pitch = _w * 4;
+	unsigned _frame = _w *_h * 4;
+
+	(*pitches) = _pitch;
+	(*lines) = _h;
+
+	memcpy(chroma, "RV32", 4);
+
+	callback->videoWidth=_w;
+	callback->videoHeight=_h;
+
+	if (callback->pixels != 0)
+		delete callback->pixels;
+
+	callback->pixels = new unsigned char[_frame];
+	return 1;
+}
+
+void format_cleanup(void *data)
+{
+	VLCVideo_obj *callback = (VLCVideo_obj*) data;
+}
+
+void *lock(void *data, void **p_pixels)
+{
+	VLCVideo_obj *callback = (VLCVideo_obj*) data;
+	*p_pixels = callback->pixels;
+	return NULL;
+}
+
+void unlock(void *data, void *id, void *const *p_pixels)
+{
+	VLCVideo_obj *callback = (VLCVideo_obj*) data;
+}
+
+void display(void *data, void *picture)
+{
+	VLCVideo_obj *callback = (VLCVideo_obj*) data;
+}
+
+void callbacks(const libvlc_event_t *event, void *data)
+{
+	VLCVideo_obj *callback = (VLCVideo_obj*) data;
+	callback->flags.push_back((*event));
+}
+')
 class VLCBitmap extends Bitmap
 {
-	private var pixels:BytesData;
-	private var texture:RectangleTexture;
+	public var videoWidth:Int = 0;
+	public var videoHeight:Int = 0;
+
+	private var pixels:Pointer<UInt8>;
+	private var flags:Array<LibVLC_Event_T>;
 
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
@@ -138,6 +193,9 @@ class VLCBitmap extends Bitmap
 		if (pixels == null || (pixels != null && pixels.length > 0))
 			pixels = [];
 
+		if (flags == null || (flags != null && flags.length > 0))
+			flags = [];
+
 		LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(format_setup), Function.fromStaticFunction(format_cleanup));
 
 		// LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), untyped __cpp__('this'));
@@ -165,7 +223,7 @@ class VLCBitmap extends Bitmap
 		if (eventManager == null)
 			eventManager = LibVLC.media_player_event_manager(mediaPlayer);
 
-		var callback:LibVLC_Event_Callback = Function.fromStaticFunction(callbacks);
+		var callback:LibVLC_Event_Callback = untyped __cpp__('callbacks');
 		var self:cpp.Star<cpp.Void> = untyped __cpp__('this');
 
 		LibVLC.event_attach(eventManager, LibVLC_EventType.PlayerPlaying, callback, self);
@@ -183,7 +241,7 @@ class VLCBitmap extends Bitmap
 
 	private function cleanupEvents():Void
 	{
-		var callback:LibVLC_Event_Callback = Function.fromStaticFunction(callbacks);
+		var callback:LibVLC_Event_Callback = untyped __cpp__('callbacks');
 		var self:cpp.Star<cpp.Void> = untyped __cpp__('this');
 
 		LibVLC.event_detach(eventManager, LibVLC_EventType.PlayerPlaying, callback, self);
