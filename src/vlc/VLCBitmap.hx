@@ -19,7 +19,7 @@ import haxe.io.BytesData;
 import vlc.LibVLC;
 
 @:cppNamespaceCode('
-unsigned format_setup(void** data, char* chroma, unsigned* width, unsigned* height, unsigned* pitches, unsigned* lines)
+static unsigned format_setup(void** data, char* chroma, unsigned* width, unsigned* height, unsigned* pitches, unsigned* lines)
 {
 	VLCVideo_obj *callback = (VLCVideo_obj*) (*data);
 
@@ -43,29 +43,29 @@ unsigned format_setup(void** data, char* chroma, unsigned* width, unsigned* heig
 	return 1;
 }
 
-void format_cleanup(void *data)
+static void format_cleanup(void *data)
 {
 	VLCVideo_obj *callback = (VLCVideo_obj*) data;
 }
 
-void *lock(void *data, void **p_pixels)
+static void *lock(void *data, void **p_pixels)
 {
 	VLCVideo_obj *callback = (VLCVideo_obj*) data;
 	*p_pixels = callback->pixels;
 	return NULL;
 }
 
-void unlock(void *data, void *id, void *const *p_pixels)
+static void unlock(void *data, void *id, void *const *p_pixels)
 {
 	VLCVideo_obj *callback = (VLCVideo_obj*) data;
 }
 
-void display(void *data, void *picture)
+static void display(void *data, void *picture)
 {
 	VLCVideo_obj *callback = (VLCVideo_obj*) data;
 }
 
-void callbacks(const libvlc_event_t *event, void *data)
+static void callbacks(const libvlc_event_t *event, void *data)
 {
 	VLCVideo_obj *callback = (VLCVideo_obj*) data;
 	callback->flags.push_back((*event));
