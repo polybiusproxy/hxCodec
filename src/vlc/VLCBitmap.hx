@@ -72,7 +72,7 @@ class VLCBitmap extends Bitmap
 	public var videoHeight:Int = 0;
 
 	private var pixels:Pointer<UInt8>;
-	private var flags:Array<LibVLC_Event>;
+	private var flags:Array<LibVLC_Event_T>;
 
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
@@ -152,11 +152,11 @@ class VLCBitmap extends Bitmap
 
 	private function onEnterFrame(e:Event):Void
 	{
-		/* if (flags.length > 0)
+		if (flags.length > 0)
 		{
 			for (event in flags)
 			{
-				var p_event:Reference<LibVLC_Event> = Pointer.fromRaw(event).value;
+				var p_event:Reference<LibVLC_Event_T> = Pointer.fromRaw(event).value;
 				switch (p_event.type)
 				{
 					case LibVLC_EventType.PlayerPlaying:
@@ -173,7 +173,7 @@ class VLCBitmap extends Bitmap
 					default:
 				}
 			}
-		} */
+		}
 	}
 
 	private function setupEvents():Void
