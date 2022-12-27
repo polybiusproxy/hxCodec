@@ -14,9 +14,9 @@ import openfl.events.Event;
 import vlc.LibVLC;
 
 @:cppNamespaceCode('
-static unsigned format_setup(void** data, char* chroma, unsigned* width, unsigned* height, unsigned* pitches, unsigned* lines)
+static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
-	VLCBitmap_obj *callback = (VLCBitmap_obj*) (*data);
+	VLCBitmap_obj *callback = (VLCBitmap_obj*)(*data);
 
 	unsigned _w = (*width);
 	unsigned _h = (*height);
@@ -28,8 +28,8 @@ static unsigned format_setup(void** data, char* chroma, unsigned* width, unsigne
 
 	memcpy(chroma, "RV32", 4);
 
-	callback->videoWidth=_w;
-	callback->videoHeight=_h;
+	callback->videoWidth = _w;
+	callback->videoHeight = _h;
 
 	if (callback->pixels != 0)
 		delete callback->pixels;
