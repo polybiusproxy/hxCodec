@@ -155,7 +155,7 @@ class VLCBitmap extends Bitmap
 
 	private function onEnterFrame(e:Event):Void
 	{
-		if (flags.length > 0)
+		/* if (flags.length > 0)
 		{
 			for (event in flags)
 			{
@@ -175,7 +175,7 @@ class VLCBitmap extends Bitmap
 					default:
 				}
 			}
-		}
+		} */
 	}
 
 	private function setupEvents():Void
