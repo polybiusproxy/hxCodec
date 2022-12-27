@@ -47,7 +47,7 @@ class VLCBitmap extends Bitmap
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
-	/* static function format_setup(opaque:cpp.Star<cpp.Star<cpp.Void>>, chroma:cpp.Star<cpp.Char>, width:cpp.Star<UInt32>, height:cpp.Star<UInt32>, pitches:cpp.Star<UInt32>, lines:cpp.Star<UInt32>):UInt32
+	static function format_setup(opaque:cpp.Star<cpp.Star<cpp.Void>>, chroma:cpp.Star<cpp.Char>, width:cpp.Star<UInt32>, height:cpp.Star<UInt32>, pitches:cpp.Star<UInt32>, lines:cpp.Star<UInt32>):UInt32
 	{
 		var _w:UInt = Pointer.fromStar(width).value;
 		var _h:UInt = Pointer.fromStar(height).value;
@@ -62,7 +62,7 @@ class VLCBitmap extends Bitmap
 
 	static function format_cleanup(opaque:cpp.Star<cpp.Void>):Void {}
 
-	static function lock(data:cpp.Star<cpp.Void>, p_pixels:cpp.Star<cpp.Star<cpp.Void>>):cpp.Star<cpp.Void>
+	/* static function lock(data:cpp.Star<cpp.Void>, p_pixels:cpp.Star<cpp.Star<cpp.Void>>):cpp.Star<cpp.Void>
 	{
 		var self:Pointer<VLCBitmap> = Pointer.fromStar(data).reinterpret();
 		return null;
@@ -138,7 +138,7 @@ class VLCBitmap extends Bitmap
 		if (pixels == null || (pixels != null && pixels.length > 0))
 			pixels = [];
 
-		// LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(format_setup), Function.fromStaticFunction(format_cleanup));
+		LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(format_setup), Function.fromStaticFunction(format_cleanup));
 
 		// LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), untyped __cpp__('this'));
 
@@ -153,6 +153,11 @@ class VLCBitmap extends Bitmap
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+	}
+
+	private function onEnterFrame(e:Event):Void
+	{
+		trace("mmm");
 	}
 
 	private function setupEvents():Void
@@ -195,10 +200,5 @@ class VLCBitmap extends Bitmap
 
 		if (eventManager != null)
 			eventManager = null;
-	}
-
-	private function onEnterFrame(e:Event):Void
-	{
-		trace("mmm");
 	}
 }
