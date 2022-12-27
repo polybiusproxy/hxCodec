@@ -63,7 +63,7 @@ static void display(void *data, void *picture)
 static void callbacks(const libvlc_event_t *event, void *data)
 {
 	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
-	callback->flags->push(event);
+	// callback->flags->push(event);
 }
 ')
 class VLCBitmap extends Bitmap
@@ -152,7 +152,7 @@ class VLCBitmap extends Bitmap
 
 	private function onEnterFrame(e:Event):Void
 	{
-		if (flags.length > 0)
+		/* if (flags.length > 0)
 		{
 			for (event in flags)
 			{
@@ -173,7 +173,7 @@ class VLCBitmap extends Bitmap
 					default:
 				}
 			}
-		}
+		} */
 	}
 
 	private function setupEvents():Void
