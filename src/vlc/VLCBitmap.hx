@@ -14,8 +14,6 @@ import cpp.UInt8;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.events.Event;
-import haxe.io.Bytes;
-import haxe.io.BytesData;
 import vlc.LibVLC;
 
 @:cppNamespaceCode('
