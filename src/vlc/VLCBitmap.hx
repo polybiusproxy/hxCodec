@@ -4,12 +4,9 @@ package vlc;
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
 #end
 import cpp.Function;
-import cpp.NativeArray;
-import cpp.ConstPointer;
-import cpp.RawConstPointer;
+import cpp.Reference;
 import cpp.Pointer;
 import cpp.Native;
-import cpp.UInt32;
 import cpp.UInt8;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -159,7 +156,7 @@ class VLCBitmap extends Bitmap
 		{
 			for (event in flags)
 			{
-				var p_event:LibVLC_Event = Pointer.fromRaw(event).value;
+				var p_event:Reference<LibVLC_Event> = Pointer.fromRaw(event).value;
 				switch (p_event.type)
 				{
 					case LibVLC_EventType.PlayerPlaying:
