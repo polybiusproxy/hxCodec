@@ -159,7 +159,8 @@ class VLCBitmap extends Bitmap
 		{
 			for (event in flags)
 			{
-				switch (event.type)
+				var p_event:LibVLC_Event = Pointer.fromRaw(event).value;
+				switch (p_event.type)
 				{
 					case LibVLC_EventType.PlayerPlaying:
 					case LibVLC_EventType.PlayerStopped:
