@@ -64,21 +64,20 @@ static void callbacks(const libvlc_event_t *event, void *data)
 {
 	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
 	// callback->flags->push(event);
-}
-')
+}')
 class VLCBitmap extends Bitmap
 {
 	public var videoWidth:Int = 0;
 	public var videoHeight:Int = 0;
 
 	private var pixels:Pointer<UInt8>;
-	// private var flags:Array<LibVLC_Event_T>;
 
+	// private var flags:Array<LibVLC_Event_T>;
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
 	private var mediaPlayer:LibVLC_MediaPlayer;
 	private var mediaItem:LibVLC_Media;
-	private var eventManager:LibVLC_EventManager; 
+	private var eventManager:LibVLC_EventManager;
 
 	public function new(?smoothing:Bool = true):Void
 	{
@@ -132,7 +131,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.media_release(mediaItem);
 
 		// if (flags == null || (flags != null && flags.length > 0))
-			// flags = [];
+		// flags = [];
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
@@ -152,28 +151,28 @@ class VLCBitmap extends Bitmap
 
 	private function onEnterFrame(e:Event):Void
 	{
-		/* if (flags.length > 0)
-		{
-			for (event in flags)
+		/*if (flags.length > 0)
 			{
-				var p_event:Reference<LibVLC_Event_T> = Pointer.fromRaw(event).value;
-				switch (p_event.type)
+				for (event in flags)
 				{
-					case LibVLC_EventType.PlayerPlaying:
-					case LibVLC_EventType.PlayerStopped:
-					case LibVLC_EventType.PlayerEndReached:
-					case LibVLC_EventType.PlayerEncounteredError:
-					case LibVLC_EventType.PlayerOpening:
-					case LibVLC_EventType.PlayerBuffering:
-					case LibVLC_EventType.PlayerForward:
-					case LibVLC_EventType.PlayerBackward:
-					case LibVLC_EventType.PlayerTimeChanged:
-					case LibVLC_EventType.PlayerPositionChanged:
-					case LibVLC_EventType.PlayerSeekableChanged:
-					default:
+					var p_event:Reference<LibVLC_Event_T> = Pointer.fromRaw(event).value;
+					switch (p_event.type)
+					{
+						case LibVLC_EventType.PlayerPlaying:
+						case LibVLC_EventType.PlayerStopped:
+						case LibVLC_EventType.PlayerEndReached:
+						case LibVLC_EventType.PlayerEncounteredError:
+						case LibVLC_EventType.PlayerOpening:
+						case LibVLC_EventType.PlayerBuffering:
+						case LibVLC_EventType.PlayerForward:
+						case LibVLC_EventType.PlayerBackward:
+						case LibVLC_EventType.PlayerTimeChanged:
+						case LibVLC_EventType.PlayerPositionChanged:
+						case LibVLC_EventType.PlayerSeekableChanged:
+						default:
+					}
 				}
-			}
-		} */
+		}*/
 	}
 
 	private function setupEvents():Void
