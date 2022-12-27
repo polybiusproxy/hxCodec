@@ -17,7 +17,6 @@ import openfl.events.Event;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import vlc.LibVLC;
-import vlc.helpers.VoidStarConstStar;
 
 @:cppNamespaceCode('
 unsigned format_setup(void** data, char* chroma, unsigned* width, unsigned* height, unsigned* pitches, unsigned* lines)
@@ -102,59 +101,6 @@ class VLCBitmap extends Bitmap
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
-	static function format_setup(opaque:cpp.Star<cpp.Star<cpp.Void>>, chroma:cpp.Star<cpp.Char>, width:cpp.Star<UInt32>, height:cpp.Star<UInt32>, pitches:cpp.Star<UInt32>, lines:cpp.Star<UInt32>):UInt32
-	{
-		var _w:UInt = Pointer.fromStar(width).value;
-		var _h:UInt = Pointer.fromStar(height).value;
-		var _pitch:UInt = _w * 4;
-		var _frame:UInt = _w * _h * 4;
-
-		Pointer.fromStar(pitches).setAt(0, _pitch);
-		Pointer.fromStar(lines).setAt(0, _h);
-
-		return 1;
-	}
-
-	static function format_cleanup(opaque:cpp.Star<cpp.Void>):Void {}
-
-	/* static function lock(data:cpp.Star<cpp.Void>, p_pixels:cpp.Star<cpp.Star<cpp.Void>>):cpp.Star<cpp.Void>
-	{
-		var self:Pointer<VLCBitmap> = Pointer.fromStar(data).reinterpret();
-		return null;
-	}
-
-	static function unlock(data:cpp.Star<cpp.Void>, id:cpp.Star<cpp.Void>, p_pixels:VoidStarConstStar):Void
-	{
-		var self:Pointer<VLCBitmap> = Pointer.fromStar(data).reinterpret();
-	}
-
-	static function display(opaque:cpp.Star<cpp.Void>, picture:cpp.Star<cpp.Void>):Void
-	{
-		var self:Pointer<VLCBitmap> = Pointer.fromStar(opaque).reinterpret();
-	} */
-
-	static function callbacks(p_event:RawConstPointer<LibVLC_Event_T>, p_data:cpp.Star<cpp.Void>):Void
-	{
-		var self:Pointer<VLCBitmap> = Pointer.fromStar(p_data).reinterpret();
-		var event:LibVLC_Event_T = ConstPointer.fromRaw(p_event).value;
-
-		switch (event.type)
-		{
-			case LibVLC_EventType.PlayerPlaying:
-			case LibVLC_EventType.PlayerStopped:
-			case LibVLC_EventType.PlayerEndReached:
-			case LibVLC_EventType.PlayerEncounteredError:
-			case LibVLC_EventType.PlayerOpening:
-			case LibVLC_EventType.PlayerBuffering:
-			case LibVLC_EventType.PlayerForward:
-			case LibVLC_EventType.PlayerBackward:
-			case LibVLC_EventType.PlayerTimeChanged:
-			case LibVLC_EventType.PlayerPositionChanged:
-			case LibVLC_EventType.PlayerSeekableChanged:
-			default:
-		}
-	}
-
 	public function play(?path:String = null, loop:Bool = false, haccelerated:Bool = true):Void
 	{
 		#if HXC_DEBUG_TRACE
@@ -196,11 +142,10 @@ class VLCBitmap extends Bitmap
 		if (flags == null || (flags != null && flags.length > 0))
 			flags = [];
 
-		LibVLC.video_set_format_callbacks(mediaPlayer, Function.fromStaticFunction(format_setup), Function.fromStaticFunction(format_cleanup));
+		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
+		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
 
-		// LibVLC.video_set_callbacks(mediaPlayer, Function.fromStaticFunction(lock), Function.fromStaticFunction(unlock), Function.fromStaticFunction(display), untyped __cpp__('this'));
-
-		// setupEvents();
+		setupEvents();
 
 		LibVLC.media_player_play(mediaPlayer);
 	}
@@ -215,7 +160,27 @@ class VLCBitmap extends Bitmap
 
 	private function onEnterFrame(e:Event):Void
 	{
-		trace("mmm");
+		if (flags.length > 0)
+		{
+			for (event in flags)
+			{
+				switch (event.type)
+				{
+					case LibVLC_EventType.PlayerPlaying:
+					case LibVLC_EventType.PlayerStopped:
+					case LibVLC_EventType.PlayerEndReached:
+					case LibVLC_EventType.PlayerEncounteredError:
+					case LibVLC_EventType.PlayerOpening:
+					case LibVLC_EventType.PlayerBuffering:
+					case LibVLC_EventType.PlayerForward:
+					case LibVLC_EventType.PlayerBackward:
+					case LibVLC_EventType.PlayerTimeChanged:
+					case LibVLC_EventType.PlayerPositionChanged:
+					case LibVLC_EventType.PlayerSeekableChanged:
+					default:
+				}
+			}
+		}
 	}
 
 	private function setupEvents():Void
