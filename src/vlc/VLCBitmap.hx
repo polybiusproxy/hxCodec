@@ -3,13 +3,10 @@ package vlc;
 #if !(desktop || android)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
 #end
-import cpp.Function;
-import cpp.Reference;
 import cpp.Pointer;
 import cpp.Native;
 import cpp.UInt8;
 import openfl.display.Bitmap;
-import openfl.display.BitmapData;
 import openfl.events.Event;
 import vlc.LibVLC;
 
@@ -152,26 +149,26 @@ class VLCBitmap extends Bitmap
 	private function onEnterFrame(e:Event):Void
 	{
 		/*if (flags.length > 0)
+		{
+			for (event in flags)
 			{
-				for (event in flags)
+				var p_event:Reference<LibVLC_Event_T> = Pointer.fromRaw(event).value;
+				switch (p_event.type)
 				{
-					var p_event:Reference<LibVLC_Event_T> = Pointer.fromRaw(event).value;
-					switch (p_event.type)
-					{
-						case LibVLC_EventType.PlayerPlaying:
-						case LibVLC_EventType.PlayerStopped:
-						case LibVLC_EventType.PlayerEndReached:
-						case LibVLC_EventType.PlayerEncounteredError:
-						case LibVLC_EventType.PlayerOpening:
-						case LibVLC_EventType.PlayerBuffering:
-						case LibVLC_EventType.PlayerForward:
-						case LibVLC_EventType.PlayerBackward:
-						case LibVLC_EventType.PlayerTimeChanged:
-						case LibVLC_EventType.PlayerPositionChanged:
-						case LibVLC_EventType.PlayerSeekableChanged:
-						default:
-					}
+					case LibVLC_EventType.PlayerPlaying:
+					case LibVLC_EventType.PlayerStopped:
+					case LibVLC_EventType.PlayerEndReached:
+					case LibVLC_EventType.PlayerEncounteredError:
+					case LibVLC_EventType.PlayerOpening:
+					case LibVLC_EventType.PlayerBuffering:
+					case LibVLC_EventType.PlayerForward:
+					case LibVLC_EventType.PlayerBackward:
+					case LibVLC_EventType.PlayerTimeChanged:
+					case LibVLC_EventType.PlayerPositionChanged:
+					case LibVLC_EventType.PlayerSeekableChanged:
+					default:
 				}
+			}
 		}*/
 	}
 
