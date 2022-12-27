@@ -134,9 +134,6 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(mediaItem);
 
-		if (pixels == null || (pixels != null && pixels.length > 0))
-			pixels = [];
-
 		if (flags == null || (flags != null && flags.length > 0))
 			flags = [];
 
