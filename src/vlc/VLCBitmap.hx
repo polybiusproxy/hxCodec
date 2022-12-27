@@ -19,7 +19,7 @@ import vlc.LibVLC;
 @:cppNamespaceCode('
 static unsigned format_setup(void** data, char* chroma, unsigned* width, unsigned* height, unsigned* pitches, unsigned* lines)
 {
-	VLCVideo_obj *callback = (VLCVideo_obj*) (*data);
+	VLCBitmap_obj *callback = (VLCBitmap_obj*) (*data);
 
 	unsigned _w = (*width);
 	unsigned _h = (*height);
@@ -43,29 +43,29 @@ static unsigned format_setup(void** data, char* chroma, unsigned* width, unsigne
 
 static void format_cleanup(void *data)
 {
-	VLCVideo_obj *callback = (VLCVideo_obj*) data;
+	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
 }
 
 static void *lock(void *data, void **p_pixels)
 {
-	VLCVideo_obj *callback = (VLCVideo_obj*) data;
+	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
 	*p_pixels = callback->pixels;
 	return NULL;
 }
 
 static void unlock(void *data, void *id, void *const *p_pixels)
 {
-	VLCVideo_obj *callback = (VLCVideo_obj*) data;
+	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
 }
 
 static void display(void *data, void *picture)
 {
-	VLCVideo_obj *callback = (VLCVideo_obj*) data;
+	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
 {
-	VLCVideo_obj *callback = (VLCVideo_obj*) data;
+	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
 	callback->flags.push_back((*event));
 }
 ')
