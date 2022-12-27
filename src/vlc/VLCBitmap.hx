@@ -66,7 +66,7 @@ static void display(void *data, void *picture)
 static void callbacks(const libvlc_event_t *event, void *data)
 {
 	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
-	callback->flags->push((*event));
+	callback->flags->push(event);
 }
 ')
 class VLCBitmap extends Bitmap
