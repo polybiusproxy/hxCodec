@@ -257,7 +257,7 @@ enum abstract LibVLC_EventType(Int) from Int to Int
 	var MediaPlayerEncounteredError = 266;
 	var MediaPlayerTimeChanged = 267;
 	var MediaPlayerPositionChanged = 268;
-	var MediaPlayerSeekableChange = 269;
+	var MediaPlayerSeekableChanged = 269;
 	var MediaPlayerPausableChanged = 270;
 	var MediaPlayerTitleChanged = 271;
 	var MediaPlayerSnapshotTaken = 272;
