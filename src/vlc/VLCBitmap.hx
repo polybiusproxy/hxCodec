@@ -134,9 +134,6 @@ class VLCBitmap extends Bitmap
 		if (canRender)
 			canRender = false;
 
-		if (pixels != 0)
-			pixels = 0;
-
 		if (buffer == null || (buffer != null && buffer.length > 0))
 			buffer = [];
 
@@ -161,8 +158,6 @@ class VLCBitmap extends Bitmap
 	private var currentTime:Float = 0;
 	private function onEnterFrame(e:Event):Void
 	{
-		checkFlags();
-
 		if (canRender && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
 			var time:Int = Lib.getTimer();
