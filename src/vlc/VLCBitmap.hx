@@ -12,6 +12,7 @@ import haxe.io.Path;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
 import vlc.LibVLC;
 
@@ -178,19 +179,22 @@ class VLCBitmap extends Bitmap
 
 			NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
 
-			// Initialize the bitmap data if necessary.
-			if (bitmapData == null)
-				bitmapData = new BitmapData(videoWidth, videoHeight, true, 0x00000000);
+			// Initialize the texture if necessary.
+			if (texture == null)
+				texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
 
-			if (bitmapData != null && (buffer != null && buffer.length > 0))
+			// Initialize the bitmapData if necessary.
+			if (bitmapData == null)
+				bitmapData = BitmapData.fromTexture(texture);
+
+			if (texture != null && (buffer != null && buffer.length > 0))
 			{
 				var bytes:Bytes = Bytes.ofData(buffer);
 				if (bytes.length >= elementsCount)
 				{
-					// This is a very intensive process? Maybe
-					bitmapData.lock();
-					bitmapData.setPixels(bitmapData.rect, bytes);
-					bitmapData.unlock();
+					texture.uploadFromByteArray(bytes, 0);
+					width++;
+					width--;
 				}
 			}
 		}
