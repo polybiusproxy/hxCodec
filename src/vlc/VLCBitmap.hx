@@ -79,6 +79,9 @@ class VLCBitmap extends Bitmap
 	public var videoWidth(default, null):Int = 0;
 	public var videoHeight(default, null):Int = 0;
 
+	public var volume(get, set):Int;
+	public var rate(get, set):Float;
+
 	private var canRender:Bool = false;
 	private var pixels:Pointer<UInt8>;
 	private var buffer:BytesData;
@@ -169,7 +172,19 @@ class VLCBitmap extends Bitmap
 
 	private function renderToTexture(deltaTime:Float, elementsCount:Int):Void
 	{
-		if (deltaTime > 1000 / (LibVLC.media_player_get_fps(mediaPlayer) * LibVLC.media_player_get_rate(mediaPlayer)))
+		// Initialize the `texture` if necessary.
+		if (texture == null)
+			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
+
+		// Initialize the `bitmapData` if necessary.
+		if (bitmapData == null && texture != null)
+			bitmapData = BitmapData.fromTexture(texture);
+
+		// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
+		if (!smoothing)
+			smoothing = true;
+
+		if (deltaTime > (1000 / (LibVLC.media_player_get_fps(mediaPlayer) * LibVLC.media_player_get_rate(mediaPlayer))))
 		{
 			currentTime = deltaTime;
 
@@ -178,14 +193,6 @@ class VLCBitmap extends Bitmap
 			#end
 
 			NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
-
-			// Initialize the texture if necessary.
-			if (texture == null)
-				texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
-
-			// Initialize the bitmapData if necessary.
-			if (bitmapData == null)
-				bitmapData = BitmapData.fromTexture(texture);
 
 			if (texture != null && (buffer != null && buffer.length > 0))
 			{
@@ -236,5 +243,38 @@ class VLCBitmap extends Bitmap
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPositionChanged, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerSeekableChanged, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPausableChanged, callback, self);
+	}
+
+	// Get & Set Methods
+	@:noCompletion private function get_volume():Int
+	{
+		if (mediaPlayer != null)
+			return LibVLC.audio_get_volume(mediaPlayer);
+
+		return 0;
+	}
+
+	@:noCompletion private function set_volume(value:Int):Int
+	{
+		if (mediaPlayer != null)
+			return LibVLC.audio_set_volume(mediaPlayer, value);
+
+		return volume = value;
+	}
+
+	@:noCompletion private function get_rate():Float
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_get_rate(mediaPlayer);
+
+		return 0;
+	}
+
+	@:noCompletion private function set_rate(value:Float):Float
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_set_rate(mediaPlayer, value);
+
+		return rate = value;
 	}
 }
