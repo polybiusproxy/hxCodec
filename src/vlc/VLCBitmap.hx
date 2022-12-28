@@ -5,14 +5,26 @@ package vlc;
 #end
 import cpp.Pointer;
 import cpp.UInt8;
+import cpp.NativeArray;
+import haxe.io.Bytes;
+import haxe.io.BytesData;
+import haxe.io.Path;
+import openfl.Lib;
 import openfl.display.Bitmap;
+import openfl.display.BitmapData;
+import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
-import vlc.LibVLC;
 
+/**
+ * ...
+ * @author Mihai Alexandru (M.A. Jigsaw).
+ *
+ * This class lets you to use LibVLC externs as a bitmap then you can displaylist along other items.
+ */
 @:cppNamespaceCode('
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
-	VLCBitmap_obj *callback = (VLCBitmap_obj*)(*data);
+	VLCBitmap_obj *self = (VLCBitmap_obj*)(*data);
 
 	unsigned _w = (*width);
 	unsigned _h = (*height);
@@ -24,42 +36,41 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 
 	memcpy(chroma, "RV32", 4);
 
-	callback->videoWidth = _w;
-	callback->videoHeight = _h;
+	self->videoWidth = _w;
+	self->videoHeight = _h;
 
-	if (callback->pixels != 0)
-		delete callback->pixels;
+	if (self->pixels != 0)
+		delete self->pixels;
 
-	callback->pixels = new unsigned char[_frame];
+	self->pixels = new unsigned char[_frame];
 	return 1;
 }
 
 static void format_cleanup(void *data)
 {
-	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
+	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 }
 
 static void *lock(void *data, void **p_pixels)
 {
-	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
-	*p_pixels = callback->pixels;
+	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
+	*p_pixels = self->pixels;
 	return NULL;
 }
 
 static void unlock(void *data, void *id, void *const *p_pixels)
 {
-	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
+	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 }
 
 static void display(void *data, void *picture)
 {
-	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
+	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
 {
-	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
-	// callback->onEventFlag(event);
+	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 }')
 class VLCBitmap extends Bitmap
 {
@@ -67,6 +78,9 @@ class VLCBitmap extends Bitmap
 	public var videoHeight:Int = 0;
 
 	private var pixels:Pointer<UInt8>;
+	private var buffer:BytesData;
+	private var texture:RectangleTexture;
+
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
 	private var mediaPlayer:LibVLC_MediaPlayer;
@@ -89,8 +103,10 @@ class VLCBitmap extends Bitmap
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
-	public function play(?path:String = null, loop:Bool = false):Void
+	public function play(?location:String = null, loop:Bool = false):Void
 	{
+		final path:String = Path.normalize(location);
+
 		#if HXC_DEBUG_TRACE
 		trace("setting path to: " + path);
 		#end
@@ -129,38 +145,6 @@ class VLCBitmap extends Bitmap
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
-	/*private function onEventFlag(p_event:RawConstPointer<LibVLC_Event_T>):Void
-	{
-		var event:LibVLC_Event_T = ConstPointer.fromRaw(p_event).value;
-		switch (event.type)
-		{
-			case LibVLC_EventType.MediaPlayerPlaying:
-				trace('playing');
-			case LibVLC_EventType.MediaPlayerStopped:
-				trace('stopped');
-			case LibVLC_EventType.MediaPlayerEndReached:
-				trace('end reached');
-			case LibVLC_EventType.MediaPlayerEncounteredError:
-				trace('error');
-			case LibVLC_EventType.MediaPlayerOpening:
-				trace('opening');
-			case LibVLC_EventType.MediaPlayerBuffering:
-				trace('buffering');
-			case LibVLC_EventType.MediaPlayerForward:
-				trace('forward');
-			case LibVLC_EventType.MediaPlayerBackward:
-				trace('backward');
-			case LibVLC_EventType.MediaPlayerTimeChanged:
-				trace('time changed');
-			case LibVLC_EventType.MediaPlayerPositionChanged:
-				trace('position changed');
-			case LibVLC_EventType.MediaPlayerSeekableChanged:
-				trace('seekable chamged');
-			default:
-				trace('default');
-		}
-	}*/
-
 	private function onEnterFrame(e:Event):Void {}
 
 	private function setupEvents():Void
@@ -182,6 +166,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerTimeChanged, callback, self);
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPositionChanged, callback, self);
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerSeekableChanged, callback, self);
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPausableChanged, callback, self);
 	}
 
 	private function cleanupEvents():Void
@@ -200,5 +185,6 @@ class VLCBitmap extends Bitmap
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerTimeChanged, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPositionChanged, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerSeekableChanged, callback, self);
+		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPausableChanged, callback, self);
 	}
 }
