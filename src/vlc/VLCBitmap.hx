@@ -66,6 +66,7 @@ static void unlock(void *data, void *id, void *const *p_pixels)
 static void display(void *data, void *picture)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
+	self->canRender = true;
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
@@ -74,9 +75,11 @@ static void callbacks(const libvlc_event_t *event, void *data)
 }')
 class VLCBitmap extends Bitmap
 {
-	public var videoWidth:Int = 0;
-	public var videoHeight:Int = 0;
+	public var videoWidth(default, null):Int = 0;
+	public var videoHeight(default, null):Int = 0;
+	public var initComplete(default, null):Bool = false;
 
+	private var canRender:Bool = false;
 	private var pixels:Pointer<UInt8>;
 	private var buffer:BytesData;
 	private var texture:RectangleTexture;
@@ -129,8 +132,16 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(mediaItem);
 
+		if (canRender)
+			canRender = false;
+
+		if (pixels != 0)
+			pixels = 0;
+
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
+
+		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
 
 		setupEvents();
 
@@ -145,13 +156,46 @@ class VLCBitmap extends Bitmap
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
-	private function onEnterFrame(e:Event):Void {}
+	private var currentTime:Float = 0;
+	private function onEnterFrame(e:Event):Void
+	{
+		checkFlags();
+
+		if (canRender && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+		{
+			var time:Int = Lib.getTimer();
+			var elements:Int = videoWidth * videoHeight * 4;
+			renderToTexture(time - currentTime, elements);
+		}
+	}
+
+	private function renderToTexture(deltaTime:Float, elementsCount:Int):Void
+	{
+		if (deltaTime > 16.6)
+		{
+			currentTime = deltaTime;
+
+			#if HXC_DEBUG_TRACE
+			trace("rendering...");
+			#end
+
+			NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
+
+			if (texture != null && (buffer != null && buffer.length > 0))
+			{
+				var bytes:Bytes = Bytes.ofData(buffer);
+				if (bytes.length >= elementsCount)
+				{
+					texture.uploadFromByteArray(bytes, 0);
+					width++;
+					width--;
+				}
+			}
+		}
+	}
 
 	private function setupEvents():Void
 	{
-		if (eventManager == null)
-			eventManager = LibVLC.media_player_event_manager(mediaPlayer);
-
 		var callback:LibVLC_Event_Callback = untyped __cpp__('callbacks');
 		var self:cpp.Star<cpp.Void> = untyped __cpp__('this');
 
