@@ -151,29 +151,29 @@ class VLCBitmap extends Bitmap
 		switch (event.type)
 		{
 			case LibVLC_EventType.MediaPlayerPlaying:
-				break;
+				trace('playing');
 			case LibVLC_EventType.MediaPlayerStopped:
-				break;
+				trace('stopped');
 			case LibVLC_EventType.MediaPlayerEndReached:
-				break;
+				trace('end reached');
 			case LibVLC_EventType.MediaPlayerEncounteredError:
-				break;
+				trace('error');
 			case LibVLC_EventType.MediaPlayerOpening:
-				break;
+				trace('opening');
 			case LibVLC_EventType.MediaPlayerBuffering:
-				break;
+				trace('buffering');
 			case LibVLC_EventType.MediaPlayerForward:
-				break;
+				trace('forward');
 			case LibVLC_EventType.MediaPlayerBackward:
-				break;
+				trace('backward');
 			case LibVLC_EventType.MediaPlayerTimeChanged:
-				break;
+				trace('time changed');
 			case LibVLC_EventType.MediaPlayerPositionChanged:
-				break;
+				trace('position changed');
 			case LibVLC_EventType.MediaPlayerSeekableChanged:
-				break;
+				trace('seekable chamged');
 			default:
-				break;
+				trace('default');
 		}
 	}
 
