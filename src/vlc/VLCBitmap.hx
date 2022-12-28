@@ -3,8 +3,9 @@ package vlc;
 #if !(desktop || android)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
 #end
+import cpp.ConstPointer;
 import cpp.Pointer;
-import cpp.Native;
+import cpp.RawConstPointer;
 import cpp.UInt8;
 import openfl.display.Bitmap;
 import openfl.events.Event;
@@ -60,7 +61,7 @@ static void display(void *data, void *picture)
 static void callbacks(const libvlc_event_t *event, void *data)
 {
 	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
-	// callback->flags->push(event);
+	callback->onEventFlag(event);
 }')
 class VLCBitmap extends Bitmap
 {
@@ -68,17 +69,15 @@ class VLCBitmap extends Bitmap
 	public var videoHeight:Int = 0;
 
 	private var pixels:Pointer<UInt8>;
-
-	// private var flags:Array<LibVLC_Event_T>;
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
 	private var mediaPlayer:LibVLC_MediaPlayer;
 	private var mediaItem:LibVLC_Media;
 	private var eventManager:LibVLC_EventManager;
 
-	public function new(?smoothing:Bool = true):Void
+	public function new():Void
 	{
-		super(bitmapData, AUTO, smoothing);
+		super();
 
 		if (instance == null)
 			instance = LibVLC.init(0, null);
@@ -146,31 +145,39 @@ class VLCBitmap extends Bitmap
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
-	private function onEnterFrame(e:Event):Void
+	private function onEventFlag(p_event:RawConstPointer<LibVLC_Event_T>):Void
 	{
-		/*if (flags.length > 0)
+		var event:LibVLC_Event_T = ConstPointer.fromRaw(p_event).value;
+		switch (event.type)
 		{
-			for (event in flags)
-			{
-				var p_event:Reference<LibVLC_Event_T> = Pointer.fromRaw(event).value;
-				switch (p_event.type)
-				{
-					case LibVLC_EventType.MediaPlayerPlaying:
-					case LibVLC_EventType.MediaPlayerStopped:
-					case LibVLC_EventType.MediaPlayerEndReached:
-					case LibVLC_EventType.MediaPlayerEncounteredError:
-					case LibVLC_EventType.MediaPlayerOpening:
-					case LibVLC_EventType.MediaPlayerBuffering:
-					case LibVLC_EventType.MediaPlayerForward:
-					case LibVLC_EventType.MediaPlayerBackward:
-					case LibVLC_EventType.MediaPlayerTimeChanged:
-					case LibVLC_EventType.MediaPlayerPositionChanged:
-					case LibVLC_EventType.MediaPlayerSeekableChanged:
-					default:
-				}
-			}
-		}*/
+			case LibVLC_EventType.MediaPlayerPlaying:
+				break;
+			case LibVLC_EventType.MediaPlayerStopped:
+				break;
+			case LibVLC_EventType.MediaPlayerEndReached:
+				break;
+			case LibVLC_EventType.MediaPlayerEncounteredError:
+				break;
+			case LibVLC_EventType.MediaPlayerOpening:
+				break;
+			case LibVLC_EventType.MediaPlayerBuffering:
+				break;
+			case LibVLC_EventType.MediaPlayerForward:
+				break;
+			case LibVLC_EventType.MediaPlayerBackward:
+				break;
+			case LibVLC_EventType.MediaPlayerTimeChanged:
+				break;
+			case LibVLC_EventType.MediaPlayerPositionChanged:
+				break;
+			case LibVLC_EventType.MediaPlayerSeekableChanged:
+				break;
+			default:
+				break;
+		}
 	}
+
+	private function onEnterFrame(e:Event):Void {}
 
 	private function setupEvents():Void
 	{
