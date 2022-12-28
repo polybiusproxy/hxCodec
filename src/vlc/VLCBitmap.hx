@@ -91,7 +91,7 @@ class VLCBitmap extends Bitmap
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
-	public function play(?path:String = null, loop:Bool = false, haccelerated:Bool = true):Void
+	public function play(?path:String = null, loop:Bool = false):Void
 	{
 		#if HXC_DEBUG_TRACE
 		trace("setting path to: " + path);
@@ -112,17 +112,6 @@ class VLCBitmap extends Bitmap
 		}
 		else
 			LibVLC.media_add_option(mediaItem, "input-repeat=0");
-
-		if (haccelerated)
-		{
-			LibVLC.media_add_option(mediaItem, ":hwdec=vaapi");
-			LibVLC.media_add_option(mediaItem, ":ffmpeg-hw");
-			LibVLC.media_add_option(mediaItem, ":avcodec-hw=dxva2.lo");
-			LibVLC.media_add_option(mediaItem, ":avcodec-hw=any");
-			LibVLC.media_add_option(mediaItem, ":avcodec-hw=dxva2");
-			LibVLC.media_add_option(mediaItem, "--avcodec-hw=dxva2");
-			LibVLC.media_add_option(mediaItem, ":avcodec-hw=vaapi");
-		}
 
 		LibVLC.media_release(mediaItem);
 
