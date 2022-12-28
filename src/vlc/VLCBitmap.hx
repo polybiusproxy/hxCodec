@@ -61,7 +61,7 @@ static void display(void *data, void *picture)
 static void callbacks(const libvlc_event_t *event, void *data)
 {
 	VLCBitmap_obj *callback = (VLCBitmap_obj*) data;
-	callback->onEventFlag(event);
+	// callback->onEventFlag(event);
 }')
 class VLCBitmap extends Bitmap
 {
@@ -126,9 +126,6 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(mediaItem);
 
-		// if (flags == null || (flags != null && flags.length > 0))
-		// flags = [];
-
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
 
@@ -145,7 +142,7 @@ class VLCBitmap extends Bitmap
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
-	private function onEventFlag(p_event:RawConstPointer<LibVLC_Event_T>):Void
+	/*private function onEventFlag(p_event:RawConstPointer<LibVLC_Event_T>):Void
 	{
 		var event:LibVLC_Event_T = ConstPointer.fromRaw(p_event).value;
 		switch (event.type)
@@ -175,7 +172,7 @@ class VLCBitmap extends Bitmap
 			default:
 				trace('default');
 		}
-	}
+	}*/
 
 	private function onEnterFrame(e:Event):Void {}
 
