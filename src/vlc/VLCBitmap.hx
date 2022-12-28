@@ -171,7 +171,7 @@ class VLCBitmap extends Bitmap
 
 	private function renderToTexture(deltaTime:Float, elementsCount:Int):Void
 	{
-		if (deltaTime > 16.6)
+		if (deltaTime > 1000 / (LibVLC.media_player_get_fps(mediaPlayer) * LibVLC.media_player_get_rate(mediaPlayer)))
 		{
 			currentTime = deltaTime;
 
