@@ -78,11 +78,11 @@ class VLCBitmap extends Bitmap
 {
 	public var videoWidth(default, null):Int = 0;
 	public var videoHeight(default, null):Int = 0;
-	public var initComplete(default, null):Bool = false;
 
 	private var canRender:Bool = false;
 	private var pixels:Pointer<UInt8>;
 	private var buffer:BytesData;
+	private var texture:RectangleTexture;
 
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
