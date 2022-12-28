@@ -3,9 +3,7 @@ package vlc;
 #if !(desktop || android)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
 #end
-import cpp.ConstPointer;
 import cpp.Pointer;
-import cpp.RawConstPointer;
 import cpp.UInt8;
 import openfl.display.Bitmap;
 import openfl.events.Event;
