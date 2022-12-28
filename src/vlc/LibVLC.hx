@@ -111,6 +111,15 @@ extern class LibVLC
 	@:native("libvlc_media_player_set_time")
 	static function media_player_set_time(p_mi:LibVLC_MediaPlayer, i_time:Int64):Int;
 
+	@:native("libvlc_media_player_get_rate")
+	static function media_player_get_rate(p_mi:LibVLC_MediaPlayer):Float;
+
+	@:native("libvlc_media_player_set_rate")
+	static function media_player_set_rate(p_mi:LibVLC_MediaPlayer, rate:Float):Int;
+
+	@:native("libvlc_media_player_get_fps")
+	static function media_player_get_fps(p_mi:LibVLC_MediaPlayer):Float;
+
 	@:native("libvlc_media_player_new_from_media")
 	static function media_player_new_from_media(p_md:LibVLC_Media):LibVLC_MediaPlayer;
 
