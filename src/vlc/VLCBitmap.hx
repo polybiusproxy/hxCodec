@@ -12,7 +12,6 @@ import haxe.io.Path;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
 
 /**
@@ -82,7 +81,6 @@ class VLCBitmap extends Bitmap
 	private var canRender:Bool = false;
 	private var pixels:Pointer<UInt8>;
 	private var buffer:BytesData;
-	private var texture:RectangleTexture;
 
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
@@ -138,6 +136,9 @@ class VLCBitmap extends Bitmap
 		if (pixels != 0)
 			pixels = 0;
 
+		if (buffer == null || (buffer != null && buffer.length > 0))
+			buffer = [];
+
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
 
@@ -181,14 +182,19 @@ class VLCBitmap extends Bitmap
 
 			NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
 
-			if (texture != null && (buffer != null && buffer.length > 0))
+			// Initialize the bitmap data if necessary.
+			if (bitmapData == null)
+				bitmapData = new BitmapData(videoWidth, videoHeight, true, 0x00000000);
+
+			if (bitmapData != null && (buffer != null && buffer.length > 0))
 			{
 				var bytes:Bytes = Bytes.ofData(buffer);
 				if (bytes.length >= elementsCount)
 				{
-					texture.uploadFromByteArray(bytes, 0);
-					width++;
-					width--;
+					// This is a very intensive process? Maybe
+					bitmapData.lock();
+					bitmapData.setPixels(bitmapData.rect, bytes);
+					bitmapData.unlock();
 				}
 			}
 		}
