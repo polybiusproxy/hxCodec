@@ -80,6 +80,8 @@ class VLCBitmap extends Bitmap
 	public var videoHeight(default, null):Int = 0;
 
 	public var time(get, set):Int;
+	public var length(get, never):Int;
+	public var duration(get, never):Int;
 	public var volume(get, set):Int;
 	public var rate(get, set):Float;
 	public var fps(get, never):Float;
@@ -265,6 +267,22 @@ class VLCBitmap extends Bitmap
 			LibVLC.media_player_set_time(mediaPlayer, value);
 
 		return value;
+	}
+
+	@:noCompletion private function get_length():Int
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_get_length(mediaPlayer);
+
+		return 0;
+	}
+
+	@:noCompletion private function get_duration():Int
+	{
+		if (mediaItem != null)
+			return LibVLC.media_get_duration(mediaItem);
+
+		return 0;
 	}
 
 	@:noCompletion private function get_volume():Int
