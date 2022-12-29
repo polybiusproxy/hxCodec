@@ -196,12 +196,6 @@ class VLCBitmap extends Bitmap
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
 
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
-
 		if (bitmapData != null)
 		{
 			bitmapData.dispose();
