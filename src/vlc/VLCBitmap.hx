@@ -76,9 +76,6 @@ static void callbacks(const libvlc_event_t *event, void *data)
 }')
 class VLCBitmap extends Bitmap
 {
-	public var videoWidth(default, null):Int = 0;
-	public var videoHeight(default, null):Int = 0;
-
 	public var time(get, set):Int;
 	public var position(get, set):Float;
 	public var length(get, never):Int;
@@ -86,9 +83,11 @@ class VLCBitmap extends Bitmap
 	public var volume(get, set):Int;
 	public var rate(get, set):Float;
 	public var fps(get, never):Float;
-
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
+
+	public var videoWidth(default, null):Int = 0;
+	public var videoHeight(default, null):Int = 0;
 
 	private var canRender:Bool = false;
 	private var pixels:Pointer<UInt8>;
@@ -172,6 +171,40 @@ class VLCBitmap extends Bitmap
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_set_pause(mediaPlayer, 0);
+	}
+
+	public function release():Void
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_release(mediaPlayer);
+	}
+
+	public function dispose():Void
+	{
+		#if HXC_DEBUG_TRACE
+		trace("disposing the bitmap!");
+		#end
+
+		if (isPlaying)
+			stop();
+
+		if (stage.hasEventListener(Event.ENTER_FRAME))
+			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
+
+		if (bitmapData != null)
+		{
+			bitmapData.dispose();
+			bitmapData = null;
+		}
+
+		if (pixels != null && pixels.length > 0)
+			pixels = [];
 	}
 
 	private function onAddedToStage(?e:Event):Void
