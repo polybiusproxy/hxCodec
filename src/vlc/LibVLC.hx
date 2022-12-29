@@ -84,6 +84,9 @@ extern class LibVLC
 	@:native("libvlc_media_release")
 	static function media_release(p_md:LibVLC_Media):Void;
 
+	@:native("libvlc_media_retain")
+	static function media_retain(p_md:LibVLC_Media):Void;
+
 	@:native("libvlc_media_parse")
 	static function media_parse(p_md:LibVLC_Media):Void;
 
@@ -99,8 +102,17 @@ extern class LibVLC
 	@:native("libvlc_media_player_is_playing")
 	static function media_player_is_playing(p_mi:LibVLC_MediaPlayer):Bool;
 
+	@:native("libvlc_media_player_is_seekable")
+	static function media_player_is_seekable(p_mi:LibVLC_MediaPlayer):Bool;
+
+	@:native("libvlc_media_player_can_pause")
+	static function media_player_can_pause(p_mi:LibVLC_MediaPlayer):Bool;
+
 	@:native("libvlc_media_player_release")
 	static function media_player_release(p_mi:LibVLC_MediaPlayer):Void;
+
+	@:native("libvlc_media_player_retain")
+	static function media_player_retain(p_mi:LibVLC_MediaPlayer):Void;
 
 	@:native("libvlc_media_player_event_manager")
 	static function media_player_event_manager(mp:LibVLC_MediaPlayer):LibVLC_EventManager;
