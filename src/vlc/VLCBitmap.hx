@@ -84,6 +84,9 @@ class VLCBitmap extends Bitmap
 	public var rate(get, set):Float;
 	public var fps(get, never):Float;
 
+	public var isPlaying(get, never):Bool;
+	public var isSeekable(get, never):Bool;
+
 	private var canRender:Bool = false;
 	private var pixels:Pointer<UInt8>;
 	private var buffer:BytesData;
@@ -295,11 +298,27 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_fps(value:Float):Float
+	@:noCompletion private function get_fps():Float
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_fps(mediaPlayer);
 
 		return 0;
+	}
+
+	@:noCompletion private function get_isPlaying():Bool
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_is_playing(mediaPlayer);
+
+		return false;
+	}
+
+	@:noCompletion private function get_isSeekable():Bool
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_is_seekable(mediaPlayer);
+
+		return false;
 	}
 }
