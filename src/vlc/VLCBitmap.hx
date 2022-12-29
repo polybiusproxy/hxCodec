@@ -113,6 +113,7 @@ class VLCBitmap extends Bitmap
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
+	// Playback Functions
 	public function play(?location:String = null, loop:Bool = false):Void
 	{
 		final path:String = Path.normalize(location);
@@ -185,11 +186,19 @@ class VLCBitmap extends Bitmap
 		trace("disposing the bitmap!");
 		#end
 
+		if (stage.hasEventListener(Event.ENTER_FRAME))
+			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+
 		if (isPlaying)
 			stop();
 
-		if (stage.hasEventListener(Event.ENTER_FRAME))
-			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+		cleanupEvents();
+
+		if (canRender)
+			canRender = false;
+
+		if (buffer != null && buffer.length > 0)
+			buffer = [];
 
 		if (texture != null)
 		{
@@ -203,10 +212,12 @@ class VLCBitmap extends Bitmap
 			bitmapData = null;
 		}
 
-		if (pixels != null && pixels.length > 0)
-			pixels = [];
+		#if HXC_DEBUG_TRACE
+		trace("dispose done!");
+		#end
 	}
 
+	// Internal Methods
 	private function onAddedToStage(?e:Event):Void
 	{
 		if (hasEventListener(Event.ADDED_TO_STAGE))
