@@ -105,11 +105,8 @@ class VLCBitmap extends Bitmap
 	{
 		super();
 
-		if (instance == null)
-			instance = LibVLC.init(0, null);
-
-		if (audioOutput == null)
-			audioOutput = LibVLC.audio_output_list_get(instance);
+		instance = LibVLC.init(0, null);
+		audioOutput = LibVLC.audio_output_list_get(instance);
 
 		if (stage != null)
 			onAddedToStage();
@@ -157,6 +154,24 @@ class VLCBitmap extends Bitmap
 		setupEvents();
 
 		LibVLC.media_player_play(mediaPlayer);
+	}
+
+	public function stop():Void
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_stop(mediaPlayer);
+	}
+
+	public function pause():Void
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_set_pause(mediaPlayer, 1);
+	}
+
+	public function resume():Void
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_set_pause(mediaPlayer, 0);
 	}
 
 	private function onAddedToStage(?e:Event):Void
