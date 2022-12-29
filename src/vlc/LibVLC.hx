@@ -23,7 +23,6 @@ typedef LibVLC_AudioOutput = RawPointer<LibVLC_AudioOutput_T>;
 typedef LibVLC_MediaPlayer = RawPointer<LibVLC_MediaPlayer_T>;
 typedef LibVLC_Media = RawPointer<LibVLC_Media_T>;
 typedef LibVLC_EventManager = RawPointer<LibVLC_EventManager_T>;
-typedef LibVLC_Event = RawPointer<LibVLC_Event_T>;
 
 @:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
 @:include("vlc/vlc.h")
@@ -123,6 +122,12 @@ extern class LibVLC
 	@:native("libvlc_media_player_set_time")
 	static function media_player_set_time(p_mi:LibVLC_MediaPlayer, i_time:Int64):Int;
 
+	@:native("libvlc_media_player_get_position")
+	static function media_player_get_position(p_mi:LibVLC_MediaPlayer):Float;
+
+	@:native("libvlc_media_player_set_position")
+	static function media_player_set_position(p_mi:LibVLC_MediaPlayer, f_pos:Float):Int;
+
 	@:native("libvlc_media_player_get_rate")
 	static function media_player_get_rate(p_mi:LibVLC_MediaPlayer):Float;
 
@@ -131,6 +136,9 @@ extern class LibVLC
 
 	@:native("libvlc_media_player_get_fps")
 	static function media_player_get_fps(p_mi:LibVLC_MediaPlayer):Float;
+
+	@:native("libvlc_media_player_get_length")
+	static function media_player_get_length(p_mi:LibVLC_MediaPlayer):Int64;
 
 	@:native("libvlc_media_player_new_from_media")
 	static function media_player_new_from_media(p_md:LibVLC_Media):LibVLC_MediaPlayer;
