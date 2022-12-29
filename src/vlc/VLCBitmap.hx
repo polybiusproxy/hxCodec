@@ -228,7 +228,7 @@ class VLCBitmap extends Bitmap
 		{
 			// Initialize the `bitmapData` if necessary.
 			if (bitmapData == null)
-				bitmapData = new BitmapData(videoWidth, videoHeight, true, 0x00000000);;
+				bitmapData = new BitmapData(videoWidth, videoHeight, true, 0x00000000);
 
 			// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
 			if (!smoothing)
