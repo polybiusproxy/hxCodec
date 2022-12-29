@@ -241,7 +241,7 @@ class VLCBitmap extends Bitmap
 	{
 		// Initialize the `texture` if necessary.
 		if (texture == null)
-			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, false);
+			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
 
 		// Initialize the `bitmapData` if necessary.
 		if (bitmapData == null && texture != null)
