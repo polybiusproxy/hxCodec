@@ -79,8 +79,10 @@ class VLCBitmap extends Bitmap
 	public var videoWidth(default, null):Int = 0;
 	public var videoHeight(default, null):Int = 0;
 
+	public var time(get, set):Int;
 	public var volume(get, set):Int;
 	public var rate(get, set):Float;
+	public var fps(get, never):Float;
 
 	private var canRender:Bool = false;
 	private var pixels:Pointer<UInt8>;
@@ -184,7 +186,7 @@ class VLCBitmap extends Bitmap
 		if (!smoothing)
 			smoothing = true;
 
-		if (deltaTime > (1000 / (LibVLC.media_player_get_fps(mediaPlayer) * LibVLC.media_player_get_rate(mediaPlayer))))
+		if (deltaTime > (1000 / (fps * rate)))
 		{
 			currentTime = deltaTime;
 
@@ -246,6 +248,22 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Get & Set Methods
+	@:noCompletion private function get_time():Int
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_get_time(mediaPlayer);
+
+		return 0;
+	}
+
+	@:noCompletion private function set_time(value:Int):Int
+	{
+		if (mediaPlayer != null)
+			LibVLC.media_player_set_time(mediaPlayer, value);
+
+		return value;
+	}
+
 	@:noCompletion private function get_volume():Int
 	{
 		if (mediaPlayer != null)
@@ -269,12 +287,19 @@ class VLCBitmap extends Bitmap
 
 		return 0;
 	}
-
 	@:noCompletion private function set_rate(value:Float):Float
 	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_rate(mediaPlayer, value);
 
 		return value;
+	}
+
+	@:noCompletion private function get_fps(value:Float):Float
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_get_fps(mediaPlayer);
+
+		return 0;
 	}
 }
