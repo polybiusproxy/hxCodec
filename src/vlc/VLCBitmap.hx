@@ -257,9 +257,9 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function set_volume(value:Int):Int
 	{
 		if (mediaPlayer != null)
-			return LibVLC.audio_set_volume(mediaPlayer, value);
+			LibVLC.audio_set_volume(mediaPlayer, value);
 
-		return volume = value;
+		return value;
 	}
 
 	@:noCompletion private function get_rate():Float
@@ -273,8 +273,8 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function set_rate(value:Float):Float
 	{
 		if (mediaPlayer != null)
-			return LibVLC.media_player_set_rate(mediaPlayer, value);
+			LibVLC.media_player_set_rate(mediaPlayer, value);
 
-		return rate = value;
+		return value;
 	}
 }
