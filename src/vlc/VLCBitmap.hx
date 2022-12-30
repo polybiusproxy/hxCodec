@@ -224,20 +224,22 @@ class VLCBitmap extends Bitmap
 	{
 		if (isDisplaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
-			// Initialize the bitmap data if necessary.
-			if (bitmapData == null || bitmapData.image == null)
+			// Initialize the `bitmapData` if necessary.
+			if (bitmapData == null)
 				bitmapData = new BitmapData(videoWidth, videoHeight, true, 0x00000000);
 
 			// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
 			if (!smoothing)
 				smoothing = true;
 
-			NativeArray.setUnmanagedData(buffer, pixels, Std.int(videoWidth * videoHeight * 4));
+			final elements:Int = videoWidth * videoHeight * 4;
+
+			NativeArray.setUnmanagedData(buffer, pixels, elements);
 
 			if (bitmapData != null && (buffer != null && buffer.length > 0))
 			{
 				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
+				if (bytes.length >= elements)
 				{
 					// This is a very intensive process? Maybe
 					bitmapData.lock();
