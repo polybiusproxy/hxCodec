@@ -12,7 +12,6 @@ import haxe.io.Path;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
 import vlc.LibVLC;
 
@@ -67,7 +66,7 @@ static void unlock(void *data, void *id, void *const *p_pixels)
 static void display(void *data, void *picture)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
-	self->canRender = true;
+	self->isDisplaying = true;
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
@@ -76,6 +75,10 @@ static void callbacks(const libvlc_event_t *event, void *data)
 }')
 class VLCBitmap extends Bitmap
 {
+	// Variables
+	public var videoWidth(default, null):Int = 0;
+	public var videoHeight(default, null):Int = 0;
+
 	public var time(get, set):Int;
 	public var position(get, set):Float;
 	public var length(get, never):Int;
@@ -83,17 +86,14 @@ class VLCBitmap extends Bitmap
 	public var volume(get, set):Int;
 	public var rate(get, set):Float;
 	public var fps(get, never):Float;
+
+	public var isDisplaying(default, null):Bool = false;
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 
-	public var videoWidth(default, null):Int = 0;
-	public var videoHeight(default, null):Int = 0;
-
-	private var canRender:Bool = false;
-	private var pixels:Pointer<UInt8>;
+	// Declarations
 	private var buffer:BytesData;
-	private var texture:RectangleTexture;
-
+	private var pixels:Pointer<UInt8>;
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
 	private var mediaPlayer:LibVLC_MediaPlayer;
@@ -102,7 +102,7 @@ class VLCBitmap extends Bitmap
 
 	public function new():Void
 	{
-		super();
+		super(bitmapData, AUTO, true);
 
 		instance = LibVLC.init(0, null);
 		audioOutput = LibVLC.audio_output_list_get(instance);
@@ -140,11 +140,14 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(mediaItem);
 
-		if (canRender)
-			canRender = false;
+		if (isDisplaying)
+			isDisplaying = false;
 
-		if (buffer == null || (buffer != null && buffer.length > 0))
+		if (buffer != null && buffer.length > 0)
 			buffer = [];
+
+		if (bitmapData != null)
+			bitmapData.dispose();
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
@@ -194,23 +197,14 @@ class VLCBitmap extends Bitmap
 
 		cleanupEvents();
 
-		if (canRender)
-			canRender = false;
+		if (isDisplaying)
+			isDisplaying = false;
 
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
 
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
-
 		if (bitmapData != null)
-		{
 			bitmapData.dispose();
-			bitmapData = null;
-		}
 
 		#if HXC_DEBUG_TRACE
 		trace("dispose done!");
@@ -226,49 +220,29 @@ class VLCBitmap extends Bitmap
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
-	private var currentTime:Float = 0;
 	private function onEnterFrame(e:Event):Void
 	{
-		if (canRender && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+		if (isDisplaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
-			var time:Int = Lib.getTimer();
-			var elements:Int = videoWidth * videoHeight * 4;
-			renderToTexture(time - currentTime, elements);
-		}
-	}
+			// Initialize the bitmap data if necessary.
+			if (bitmapData == null)
+				bitmapData = new BitmapData(videoWidth, videoHeight, true, 0x00000000);
 
-	private function renderToTexture(deltaTime:Float, elementsCount:Int):Void
-	{
-		// Initialize the `texture` if necessary.
-		if (texture == null)
-			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
+			// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
+			if (!smoothing)
+				smoothing = true;
 
-		// Initialize the `bitmapData` if necessary.
-		if (bitmapData == null && texture != null)
-			bitmapData = BitmapData.fromTexture(texture);
+			NativeArray.setUnmanagedData(buffer, pixels, Std.int(videoWidth * videoHeight * 4));
 
-		// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
-		if (!smoothing)
-			smoothing = true;
-
-		if (deltaTime > (1000 / (fps * rate)))
-		{
-			currentTime = deltaTime;
-
-			#if HXC_DEBUG_TRACE
-			trace("rendering...");
-			#end
-
-			NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
-
-			if (texture != null && (buffer != null && buffer.length > 0))
+			if (bitmapData != null && (buffer != null && buffer.length > 0))
 			{
 				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= elementsCount)
+				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
 				{
-					texture.uploadFromByteArray(bytes, 0);
-					width++;
-					width--;
+					// This is a very intensive process? Maybe
+					bitmapData.lock();
+					bitmapData.setPixels(bitmapData.rect, bytes);
+					bitmapData.unlock();
 				}
 			}
 		}
