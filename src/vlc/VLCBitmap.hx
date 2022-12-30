@@ -73,6 +73,44 @@ static void display(void *data, void *picture)
 static void callbacks(const libvlc_event_t *event, void *data)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
+
+	switch (event->type)
+	{
+		case libvlc_MediaPlayerOpening:
+			if (self->onOpening != NULL)
+				self->onOpening();
+			break;
+		case libvlc_MediaPlayerPlaying:
+			if (self->onPlaying != NULL)
+				self->onPlaying();
+			break;
+		case libvlc_MediaPlayerStopped:
+			if (self->onStopped != NULL)
+				self->onStopped();
+			break;
+		case libvlc_MediaPlayerPausableChanged:
+			if (self->onPausableChanged != NULL)
+				self->onPausableChanged(event->u.media_player_pausable_changed.new_pausable);
+			break;
+		case libvlc_MediaPlayerEndReached:
+			if (self->onEndReached != NULL)
+				self->onEndReached();
+			break;
+		case libvlc_MediaPlayerEncounteredError:
+			if (self->onEncounteredError != NULL)
+				self->onEncounteredError();
+			break;
+		case libvlc_MediaPlayerForward:
+			if (self->onForward != NULL)
+				self->onForward();
+			break;
+		case libvlc_MediaPlayerBackward:
+			if (self->onBackward != NULL)
+				self->onBackward();
+			break;
+		default:
+			break;
+	}
 }')
 class VLCBitmap extends Bitmap
 {
@@ -92,12 +130,22 @@ class VLCBitmap extends Bitmap
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 
+	// Callbacks
+	public var onOpening:Void->Void;
+	public var onPlaying:Void->Void;
+	public var onStopped:Void->Void;
+	public var onPausableChanged:Int->Void;
+	public var onEndReached:Void->Void;
+	public var onEncounteredError:Void->Void;
+	public var onForward:Void->Void;
+	public var onBackward:Void->Void;
+
 	// Declarations
 	private var buffer:BytesData;
 	private var pixels:Pointer<UInt8>;
 	private var texture:RectangleTexture;
 
-	// LibVLC Stuff
+	// LibVLC
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
 	private var mediaPlayer:LibVLC_MediaPlayer;
@@ -142,10 +190,8 @@ class VLCBitmap extends Bitmap
 
 		if (haccelerated)
 		{
-			LibVLC.media_add_option(mediaItem, ":hwdec=vaapi");
 			LibVLC.media_add_option(mediaItem, ":ffmpeg-hw");
 			LibVLC.media_add_option(mediaItem, ":avcodec-hw=any");
-			LibVLC.media_add_option(mediaItem, ":avcodec-hw=vaapi");
 		}
 
 		LibVLC.media_release(mediaItem);
