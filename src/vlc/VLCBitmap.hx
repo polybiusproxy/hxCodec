@@ -228,19 +228,18 @@ class VLCBitmap extends Bitmap
 			if (!smoothing)
 				smoothing = true;
 
-			NativeArray.setUnmanagedData(buffer, pixels, (videoWidth * videoHeight * 4));
+			final elements:Int = videoWidth * videoHeight * 4;
 
-			if (buffer != null && buffer.length > 0)
+			NativeArray.setUnmanagedData(buffer, pixels, elements);
+
+			if (bitmapData != null && (buffer != null && buffer.length > 0))
 			{
 				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length > (videoWidth * videoHeight * 4))
+				if (bytes.length > elements)
 				{
-					if (bitmapData != null)
-					{
-						bitmapData.lock();
-						bitmapData.setPixels(bitmapData.rect, bytes);
- 						bitmapData.unlock();
-					}
+					bitmapData.lock();
+					bitmapData.setPixels(bitmapData.rect, bytes);
+ 					bitmapData.unlock();
 				}
 			}
 		}
