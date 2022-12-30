@@ -6,12 +6,12 @@ package vlc;
 import cpp.NativeArray;
 import cpp.Pointer;
 import cpp.UInt8;
-import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.events.Event;
+import openfl.utils.ByteArray;
 import vlc.LibVLC;
 
 /**
@@ -234,8 +234,8 @@ class VLCBitmap extends Bitmap
 
 			if (bitmapData != null && (buffer != null && buffer.length > 0))
 			{
-				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length > elements)
+				var bytes:ByteArray = buffer;
+				if (bytes.bytesAvailable > elements)
 				{
 					bitmapData.lock();
 					bitmapData.setPixels(bitmapData.rect, bytes);
