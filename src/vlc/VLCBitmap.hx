@@ -6,12 +6,14 @@ package vlc;
 import cpp.NativeArray;
 import cpp.Pointer;
 import cpp.UInt8;
+import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
+import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
-import openfl.utils.ByteArray;
 import vlc.LibVLC;
 
 /**
@@ -90,6 +92,8 @@ class VLCBitmap extends Bitmap
 	private var canRender:Bool = false;
 	private var pixels:Pointer<UInt8>;
 	private var buffer:BytesData;
+	private var texture:RectangleTexture;
+
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
 	private var mediaPlayer:LibVLC_MediaPlayer;
@@ -196,6 +200,12 @@ class VLCBitmap extends Bitmap
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
 
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
+
 		if (bitmapData != null)
 		{
 			bitmapData.dispose();
@@ -216,30 +226,49 @@ class VLCBitmap extends Bitmap
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
+	private var currentTime:Float = 0;
 	private function onEnterFrame(e:Event):Void
 	{
 		if (canRender && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
-			// Initialize the `bitmapData` if necessary.
-			if (bitmapData == null)
-				bitmapData = new BitmapData(videoWidth, videoHeight, true, 0x00000000);
+			var time:Int = Lib.getTimer();
+			var elements:Int = videoWidth * videoHeight * 4;
+			renderToTexture(time - currentTime, elements);
+		}
+	}
 
-			// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
-			if (!smoothing)
-				smoothing = true;
+	private function renderToTexture(deltaTime:Float, elementsCount:Int):Void
+	{
+		// Initialize the `texture` if necessary.
+		if (texture == null)
+			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
 
-			final elements:Int = videoWidth * videoHeight * 4;
+		// Initialize the `bitmapData` if necessary.
+		if (bitmapData == null && texture != null)
+			bitmapData = BitmapData.fromTexture(texture);
 
-			NativeArray.setUnmanagedData(buffer, pixels, elements);
+		// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
+		if (!smoothing)
+			smoothing = true;
 
-			if (bitmapData != null && (buffer != null && buffer.length > 0))
+		if (deltaTime > (1000 / (fps * rate)))
+		{
+			currentTime = deltaTime;
+
+			#if HXC_DEBUG_TRACE
+			trace("rendering...");
+			#end
+
+			NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
+
+			if (texture != null && (buffer != null && buffer.length > 0))
 			{
-				var bytes:ByteArray = buffer;
-				if (bytes.bytesAvailable > elements)
+				var bytes:Bytes = Bytes.ofData(buffer);
+				if (bytes.length >= elementsCount)
 				{
-					bitmapData.lock();
-					bitmapData.setPixels(bitmapData.rect, bytes);
- 					bitmapData.unlock();
+					texture.uploadFromByteArray(bytes, 0);
+					width++;
+					width--;
 				}
 			}
 		}
