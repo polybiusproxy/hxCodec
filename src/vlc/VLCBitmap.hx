@@ -12,6 +12,7 @@ import haxe.io.Path;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
 import vlc.LibVLC;
 
@@ -94,6 +95,9 @@ class VLCBitmap extends Bitmap
 	// Declarations
 	private var buffer:BytesData;
 	private var pixels:Pointer<UInt8>;
+	private var texture:RectangleTexture;
+
+	// LibVLC Stuff
 	private var instance:LibVLC_Instance;
 	private var audioOutput:LibVLC_AudioOutput;
 	private var mediaPlayer:LibVLC_MediaPlayer;
@@ -114,13 +118,11 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Playback Functions
-	public function play(?location:String = null, loop:Bool = false):Void
+	public function play(?location:String = null, loop:Bool = false, haccelerated:Bool = true):Void
 	{
 		final path:String = Path.normalize(location);
 
-		#if HXC_DEBUG_TRACE
 		trace("setting path to: " + path);
-		#end
 
 		mediaItem = LibVLC.media_new_path(instance, path);
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
@@ -138,6 +140,14 @@ class VLCBitmap extends Bitmap
 		else
 			LibVLC.media_add_option(mediaItem, "input-repeat=0");
 
+		if (haccelerated)
+		{
+			LibVLC.media_add_option(mediaItem, ":hwdec=vaapi");
+			LibVLC.media_add_option(mediaItem, ":ffmpeg-hw");
+			LibVLC.media_add_option(mediaItem, ":avcodec-hw=any");
+			LibVLC.media_add_option(mediaItem, ":avcodec-hw=vaapi");
+		}
+
 		LibVLC.media_release(mediaItem);
 
 		if (isDisplaying)
@@ -145,9 +155,6 @@ class VLCBitmap extends Bitmap
 
 		if (buffer == null || (buffer != null && buffer.length > 0))
 			buffer = [];
-
-		if (bitmapData != null)
-			bitmapData.dispose();
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
@@ -185,30 +192,31 @@ class VLCBitmap extends Bitmap
 
 	public function dispose():Void
 	{
-		#if HXC_DEBUG_TRACE
-		trace("disposing the bitmap!");
-		#end
-
-		if (stage.hasEventListener(Event.ENTER_FRAME))
-			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+		if (isDisplaying)
+			isDisplaying = false;
 
 		if (isPlaying)
 			stop();
 
 		cleanupEvents();
 
-		if (isDisplaying)
-			isDisplaying = false;
+		if (stage.hasEventListener(Event.ENTER_FRAME))
+			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
 
-		if (bitmapData != null)
-			bitmapData.dispose();
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
 
-		#if HXC_DEBUG_TRACE
-		trace("dispose done!");
-		#end
+		if (bitmapData != null)
+		{
+			bitmapData.dispose();
+			bitmapData = null;
+		}
 	}
 
 	// Internal Methods
@@ -220,32 +228,49 @@ class VLCBitmap extends Bitmap
 		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
+	private var currentTime:Float = 0;
 	private function onEnterFrame(e:Event):Void
 	{
 		if (isDisplaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
-			// Initialize the `bitmapData` if necessary.
-			if (bitmapData == null)
-				bitmapData = new BitmapData(videoWidth, videoHeight, true, 0x00000000);
+			var time:Int = Lib.getTimer();
+			var elements:Int = videoWidth * videoHeight * 4;
+			renderToTexture(time - currentTime, elements);
+		}
+	}#
 
-			// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
-			if (!smoothing)
-				smoothing = true;
+	private function renderToTexture(deltaTime:Float, elements:Int):Void
+	{
+		// Initialize the `texture` if necessary.
+		if (texture == null)
+			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
 
-			final elements:Int = videoWidth * videoHeight * 4;
+		// Initialize the `bitmapData` if necessary.
+		if (bitmapData == null && texture != null)
+			bitmapData = BitmapData.fromTexture(texture);
+
+		// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
+		if (!smoothing)
+			smoothing = true;
+
+		// if (deltaTime > (1000 / (fps * rate)))
+		if (deltaTime > 28)
+		{
+			currentTime = deltaTime;
 
 			NativeArray.setUnmanagedData(buffer, pixels, elements);
 
-			if (bitmapData != null && (buffer != null && buffer.length > 0))
+			if (texture != null && (buffer != null && buffer.length > 0))
 			{
 				var bytes:Bytes = Bytes.ofData(buffer);
 				if (bytes.length >= elements)
 				{
-					// This is a very intensive process? Maybe
-					bitmapData.lock();
-					bitmapData.setPixels(bitmapData.rect, bytes);
-					bitmapData.unlock();
+					texture.uploadFromByteArray(bytes, 0);
+					width++;
+					width--;
 				}
+				else
+					trace("Too small frame, can't render :(");
 			}
 		}
 	}
