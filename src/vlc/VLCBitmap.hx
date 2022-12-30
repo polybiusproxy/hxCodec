@@ -53,6 +53,7 @@ static void format_cleanup(void *data)
 static void *lock(void *data, void **p_pixels)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
+	*p_pixels = self->pixels;
 	return NULL;
 }
 
