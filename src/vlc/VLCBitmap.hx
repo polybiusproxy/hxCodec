@@ -12,7 +12,6 @@ import haxe.io.Path;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.events.Event;
-import openfl.utils.ByteArray;
 import vlc.LibVLC;
 
 /**
@@ -232,10 +231,9 @@ class VLCBitmap extends Bitmap
 
 			if (buffer != null && buffer.length > 0)
 			{
-				var bytes:ByteArray = buffer;
-				if (bytes.bytesAvailable > (videoWidth * videoHeight * 4))
+				var bytes:Bytes = Bytes.ofData(buffer);
+				if (bytes.length > (videoWidth * videoHeight * 4))
 				{
-					bytes.position = 0;
 					if (bitmapData != null)
 					{
 						bitmapData.lock();
