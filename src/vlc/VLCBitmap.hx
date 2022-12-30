@@ -237,7 +237,7 @@ class VLCBitmap extends Bitmap
 			var elements:Int = videoWidth * videoHeight * 4;
 			renderToTexture(time - currentTime, elements);
 		}
-	}#
+	}
 
 	private function renderToTexture(deltaTime:Float, elements:Int):Void
 	{
