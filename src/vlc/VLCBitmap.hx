@@ -123,6 +123,7 @@ class VLCBitmap extends Bitmap
 	public var length(get, never):Int;
 	public var duration(get, never):Int;
 	public var volume(get, set):Int;
+	public var delay(get, set):Int;
 	public var rate(get, set):Float;
 	public var fps(get, never):Float;
 
@@ -421,6 +422,22 @@ class VLCBitmap extends Bitmap
 	{
 		if (mediaPlayer != null)
 			LibVLC.audio_set_volume(mediaPlayer, value);
+
+		return value;
+	}
+
+	@:noCompletion private function get_delay():Int
+	{
+		if (mediaPlayer != null)
+			return LibVLC.audio_get_delay(mediaPlayer);
+
+		return 0;
+	}
+
+	@:noCompletion private function set_delay(value:Int):Int
+	{
+		if (mediaPlayer != null)
+			LibVLC.audio_set_delay(mediaPlayer, value);
 
 		return value;
 	}
