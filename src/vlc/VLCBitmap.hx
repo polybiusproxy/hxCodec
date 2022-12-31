@@ -40,7 +40,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = _w;
 	self->videoHeight = _h;
 
-	if (self->pixels != NULL)
+	if (self->pixels != 0)
 		delete self->pixels;
 
 	self->pixels = new unsigned char[_frame];
