@@ -40,7 +40,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = _w;
 	self->videoHeight = _h;
 
-	if (self->pixels != 0)
+	if (self->pixels != NULL)
 		delete self->pixels;
 
 	self->pixels = new unsigned char[_frame];
@@ -200,6 +200,9 @@ class VLCBitmap extends Bitmap
 		if (isDisplaying)
 			isDisplaying = false;
 
+		if (pixels != null)
+			pixels = null; // I can't find a way to make it 0 so...
+
 		if (buffer == null || (buffer != null && buffer.length > 0))
 			buffer = [];
 
@@ -258,6 +261,9 @@ class VLCBitmap extends Bitmap
 			bitmapData.dispose();
 			bitmapData = null;
 		}
+
+		if (pixels != null)
+			pixels = null; // I can't find a way to make it 0 so...
 
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
