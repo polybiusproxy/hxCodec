@@ -57,6 +57,18 @@ extern class LibVLC
 	@:native("libvlc_audio_output_set")
 	static function audio_output_set(p_mi:LibVLC_MediaPlayer, deviceName:ConstCharStar):Void;
 
+	@:native("libvlc_audio_get_delay")
+	static function audio_get_delay(p_mi:LibVLC_MediaPlayer):Int64;
+
+	@:native("libvlc_audio_set_delay")
+	static function audio_set_delay(p_mi:LibVLC_MediaPlayer, i_delay:Int64):Int;
+
+	@:native("libvlc_audio_get_volume")
+	static function audio_get_volume(p_mi:LibVLC_MediaPlayer):Int;
+
+	@:native("libvlc_audio_set_volume")
+	static function audio_set_volume(p_mi:LibVLC_MediaPlayer, i_volume:Int):Int;
+
 	@:native("libvlc_event_attach")
 	static function event_attach(p_event_manager:LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Event_Callback,
 		user_data:cpp.Star<cpp.Void>):Int;
@@ -64,12 +76,6 @@ extern class LibVLC
 	@:native("libvlc_event_detach")
 	static function event_detach(p_event_manager:LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Event_Callback,
 		user_data:cpp.Star<cpp.Void>):Int;
-
-	@:native("libvlc_audio_get_volume")
-	static function audio_get_volume(p_mi:LibVLC_MediaPlayer):Int;
-
-	@:native("libvlc_audio_set_volume")
-	static function audio_set_volume(p_mi:LibVLC_MediaPlayer, i_volume:Int):Int;
 
 	@:native("libvlc_media_new_path")
 	static function media_new_path(p_instance:LibVLC_Instance, path:ConstCharStar):LibVLC_Media;
@@ -106,6 +112,9 @@ extern class LibVLC
 
 	@:native("libvlc_media_player_can_pause")
 	static function media_player_can_pause(p_mi:LibVLC_MediaPlayer):Bool;
+
+	@:native("libvlc_media_player_record")
+	static function media_new_path(p_instance:LibVLC_Instance, enable:Bool, dir_path:ConstCharStar):Void;
 
 	@:native("libvlc_media_player_release")
 	static function media_player_release(p_mi:LibVLC_MediaPlayer):Void;
