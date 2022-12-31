@@ -241,16 +241,10 @@ class VLCBitmap extends Bitmap
 		if (isPlaying)
 			stop();
 
-		if (isDisplaying)
-			isDisplaying = false;
-
 		cleanupEvents();
 
 		if (stage.hasEventListener(Event.ENTER_FRAME))
 			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
 
 		if (texture != null)
 		{
@@ -263,6 +257,12 @@ class VLCBitmap extends Bitmap
 			bitmapData.dispose();
 			bitmapData = null;
 		}
+
+		if (buffer != null && buffer.length > 0)
+			buffer = [];
+
+		if (isDisplaying)
+			isDisplaying = false;
 
 		onOpening = null;
 		onPlaying = null;
@@ -294,7 +294,7 @@ class VLCBitmap extends Bitmap
 		}
 	}
 
-	private function renderToTexture(deltaTime:Float, elements:Int):Void
+	private function renderToTexture(deltaTime:Float, elementsCount:Int):Void
 	{
 		// Initialize the `texture` if necessary.
 		if (texture == null)
@@ -313,12 +313,12 @@ class VLCBitmap extends Bitmap
 		{
 			currentTime = deltaTime;
 
-			NativeArray.setUnmanagedData(buffer, pixels, elements);
+			NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
 
 			if (texture != null && (buffer != null && buffer.length > 0))
 			{
 				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= elements)
+				if (bytes.length >= elementsCount)
 				{
 					texture.uploadFromByteArray(bytes, 0);
 					width++;
