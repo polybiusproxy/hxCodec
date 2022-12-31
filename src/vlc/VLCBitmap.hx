@@ -74,7 +74,7 @@ static void callbacks(const libvlc_event_t *event, void *data)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 
-	switch (event->type)
+	/*switch (event->type)
 	{
 		case libvlc_MediaPlayerOpening:
 			if (self->onOpening != NULL)
@@ -110,7 +110,7 @@ static void callbacks(const libvlc_event_t *event, void *data)
 			break;
 		default:
 			break;
-	}
+	}*/
 }')
 class VLCBitmap extends Bitmap
 {
