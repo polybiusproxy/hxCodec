@@ -54,6 +54,9 @@ extern class LibVLC
 	@:native("libvlc_audio_output_list_get")
 	static function audio_output_list_get(p_instance:LibVLC_Instance):LibVLC_AudioOutput;
 
+	@:native("libvlc_audio_output_list_release")
+	static function audio_output_list_release(p_list:LibVLC_AudioOutput):Void;
+
 	@:native("libvlc_audio_output_set")
 	static function audio_output_set(p_mi:LibVLC_MediaPlayer, deviceName:ConstCharStar):Void;
 
