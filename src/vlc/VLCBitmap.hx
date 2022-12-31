@@ -315,8 +315,7 @@ class VLCBitmap extends Bitmap
 		if (!smoothing)
 			smoothing = true;
 
-		// if (deltaTime > (1000 / (fps * rate)))
-		if (deltaTime > 28)
+		if (deltaTime > (1000 / (fps * rate)))
 		{
 			currentTime = deltaTime;
 
