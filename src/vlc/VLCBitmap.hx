@@ -1,4 +1,4 @@
-package vlc;
+#package vlc;
 
 #if !(desktop || android)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
@@ -269,7 +269,7 @@ class VLCBitmap extends Bitmap
 		onOpening = null;
 		onPlaying = null;
 		onStopped = null;
-		onPausableChanged = null;
+		onPaused = null;
 		onEndReached = null;
 		onEncounteredError = null;
 		onForward = null;
