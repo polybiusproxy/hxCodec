@@ -284,7 +284,7 @@ class VLCBitmap extends Bitmap
 	{
 		checkFlags();
 
-		if (canRender && initComplete && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+		if (isDisplaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
 			var time:Int = Lib.getTimer();
 			var elements:Int = videoWidth * videoHeight * 4;
