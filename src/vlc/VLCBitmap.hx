@@ -22,6 +22,7 @@ import vlc.LibVLC;
  *
  * This class lets you to use LibVLC externs as a bitmap then you can displaylist along other items.
  */
+@:keep
 @:cppNamespaceCode('
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
@@ -40,7 +41,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = _w;
 	self->videoHeight = _h;
 
-	if (self->pixels != 0)
+	if (self->pixels != NULL || self->pixels != nullptr)
 		delete self->pixels;
 
 	self->pixels = new unsigned char[_frame];
@@ -74,43 +75,43 @@ static void callbacks(const libvlc_event_t *event, void *data)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 
-	/*switch (event->type)
+	switch (event->type)
 	{
 		case libvlc_MediaPlayerOpening:
-			if (self->onOpening != NULL)
+			if (self->onOpening != NULL || self->onOpening != NULL)
 				self->onOpening();
 			break;
 		case libvlc_MediaPlayerPlaying:
-			if (self->onPlaying != NULL)
+			if (self->onPlaying != NULL || self->onPlaying != NULL)
 				self->onPlaying();
 			break;
 		case libvlc_MediaPlayerStopped:
-			if (self->onStopped != NULL)
+			if (self->onStopped != NULL || self->onStopped != NULL)
 				self->onStopped();
 			break;
 		case libvlc_MediaPlayerPausableChanged:
-			if (self->onPausableChanged != NULL)
+			if (self->onPausableChanged != NULL || self->onPausableChanged != NULL)
 				self->onPausableChanged(event->u.media_player_pausable_changed.new_pausable);
 			break;
 		case libvlc_MediaPlayerEndReached:
-			if (self->onEndReached != NULL)
+			if (self->onEndReached != NULL || self->onEndReached != NULL)
 				self->onEndReached();
 			break;
 		case libvlc_MediaPlayerEncounteredError:
-			if (self->onEncounteredError != NULL)
+			if (self->onEncounteredError != NULL || self->onEncounteredError != NULL)
 				self->onEncounteredError();
 			break;
 		case libvlc_MediaPlayerForward:
-			if (self->onForward != NULL)
+			if (self->onForward != NULL || self->onForward != NULL)
 				self->onForward();
 			break;
 		case libvlc_MediaPlayerBackward:
-			if (self->onBackward != NULL)
+			if (self->onBackward != NULL || self->onBackward != NULL)
 				self->onBackward();
 			break;
 		default:
 			break;
-	}*/
+	}
 }')
 class VLCBitmap extends Bitmap
 {
