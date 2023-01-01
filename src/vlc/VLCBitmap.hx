@@ -78,38 +78,28 @@ static void callbacks(const libvlc_event_t *event, void *data)
 	switch (event->type)
 	{
 		case libvlc_MediaPlayerOpening:
-			if (self->onOpening != NULL || self->onOpening != nullptr)
-				self->onOpening();
+			self->flags[0] = true;
 			break;
 		case libvlc_MediaPlayerPlaying:
-			if (self->onPlaying != NULL || self->onPlaying != nullptr)
-				self->onPlaying();
+			self->flags[1] = true;
+			break;
+		case libvlc_MediaPlayerPaused:
+			self->flags[2] = true;
 			break;
 		case libvlc_MediaPlayerStopped:
-			if (self->onStopped != NULL || self->onStopped != nullptr)
-				self->onStopped();
-			break;
-		case libvlc_MediaPlayerPausableChanged:
-			if (self->onPausableChanged != NULL || self->onPausableChanged != nullptr)
-				self->onPausableChanged(event->u.media_player_pausable_changed.new_pausable);
+			self->flags[3] = true;
 			break;
 		case libvlc_MediaPlayerEndReached:
-			if (self->onEndReached != NULL || self->onEndReached != nullptr)
-				self->onEndReached();
+			self->flags[4] = true;
 			break;
 		case libvlc_MediaPlayerEncounteredError:
-			if (self->onEncounteredError != NULL || self->onEncounteredError != nullptr)
-				self->onEncounteredError();
+			self->flags[5] = true;
 			break;
 		case libvlc_MediaPlayerForward:
-			if (self->onForward != NULL || self->onForward != nullptr)
-				self->onForward();
+			self->flags[6] = true;
 			break;
 		case libvlc_MediaPlayerBackward:
-			if (self->onBackward != NULL || self->onBackward != nullptr)
-				self->onBackward();
-			break;
-		default:
+			self->flags[7] = true;
 			break;
 	}
 }')
@@ -135,16 +125,17 @@ class VLCBitmap extends Bitmap
 	// Callbacks
 	public var onOpening:Void->Void;
 	public var onPlaying:Void->Void;
+	public var onPaused:Void->Void;
 	public var onStopped:Void->Void;
-	public var onPausableChanged:Bool->Void;
 	public var onEndReached:Void->Void;
 	public var onEncounteredError:Void->Void;
 	public var onForward:Void->Void;
 	public var onBackward:Void->Void;
 
 	// Declarations
-	private var buffer:BytesData;
+	private var flags:Array<Bool>;
 	private var pixels:Pointer<UInt8>;
+	private var buffer:BytesData;
 	private var texture:RectangleTexture;
 
 	// LibVLC
@@ -157,6 +148,9 @@ class VLCBitmap extends Bitmap
 	public function new():Void
 	{
 		super(bitmapData, AUTO, true);
+
+		for (i in 0...7)
+			flags[i] = false;
 
 		instance = LibVLC.init(0, null);
 		audioOutput = LibVLC.audio_output_list_get(instance);
@@ -220,25 +214,25 @@ class VLCBitmap extends Bitmap
 	public function stop():Void
 	{
 		if (mediaPlayer != null)
-			return LibVLC.media_player_stop(mediaPlayer);
+			LibVLC.media_player_stop(mediaPlayer);
 	}
 
 	public function pause():Void
 	{
 		if (mediaPlayer != null)
-			return LibVLC.media_player_set_pause(mediaPlayer, 1);
+			LibVLC.media_player_set_pause(mediaPlayer, 1);
 	}
 
 	public function resume():Void
 	{
 		if (mediaPlayer != null)
-			return LibVLC.media_player_set_pause(mediaPlayer, 0);
+			LibVLC.media_player_set_pause(mediaPlayer, 0);
 	}
 
 	public function release():Void
 	{
 		if (mediaPlayer != null)
-			return LibVLC.media_player_release(mediaPlayer);
+			LibVLC.media_player_release(mediaPlayer);
 	}
 
 	public function dispose():Void
@@ -294,6 +288,64 @@ class VLCBitmap extends Bitmap
 	private var currentTime:Float = 0;
 	private function onEnterFrame(e:Event):Void
 	{
+		// Callback Flags Check
+		if (flags[0])
+		{
+			flags[0] = false;
+			if (onOpening != null)
+				onOpening();
+		}
+
+		if (flags[1])
+		{
+			flags[1] = false;
+			if (onPlaying != null)
+				onPlaying();
+		}
+
+		if (flags[2])
+		{
+			flags[2] = false;
+			if (onPaused != null)
+				onPaused();
+		}
+
+		if (flags[3])
+		{
+			flags[3] = false;
+			if (onStopped != null)
+				onStopped();
+		}
+
+		if (flags[4])
+		{
+			flags[4] = false;
+			if (onEndReached != null)
+				onEndReached();
+		}
+
+		if (flags[5])
+		{
+			flags[5] = false;
+			if (onEncounteredError != null)
+				onEncounteredError();
+		}
+
+		if (flags[6])
+		{
+			flags[6] = false;
+			if (onForward != null)
+				onForward();
+		}
+
+		if (flags[7])
+		{
+			flags[7] = false;
+			if (onBackward != null)
+				onBackward();
+		}
+
+		// Render
 		if (isDisplaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
 			var time:Int = Lib.getTimer();
@@ -345,7 +397,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerOpening, callback, self);
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPlaying, callback, self);
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerStopped, callback, self);
-		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPausableChanged, callback, self);
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPaused, callback, self);
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerEndReached, callback, self);
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerEncounteredError, callback, self);
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerForward, callback, self);
@@ -360,7 +412,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerOpening, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPlaying, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerStopped, callback, self);
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPausableChanged, callback, self);
+		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPaused, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerEndReached, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerEncounteredError, callback, self);
 		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerForward, callback, self);
