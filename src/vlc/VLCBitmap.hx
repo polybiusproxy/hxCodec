@@ -149,6 +149,7 @@ class VLCBitmap extends Bitmap
 	{
 		super(bitmapData, AUTO, true);
 
+		flags = [];
 		for (i in 0...7)
 			flags[i] = false;
 
