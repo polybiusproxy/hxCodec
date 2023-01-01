@@ -133,7 +133,7 @@ class VLCBitmap extends Bitmap
 	public var onBackward:Void->Void;
 
 	// Declarations
-	private var flags:Array<Bool>;
+	private var flags:Array<Bool> = [];
 	private var pixels:Pointer<UInt8>;
 	private var buffer:BytesData;
 	private var texture:RectangleTexture;
@@ -149,7 +149,6 @@ class VLCBitmap extends Bitmap
 	{
 		super(bitmapData, AUTO, true);
 
-		flags = [];
 		for (i in 0...7)
 			flags[i] = false;
 
@@ -235,7 +234,6 @@ class VLCBitmap extends Bitmap
 			stop();
 
 		cleanupEvents();
-		release();
 
 		if (stage.hasEventListener(Event.ENTER_FRAME))
 			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -288,7 +286,7 @@ class VLCBitmap extends Bitmap
 		{
 			var time:Int = Lib.getTimer();
 			var elements:Int = videoWidth * videoHeight * 4;
-			renderToTexture(time - currentTime, elements);
+			render(time - currentTime, elements);
 		}
 	}
 
@@ -351,7 +349,7 @@ class VLCBitmap extends Bitmap
 		}
 	}
 
-	private function renderToTexture(deltaTime:Float, elementsCount:Int):Void
+	private function render(deltaTime:Float, elementsCount:Int):Void
 	{
 		// Initialize the `texture` if necessary.
 		if (texture == null)
