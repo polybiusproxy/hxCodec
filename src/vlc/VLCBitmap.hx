@@ -162,7 +162,7 @@ class VLCBitmap extends Bitmap
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
-	// Playback Functions
+	// Playback Methods
 	public function play(?location:String = null, loop:Bool = false, haccelerated:Bool = true):Void
 	{
 		final path:String = Path.normalize(location);
@@ -175,13 +175,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.media_parse(mediaItem);
 
 		if (loop)
-		{
-			#if android
-			LibVLC.media_add_option(mediaItem, "input-repeat=65535");
-			#else
-			LibVLC.media_add_option(mediaItem, "input-repeat=-1");
-			#end
-		}
+			LibVLC.media_add_option(mediaItem, #if android "input-repeat=65535" #else "input-repeat=-1" #end);
 		else
 			LibVLC.media_add_option(mediaItem, "input-repeat=0");
 
@@ -199,8 +193,7 @@ class VLCBitmap extends Bitmap
 		if (buffer == null || (buffer != null && buffer.length > 0))
 			buffer = [];
 
-		if (isDisplaying)
-			isDisplaying = false;
+		isDisplaying = false;
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
@@ -242,6 +235,7 @@ class VLCBitmap extends Bitmap
 			stop();
 
 		cleanupEvents();
+		release();
 
 		if (stage.hasEventListener(Event.ENTER_FRAME))
 			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -264,8 +258,7 @@ class VLCBitmap extends Bitmap
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
 
-		if (isDisplaying)
-			isDisplaying = false;
+		isDisplaying = false;
 
 		onOpening = null;
 		onPlaying = null;
@@ -289,7 +282,18 @@ class VLCBitmap extends Bitmap
 	private var currentTime:Float = 0;
 	private function onEnterFrame(e:Event):Void
 	{
-		// Callback Flags Check
+		checkFlags();
+
+		if (canRender && initComplete && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+		{
+			var time:Int = Lib.getTimer();
+			var elements:Int = videoWidth * videoHeight * 4;
+			renderToTexture(time - currentTime, elements);
+		}
+	}
+
+	private function checkFlags():Void
+	{
 		if (flags[0])
 		{
 			flags[0] = false;
@@ -344,14 +348,6 @@ class VLCBitmap extends Bitmap
 			flags[7] = false;
 			if (onBackward != null)
 				onBackward();
-		}
-
-		// Render
-		if (isDisplaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
-		{
-			var time:Int = Lib.getTimer();
-			var elements:Int = videoWidth * videoHeight * 4;
-			renderToTexture(time - currentTime, elements);
 		}
 	}
 
