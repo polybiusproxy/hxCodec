@@ -75,43 +75,27 @@ static void callbacks(const libvlc_event_t *event, void *data)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 
-	/*switch (event->type)
+	switch (event->type)
 	{
 		case libvlc_MediaPlayerOpening:
-			if (self->onOpening != NULL || self->onOpening != NULL)
-				self->onOpening();
 			break;
 		case libvlc_MediaPlayerPlaying:
-			if (self->onPlaying != NULL || self->onPlaying != NULL)
-				self->onPlaying();
 			break;
 		case libvlc_MediaPlayerStopped:
-			if (self->onStopped != NULL || self->onStopped != NULL)
-				self->onStopped();
 			break;
 		case libvlc_MediaPlayerPausableChanged:
-			if (self->onPausableChanged != NULL || self->onPausableChanged != NULL)
-				self->onPausableChanged(event->u.media_player_pausable_changed.new_pausable);
 			break;
 		case libvlc_MediaPlayerEndReached:
-			if (self->onEndReached != NULL || self->onEndReached != NULL)
-				self->onEndReached();
 			break;
 		case libvlc_MediaPlayerEncounteredError:
-			if (self->onEncounteredError != NULL || self->onEncounteredError != NULL)
-				self->onEncounteredError();
 			break;
 		case libvlc_MediaPlayerForward:
-			if (self->onForward != NULL || self->onForward != NULL)
-				self->onForward();
 			break;
 		case libvlc_MediaPlayerBackward:
-			if (self->onBackward != NULL || self->onBackward != NULL)
-				self->onBackward();
 			break;
 		default:
 			break;
-	}*/
+	}
 }')
 class VLCBitmap extends Bitmap
 {
