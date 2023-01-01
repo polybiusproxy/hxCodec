@@ -78,20 +78,36 @@ static void callbacks(const libvlc_event_t *event, void *data)
 	switch (event->type)
 	{
 		case libvlc_MediaPlayerOpening:
+			if (self->onOpening != NULL || self->onOpening != nullptr)
+				self->onOpening();
 			break;
 		case libvlc_MediaPlayerPlaying:
+			if (self->onPlaying != NULL || self->onPlaying != nullptr)
+				self->onPlaying();
 			break;
 		case libvlc_MediaPlayerStopped:
+			if (self->onStopped != NULL || self->onStopped != nullptr)
+				self->onStopped();
 			break;
 		case libvlc_MediaPlayerPausableChanged:
+			if (self->onPausableChanged != NULL || self->onPausableChanged != nullptr)
+				self->onPausableChanged(event->u.media_player_pausable_changed.new_pausable);
 			break;
 		case libvlc_MediaPlayerEndReached:
+			if (self->onEndReached != NULL || self->onEndReached != nullptr)
+				self->onEndReached();
 			break;
 		case libvlc_MediaPlayerEncounteredError:
+			if (self->onEncounteredError != NULL || self->onEncounteredError != nullptr)
+				self->onEncounteredError();
 			break;
 		case libvlc_MediaPlayerForward:
+			if (self->onForward != NULL || self->onForward != nullptr)
+				self->onForward();
 			break;
 		case libvlc_MediaPlayerBackward:
+			if (self->onBackward != NULL || self->onBackward != nullptr)
+				self->onBackward();
 			break;
 		default:
 			break;
@@ -120,7 +136,7 @@ class VLCBitmap extends Bitmap
 	public var onOpening:Void->Void;
 	public var onPlaying:Void->Void;
 	public var onStopped:Void->Void;
-	public var onPausableChanged:Int->Void;
+	public var onPausableChanged:Bool->Void;
 	public var onEndReached:Void->Void;
 	public var onEncounteredError:Void->Void;
 	public var onForward:Void->Void;
@@ -182,14 +198,14 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(mediaItem);
 
-		if (isDisplaying)
-			isDisplaying = false;
-
 		if (pixels != null)
 			pixels = null; // I can't find a way to make it 0 so...
 
 		if (buffer == null || (buffer != null && buffer.length > 0))
 			buffer = [];
+
+		if (isDisplaying)
+			isDisplaying = false;
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
