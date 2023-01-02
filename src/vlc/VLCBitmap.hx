@@ -22,7 +22,6 @@ import vlc.LibVLC;
  *
  * This class lets you to use LibVLC externs as a bitmap then you can displaylist along other items.
  */
-@:keep
 @:cppNamespaceCode('
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
@@ -229,6 +228,10 @@ class VLCBitmap extends Bitmap
 
 	public function dispose():Void
 	{
+		#if HXC_DEBUG_TRACE
+		trace('disposing...');
+		#end
+
 		if (isPlaying)
 			stop();
 
@@ -263,6 +266,10 @@ class VLCBitmap extends Bitmap
 		onEncounteredError = null;
 		onForward = null;
 		onBackward = null;
+
+		#if HXC_DEBUG_TRACE
+		trace('disposing done!');
+		#end
 	}
 
 	// Internal Methods
@@ -363,6 +370,10 @@ class VLCBitmap extends Bitmap
 		if (deltaTime > (1000 / (fps * rate)))
 		{
 			currentTime = deltaTime;
+
+			#if HXC_DEBUG_TRACE
+			trace('rendering...');
+			#end
 
 			NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
 
