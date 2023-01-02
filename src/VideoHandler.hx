@@ -11,7 +11,6 @@ import vlc.VLCBitmap;
  */
 class VideoHandler extends VLCBitmap
 {
-	public var isPlaying:Bool = false;
 	public var canSkip:Bool = true;
 	public var canUseSound:Bool = true;
 	public var canUseAutoResize:Bool = true;
@@ -20,21 +19,19 @@ class VideoHandler extends VLCBitmap
 
 	private var pauseMusic:Bool = false;
 
-	public function new(?smoothing:Bool = true)
+	public function new():Void
 	{
-		super(smoothing);
+		super();
 
-		onReady = onVLCReady;
-		onComplete = onVLCComplete;
-		onError = onVLCError;
+		onOpening = onVLCOpening;
+		onEndReached = onVLCEndReached;
+		onEncounteredError = onVLCEncounteredError;
 
 		FlxG.addChildBelowMouse(this);
 	}
 
 	private function update(?E:Event):Void
 	{
-		isPlaying = libvlc.isPlaying();
-
 		if (canSkip
 			&& ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT)
 				|| FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)
@@ -56,20 +53,20 @@ class VideoHandler extends VLCBitmap
 		}
 	}
 
-	private function onVLCReady():Void 
+	private function onVLCOpening():Void 
 	{        
 		trace("video loaded!");
 		if (readyCallback != null)
 		    readyCallback();
 	}
 
-	private function onVLCError(E:String):Void
+	private function onVLCError():Void
 	{
-		Lib.application.window.alert(E, "VLC caught an error!");
+		Lib.application.window.alert('The Error cannot be specified', "VLC caught an error!");
 		onVLCComplete();
 	}
 
-	private function onVLCComplete()
+	private function onVLCEndReached():Void
 	{
 		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.resume();
@@ -92,12 +89,10 @@ class VideoHandler extends VLCBitmap
 		dispose();
 
 		if (FlxG.game.contains(this))
-		{
 			FlxG.game.removeChild(this);
 
-			if (finishCallback != null)
-				finishCallback();
-		}
+		if (finishCallback != null)
+			finishCallback();
 	}
 
 	/**
@@ -117,13 +112,6 @@ class VideoHandler extends VLCBitmap
 
 		resize();
 
-		if ((FlxG.sound.muted || FlxG.sound.volume <= 0) || !canUseSound)
-			volume = 0;
-		else if (canUseSound)
-			volume = FlxG.sound.volume;
-
-		play(#if desktop Sys.getCwd() + #end Path, Loop, hwAccelerated);
-
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 		FlxG.stage.addEventListener(Event.RESIZE, resize);
 
@@ -132,18 +120,20 @@ class VideoHandler extends VLCBitmap
 			FlxG.signals.focusGained.add(resume);
 			FlxG.signals.focusLost.add(pause);
 		}
+
+		play(#if desktop Sys.getCwd() + #end Path, Loop, hwAccelerated);
 	}
 
-	public function calcSize(Ind:Int):Float
+	private function calcSize(Ind:Int):Float
 	{
-		var appliedWidth:Float = FlxG.stage.stageHeight * (FlxG.width / FlxG.height);
-		var appliedHeight:Float = FlxG.stage.stageWidth * (FlxG.height / FlxG.width);
+		var appliedWidth:Float = Lib.current.stage.stageHeight * (FlxG.width / FlxG.height);
+		var appliedHeight:Float = Lib.current.stage.stageWidth * (FlxG.height / FlxG.width);
 
-		if (appliedHeight > FlxG.stage.stageHeight)
-			appliedHeight = FlxG.stage.stageHeight;
+		if (appliedHeight > Lib.current.stage.stageHeight)
+			appliedHeight = Lib.current.stage.stageHeight;
 
-		if (appliedWidth > FlxG.stage.stageWidth)
-			appliedWidth = FlxG.stage.stageWidth;
+		if (appliedWidth > Lib.current.stage.stageWidth)
+			appliedWidth = Lib.current.stage.stageWidth;
 
 		switch (Ind)
 		{
