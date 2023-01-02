@@ -233,8 +233,6 @@ class VLCBitmap extends Bitmap
 		if (isPlaying)
 			stop();
 
-		cleanupEvents();
-
 		if (stage.hasEventListener(Event.ENTER_FRAME))
 			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 
