@@ -9,11 +9,8 @@ import flixel.util.FlxColor;
 class VideoSprite extends FlxSprite
 {
 	public var bitmap:VideoHandler;
-
 	public var readyCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
-
-	private var startDrawing:Bool = false;
 
 	public function new(X:Float = 0, Y:Float = 0)
 	{
@@ -56,10 +53,10 @@ class VideoSprite extends FlxSprite
 	private var frameCount:Float = 0;
 	override function update(elapsed:Float):Void
 	{
-		if (startDrawing && bitmap.isPlaying)
+		if (bitmap.isDisplaying)
 		{
 			frameCount += elapsed;
-			if (frameCount >= 1 / bitmap.getVideoFPS())
+			if (frameCount >= 1 / (bitmap.fps * bitmap.rate))
 			{
 				pixels.draw(bitmap.bitmapData); // im not sure how good the performance will be but ok
 				frameCount = 0;
