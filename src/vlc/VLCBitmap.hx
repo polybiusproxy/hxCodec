@@ -184,9 +184,6 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(mediaItem);
 
-		if (pixels != null)
-			pixels = null; // I can't find a way to make it 0 so...
-
 		if (buffer == null || (buffer != null && buffer.length > 0))
 			buffer = [];
 
@@ -235,6 +232,9 @@ class VLCBitmap extends Bitmap
 		if (isPlaying)
 			stop();
 
+		cleanupEvents();
+		release();
+
 		if (stage.hasEventListener(Event.ENTER_FRAME))
 			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 
@@ -249,9 +249,6 @@ class VLCBitmap extends Bitmap
 			bitmapData.dispose();
 			bitmapData = null;
 		}
-
-		if (pixels != null)
-			pixels = null; // I can't find a way to make it 0 so...
 
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
