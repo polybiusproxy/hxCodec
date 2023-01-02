@@ -83,8 +83,14 @@ extern class LibVLC
 	@:native("libvlc_media_new_path")
 	static function media_new_path(p_instance:LibVLC_Instance, path:ConstCharStar):LibVLC_Media;
 
+	@:native("libvlc_media_new_location")
+	static function media_new_location(p_instance:LibVLC_Instance, psz_mrl:ConstCharStar):LibVLC_Media;
+
 	@:native("libvlc_media_add_option")
 	static function media_add_option(p_md:LibVLC_Media, psz_options:ConstCharStar):Void;
+
+	@:native("libvlc_media_add_option_flag")
+	static function media_add_option_flag(p_md:LibVLC_Media, psz_options:ConstCharStar, i_flags:UInt32):Void;
 
 	@:native("libvlc_media_get_duration")
 	static function media_get_duration(p_md:LibVLC_Media):Int64;
