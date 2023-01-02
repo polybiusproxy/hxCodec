@@ -108,6 +108,7 @@ class VLCBitmap extends Bitmap
 	// Variables
 	public var videoWidth(default, null):Int = 0;
 	public var videoHeight(default, null):Int = 0;
+	public var isDisplaying(default, null):Bool = false;
 
 	public var time(get, set):Int;
 	public var position(get, set):Float;
@@ -117,8 +118,6 @@ class VLCBitmap extends Bitmap
 	public var delay(get, set):Int;
 	public var rate(get, set):Float;
 	public var fps(get, never):Float;
-
-	public var isDisplaying(default, null):Bool = false;
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 
@@ -149,8 +148,8 @@ class VLCBitmap extends Bitmap
 	{
 		super(bitmapData, AUTO, true);
 
-		for (i in 0...7)
-			flags[i] = false;
+		for (event in 0...7)
+			flags[event] = false;
 
 		instance = LibVLC.init(0, null);
 		audioOutput = LibVLC.audio_output_list_get(instance);
