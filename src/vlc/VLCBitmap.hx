@@ -187,14 +187,19 @@ class VLCBitmap extends Bitmap
 		if (buffer == null || (buffer != null && buffer.length > 0))
 			buffer = [];
 
-		isDisplaying = false;
-
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
 
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
 
-		setupEvents();
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 
 		LibVLC.media_player_play(mediaPlayer);
 	}
@@ -217,12 +222,6 @@ class VLCBitmap extends Bitmap
 			LibVLC.media_player_set_pause(mediaPlayer, 0);
 	}
 
-	public function release():Void
-	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_release(mediaPlayer);
-	}
-
 	public function dispose():Void
 	{
 		#if HXC_DEBUG_TRACE
@@ -232,8 +231,15 @@ class VLCBitmap extends Bitmap
 		if (isPlaying)
 			stop();
 
-		cleanupEvents();
-		release();
+		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.media_player_release(mediaPlayer);
 
 		if (stage.hasEventListener(Event.ENTER_FRAME))
 			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -387,36 +393,6 @@ class VLCBitmap extends Bitmap
 					trace("Too small frame, can't render :(");
 			}
 		}
-	}
-
-	private function setupEvents():Void
-	{
-		var callback:LibVLC_Event_Callback = untyped __cpp__('callbacks');
-		var self:cpp.Star<cpp.Void> = untyped __cpp__('this');
-
-		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerOpening, callback, self);
-		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPlaying, callback, self);
-		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerStopped, callback, self);
-		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPaused, callback, self);
-		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerEndReached, callback, self);
-		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerEncounteredError, callback, self);
-		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerForward, callback, self);
-		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerBackward, callback, self);
-	}
-
-	private function cleanupEvents():Void
-	{
-		var callback:LibVLC_Event_Callback = untyped __cpp__('callbacks');
-		var self:cpp.Star<cpp.Void> = untyped __cpp__('this');
-
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerOpening, callback, self);
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPlaying, callback, self);
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerStopped, callback, self);
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPaused, callback, self);
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerEndReached, callback, self);
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerEncounteredError, callback, self);
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerForward, callback, self);
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerBackward, callback, self);
 	}
 
 	// Get & Set Methods
