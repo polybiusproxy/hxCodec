@@ -3,7 +3,7 @@
  * @author: Datee
  * @additional coding: M.A. Jigsaw
  *
- * This contains some LibVLC externs whitch you can use in Haxe.
+ * This contains some LibVLC externs whitch you can use in Haxe by using cpp target.
  */
 
 package vlc;
