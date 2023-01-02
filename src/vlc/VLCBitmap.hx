@@ -539,4 +539,24 @@ class VLCBitmap extends Bitmap
 
 		return false;
 	}
+
+	@:noCompletion private override function set_height(value:Float):Float
+	{
+		if (__bitmapData != null)
+			scaleY = value / __bitmapData.height; // get_height();
+		else
+			scaleY = 1;
+
+		return value;
+	}
+
+	@:noCompletion private override function set_width(value:Float):Float
+	{
+		if (__bitmapData != null)
+			scaleX = value / __bitmapData.width; // get_width();
+		else
+			scaleX = 1;
+
+		return value;
+	}
 }
