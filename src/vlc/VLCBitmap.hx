@@ -67,6 +67,7 @@ static void unlock(void *data, void *id, void *const *p_pixels)
 static void display(void *data, void *picture)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
+	self->isDisplaying = true;
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
@@ -106,6 +107,7 @@ class VLCBitmap extends Bitmap
 	// Variables
 	public var videoWidth(default, null):Int = 0;
 	public var videoHeight(default, null):Int = 0;
+	public var isDisplaying(default, null):Bool = false;
 
 	public var time(get, set):Int;
 	public var position(get, set):Float;
@@ -229,16 +231,6 @@ class VLCBitmap extends Bitmap
 		if (isPlaying)
 			stop();
 
-		/*LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_EventType.MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.media_player_release(mediaPlayer);*/
-
 		if (stage.hasEventListener(Event.ENTER_FRAME))
 			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 
@@ -256,6 +248,8 @@ class VLCBitmap extends Bitmap
 
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
+
+		isDisplaying = false;
 
 		onOpening = null;
 		onPlaying = null;
@@ -285,7 +279,7 @@ class VLCBitmap extends Bitmap
 	{
 		checkFlags();
 
-		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+		if ((isPlaying && isDisplaying) && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
 			var time:Int = Lib.getTimer();
 			var elements:Int = videoWidth * videoHeight * 4;
