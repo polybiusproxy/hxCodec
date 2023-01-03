@@ -47,7 +47,7 @@ class VideoHandler extends VLCBitmap
 			height = calcSize(1);
 		}
 
-		volume = #if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100) #else 100 #end;
+		volume = #if FLX_SOUND_SYSTEM Std.int(((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100)) #else 100 #end;
 	}
 
 	private function onVLCOpening():Void 
@@ -60,7 +60,7 @@ class VideoHandler extends VLCBitmap
 	private function onVLCEncounteredError():Void
 	{
 		Lib.application.window.alert('The Error cannot be specified', "VLC caught an error!");
-		onVLCComplete();
+		onVLCEndReached();
 	}
 
 	private function onVLCEndReached():Void
