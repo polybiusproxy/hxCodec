@@ -53,7 +53,7 @@ class VideoSprite extends FlxSprite
 	private var frameCount:Float = 0;
 	override function update(elapsed:Float):Void
 	{
-		if (bitmap.isDisplaying)
+		if (bitmap.isPlaying)
 		{
 			frameCount += elapsed;
 			if (frameCount >= 1 / (bitmap.fps * bitmap.rate))
