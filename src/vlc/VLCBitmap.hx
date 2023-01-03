@@ -6,7 +6,7 @@ package vlc;
 import cpp.NativeArray;
 import cpp.Pointer;
 import cpp.UInt8;
-import haxe.ValueException
+import haxe.ValueException;
 import haxe.io.Bytes;
 import haxe.io.Path;
 import openfl.Lib;
