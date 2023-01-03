@@ -336,7 +336,7 @@ class VLCBitmap extends Bitmap
 		}
 		catch (e:Dynamic)
 			throw new ValueException("Can't call $fun because $e");
-	{
+	}
 
 	// Get & Set Methods
 	@:noCompletion private function get_time():Int
