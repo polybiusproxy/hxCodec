@@ -34,13 +34,13 @@ class VideoHandler extends VLCBitmap
 	{
 		#if FLX_KEYBOARD
 		if (canSkip && (FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && isPlaying)
-			onVLCComplete();
+			onVLCEndReached();
 		#elseif android
 		if (canSkip && FlxG.android.justReleased.BACK && isPlaying)
-			onVLCComplete();
+			onVLCEndReached();
 		#end
 
-		if (canUseAutoResize && (vlc.videoWidth > 0 && vlc.videoHeight > 0))
+		if (canUseAutoResize && (videoWidth > 0 && videoHeight > 0))
 		{
 			width = calcSize(0);
 			height = calcSize(1);
@@ -56,7 +56,7 @@ class VideoHandler extends VLCBitmap
 		    readyCallback();
 	}
 
-	private function onVLCError():Void
+	private function onVLCEncounteredError():Void
 	{
 		Lib.application.window.alert('The Error cannot be specified', "VLC caught an error!");
 		onVLCComplete();
