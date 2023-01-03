@@ -38,19 +38,16 @@ class VideoHandler extends VLCBitmap
 			&& initComplete)
 			onVLCComplete();
 
-		if ((FlxG.sound.muted || FlxG.sound.volume <= 0) || !canUseSound)
-			volume = 0;
-		else if (canUseSound)
-			volume = FlxG.sound.volume;
-	}
-
-	private function resize(?E:Event):Void
-	{
-		if (canUseAutoResize)
+		if (canUseAutoResize && (vlc.videoWidth > 0 && vlc.videoHeight > 0))
 		{
 			width = calcSize(0);
 			height = calcSize(1);
 		}
+
+		if ((FlxG.sound.muted || FlxG.sound.volume <= 0) || !canUseSound)
+			volume = 0;
+		else if (canUseSound)
+			volume = FlxG.sound.volume;
 	}
 
 	private function onVLCOpening():Void 
@@ -73,9 +70,6 @@ class VideoHandler extends VLCBitmap
 
 		if (FlxG.stage.hasEventListener(Event.ENTER_FRAME))
 			FlxG.stage.removeEventListener(Event.ENTER_FRAME, update);
-
-		if (FlxG.stage.hasEventListener(Event.RESIZE))
-			FlxG.stage.removeEventListener(Event.RESIZE, resize);
 
 		if (FlxG.autoPause)
 		{
@@ -110,10 +104,7 @@ class VideoHandler extends VLCBitmap
 		if (FlxG.sound.music != null && PauseMusic)
 			FlxG.sound.music.pause();
 
-		resize();
-
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
-		FlxG.stage.addEventListener(Event.RESIZE, resize);
 
 		if (FlxG.autoPause)
 		{
