@@ -6,8 +6,8 @@ package vlc;
 import cpp.NativeArray;
 import cpp.Pointer;
 import cpp.UInt8;
+import haxe.ValueException
 import haxe.io.Bytes;
-import haxe.io.BytesData;
 import haxe.io.Path;
 import openfl.Lib;
 import openfl.display.Bitmap;
@@ -76,28 +76,28 @@ static void callbacks(const libvlc_event_t *event, void *data)
 	switch (event->type)
 	{
 		case libvlc_MediaPlayerOpening:
-			self->flags[0] = true;
+			self->dispatch(onOpening);
 			break;
 		case libvlc_MediaPlayerPlaying:
-			self->flags[1] = true;
+			self->dispatch(onPlaying);
 			break;
 		case libvlc_MediaPlayerPaused:
-			self->flags[2] = true;
+			self->dispatch(onPaused);
 			break;
 		case libvlc_MediaPlayerStopped:
-			self->flags[3] = true;
+			self->dispatch(onStopped);
 			break;
 		case libvlc_MediaPlayerEndReached:
-			self->flags[4] = true;
+			self->dispatch(onEndReached);
 			break;
 		case libvlc_MediaPlayerEncounteredError:
-			self->flags[5] = true;
+			self->dispatch(onEncounteredError);
 			break;
 		case libvlc_MediaPlayerForward:
-			self->flags[6] = true;
+			self->dispatch(onForward);
 			break;
 		case libvlc_MediaPlayerBackward:
-			self->flags[7] = true;
+			self->dispatch(onBackward);
 			break;
 	}
 }')
@@ -115,6 +115,7 @@ class VLCBitmap extends Bitmap
 	public var delay(get, set):Int;
 	public var rate(get, set):Float;
 	public var fps(get, never):Float;
+
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 
@@ -129,9 +130,8 @@ class VLCBitmap extends Bitmap
 	public var onBackward:Void->Void;
 
 	// Declarations
-	private var flags:Array<Bool> = [];
 	private var pixels:Pointer<UInt8>;
-	private var buffer:BytesData;
+	private var buffer:Array<UInt8>;
 	private var texture:RectangleTexture;
 
 	// LibVLC
@@ -144,9 +144,6 @@ class VLCBitmap extends Bitmap
 	public function new():Void
 	{
 		super(bitmapData, AUTO, true);
-
-		for (event in 0...7)
-			flags[event] = false;
 
 		instance = LibVLC.init(0, null);
 		audioOutput = LibVLC.audio_output_list_get(instance);
@@ -283,72 +280,11 @@ class VLCBitmap extends Bitmap
 	private var currentTime:Float = 0;
 	private function onEnterFrame(e:Event):Void
 	{
-		checkFlags();
-
 		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
 			var time:Int = Lib.getTimer();
 			var elements:Int = videoWidth * videoHeight * 4;
 			render(time - currentTime, elements);
-		}
-	}
-
-	private function checkFlags():Void
-	{
-		if (flags[0])
-		{
-			flags[0] = false;
-			if (onOpening != null)
-				onOpening();
-		}
-
-		if (flags[1])
-		{
-			flags[1] = false;
-			if (onPlaying != null)
-				onPlaying();
-		}
-
-		if (flags[2])
-		{
-			flags[2] = false;
-			if (onPaused != null)
-				onPaused();
-		}
-
-		if (flags[3])
-		{
-			flags[3] = false;
-			if (onStopped != null)
-				onStopped();
-		}
-
-		if (flags[4])
-		{
-			flags[4] = false;
-			if (onEndReached != null)
-				onEndReached();
-		}
-
-		if (flags[5])
-		{
-			flags[5] = false;
-			if (onEncounteredError != null)
-				onEncounteredError();
-		}
-
-		if (flags[6])
-		{
-			flags[6] = false;
-			if (onForward != null)
-				onForward();
-		}
-
-		if (flags[7])
-		{
-			flags[7] = false;
-			if (onBackward != null)
-				onBackward();
 		}
 	}
 
@@ -378,7 +314,7 @@ class VLCBitmap extends Bitmap
 
 			if (texture != null && (buffer != null && buffer.length > 0))
 			{
-				var bytes:Bytes = Bytes.ofData(buffer);
+				var bytes:Bytes = Bytes.ofData(cast buffer);
 				if (bytes.length >= elementsCount)
 				{
 					texture.uploadFromByteArray(bytes, 0);
@@ -390,6 +326,17 @@ class VLCBitmap extends Bitmap
 			}
 		}
 	}
+
+	private function dispatch(fun:Void->Void):Void
+	{
+		try
+		{
+			if (fun != null)
+				fun();
+		}
+		catch (e:Dynamic)
+			throw new ValueException("Can't call $fun because $e");
+	{
 
 	// Get & Set Methods
 	@:noCompletion private function get_time():Int
