@@ -289,7 +289,7 @@ class VLCBitmap extends Bitmap
 	{
 		checkFlags();
 
-		if (isDisplaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+		if ((isPlaying && isDisplaying) && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
 			var time:Int = Lib.getTimer();
 			var elements:Int = videoWidth * videoHeight * 4;
@@ -518,8 +518,8 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private override function set_height(value:Float):Float
 	{
-		if (__bitmapData != null)
-			scaleY = value / __bitmapData.height; // get_height();
+		if (videoHeight != 0)
+			scaleY = value / videoHeight; // get_height();
 		else
 			scaleY = 1;
 
@@ -528,8 +528,8 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private override function set_width(value:Float):Float
 	{
-		if (__bitmapData != null)
-			scaleX = value / __bitmapData.width; // get_width();
+		if (videoWidth != 0)
+			scaleX = value / videoWidth; // get_width();
 		else
 			scaleX = 1;
 
