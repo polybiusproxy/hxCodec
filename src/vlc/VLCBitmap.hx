@@ -257,8 +257,6 @@ class VLCBitmap extends Bitmap
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
 
-		isDisplaying = false;
-
 		onOpening = null;
 		onPlaying = null;
 		onStopped = null;
