@@ -32,11 +32,13 @@ class VideoHandler extends VLCBitmap
 
 	private function update(?E:Event):Void
 	{
-		if (canSkip
-			&& ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT)
-				|| FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)
-			&& initComplete)
+		#if (FLX_KEYBOARD && !android)
+		if (canSkip && FlxG.keys.justPressed.SPACE && isPlaying)
 			onVLCComplete();
+		#elseif android
+		if (canSkip && FlxG.android.justReleased.BACK && isPlaying)
+			onVLCComplete();
+		#end
 
 		if (canUseAutoResize && (vlc.videoWidth > 0 && vlc.videoHeight > 0))
 		{
@@ -44,10 +46,7 @@ class VideoHandler extends VLCBitmap
 			height = calcSize(1);
 		}
 
-		if ((FlxG.sound.muted || FlxG.sound.volume <= 0) || !canUseSound)
-			volume = 0;
-		else if (canUseSound)
-			volume = FlxG.sound.volume;
+		volume = #if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100) #else 100 #end;
 	}
 
 	private function onVLCOpening():Void 
@@ -112,10 +111,15 @@ class VideoHandler extends VLCBitmap
 			FlxG.signals.focusLost.add(pause);
 		}
 
-		play(#if desktop Sys.getCwd() + #end Path, Loop, hwAccelerated);
+		// in case if you want to use another dir then the application one.
+		// android can already do this, it can't use application's storage.
+		if (FileSystem.exists(Sys.getCwd() + Path))
+			play(Sys.getCwd() + Path, Loop, hwAccelerated);
+		else
+			play(Path, Loop, hwAccelerated);
 	}
 
-	private function calcSize(Ind:Int):Float
+	public function calcSize(Ind:Int):Float
 	{
 		var appliedWidth:Float = Lib.current.stage.stageHeight * (FlxG.width / FlxG.height);
 		var appliedHeight:Float = Lib.current.stage.stageWidth * (FlxG.height / FlxG.width);
