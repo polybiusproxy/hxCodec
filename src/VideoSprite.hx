@@ -22,9 +22,7 @@ class VideoSprite extends FlxSprite
 		bitmap.alpha = 0;
 		bitmap.readyCallback = function()
 		{
-			makeGraphic(bitmap.bitmapData.width, bitmap.bitmapData.height, FlxColor.TRANSPARENT);
-
-			startDrawing = true;
+			loadGraphic(bitmap.bitmapData);
 
 			if (readyCallback != null)
 				readyCallback();
@@ -48,19 +46,5 @@ class VideoSprite extends FlxSprite
 	public function playVideo(Path:String, Loop:Bool = false, Haccelerated:Bool = true, PauseMusic:Bool = false):Void
 	{
 		bitmap.playVideo(Path, Loop, Haccelerated, PauseMusic);
-	}
-
-	private var frameCount:Float = 0;
-	override function update(elapsed:Float):Void
-	{
-		if (bitmap.isPlaying)
-		{
-			frameCount += elapsed;
-			if (frameCount >= 1 / (bitmap.fps * bitmap.rate))
-			{
-				pixels.draw(bitmap.bitmapData); // im not sure how good the performance will be but ok
-				frameCount = 0;
-			}
-		}
 	}
 }
