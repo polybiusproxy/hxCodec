@@ -3,12 +3,10 @@
 <xml>
 	<files id="haxe">
 		<compilervalue name="-I" value="${haxelib:hxCodec}/lib/vlc/include/" />
-		<compilervalue name="-I" value="${haxelib:hxCodec}/lib/vlc/src/" />
 	</files>
 
 	<files id="__main__">
 		<compilervalue name="-I" value="${haxelib:hxCodec}/lib/vlc/include/" />
-		<compilervalue name="-I" value="${haxelib:hxCodec}/lib/vlc/src/" />
 	</files>
 
 	<target id="haxe" tool="linker" if="android">
