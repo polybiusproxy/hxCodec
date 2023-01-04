@@ -34,10 +34,10 @@ class VideoHandler extends VLCBitmap
 	private function update(?E:Event):Void
 	{
 		#if FLX_KEYBOARD
-		if (canSkip && (FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && isPlaying)
+		if (canSkip && (FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && (isPlaying && isDisplaying))
 			onVLCEndReached();
 		#elseif android
-		if (canSkip && FlxG.android.justReleased.BACK && isPlaying)
+		if (canSkip && FlxG.android.justReleased.BACK && (isPlaying && isDisplaying))
 			onVLCEndReached();
 		#end
 
@@ -47,7 +47,7 @@ class VideoHandler extends VLCBitmap
 			height = calcSize(1);
 		}
 
-		volume = #if FLX_SOUND_SYSTEM Std.int(((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100)) #else 100 #end;
+		volume = #if FLX_SOUND_SYSTEM Std.int(((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100)) #else FlxG.sound.volume * 100 #end;
 	}
 
 	private function onVLCOpening():Void 
