@@ -9,11 +9,8 @@ import flixel.util.FlxColor;
 class VideoSprite extends FlxSprite
 {
 	public var bitmap:VideoHandler;
-
 	public var readyCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
-
-	private var startDrawing:Bool = false;
 
 	public function new(X:Float = 0, Y:Float = 0)
 	{
@@ -22,12 +19,10 @@ class VideoSprite extends FlxSprite
 		makeGraphic(1, 1, FlxColor.TRANSPARENT);
 
 		bitmap = new VideoHandler();
-		bitmap.visible = false;
+		bitmap.alpha = 0;
 		bitmap.readyCallback = function()
 		{
-			makeGraphic(bitmap.bitmapData.width, bitmap.bitmapData.height, FlxColor.TRANSPARENT);
-
-			startDrawing = true;
+			loadGraphic(bitmap.bitmapData);
 
 			if (readyCallback != null)
 				readyCallback();
@@ -51,19 +46,5 @@ class VideoSprite extends FlxSprite
 	public function playVideo(Path:String, Loop:Bool = false, Haccelerated:Bool = true, PauseMusic:Bool = false):Void
 	{
 		bitmap.playVideo(Path, Loop, Haccelerated, PauseMusic);
-	}
-
-	private var frameCount:Float = 0;
-	override function update(elapsed:Float):Void
-	{
-		if (startDrawing && bitmap.isPlaying)
-		{
-			frameCount += elapsed;
-			if (frameCount >= 1 / bitmap.getVideoFPS())
-			{
-				pixels.draw(bitmap.bitmapData); // im not sure how good the performance will be but ok
-				frameCount = 0;
-			}
-		}
 	}
 }

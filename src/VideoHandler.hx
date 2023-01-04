@@ -15,22 +15,78 @@ class VideoHandler extends VLCBitmap
 	public var canSkip:Bool = true;
 	public var canUseSound:Bool = true;
 	public var canUseAutoResize:Bool = true;
-	public var isPlaying:Bool = false;
-
 	public var readyCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
 
 	private var pauseMusic:Bool = false;
 
-	public function new(?smoothing:Bool = false):Void
+	public function new():Void
 	{
-		super(smoothing);
+		super();
 
-		onReady = onVLCReady;
-		onComplete = onVLCComplete;
-		onError = onVLCError;
+		onOpening = onVLCOpening;
+		onEndReached = onVLCEndReached;
+		onEncounteredError = onVLCEncounteredError;
 
 		FlxG.addChildBelowMouse(this);
+	}
+
+	private function update(?E:Event):Void
+	{
+		#if FLX_KEYBOARD
+		if (canSkip && (FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && (isPlaying && isDisplaying))
+			onVLCEndReached();
+		#elseif android
+		if (canSkip && FlxG.android.justReleased.BACK && (isPlaying && isDisplaying))
+			onVLCEndReached();
+		#end
+
+		if (canUseAutoResize && (videoWidth > 0 && videoHeight > 0))
+		{
+			width = calcSize(0);
+			height = calcSize(1);
+		}
+
+		volume = #if FLX_SOUND_SYSTEM Std.int(((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100)) #else FlxG.sound.volume * 100 #end;
+	}
+
+	private function onVLCOpening():Void 
+	{        
+		trace("video loaded!");
+		if (readyCallback != null)
+		    readyCallback();
+	}
+
+	private function onVLCEncounteredError():Void
+	{
+		Lib.application.window.alert('The Error cannot be specified', "VLC caught an error!");
+		onVLCEndReached();
+	}
+
+	private function onVLCEndReached():Void
+	{
+		if (FlxG.sound.music != null && pauseMusic)
+			FlxG.sound.music.resume();
+
+		if (FlxG.stage.hasEventListener(Event.ENTER_FRAME))
+			FlxG.stage.removeEventListener(Event.ENTER_FRAME, update);
+
+		if (FlxG.autoPause)
+		{
+			if (FlxG.signals.focusGained.has(resume))
+				FlxG.signals.focusGained.remove(resume);
+
+			if (FlxG.signals.focusLost.has(pause))
+				FlxG.signals.focusLost.remove(pause);
+		}
+
+		dispose();
+
+		if (FlxG.game.contains(this))
+			FlxG.game.removeChild(this);
+
+		if (finishCallback != null)
+			finishCallback();
 	}
 
 	/**
@@ -45,114 +101,35 @@ class VideoHandler extends VLCBitmap
 	{
 		pauseMusic = PauseMusic;
 
-		if (FlxG.sound.music != null && pauseMusic)
+		if (FlxG.sound.music != null && PauseMusic)
 			FlxG.sound.music.pause();
 
-		if (canUseAutoResize)
+		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
+
+		if (FlxG.autoPause)
 		{
-			width = calcSize(0);
-			height = calcSize(1);
+			FlxG.signals.focusGained.add(resume);
+			FlxG.signals.focusLost.add(pause);
 		}
 
-		FlxG.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
-		FlxG.stage.addEventListener(Event.ACTIVATE, onFocus);
-		FlxG.stage.addEventListener(Event.DEACTIVATE, onFocusLost);
-		FlxG.stage.addEventListener(Event.RESIZE, onResize);
-
 		// in case if you want to use another dir then the application one.
-		// android can already do this, it can't use the application storage.
+		// android can already do this, it can't use application's storage.
 		if (FileSystem.exists(Sys.getCwd() + Path))
 			play(Sys.getCwd() + Path, Loop, hwAccelerated);
 		else
 			play(Path, Loop, hwAccelerated);
 	}
 
-	private function onVLCReady():Void 
-	{        
-		trace("video loaded!");
-		if (readyCallback != null)
-		    readyCallback();
-	}
-
-	private function onVLCError(E:String):Void
+	public function calcSize(Ind:Int):Float
 	{
-		Lib.application.window.alert(E, "VLC caught an error!");
-		onVLCComplete();
-	}
+		var appliedWidth:Float = Lib.current.stage.stageHeight * (FlxG.width / FlxG.height);
+		var appliedHeight:Float = Lib.current.stage.stageWidth * (FlxG.height / FlxG.width);
 
-	private function onVLCComplete():Void
-	{
-		if (FlxG.sound.music != null && pauseMusic)
-			FlxG.sound.music.resume();
+		if (appliedHeight > Lib.current.stage.stageHeight)
+			appliedHeight = Lib.current.stage.stageHeight;
 
-		if (FlxG.stage.hasEventListener(Event.ENTER_FRAME))
-			FlxG.stage.removeEventListener(Event.ENTER_FRAME, onUpdate);
-
-		if (FlxG.stage.hasEventListener(Event.ACTIVATE))
-			FlxG.stage.removeEventListener(Event.ACTIVATE, onFocus);
-
-		if (FlxG.stage.hasEventListener(Event.DEACTIVATE))
-			FlxG.stage.removeEventListener(Event.DEACTIVATE, onFocusLost);
-
-		if (FlxG.stage.hasEventListener(Event.RESIZE))
-			FlxG.stage.removeEventListener(Event.RESIZE, onResize);
-
-		dispose();
-
-		if (FlxG.game.contains(this))
-			FlxG.game.removeChild(this);
-
-		if (finishCallback != null)
-			finishCallback();
-	}
-
-	private function onUpdate(_):Void
-	{
-		isPlaying = libvlc.isPlaying();
-
-		if (canSkip
-			&& ((FlxG.keys.justPressed.ENTER && !FlxG.keys.pressed.ALT)
-				|| FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end)
-			&& initComplete)
-			onVLCComplete();
-
-		if ((FlxG.sound.muted || FlxG.sound.volume <= 0) || !canUseSound)
-			volume = 0;
-		else if (canUseSound)
-			volume = FlxG.sound.volume * 100;
-	}
-
-	private function onFocus(_):Void
-	{
-		if (FlxG.autoPause && !libvlc.isPlaying())
-			resume();
-	}
-
-	private function onFocusLost(_):Void
-	{
-		if (FlxG.autoPause && libvlc.isPlaying())
-			pause();
-	}
-
-	private function onResize(_):Void
-	{
-		if (canUseAutoResize)
-		{
-			width = calcSize(0);
-			height = calcSize(1);
-		}
-	}
-
-	private function calcSize(Ind:Int):Float
-	{
-		var appliedWidth:Float = FlxG.stage.stageHeight * (FlxG.width / FlxG.height);
-		var appliedHeight:Float = FlxG.stage.stageWidth * (FlxG.height / FlxG.width);
-
-		if (appliedHeight > FlxG.stage.stageHeight)
-			appliedHeight = FlxG.stage.stageHeight;
-
-		if (appliedWidth > FlxG.stage.stageWidth)
-			appliedWidth = FlxG.stage.stageWidth;
+		if (appliedWidth > Lib.current.stage.stageWidth)
+			appliedWidth = Lib.current.stage.stageWidth;
 
 		switch (Ind)
 		{

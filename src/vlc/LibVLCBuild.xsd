@@ -1,35 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="xml">
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" name="files">
+        <xs:element name="files" maxOccurs="unbounded" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="compilervalue">
+              <xs:element name="compilervalue">
                 <xs:complexType>
-                  <xs:attribute name="name" type="xs:string" use="required" />
-                  <xs:attribute name="value" type="xs:string" use="required" />
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" use="optional"/>
+                      <xs:attribute type="xs:string" name="value" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
-            <xs:attribute name="id" type="xs:string" use="required" />
+            <xs:attribute type="xs:string" name="id" use="optional"/>
           </xs:complexType>
         </xs:element>
-        <xs:element maxOccurs="unbounded" name="target">
+        <xs:element name="target" maxOccurs="unbounded" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="lib">
+              <xs:element name="lib" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
-                  <xs:attribute name="name" type="xs:string" use="required" />
-                  <xs:attribute name="if" type="xs:string" use="required" />
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="name" use="optional"/>
+                      <xs:attribute type="xs:string" name="if" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
-            <xs:attribute name="id" type="xs:string" use="required" />
-            <xs:attribute name="tool" type="xs:string" use="required" />
-            <xs:attribute name="if" type="xs:string" use="required" />
-            <xs:attribute name="toolid" type="xs:string" use="optional" />
+            <xs:attribute type="xs:string" name="id" use="optional"/>
+            <xs:attribute type="xs:string" name="tool" use="optional"/>
+            <xs:attribute type="xs:string" name="if" use="optional"/>
+            <xs:attribute type="xs:string" name="toolid" use="optional"/>
           </xs:complexType>
         </xs:element>
       </xs:sequence>
