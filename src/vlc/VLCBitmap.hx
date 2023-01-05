@@ -162,11 +162,11 @@ class VLCBitmap extends Bitmap
 	// Playback Methods
 	public function play(?location:String = null, loop:Bool = false):Void
 	{
-		final path:String = Path.normalize(location);
+		final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
 
 		trace("setting path to: " + path);
 
-		mediaItem = LibVLC.media_new_path(instance, #if windows path.split("/").join("\\") #else path #end);
+		mediaItem = LibVLC.media_new_path(instance, path);
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
 		LibVLC.media_parse(mediaItem);
