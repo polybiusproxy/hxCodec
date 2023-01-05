@@ -94,10 +94,9 @@ class VideoHandler extends VLCBitmap
 	 *
 	 * @param Path Example: `your/video/here.mp4`
 	 * @param Loop Loop the video.
-	 * @param hwAccelerated if you want the video to be hardware accelerated.
 	 * @param PauseMusic Pause music until the video ends.
 	 */
-	public function playVideo(Path:String, Loop:Bool = false, hwAccelerated:Bool = true, PauseMusic:Bool = false):Void
+	public function playVideo(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Void
 	{
 		pauseMusic = PauseMusic;
 
@@ -115,9 +114,9 @@ class VideoHandler extends VLCBitmap
 		// in case if you want to use another dir then the application one.
 		// android can already do this, it can't use application's storage.
 		if (FileSystem.exists(Sys.getCwd() + Path))
-			play(Sys.getCwd() + Path, Loop, hwAccelerated);
+			play(Sys.getCwd() + Path, Loop);
 		else
-			play(Path, Loop, hwAccelerated);
+			play(Path, Loop);
 	}
 
 	public function calcSize(Ind:Int):Float
