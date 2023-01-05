@@ -114,7 +114,7 @@ class VideoHandler extends VLCBitmap
 		// in case if you want to use another dir then the application one.
 		// android can already do this, it can't use application's storage.
 		if (FileSystem.exists(Sys.getCwd() + Path))
-			play(Sys.getCwd() + Path, Loop, hwAccelerated);
+			play(Sys.getCwd() + Path, Loop);
 		else
 			play(Path, Loop);
 	}
