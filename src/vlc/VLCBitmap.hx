@@ -160,9 +160,9 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Playback Methods
-	public function play(?location:String = null, loop:Bool = false, haccelerated:Bool = true):Void
+	public function play(?location:String = null, loop:Bool = false):Void
 	{
-		final path:String = Path.normalize(location);
+		final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
 
 		trace("setting path to: " + path);
 
@@ -175,12 +175,6 @@ class VLCBitmap extends Bitmap
 			LibVLC.media_add_option(mediaItem, #if android "input-repeat=65535" #else "input-repeat=-1" #end);
 		else
 			LibVLC.media_add_option(mediaItem, "input-repeat=0");
-
-		if (haccelerated)
-		{
-			LibVLC.media_add_option(mediaItem, ":ffmpeg-hw");
-			LibVLC.media_add_option(mediaItem, ":avcodec-hw=any");
-		}
 
 		LibVLC.media_release(mediaItem);
 
