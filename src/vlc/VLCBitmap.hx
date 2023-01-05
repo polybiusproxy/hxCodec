@@ -166,7 +166,7 @@ class VLCBitmap extends Bitmap
 
 		trace("setting path to: " + path);
 
-		mediaItem = LibVLC.media_new_path(instance, #if windows path.split('/').join('\\') #else path #end);
+		mediaItem = LibVLC.media_new_path(instance, #if windows path.split("/").join("\\") #else path #end);
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
 		LibVLC.media_parse(mediaItem);
