@@ -20,7 +20,7 @@ import vlc.LibVLC;
  * ...
  * @author Mihai Alexandru (M.A. Jigsaw).
  *
- * This class lets you to use LibVLC externs as a bitmap then you can displaylist along other items.
+ * This class lets you to use LibVLC externs as a bitmap that you can displaylist along other items.
  */
 @:cppNamespaceCode('
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
