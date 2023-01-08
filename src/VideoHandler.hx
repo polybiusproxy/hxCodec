@@ -31,25 +31,6 @@ class VideoHandler extends VLCBitmap
 		FlxG.addChildBelowMouse(this);
 	}
 
-	private function update(?E:Event):Void
-	{
-		#if FLX_KEYBOARD
-		if (canSkip && (FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && (isPlaying && isDisplaying))
-			onVLCEndReached();
-		#elseif android
-		if (canSkip && FlxG.android.justReleased.BACK && (isPlaying && isDisplaying))
-			onVLCEndReached();
-		#end
-
-		if (canUseAutoResize && (videoWidth > 0 && videoHeight > 0))
-		{
-			width = calcSize(0);
-			height = calcSize(1);
-		}
-
-		volume = #if FLX_SOUND_SYSTEM Std.int(((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100)) #else FlxG.sound.volume * 100 #end;
-	}
-
 	private function onVLCOpening():Void 
 	{        
 		trace("video loaded!");
@@ -117,6 +98,25 @@ class VideoHandler extends VLCBitmap
 			play(Sys.getCwd() + Path, Loop);
 		else
 			play(Path, Loop);
+	}
+
+	private function update():Void
+	{
+		#if FLX_KEYBOARD
+		if (canSkip && (FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && (isPlaying && isDisplaying))
+			onVLCEndReached();
+		#elseif android
+		if (canSkip && FlxG.android.justReleased.BACK && (isPlaying && isDisplaying))
+			onVLCEndReached();
+		#end
+
+		if (canUseAutoResize && (videoWidth > 0 && videoHeight > 0))
+		{
+			width = calcSize(0);
+			height = calcSize(1);
+		}
+
+		volume = #if FLX_SOUND_SYSTEM Std.int(((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100)) #else FlxG.sound.volume * 100 #end;
 	}
 
 	public function calcSize(Ind:Int):Float
