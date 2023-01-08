@@ -22,8 +22,6 @@ class VideoSprite extends FlxSprite
 		bitmap.alpha = 0;
 		bitmap.readyCallback = function()
 		{
-			loadGraphic(bitmap.bitmapData);
-
 			if (readyCallback != null)
 				readyCallback();
 		}
@@ -45,5 +43,13 @@ class VideoSprite extends FlxSprite
 	public function playVideo(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Void
 	{
 		bitmap.playVideo(Path, Loop, PauseMusic);
+	}
+
+	override public function update(elapsed:Float):Void
+	{
+		if ((bitmap.isPlaying && bitmap.isDisplaying) && bitmap.bitmapData != null)
+			pixels = bitmap.bitmapData;
+
+		super.update(elapsed);
 	}
 }
