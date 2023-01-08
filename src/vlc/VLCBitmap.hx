@@ -14,6 +14,7 @@ import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
+import openfl.utils.ByteArray;
 import vlc.LibVLC;
 
 /**
@@ -183,6 +184,23 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
+
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
+
+		if (bitmapData != null)
+		{
+			bitmapData.dispose();
+			bitmapData = null;
+		}
+
+		if (buffer == null || (buffer != null && buffer.length > 0))
+			buffer = [];
+
+		isDisplaying = false;
 
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
 
@@ -369,7 +387,7 @@ class VLCBitmap extends Bitmap
 				var bytes:Bytes = Bytes.ofData(buffer);
 				if (bytes.length >= elementsCount)
 				{
-					texture.uploadFromByteArray(bytes, 0);
+					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
 					width++;
 					width--;
 				}
