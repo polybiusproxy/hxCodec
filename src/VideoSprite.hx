@@ -9,7 +9,7 @@ import flixel.util.FlxColor;
 class VideoSprite extends FlxSprite
 {
 	public var bitmap:VideoHandler;
-	public var readyCallback:Void->Void = null;
+	public var openingCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
 
 	public function new(X:Float = 0, Y:Float = 0)
@@ -20,12 +20,12 @@ class VideoSprite extends FlxSprite
 
 		bitmap = new VideoHandler();
 		bitmap.alpha = 0;
-		bitmap.readyCallback = function()
+		bitmap.openingCallback = function()
 		{
 			loadGraphic(bitmap.bitmapData);
 
-			if (readyCallback != null)
-				readyCallback();
+			if (openingCallback != null)
+				openingCallback();
 		}
 		bitmap.finishCallback = function()
 		{
