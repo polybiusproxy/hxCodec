@@ -185,6 +185,23 @@ class VLCBitmap extends Bitmap
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
 
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
+
+		if (bitmapData != null)
+		{
+			bitmapData.dispose();
+			bitmapData = null;
+		}
+
+		if (buffer == null || (buffer != null && buffer.length > 0))
+			buffer = [];
+
+		isDisplaying = false;
+
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
 
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
