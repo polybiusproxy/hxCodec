@@ -15,7 +15,7 @@ class VideoHandler extends VLCBitmap
 	public var canSkip:Bool = true;
 	public var canUseSound:Bool = true;
 	public var canUseAutoResize:Bool = true;
-	public var readyCallback:Void->Void = null;
+	public var openingCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
 
 	private var pauseMusic:Bool = false;
@@ -33,9 +33,9 @@ class VideoHandler extends VLCBitmap
 
 	private function onVLCOpening():Void 
 	{        
-		trace("video loaded!");
-		if (readyCallback != null)
-		    readyCallback();
+		trace("the video is opening!");
+		if (openingCallback != null)
+		    openingCallback();
 	}
 
 	private function onVLCEncounteredError():Void
@@ -100,7 +100,7 @@ class VideoHandler extends VLCBitmap
 			play(Path, Loop);
 	}
 
-	private function update():Void
+	private function update(?E:Event):Void
 	{
 		#if FLX_KEYBOARD
 		if (canSkip && (FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && (isPlaying && isDisplaying))
