@@ -122,9 +122,6 @@ extern class LibVLC
 	@:native("libvlc_media_player_can_pause")
 	static function media_player_can_pause(p_mi:LibVLC_MediaPlayer):Bool;
 
-	@:native("libvlc_media_player_record")
-	static function media_player_record(p_instance:LibVLC_Instance, enable:Bool, dir_path:ConstCharStar):Void;
-
 	@:native("libvlc_media_player_release")
 	static function media_player_release(p_mi:LibVLC_MediaPlayer):Void;
 
