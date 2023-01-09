@@ -106,6 +106,7 @@ static void callbacks(const libvlc_event_t *event, void *data)
 class VLCBitmap extends Bitmap
 {
 	// Variables
+	public var renderTime:Float = 0;
 	public var videoWidth(default, null):Int = 0;
 	public var videoHeight(default, null):Int = 0;
 	public var isDisplaying(default, null):Bool = false;
@@ -372,7 +373,7 @@ class VLCBitmap extends Bitmap
 		if (!smoothing)
 			smoothing = true;
 
-		if (deltaTime > (1000 / (fps * rate)))
+		if (deltaTime > (1000 / renderTime == 0 ? (fps * rate) : renderTime))
 		{
 			currentTime = deltaTime;
 
