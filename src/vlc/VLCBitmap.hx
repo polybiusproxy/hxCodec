@@ -121,6 +121,7 @@ class VLCBitmap extends Bitmap
 	public var fps(get, never):Float;
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
+	public var canPause(get, never):Bool;
 
 	// Callbacks
 	public var onOpening:Void->Void;
@@ -180,12 +181,6 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(mediaItem);
 
-		if (buffer == null || (buffer != null && buffer.length > 0))
-			buffer = [];
-
-		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
-		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
-
 		if (texture != null)
 		{
 			texture.dispose();
@@ -202,6 +197,9 @@ class VLCBitmap extends Bitmap
 			buffer = [];
 
 		isDisplaying = false;
+
+		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
+		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
 
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
 
@@ -515,6 +513,14 @@ class VLCBitmap extends Bitmap
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_is_seekable(mediaPlayer);
+
+		return false;
+	}
+
+	@:noCompletion private function get_canPause():Bool
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_can_pause(mediaPlayer);
 
 		return false;
 	}
