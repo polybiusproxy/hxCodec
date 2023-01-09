@@ -121,6 +121,7 @@ class VLCBitmap extends Bitmap
 	public var fps(get, never):Float;
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
+	public var canPause(get, never):Bool;
 
 	// Callbacks
 	public var onOpening:Void->Void;
@@ -515,6 +516,14 @@ class VLCBitmap extends Bitmap
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_is_seekable(mediaPlayer);
+
+		return false;
+	}
+
+	@:noCompletion private function get_canPause():Bool
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_can_pause(mediaPlayer);
 
 		return false;
 	}
