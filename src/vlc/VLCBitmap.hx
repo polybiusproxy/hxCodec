@@ -181,12 +181,6 @@ class VLCBitmap extends Bitmap
 
 		LibVLC.media_release(mediaItem);
 
-		if (buffer == null || (buffer != null && buffer.length > 0))
-			buffer = [];
-
-		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
-		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
-
 		if (texture != null)
 		{
 			texture.dispose();
@@ -203,6 +197,9 @@ class VLCBitmap extends Bitmap
 			buffer = [];
 
 		isDisplaying = false;
+
+		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
+		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
 
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
 
