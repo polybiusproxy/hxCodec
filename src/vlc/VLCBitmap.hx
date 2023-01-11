@@ -12,7 +12,6 @@ import haxe.io.Path;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
 import openfl.utils.ByteArray;
 import vlc.LibVLC;
@@ -137,7 +136,6 @@ class VLCBitmap extends Bitmap
 	private var flags:Array<Bool> = [];
 	private var pixels:Pointer<UInt8>;
 	private var buffer:BytesData;
-	private var texture:RectangleTexture;
 
 	// LibVLC
 	private var instance:LibVLC_Instance;
@@ -180,12 +178,6 @@ class VLCBitmap extends Bitmap
 			LibVLC.media_add_option(mediaItem, "input-repeat=0");
 
 		LibVLC.media_release(mediaItem);
-
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
 
 		if (bitmapData != null)
 		{
@@ -244,12 +236,6 @@ class VLCBitmap extends Bitmap
 
 		if (stage.hasEventListener(Event.ENTER_FRAME))
 			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
 
 		if (bitmapData != null)
 		{
@@ -359,13 +345,9 @@ class VLCBitmap extends Bitmap
 
 	private function render(deltaTime:Float, elementsCount:Int):Void
 	{
-		// Initialize the `texture` if necessary.
-		if (texture == null)
-			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
-
 		// Initialize the `bitmapData` if necessary.
-		if (bitmapData == null && texture != null)
-			bitmapData = BitmapData.fromTexture(texture);
+		if (bitmapData == null)
+			bitmapData = new BitmapData(videoWidth, videoHeight, true, 0);
 
 		// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
 		if (!smoothing)
@@ -381,14 +363,14 @@ class VLCBitmap extends Bitmap
 
 			NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
 
-			if (texture != null && (buffer != null && buffer.length > 0))
+			if (bitmapData != null && (buffer != null && buffer.length > 0))
 			{
 				var bytes:Bytes = Bytes.ofData(buffer);
 				if (bytes.length >= elementsCount)
 				{
-					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
-					width++;
-					width--;
+					bitmapData.lock();
+					bitmapData.setPixels(bitmapData.rect, ByteArray.fromBytes(bytes));
+					bitmapData.unlock();
 				}
 				else
 					trace("Too small frame, can't render :(");
