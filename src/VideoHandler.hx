@@ -15,12 +15,13 @@ class VideoHandler extends VLCBitmap
 	public var canSkip:Bool = true;
 	public var canUseSound:Bool = true;
 	public var canUseAutoResize:Bool = true;
+
 	public var openingCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
 
 	private var pauseMusic:Bool = false;
 
-	public function new():Void
+	public function new(IndexModifier:Int = 0):Void
 	{
 		super();
 
@@ -28,7 +29,7 @@ class VideoHandler extends VLCBitmap
 		onEndReached = onVLCEndReached;
 		onEncounteredError = onVLCEncounteredError;
 
-		FlxG.addChildBelowMouse(this);
+		FlxG.addChildBelowMouse(this, IndexModifier);
 	}
 
 	private function onVLCOpening():Void 
@@ -40,7 +41,7 @@ class VideoHandler extends VLCBitmap
 
 	private function onVLCEncounteredError():Void
 	{
-		Lib.application.window.alert('The Error cannot be specified', "VLC caught an error!");
+		Lib.application.window.alert('Error cannot be specified', "VLC Error!");
 		onVLCEndReached();
 	}
 
@@ -63,8 +64,7 @@ class VideoHandler extends VLCBitmap
 
 		dispose();
 
-		if (FlxG.game.contains(this))
-			FlxG.game.removeChild(this);
+		FlxG.removeChild(this);
 
 		if (finishCallback != null)
 			finishCallback();
@@ -119,7 +119,7 @@ class VideoHandler extends VLCBitmap
 		volume = #if FLX_SOUND_SYSTEM Std.int(((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100)) #else FlxG.sound.volume * 100 #end;
 	}
 
-	public function calcSize(Ind:Int):Float
+	public function calcSize(Ind:Int):Int
 	{
 		var appliedWidth:Float = Lib.current.stage.stageHeight * (FlxG.width / FlxG.height);
 		var appliedHeight:Float = Lib.current.stage.stageWidth * (FlxG.height / FlxG.width);
@@ -133,9 +133,9 @@ class VideoHandler extends VLCBitmap
 		switch (Ind)
 		{
 			case 0:
-				return appliedWidth;
+				return Std.int(appliedWidth);
 			case 1:
-				return appliedHeight;
+				return Std.int(appliedHeight);
 		}
 
 		return 0;
