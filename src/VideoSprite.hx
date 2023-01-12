@@ -19,11 +19,10 @@ class VideoSprite extends FlxSprite
 		makeGraphic(1, 1, FlxColor.TRANSPARENT);
 
 		bitmap = new VideoHandler();
+		bitmap.canUseAutoResize = false;
 		bitmap.alpha = 0;
 		bitmap.openingCallback = function()
 		{
-			loadGraphic(bitmap.bitmapData);
-
 			if (openingCallback != null)
 				openingCallback();
 		}
@@ -36,6 +35,14 @@ class VideoSprite extends FlxSprite
 		}
 	}
 
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		if (bitmap.isPlaying && bitmap.isDisplaying && bitmap.bitmapData != null)
+			pixels = bitmap.bitmapData;
+	}
+
 	/**
 	 * Native video support for Flixel & OpenFL
 	 * @param Path Example: `your/video/here.mp4`
@@ -43,7 +50,5 @@ class VideoSprite extends FlxSprite
 	 * @param PauseMusic Pause music until the video ends.
 	 */
 	public function playVideo(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Void
-	{
 		bitmap.playVideo(Path, Loop, PauseMusic);
-	}
 }
