@@ -14,7 +14,7 @@
 	],
 	"description":"Native video support for HaxeFlixel & OpenFL",
 	"version":"2.6.0",
-	"releasenote":"Updated VLC and added support for non-mp4 video formats",
+	"releasenote":"Switched to using externs, now uses Stage3D for video rendering and many more fixes.",
 	"contributors":[
 		"polybiusproxy"
 	]
