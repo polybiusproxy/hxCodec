@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxSprite;
+import flixel.graphics.FlxGraphic;
 import flixel.util.FlxColor;
 
 /**
@@ -11,6 +12,7 @@ class VideoSprite extends FlxSprite
 	public var bitmap:VideoHandler;
 	public var canvasWidth:Null<Int>;
 	public var canvasHeight:Null<Int>;
+	public var fillScreen:Bool = false;
 
 	public var openingCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
@@ -53,14 +55,14 @@ class VideoSprite extends FlxSprite
 				return;
 			}
 
-			sprite.loadGraphic(graph);
+			loadGraphic(graph);
 			if (canvasWidth != null && canvasHeight != null)
 			{
-				sprite.setGraphicSize(canvasWidth, canvasHeight);
-				sprite.updateHitbox();
+				setGraphicSize(canvasWidth, canvasHeight);
+				updateHitbox();
 
 				var r = (fillScreen ? Math.max : Math.min)(sprite.scale.x, sprite.scale.y);
-				sprite.scale.set(r, r); // lol
+				scale.set(r, r); // lol
 			}
 			oneTime = true;
 		}
