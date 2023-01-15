@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.keyboard.FlxKey;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
@@ -16,6 +17,8 @@ class VideoSprite extends FlxSprite
 
 	public var openingCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
+
+	public var skipKeys(get, set):Array<FlxKey>;
 
 	public function new(X:Float = 0, Y:Float = 0)
 	{
@@ -75,4 +78,12 @@ class VideoSprite extends FlxSprite
 	 */
 	public function playVideo(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Void
 		bitmap.playVideo(Path, Loop, PauseMusic);
+
+	@:noCompletion
+	private function get_skipKeys():Array<FlxKey>
+		return bitmap.skipKeys;
+
+	@:noCompletion
+	private function set_skipKeys(Value:Array<FlxKey>):Array<FlxKey>
+		return bitmap.skipKeys = Value;
 }
