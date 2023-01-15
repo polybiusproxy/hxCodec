@@ -13,7 +13,6 @@ class VideoSprite extends FlxSprite
 	public var bitmap:VideoHandler;
 	public var canvasWidth:Null<Int>;
 	public var canvasHeight:Null<Int>;
-	public var fillScreen:Bool = false;
 
 	public var openingCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
@@ -57,14 +56,13 @@ class VideoSprite extends FlxSprite
 			}
 
 			loadGraphic(graphic);
+
 			if (canvasWidth != null && canvasHeight != null)
 			{
 				setGraphicSize(canvasWidth, canvasHeight);
 				updateHitbox();
-
-				var size:Float = (fillScreen ? Math.max : Math.min)(scale.x, scale.y);
-				scale.set(size, size); // lol
 			}
+
 			oneTime = true;
 		}
 	}
