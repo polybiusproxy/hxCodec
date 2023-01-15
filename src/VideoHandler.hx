@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.keyboard.FlxKey;
 import flixel.FlxG;
 import openfl.Lib;
 import openfl.events.Event;
@@ -13,6 +14,8 @@ import vlc.VLCBitmap;
 class VideoHandler extends VLCBitmap
 {
 	public var canSkip:Bool = true;
+	public var skipKeys:Array<FlxKey> = [FlxKey.SPACE];
+
 	public var canUseSound:Bool = true;
 	public var canUseAutoResize:Bool = true;
 
@@ -108,7 +111,7 @@ class VideoHandler extends VLCBitmap
 	private function update(?E:Event):Void
 	{
 		#if FLX_KEYBOARD
-		if (canSkip && (FlxG.keys.justPressed.SPACE #if android || FlxG.android.justReleased.BACK #end) && (isPlaying && isDisplaying))
+		if (canSkip && (FlxG.keys.anyJustPressed(skipKeys) #if android || FlxG.android.justReleased.BACK #end) && (isPlaying && isDisplaying))
 			onVLCEndReached();
 		#elseif android
 		if (canSkip && FlxG.android.justReleased.BACK && (isPlaying && isDisplaying))
