@@ -47,6 +47,8 @@ class VideoHandler extends VLCBitmap
 
 	private function onVLCEndReached():Void
 	{
+		trace("the video reached the end!");
+
 		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.resume();
 
@@ -84,6 +86,9 @@ class VideoHandler extends VLCBitmap
 		if (FlxG.sound.music != null && PauseMusic)
 			FlxG.sound.music.pause();
 
+		// Probably won't help with anything but ok.
+		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #end FlxG.sound.volume * 100);
+
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
 		if (FlxG.autoPause)
@@ -116,7 +121,7 @@ class VideoHandler extends VLCBitmap
 			height = calcSize(1);
 		}
 
-		volume = #if FLX_SOUND_SYSTEM Std.int(((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100)) #else FlxG.sound.volume * 100 #end;
+		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #end FlxG.sound.volume * 100);
 	}
 
 	public function calcSize(Ind:Int):Int
