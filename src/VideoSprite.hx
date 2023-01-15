@@ -48,21 +48,21 @@ class VideoSprite extends FlxSprite
 
 		if (bitmap.isPlaying && bitmap.isDisplaying && bitmap.bitmapData != null && !oneTime)
 		{
-			var graph:FlxGraphic = FlxG.bitmap.add(bitmap.bitmapData, false, '');
-			if (graph.imageFrame.frame == null)
+			var graphic:FlxGraphic = FlxG.bitmap.add(bitmap.bitmapData, false, '');
+			if (graphic.imageFrame.frame == null)
 			{
-				trace('imageFrame is null?');
+				trace('the frame of the image is null?');
 				return;
 			}
 
-			loadGraphic(graph);
+			loadGraphic(graphic);
 			if (canvasWidth != null && canvasHeight != null)
 			{
 				setGraphicSize(canvasWidth, canvasHeight);
 				updateHitbox();
 
-				var r = (fillScreen ? Math.max : Math.min)(sprite.scale.x, sprite.scale.y);
-				scale.set(r, r); // lol
+				var size:Float = (fillScreen ? Math.max : Math.min)(sprite.scale.x, sprite.scale.y);
+				scale.set(size, size); // lol
 			}
 			oneTime = true;
 		}
