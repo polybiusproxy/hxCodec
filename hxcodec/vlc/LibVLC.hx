@@ -6,7 +6,7 @@
  * This contains some LibVLC externs which you can use in Haxe by using cpp target.
  */
 
-package vlc;
+package hxcodec.vlc;
 
 #if !(desktop || android)
 #error "The current target platform isn't supported by hxCodec. If you are targeting Windows/Mac/Linux/Android and you are getting this message, please contact us.";
@@ -15,7 +15,7 @@ import cpp.RawPointer;
 import cpp.RawConstPointer;
 import cpp.Int64;
 import cpp.UInt32;
-import vlc.helpers.VoidStarConstStar;
+import hxcodec.vlc.helpers.VoidStarConstStar;
 
 typedef LibVLC_Instance = RawPointer<LibVLC_Instance_T>;
 typedef LibVLC_AudioOutput = RawPointer<LibVLC_AudioOutput_T>;
@@ -23,7 +23,7 @@ typedef LibVLC_MediaPlayer = RawPointer<LibVLC_MediaPlayer_T>;
 typedef LibVLC_Media = RawPointer<LibVLC_Media_T>;
 typedef LibVLC_EventManager = RawPointer<LibVLC_EventManager_T>;
 
-@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:buildXml("<include name='${haxelib:hxCodec}/hxcodec/vlc/LibVLCBuild.xml' />")
 @:include("vlc/vlc.h")
 @:unreflective
 @:keep
