@@ -11,7 +11,6 @@ package vlc;
 #if !(desktop || android)
 #error "The current target platform isn't supported by hxCodec. If you are targeting Windows/Mac/Linux/Android and you are getting this message, please contact us.";
 #end
-import cpp.ConstCharStar;
 import cpp.RawPointer;
 import cpp.RawConstPointer;
 import cpp.Int64;
@@ -31,7 +30,7 @@ typedef LibVLC_EventManager = RawPointer<LibVLC_EventManager_T>;
 extern class LibVLC
 {
 	@:native("libvlc_new")
-	static function init(argc:Int, argv:RawConstPointer<ConstCharStar>):LibVLC_Instance;
+	static function init(argc:Int, argv:RawConstPointer<String>):LibVLC_Instance;
 
 	@:native("libvlc_release")
 	static function release(p_instance:LibVLC_Instance):Void;
@@ -43,13 +42,13 @@ extern class LibVLC
 	static function free(ptr:cpp.Star<cpp.Void>):Void;
 
 	@:native("libvlc_errmsg")
-	static function errmsg():ConstCharStar;
+	static function errmsg():String;
 
 	@:native("libvlc_clearerr")
 	static function clearerr():Void;
 
 	@:native("libvlc_printerr")
-	static function printerr(fmt:ConstCharStar):ConstCharStar;
+	static function printerr(fmt:String):String;
 
 	@:native("libvlc_audio_output_list_get")
 	static function audio_output_list_get(p_instance:LibVLC_Instance):LibVLC_AudioOutput;
@@ -58,7 +57,7 @@ extern class LibVLC
 	static function audio_output_list_release(p_list:LibVLC_AudioOutput):Void;
 
 	@:native("libvlc_audio_output_set")
-	static function audio_output_set(p_mi:LibVLC_MediaPlayer, deviceName:ConstCharStar):Void;
+	static function audio_output_set(p_mi:LibVLC_MediaPlayer, deviceName:String):Void;
 
 	@:native("libvlc_audio_get_delay")
 	static function audio_get_delay(p_mi:LibVLC_MediaPlayer):Int64;
@@ -81,16 +80,16 @@ extern class LibVLC
 		user_data:cpp.Star<cpp.Void>):Int;
 
 	@:native("libvlc_media_new_path")
-	static function media_new_path(p_instance:LibVLC_Instance, path:ConstCharStar):LibVLC_Media;
+	static function media_new_path(p_instance:LibVLC_Instance, path:String):LibVLC_Media;
 
 	@:native("libvlc_media_new_location")
-	static function media_new_location(p_instance:LibVLC_Instance, psz_mrl:ConstCharStar):LibVLC_Media;
+	static function media_new_location(p_instance:LibVLC_Instance, psz_mrl:String):LibVLC_Media;
 
 	@:native("libvlc_media_add_option")
-	static function media_add_option(p_md:LibVLC_Media, psz_options:ConstCharStar):Void;
+	static function media_add_option(p_md:LibVLC_Media, psz_options:String):Void;
 
 	@:native("libvlc_media_add_option_flag")
-	static function media_add_option_flag(p_md:LibVLC_Media, psz_options:ConstCharStar, i_flags:UInt32):Void;
+	static function media_add_option_flag(p_md:LibVLC_Media, psz_options:String, i_flags:UInt32):Void;
 
 	@:native("libvlc_media_get_duration")
 	static function media_get_duration(p_md:LibVLC_Media):Int64;
