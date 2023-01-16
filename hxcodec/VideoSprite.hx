@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.util.FlxColor;
+import hxcodec.VideoHandler;
 
 /**
  * This class allows you to play videos using sprites (FlxSprite).

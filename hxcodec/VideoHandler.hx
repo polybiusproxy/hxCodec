@@ -5,7 +5,7 @@ import flixel.FlxG;
 import openfl.Lib;
 import openfl.events.Event;
 import sys.FileSystem;
-import vlc.VLCBitmap;
+import hxcodec.vlc.VLCBitmap;
 
 /**
  * Handles video playback.
