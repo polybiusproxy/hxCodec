@@ -446,7 +446,7 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function get_duration():String
+	@:noCompletion private function get_mrl():String
 	{
 		if (mediaItem != null)
 			return LibVLC.media_get_mrl(mediaItem);
