@@ -115,6 +115,7 @@ class VLCBitmap extends Bitmap
 	public var position(get, set):Float;
 	public var length(get, never):Int;
 	public var duration(get, never):Int;
+	public var mrl(get, never):String;
 	public var volume(get, set):Int;
 	public var delay(get, set):Int;
 	public var rate(get, set):Float;
@@ -443,6 +444,14 @@ class VLCBitmap extends Bitmap
 			return LibVLC.media_get_duration(mediaItem);
 
 		return 0;
+	}
+
+	@:noCompletion private function get_mrl():String
+	{
+		if (mediaItem != null)
+			return LibVLC.media_get_mrl(mediaItem);
+
+		return '';
 	}
 
 	@:noCompletion private function get_volume():Int

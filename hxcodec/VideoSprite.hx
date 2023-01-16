@@ -14,7 +14,6 @@ class VideoSprite extends FlxSprite
 	public var bitmap:VideoHandler;
 	public var canvasWidth:Null<Int>;
 	public var canvasHeight:Null<Int>;
-	public var fillScreen:Bool = false;
 
 	public var openingCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
@@ -52,7 +51,7 @@ class VideoSprite extends FlxSprite
 
 		if (bitmap.isPlaying && bitmap.isDisplaying && bitmap.bitmapData != null && !oneTime)
 		{
-			var graphic:FlxGraphic = FlxG.bitmap.add(bitmap.bitmapData, false, '');
+			var graphic:FlxGraphic = FlxG.bitmap.add(bitmap.bitmapData, false, bitmap.mrl);
 			if (graphic.imageFrame.frame == null)
 			{
 				trace('the frame of the image is null?');
@@ -60,14 +59,13 @@ class VideoSprite extends FlxSprite
 			}
 
 			loadGraphic(graphic);
+
 			if (canvasWidth != null && canvasHeight != null)
 			{
 				setGraphicSize(canvasWidth, canvasHeight);
 				updateHitbox();
-
-				var size:Float = (fillScreen ? Math.max : Math.min)(scale.x, scale.y);
-				scale.set(size, size); // lol
 			}
+
 			oneTime = true;
 		}
 	}
