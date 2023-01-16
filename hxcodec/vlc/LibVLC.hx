@@ -23,7 +23,7 @@ typedef LibVLC_MediaPlayer = RawPointer<LibVLC_MediaPlayer_T>;
 typedef LibVLC_Media = RawPointer<LibVLC_Media_T>;
 typedef LibVLC_EventManager = RawPointer<LibVLC_EventManager_T>;
 
-@:buildXml("<include name='${haxelib:hxCodec}/src/vlc/LibVLCBuild.xml' />")
+@:buildXml("<include name='${haxelib:hxCodec}/hxcodec/vlc/LibVLCBuild.xml' />")
 @:include("vlc/vlc.h")
 @:unreflective
 @:keep
