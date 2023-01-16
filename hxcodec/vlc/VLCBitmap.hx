@@ -1,4 +1,4 @@
-package vlc;
+package hxcodec.vlc;
 
 #if !(desktop || android)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
@@ -15,7 +15,7 @@ import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
 import openfl.utils.ByteArray;
-import vlc.LibVLC;
+import hxcodec.vlc.LibVLC;
 
 /**
  * ...
@@ -168,7 +168,9 @@ class VLCBitmap extends Bitmap
 	{
 		final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
 
+		#if HXC_DEBUG_TRACE
 		trace("setting path to: " + path);
+		#end
 
 		mediaItem = LibVLC.media_new_path(instance, path);
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
@@ -391,8 +393,10 @@ class VLCBitmap extends Bitmap
 					width++;
 					width--;
 				}
+				#if HXC_DEBUG_TRACE
 				else
 					trace("Too small frame, can't render :(");
+				#end
 			}
 		}
 	}

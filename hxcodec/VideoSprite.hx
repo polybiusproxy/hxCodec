@@ -1,10 +1,11 @@
-package;
+package hxcodec;
 
 import flixel.input.keyboard.FlxKey;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.util.FlxColor;
+import hxcodec.VideoHandler;
 
 /**
  * This class allows you to play videos using sprites (FlxSprite).
@@ -54,7 +55,9 @@ class VideoSprite extends FlxSprite
 			var graphic:FlxGraphic = FlxG.bitmap.add(bitmap.bitmapData, false, bitmap.mrl);
 			if (graphic.imageFrame.frame == null)
 			{
+				#if HXC_DEBUG_TRACE
 				trace('the frame of the image is null?');
+				#end
 				return;
 			}
 
