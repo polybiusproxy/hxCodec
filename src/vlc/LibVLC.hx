@@ -96,7 +96,7 @@ extern class LibVLC
 	static function media_get_duration(p_md:LibVLC_Media):Int64;
 
 	@:native("libvlc_media_get_mrl")
-	static function media_get_mrl(p_md:LibVLC_Media):cpp.Star<cpp.Char>;
+	static function media_get_mrl(p_md:LibVLC_Media):String;
 
 	@:native("libvlc_media_release")
 	static function media_release(p_md:LibVLC_Media):Void;
