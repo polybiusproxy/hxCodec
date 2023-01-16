@@ -1,4 +1,4 @@
-package vlc;
+package hxcodec.vlc;
 
 #if !(desktop || android)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";

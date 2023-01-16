@@ -1,4 +1,4 @@
-package;
+package hxcodec;
 
 import flixel.input.keyboard.FlxKey;
 import flixel.FlxG;
