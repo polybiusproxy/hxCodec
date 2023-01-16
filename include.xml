@@ -7,8 +7,6 @@
 	<assets path="include/Mac" rename="../MacOS" if="mac" />
 	<assets path="include/Windows" rename='' if="windows" />
 
-	<source path="hxcodec" />
-
 	<ndll name="c++_shared" if="android" />
 	<ndll name="vlc" if="android" />
 
