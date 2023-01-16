@@ -51,7 +51,7 @@ class VideoSprite extends FlxSprite
 
 		if (bitmap.isPlaying && bitmap.isDisplaying && bitmap.bitmapData != null && !oneTime)
 		{
-			var graphic:FlxGraphic = FlxG.bitmap.add(bitmap.bitmapData, false, '');
+			var graphic:FlxGraphic = FlxG.bitmap.add(bitmap.bitmapData, false, bitmap.mrl);
 			if (graphic.imageFrame.frame == null)
 			{
 				trace('the frame of the image is null?');
