@@ -37,7 +37,10 @@ class VideoHandler extends VLCBitmap
 
 	private function onVLCOpening():Void 
 	{        
+		#if HXC_DEBUG_TRACE
 		trace("the video is opening!");
+		#end
+
 		if (openingCallback != null)
 		    openingCallback();
 	}
@@ -50,7 +53,9 @@ class VideoHandler extends VLCBitmap
 
 	private function onVLCEndReached():Void
 	{
+		#if HXC_DEBUG_TRACE
 		trace("the video reached the end!");
+		#end
 
 		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.resume();
