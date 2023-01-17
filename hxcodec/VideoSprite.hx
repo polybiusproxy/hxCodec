@@ -1,6 +1,5 @@
 package hxcodec;
 
-import flixel.input.keyboard.FlxKey;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
@@ -15,7 +14,6 @@ class VideoSprite extends FlxSprite
 	public var bitmap:VideoHandler;
 	public var canvasWidth:Null<Int>;
 	public var canvasHeight:Null<Int>;
-	public var fillScreen:Bool = false;
 
 	public var openingCallback:Void->Void = null;
 	public var graphicLoadedCallback:Void->Void = null;
@@ -68,9 +66,6 @@ class VideoSprite extends FlxSprite
 			{
 				setGraphicSize(canvasWidth, canvasHeight);
 				updateHitbox();
-
-				final value:Float = (fillScreen ? Math.max : Math.min)(scale.x, scale.y);
-				scale.set(value, value);
 			}
 
 			if (graphicLoadedCallback != null)
