@@ -41,6 +41,9 @@ class VideoHandler extends VLCBitmap
 		trace("the video is opening!");
 		#end
 
+		// The Media Player isn't `null at this point...
+		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #end FlxG.sound.volume * 100);
+
 		if (openingCallback != null)
 		    openingCallback();
 	}
@@ -93,9 +96,6 @@ class VideoHandler extends VLCBitmap
 
 		if (FlxG.sound.music != null && PauseMusic)
 			FlxG.sound.music.pause();
-
-		// Probably won't help with anything but ok.
-		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #end FlxG.sound.volume * 100);
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
