@@ -50,6 +50,15 @@ extern class LibVLC
 	@:native("libvlc_printerr")
 	static function printerr(fmt:String):String;
 
+	@:native("libvlc_get_version")
+	static function get_version():String;
+
+	@:native("libvlc_get_compiler")
+	static function get_compiler():String;
+
+	@:native("libvlc_get_changeset")
+	static function get_changeset():String;
+
 	@:native("libvlc_audio_output_list_get")
 	static function audio_output_list_get(p_instance:LibVLC_Instance):LibVLC_AudioOutput;
 
