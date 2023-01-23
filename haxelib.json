@@ -1,8 +1,8 @@
 {
-	"name":"hxCodec",
-	"url":"https://github.com/polybiusproxy/hxCodec",
-	"license":"MIT",
-	"tags":[
+	"name": "hxCodec",
+	"url": "https://github.com/polybiusproxy/hxCodec",
+	"license": "MIT",
+	"tags": [
 		"vlc",
 		"video",
 		"haxeflixel",
@@ -12,10 +12,10 @@
 		"linux",
 		"android"
 	],
-	"description":"Native video support for HaxeFlixel & OpenFL",
-	"version":"2.6.0",
-	"releasenote":"Switched to using externs, now uses Stage3D for video rendering and many more fixes.",
-	"contributors":[
+	"description": "Native video support for HaxeFlixel & OpenFL",
+	"version": "2.6.1",
+	"releasenote": "Add skip keys, fix some issues with VideoSprite, bug fixes and more.",
+	"contributors": [
 		"polybiusproxy"
 	]
 }
