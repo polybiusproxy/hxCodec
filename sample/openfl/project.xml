@@ -2,11 +2,12 @@
 <project>
 	<meta title="hxCodecPro OpenFL Sample" package="hxcodecpro.sample.openfl" version="1.0.0" company="hxCodecPro" />
 
-	<app main="Main" path="bin" file="Sample" />
+	<app main="Main" path="export" file="Sample" />
 	<source path="src" />
 	<assets path="assets" />
 
     <haxelib name="lime" />
 	<haxelib name="openfl" />
+	
 	<haxelib name="hxcodecpro" />
 </project>
