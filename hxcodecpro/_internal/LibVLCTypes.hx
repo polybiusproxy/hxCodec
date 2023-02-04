@@ -176,6 +176,46 @@ typedef LibVLC_Media = RawPointer<LibVLC_Media_T>;
 @:native("libvlc_media_t")
 extern class LibVLC_Media_T {}
 
+typedef LibVLC_MediaTrack = RawPointer<LibVLC_MediaTrack_T>;
+
+@:include("vlc/vlc.h")
+@:keep
+@:native("libvlc_media_track_t")
+extern class LibVLC_MediaTrack_T {}
+
+/**
+ * Opaque struct containing a list of tracks. 
+ */
+typedef LibVLC_MediaTracklist = RawPointer<LibVLC_MediaTracklist_T>;
+
+@:include("vlc/vlc.h")
+@:keep
+@:native("libvlc_media_tracklist_t")
+extern class LibVLC_MediaTracklist_T {}
+
+/**
+ * An audio track within a media.
+ */
+typedef LibVLC_AudioTrack = RawPointer<LibVLC_AudioTrack_T>;
+
+@:include("vlc/vlc.h")
+@:keep
+@:native("libvlc_audio_track_t")
+extern class LibVLC_AudioTrack_T {}
+
+/**
+ * A video track within a media.
+ */
+typedef LibVLC_VideoTrack = RawPointer<LibVLC_VideoTrack_T>;
+
+@:include("vlc/vlc.h")
+@:keep
+@:native("libvlc_video_track_t")
+extern class LibVLC_VideoTrack_T {}
+
+/**
+ * A media player.
+ */
 typedef LibVLC_MediaPlayer = RawPointer<LibVLC_MediaPlayer_T>;
 
 @:include("vlc/vlc.h")
@@ -590,6 +630,38 @@ abstract LibVLC_MediaParseFlag(Int) from Int to Int
   public static var media_fetch_network(default, null) = new LibVLC_MediaParseFlag(untyped __cpp__("media_fetch_network"));
   public static var media_do_interact(default, null) = new LibVLC_MediaParseFlag(untyped __cpp__("media_do_interact"));
   public static var media_no_skip(default, null) = new LibVLC_MediaParseFlag(untyped __cpp__("media_no_skip"));
+}
+
+@:include("vlc/vlc.h")
+@:unreflective
+@:native("libvlc_track_type_t")
+extern class LibVLC_MediaTrackType_T {}
+
+abstract LibVLC_MediaTrackType(Int) from Int to Int
+{
+  inline public function new(i:Int)
+  {
+    this = i;
+  }
+
+  @:to(LibVLC_MediaTrackType_T)
+  @:unreflective
+  public inline function toNative()
+  {
+    return untyped __cpp__("((libvlc_track_type_t)({0}))", this);
+  }
+
+  @:from(LibVLC_MediaTrackType_T)
+  @:unreflective
+  public static inline function fromNative(value:LibVLC_MediaTrackType_T):LibVLC_MediaTrackType
+  {
+    return new LibVLC_MediaTrackType(untyped value);
+  }
+
+  public static var libvlc_track_unknown(default, null) = new LibVLC_MediaTrackType(untyped __cpp__("libvlc_track_unknown"));
+  public static var libvlc_track_audio(default, null) = new LibVLC_MediaTrackType(untyped __cpp__("libvlc_track_audio"));
+  public static var libvlc_track_video(default, null) = new LibVLC_MediaTrackType(untyped __cpp__("libvlc_track_video"));
+  public static var libvlc_track_text(default, null) = new LibVLC_MediaTrackType(untyped __cpp__("libvlc_track_text"));
 }
 
 /**

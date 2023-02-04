@@ -166,4 +166,83 @@ extern class LibVLCMediaPlayer
    */
   @:native("libvlc_media_player_can_pause")
   static function can_pause(p_mi:LibVLC_MediaPlayer):Bool;
+
+  /**
+   * Get the track list for one type
+   *
+   * @version LibVLC 4.0.0 and later.
+   *
+   * @note You need to call libvlc_media_parse_request() or play the media
+   * at least once before calling this function.  Not doing this will result in
+   * an empty list.
+   *
+   * @note This track list is a snapshot of the current tracks when this function
+   * is called. If a track is updated after this call, the user will need to call
+   * this function again to get the updated track.
+   *
+   *
+   * The track list can be used to get track information and to select specific
+   * tracks.
+   *
+   * @param p_mi the media player
+   * @param type type of the track list to request
+   * @param selected filter only selected tracks if true (return all tracks, even
+   * selected ones if false)
+   *
+   * @return a valid libvlc_media_tracklist_t or NULL in case of error, if there
+   * is no track for a category, the returned list will have a size of 0, delete
+   * with libvlc_media_tracklist_delete()
+   */
+  @:native("libvlc_media_player_get_tracklist")
+  static function get_tracklist(p_mi:LibVLC_MediaPlayer, type:LibVLC_MediaTrackType, selected:Bool):LibVLC_MediaTracklist;
+
+  /**
+   * Get the selected track for one type
+   *
+   * @version LibVLC 4.0.0 and later.
+   *
+   * @warning More than one tracks can be selected for one type. In that case,
+   * libvlc_media_player_get_tracklist() should be used.
+   *
+   * @param p_mi the media player
+   * @param type type of the selected track
+   *
+   * @return a valid track or NULL if there is no selected tracks for this type,
+   * release it with libvlc_media_track_release().
+   */
+  @:native("libvlc_media_player_get_selected_track")
+  static function get_selected_track(p_mi:LibVLC_MediaPlayer, type:LibVLC_MediaTrackType):LibVLC_MediaTrack;
+}
+
+class LibVLCMediaPlayerHelper
+{
+  /**
+   * Retrieves the selected video track for the current media player.
+   * 
+   * @param p_mi The media player to retrieve the selected video track from.
+   * @return The media track containing the video track information, or NULL if
+   *         no video track is selected.
+   */
+  @:functionCode('
+    return libvlc_media_player_get_selected_track(p_mi, libvlc_track_video);
+  ')
+  public static function getSelectedVideoMediaTrack(p_mi:LibVLC_MediaPlayer):LibVLC_MediaTrack
+  {
+    throw 'functionCode';
+  }
+
+  /**
+   * Retrieves the selected audio track for the current media player.
+   * 
+   * @param p_mi The media player to retrieve the selected audio track from.
+   * @return The media track containing the audio track information, or NULL if
+   *         no audio track is selected.
+   */
+  @:functionCode('
+    return libvlc_media_player_get_selected_track(p_mi, libvlc_track_audio);
+  ')
+  public static function getSelectedAudioMediaTrack(p_mi:LibVLC_MediaPlayer):LibVLC_MediaTrack
+  {
+    throw 'functionCode';
+  }
 }

@@ -1,3 +1,3 @@
 # README
 
-Make sure to download the earth.webm file when testing.
+A sample project demonstrating basic video playback with no playback controls.

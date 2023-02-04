@@ -213,21 +213,18 @@ extern class LibVLCMedia
    * at least once before calling this function.
    * Not doing this will result in an undefined result.
    *
-   * \param p_md media descriptor object
-   * \return duration of media item or -1 on error
+   * @param p_md media descriptor object
+   * @return duration of media item or -1 on error
    */
-  LIBVLC_API
-
-  libvlc_time_t
-  libvlc_media_get_duration(libvlc_media_t * p_md);
+  @:native("libvlc_media_get_duration")
+  static function get_duration(p_md:LibVLC_Media):cpp.Int64;
 
   /**
    * Get the media resource locator (mrl) from a media descriptor object
    *
-   * \param p_md a media descriptor object
-   * \return string with mrl of media descriptor object
+   * @param p_md a media descriptor object
+   * @return string with mrl of media descriptor object
    */
-  LIBVLC_API
-
-  char * libvlc_media_get_mrl(libvlc_media_t * p_md);
+  @:native("libvlc_media_get_mrl")
+  static function get_mrl(p_md:LibVLC_Media):String;
 }

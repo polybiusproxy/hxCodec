@@ -5,6 +5,8 @@ import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.events.Event;
 import openfl.Lib;
+import hxcodecpro._internal.LibVLCMediaPlayer.LibVLCMediaPlayerHelper;
+import hxcodecpro._internal.LibVLCMediaTrack.LibVLCMediaTrackHelper;
 
 /**
  * Utilizes LibVLC externs as a bitmap that can be displayed.
@@ -237,7 +239,7 @@ class VideoBitmapInternal extends Bitmap
 
   @:noCompletion function get_fps():Float
   {
-    if (mediaPlayer != null) return LibVLCMediaPlayer.get_fps(mediaPlayer);
+    if (videoTrack != null) return LibVLCMediaTrackHelper.getFPS(videoTrack);
 
     return 0;
   }
@@ -267,6 +269,32 @@ class VideoBitmapInternal extends Bitmap
     if (mediaPlayer != null) return LibVLCMediaPlayer.can_pause(mediaPlayer);
 
     return false;
+  }
+
+  var audioTrack(get, null):LibVLC_AudioTrack;
+
+  function get_audioTrack():LibVLC_AudioTrack
+  {
+    if (mediaPlayer != null)
+    {
+      var mediaTrack:LibVLC_MediaTrack = LibVLCMediaPlayerHelper.getSelectedAudioMediaTrack(mediaPlayer);
+      return LibVLCMediaTrackHelper.getAudioTrack(mediaTrack);
+    }
+
+    return null;
+  }
+
+  var videoTrack(get, null):LibVLC_VideoTrack;
+
+  function get_videoTrack():LibVLC_VideoTrack
+  {
+    if (mediaPlayer != null)
+    {
+      var mediaTrack:LibVLC_MediaTrack = LibVLCMediaPlayerHelper.getSelectedAudioMediaTrack(mediaPlayer);
+      return LibVLCMediaTrackHelper.getVideoTrack(mediaTrack);
+    }
+
+    return null;
   }
 
   // Constants
