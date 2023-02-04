@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension>
+    <!-- Windows dynamic libraries -->
+    <section if="windows">
+        <!--
+            Builds require putting libvlc.dll in the same directory as the executable.
+            Static linking isn't supported with VLC, and I can't figure out how to move the DLL to a subdirectory.
+        -->
+        <assets path="thirdparty/dll/vlc/Windows" rename="" />
+    </section>
+
+    <section if="mac">
+        <assets path="thirdparty/dll/vlc/Mac" rename="../MacOS" />
+    </section>
+
+    <section if="linux">
+    </section>
+
+    <!-- Android dynamic libraries -->
+    <section if="android">
+        <ndll name="c++_shared" />
+        <ndll name="vlc" />
+    </section>
+</extension>

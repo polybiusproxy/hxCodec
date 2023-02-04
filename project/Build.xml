@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+    <!-- Header files for all platforms. -->
+	<files id="haxe">
+		<compilervalue name="-I" value="${haxelib:hxcodecpro}/thirdparty/include/" />
+	</files>
+	<files id="__main__">
+		<compilervalue name="-I" value="${haxelib:hxcodecpro}/thirdparty/include/" />
+	</files>
+
+    <!-- Linked libraries for Windows. -->
+    <target id="haxe" tool="linker" toolid="exe" if="windows">
+		<lib name="${haxelib:hxcodecpro}/thirdparty/lib/vlc/Windows/libvlc.lib" if="HXCPP_M64" />
+		<lib name="${haxelib:hxcodecpro}/thirdparty/lib/vlc/Windows/libvlccore.lib" if="HXCPP_M64" />
+	</target>
+
+    <!-- Linked libraries for Mac. -->
+    <target id="haxe" tool="linker" if="mac">
+        <lib name="${haxelib:hxcodecpro}/thirdparty/lib/vlc/Mac/libvlc.5.dylib" if="HXCPP_M64" />
+        <lib name="${haxelib:hxcodecpro}/thirdparty/lib/vlc/Mac/libvlccore.7.dylib" if="HXCPP_M64" />
+    </target>
+
+    <!-- Linked libraries for Linux. -->
+    <target id="haxe" tool="linker" if="linux">
+        <lib name="${haxelib:hxcodecpro}/thirdparty/lib/vlc/Linux/libvlc.so.5" if="HXCPP_M64" />
+        <lib name="${haxelib:hxcodecpro}/thirdparty/lib/vlc/Linux/libvlccore.so.9" if="HXCPP_M64" />
+    </target>
+
+    <!-- Linked libraries for Android. -->
+	<target id="haxe" tool="linker" if="android">
+		<lib name="${haxelib:hxcodecpro}/thirdparty/ndll/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
+		<lib name="${haxelib:hxcodecpro}/thirdparty/ndll/Android/libvlc-64.so" if="HXCPP_ARM64" />
+	</target>
+</xml>
