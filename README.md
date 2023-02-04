@@ -24,3 +24,5 @@ haxelib install hxcodecpro
 ## Licensing
 
 hxCodecPro is made available under the MIT License. Check [LICENSE.md](./LICENSE.md) for more information.
+
+hxCodecPro, when used on desktop platforms, links with code from VLC, which is made available under the Lesser GPLv2 license. Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.

@@ -1,3 +1,0 @@
-[submodule "thirdparty/libvlc"]
-	path = thirdparty/libvlc
-	url = https://code.videolan.org/videolan/vlc.git

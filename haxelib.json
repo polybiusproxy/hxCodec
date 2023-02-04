@@ -1,5 +1,5 @@
 {
-    "name": "hxCodecPro",
+    "name": "hxcodecpro",
     "license": "MIT",
     "tags": ["openfl","lime","cpp","extern","mp4","webm","mkv","ogg","vorbis","audio","video","formats"],
     "description": "Audio and video parsing, manipulation, and playback.",
