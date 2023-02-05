@@ -16,8 +16,8 @@
 
     <!-- Linked libraries for Mac. -->
     <target id="haxe" tool="linker" if="mac">
-        <lib name="${haxelib:hxcodecpro}/thirdparty/lib/vlc/Mac/libvlc.5.dylib" if="HXCPP_M64" />
-        <lib name="${haxelib:hxcodecpro}/thirdparty/lib/vlc/Mac/libvlccore.7.dylib" if="HXCPP_M64" />
+        <lib name="${haxelib:hxcodecpro}/thirdparty/lib/vlc/Mac/libvlc.12.dylib" if="HXCPP_M64" />
+        <lib name="${haxelib:hxcodecpro}/thirdparty/lib/vlc/Mac/libvlccore.9.dylib" if="HXCPP_M64" />
     </target>
 
     <!-- Linked libraries for Linux. -->

@@ -41,4 +41,7 @@ hxCodecPro is made available under the MIT License. Check [LICENSE.md](./LICENSE
 
 hxCodecPro is built using code adapted from [hxCodec](https://github.com/polybiusproxy/hxCodec/), which is also under the MIT License.
 
-hxCodecPro, when used on desktop platforms, links with code from VLC, which is made available under the Lesser GPLv2 license. Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.
+hxCodecPro, when used on desktop platforms, links with code from VLC, which is made available under the Lesser GPLv2 license. Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information. 
+
+# contributors 
+- [Jonnycat] (https://github.com/JonnycatMeow) - Mac Support 
