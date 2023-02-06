@@ -1,21 +1,19 @@
 {
-	"name": "hxCodec",
-	"url": "https://github.com/polybiusproxy/hxCodec",
-	"license": "MIT",
-	"tags": [
-		"vlc",
-		"video",
-		"haxeflixel",
-		"openfl",
-		"windows",
-		"mac",
-		"linux",
-		"android"
-	],
-	"description": "Native video support for HaxeFlixel & OpenFL",
-	"version": "2.6.1",
-	"releasenote": "Add skip keys, fix some issues with VideoSprite, bug fixes and more.",
-	"contributors": [
-		"polybiusproxy"
-	]
+  "name": "hxCodec",
+  "url": "https://github.com/polybiusproxy/hxCodec",
+  "license": "MIT",
+  "tags": [
+    "vlc",
+    "video",
+    "haxeflixel",
+    "openfl",
+    "windows",
+    "mac",
+    "linux",
+    "android"
+  ],
+  "description": "Native video support for HaxeFlixel & OpenFL.",
+  "version": "3.0.0",
+  "releasenote": "Rewrite to libVLC 4.0, new FlxCutsceneState.",
+  "contributors": ["polybiusproxy"]
 }
