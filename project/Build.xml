@@ -2,10 +2,12 @@
 <xml>
     <!-- Header files for all platforms. -->
 	<files id="haxe">
-		<compilervalue name="-I" value="${haxelib:hxcodecpro}/thirdparty/include/" />
+		<compilervalue name="-I" value="${haxelib:hxcodecpro}/thirdparty/include/" /> 
+        <compilervalue name="-I" value="${haxelib:hxcodecpro}/thirdparty/ndll/iOS/plugins/" if="iphoneos"/>
 	</files>
 	<files id="__main__">
-		<compilervalue name="-I" value="${haxelib:hxcodecpro}/thirdparty/include/" />
+		<compilervalue name="-I" value="${haxelib:hxcodecpro}/thirdparty/include/" /> 
+        <compilervalue name="-I" value="${haxelib:hxcodecpro}/thirdparty/ndll/iOS/plugins/" if="iphoneos"/> 
 	</files>
 
     <!-- Linked libraries for Windows. -->
@@ -30,5 +32,10 @@
 	<target id="haxe" tool="linker" if="android">
 		<lib name="${haxelib:hxcodecpro}/thirdparty/ndll/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
 		<lib name="${haxelib:hxcodecpro}/thirdparty/ndll/Android/libvlc-64.so" if="HXCPP_ARM64" />
+	</target> 
+    <!-- Linked libraries for Android. -->
+	<target id="haxe" tool="linker" if="iphoneos">
+		<lib name="${haxelib:hxcodecpro}/thirdparty/ndll/iOS/libvlc.a" if="HXCPP_ARM64" />
+		<lib name="${haxelib:hxcodecpro}/thirdparty/ndll/iOS/libvlccore.a" if="HXCPP_ARM64" />
 	</target>
 </xml>
