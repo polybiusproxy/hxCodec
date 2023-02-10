@@ -7,14 +7,15 @@
             Static linking isn't supported with VLC, and I can't figure out how to move the DLL to a subdirectory.
         -->
         <assets path="thirdparty/dll/vlc/Windows/x64/" rename="" if="HXCPP_M64" />
-        <assets path="thirdparty/dll/vlc/Windows/x32/" rename="" if="HXCPP_M32" />
+        <!-- <assets path="thirdparty/dll/vlc/Windows/x32/" rename="" if="HXCPP_M32" /> -->
     </section>
 
     <section if="mac">
-        <assets path="thirdparty/dll/vlc/Mac/" rename="../MacOS" />
+        <assets path="thirdparty/lib/vlc/Mac/" rename="../MacOS" />
     </section>
 
     <section if="linux">
+        <assets path="thirdparty/lib/vlc/Linux/" rename="" />
     </section>
 
     <!-- Android dynamic libraries -->
