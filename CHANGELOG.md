@@ -41,3 +41,5 @@ This version is a full rewrite by EliteMasterEric, based on the old codebase, wi
 - Refactored codebase for improved readability and maintainability.
 - Added new documentation for most functions.
 - Added Haxe Checkstyle to maintain consistent code style and formatting in Haxe code.
+## Known Issues
+- Support for Mac, Linux, and Android is currently not tested and may not be functional.
