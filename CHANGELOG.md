@@ -43,3 +43,4 @@ This version is a full rewrite by EliteMasterEric, based on the old codebase, wi
 - Added Haxe Checkstyle to maintain consistent code style and formatting in Haxe code.
 ## Known Issues
 - Support for Mac, Linux, and Android is currently not tested and may not be functional.
+- Support for iOS is in progress and is not currently functional.
