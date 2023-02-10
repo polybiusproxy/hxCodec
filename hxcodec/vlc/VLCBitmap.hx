@@ -402,7 +402,7 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Get & Set Methods
-	@:noCompletion private function get_time():Int
+	public function get_time():Int
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_time(mediaPlayer);
@@ -410,7 +410,7 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function set_time(value:Int):Int
+	public function set_time(value:Int):Int
 	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_time(mediaPlayer, value);
@@ -418,7 +418,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_position():Float
+	public function get_position():Float
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_position(mediaPlayer);
@@ -426,7 +426,7 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function set_position(value:Float):Float
+	public function set_position(value:Float):Float
 	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_position(mediaPlayer, value);
@@ -434,7 +434,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_length():Int
+	public function get_length():Int
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_length(mediaPlayer);
@@ -442,7 +442,7 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function get_duration():Int
+	public function get_duration():Int
 	{
 		if (mediaItem != null)
 			return LibVLC.media_get_duration(mediaItem);
@@ -450,7 +450,7 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function get_mrl():String
+	public function get_mrl():String
 	{
 		if (mediaItem != null)
 			return LibVLC.media_get_mrl(mediaItem);
@@ -458,7 +458,7 @@ class VLCBitmap extends Bitmap
 		return '';
 	}
 
-	@:noCompletion private function get_volume():Int
+	public function get_volume():Int
 	{
 		if (mediaPlayer != null)
 			return LibVLC.audio_get_volume(mediaPlayer);
@@ -466,7 +466,7 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function set_volume(value:Int):Int
+	public function set_volume(value:Int):Int
 	{
 		if (mediaPlayer != null)
 			LibVLC.audio_set_volume(mediaPlayer, value);
@@ -474,7 +474,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_delay():Int
+	public function get_delay():Int
 	{
 		if (mediaPlayer != null)
 			return LibVLC.audio_get_delay(mediaPlayer);
@@ -482,7 +482,7 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function set_delay(value:Int):Int
+	public function set_delay(value:Int):Int
 	{
 		if (mediaPlayer != null)
 			LibVLC.audio_set_delay(mediaPlayer, value);
@@ -490,7 +490,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_rate():Float
+	public function get_rate():Float
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_rate(mediaPlayer);
@@ -498,7 +498,7 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function set_rate(value:Float):Float
+	public function set_rate(value:Float):Float
 	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_rate(mediaPlayer, value);
@@ -506,7 +506,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_fps():Float
+	public function get_fps():Float
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_fps(mediaPlayer);
