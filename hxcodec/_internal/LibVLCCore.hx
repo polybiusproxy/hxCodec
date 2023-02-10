@@ -6,7 +6,7 @@ import cpp.RawConstPointer;
  * TODO: These functions and documentation were copied from the VLC headers manually. It would be nice to automate this process.
  * @see https://videolan.videolan.me/vlc/group__libvlc__core.html
  */
-@:buildXml("<include name='${haxelib:hxcodeccpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
+@:buildXml("<include name='${haxelib:hxcodec}/project/Build.xml' />") // Link static/dynamic libraries for VLC
 @:include('vlc/vlc.h') // Include VLC functions and types
 @:keep // Fix issues with DCE
 @:unreflective // TODO: Write down why this is needed

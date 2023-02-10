@@ -7,7 +7,7 @@ package hxcodec._internal;
 /**
  * @see https://videolan.videolan.me/vlc/group__libvlc__error.html
  */
-@:buildXml("<include name='${haxelib:hxcodeccpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
+@:buildXml("<include name='${haxelib:hxcodec}/project/Build.xml' />") // Link static/dynamic libraries for VLC
 @:include('vlc/vlc.h') // Include VLC functions and types
 @:keep // Fix issues with DCE
 @:unreflective // TODO: Write down why this is needed
