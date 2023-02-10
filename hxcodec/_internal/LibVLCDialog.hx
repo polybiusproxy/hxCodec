@@ -1,16 +1,14 @@
-package hxcodecpro._internal;
-
-import cpp.Int64;
+package hxcodec._internal;
 
 #if (!(desktop || android) && macro)
-#error "LibVLC only supports the Windows, Mac, Linux, and Android target platforms."
+#error 'LibVLC only supports the Windows, Mac, Linux, and Android target platforms.'
 #end
 
 /**
  * @see https://videolan.videolan.me/vlc/group__libvlc__dialog.html
  */
-@:buildXml("<include name='${haxelib:hxcodecpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
-@:include("vlc/vlc.h") // Include VLC functions and types
+@:buildXml("<include name='${haxelib:hxcodec}/project/Build.xml' />") // Link static/dynamic libraries for VLC
+@:include('vlc/vlc.h') // Include VLC functions and types
 @:keep // Fix issues with DCE
 @:unreflective // TODO: Write down why this is needed
 extern class LibVLCDialog {}

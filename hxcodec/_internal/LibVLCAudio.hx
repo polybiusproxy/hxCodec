@@ -1,16 +1,14 @@
-package hxcodecpro._internal;
-
-import cpp.Int64;
+package hxcodec._internal;
 
 #if (!(desktop || android) && macro)
-#error "LibVLC only supports the Windows, Mac, Linux, and Android target platforms."
+#error 'LibVLC only supports the Windows, Mac, Linux, and Android target platforms.'
 #end
 
 /**
  * @see https://videolan.videolan.me/vlc/group__libvlc__audio.html
  */
-@:buildXml("<include name='${haxelib:hxcodecpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
-@:include("vlc/vlc.h") // Include VLC functions and types
+@:buildXml("<include name='${haxelib:hxcodec}/project/Build.xml' />") // Link static/dynamic libraries for VLC
+@:include('vlc/vlc.h') // Include VLC functions and types
 @:keep // Fix issues with DCE
 @:unreflective // TODO: Write down why this is needed
 extern class LibVLCAudio
@@ -24,7 +22,7 @@ extern class LibVLCAudio
    *          @see `LibVLC_AudioOutput`
    *          In case of error, NULL is returned.
    */
-  @:native("libvlc_audio_output_list_get")
+  @:native('libvlc_audio_output_list_get')
   static function output_list_get(p_instance:LibVLC_Instance):LibVLC_AudioOutput;
 
   /**
@@ -32,7 +30,7 @@ extern class LibVLCAudio
    *
    * @param p_list list with audio outputs for release
    */
-  @:native("libvlc_audio_output_list_release")
+  @:native('libvlc_audio_output_list_release')
   static function output_list_release(p_list:LibVLC_AudioOutput):Void;
 
   /**
@@ -45,7 +43,7 @@ extern class LibVLCAudio
    *               use psz_name of @see `LibVLC_AudioOutput`
    * @return 0 if function succeeded, -1 on error
    */
-  @:native("libvlc_audio_output_set")
+  @:native('libvlc_audio_output_set')
   static function output_set(p_mi:LibVLC_MediaPlayer, psz_name:String):Int;
 
   /**
@@ -67,10 +65,10 @@ extern class LibVLCAudio
    * It must be freed with `LibVLCAudio.output_device_list_release()`
    * @version LibVLC 2.2.0 or later.
    */
-  @:native("libvlc_audio_output_device_enum")
+  @:native('libvlc_audio_output_device_enum')
   static function output_device_enum(mp:LibVLC_MediaPlayer):LibVLC_AudioOutputDevice;
 
-  @:native("libvlc_audio_output_device_list_get")
+  @:native('libvlc_audio_output_device_list_get')
   static function output_device_list_get(p_instance:LibVLC_Instance, aout:String):LibVLC_AudioOutputDevice;
 
   /**
@@ -79,7 +77,7 @@ extern class LibVLCAudio
    * @param p_list list with audio outputs for release
    * @version LibVLC 2.1.0 or later.
    */
-  @:native("libvlc_audio_output_device_list_release")
+  @:native('libvlc_audio_output_device_list_release')
   static function output_device_list_release(p_list:LibVLC_AudioOutputDevice):Void;
 
   /**
@@ -107,7 +105,7 @@ extern class LibVLCAudio
    * (the actual change is asynchronous and not guaranteed to succeed).
    * On error, a non-zero value is returned.
    */
-  @:native("libvlc_audio_output_device_set")
+  @:native('libvlc_audio_output_device_set')
   static function output_device_set(mp:LibVLC_MediaPlayer, device_id:String):Int;
 
   /**
@@ -117,7 +115,7 @@ extern class LibVLCAudio
    * \return the software volume in percents
    * (0 = mute, 100 = nominal / 0dB)
    */
-  @:native("libvlc_audio_get_volume")
+  @:native('libvlc_audio_get_volume')
   static function get_volume(p_mi:LibVLC_MediaPlayer):Int;
 
   /**
@@ -127,7 +125,7 @@ extern class LibVLCAudio
    * \param i_volume the volume in percents (0 = mute, 100 = 0dB)
    * \return 0 if the volume was set, -1 if it was out of range
    */
-  @:native("libvlc_audio_set_volume")
+  @:native('libvlc_audio_set_volume')
   static function set_volume(p_mi:LibVLC_MediaPlayer, i_volume:Int):Int;
 
   /**
@@ -137,7 +135,7 @@ extern class LibVLCAudio
    * \return the audio delay (microseconds)
    * \version LibVLC 1.1.1 or later
    */
-  @:native("libvlc_audio_get_delay")
+  @:native('libvlc_audio_get_delay')
   static function get_delay(p_mi:LibVLC_MediaPlayer):cpp.Int64;
 
   /**
@@ -148,6 +146,30 @@ extern class LibVLCAudio
    * \return 0 on success, -1 on error
    * \version LibVLC 1.1.1 or later
    */
-  @:native("libvlc_audio_set_delay")
+  @:native('libvlc_audio_set_delay')
   static function set_delay(p_mi:LibVLC_MediaPlayer, i_delay:cpp.Int64):Int;
+
+  /**
+   * Get current mute status.
+   *
+   * \param p_mi media player
+   * \return the mute status (boolean) if defined, -1 if undefined/unapplicable
+   */
+  @:native('libvlc_audio_get_mute')
+  static function get_mute(p_mi:LibVLC_MediaPlayer):Int;
+
+  /**
+   * Set mute status.
+   *
+   * \param p_mi media player
+   * \param status If status is true then mute, otherwise unmute
+   * \warning This function does not always work. If there are no active audio
+   * playback stream, the mute status might not be available. If digital
+   * pass-through (S/PDIF, HDMI...) is in use, muting may be unapplicable. Also
+   * some audio output plugins do not support muting at all.
+   * \note To force silent playback, disable all audio tracks. This is more
+   * efficient and reliable than mute.
+   */
+  @:native('libvlc_audio_set_mute')
+  static function set_mute(p_mi:LibVLC_MediaPlayer, status:Bool):Void;
 }

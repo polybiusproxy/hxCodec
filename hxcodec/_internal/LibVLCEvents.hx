@@ -1,16 +1,14 @@
-package hxcodecpro._internal;
-
-import cpp.Int64;
+package hxcodec._internal;
 
 #if (!(desktop || android) && macro)
-#error "LibVLC only supports the Windows, Mac, Linux, and Android target platforms."
+#error 'LibVLC only supports the Windows, Mac, Linux, and Android target platforms.'
 #end
 
 /**
  * @see https://videolan.videolan.me/vlc/group__libvlc__event.html
  */
-@:buildXml("<include name='${haxelib:hxcodecpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
-@:include("vlc/vlc.h") // Include VLC functions and types
+@:buildXml("<include name='${haxelib:hxcodec}/project/Build.xml' />") // Link static/dynamic libraries for VLC
+@:include('vlc/vlc.h') // Include VLC functions and types
 @:keep // Fix issues with DCE
 @:unreflective // TODO: Write down why this is needed
 extern class LibVLCEvents
@@ -26,7 +24,7 @@ extern class LibVLCEvents
    * @param user_data user provided data to carry with the event
    * @return 0 on success, ENOMEM on error
    */
-  @:native("libvlc_event_attach")
+  @:native('libvlc_event_attach')
   static function attach(p_event_manager:LibVLCTypes.LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Event_Callback,
     user_data:VoidStar):Int;
 
@@ -38,7 +36,7 @@ extern class LibVLCEvents
    * @param f_callback the function to call when i_event_type occurs
    * @param p_user_data user provided data to carry with the event
    */
-  @:native("libvlc_event_detach")
+  @:native('libvlc_event_detach')
   static function detach(p_event_manager:LibVLCTypes.LibVLC_EventManager, i_event_type:LibVLC_EventType, f_callback:LibVLC_Event_Callback,
     p_user_data:VoidStar):Void;
 }

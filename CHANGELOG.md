@@ -9,4 +9,6 @@ This version is a full rewrite by EliteMasterEric, based on the old codebase, wi
 - Added premade utilities for video playback
     - Added `FlxVideoState` which plays videos.
     - Added `FlxVideoSubState` which plays videos.
-    - Added `FlxCutsceneState` which plays a specific video before switching to
+    - Added `FlxCutsceneState` which plays a specific video (with the option to skip) before switching to the next state.
+## Changed
+- Reworked 

@@ -1,16 +1,14 @@
-package hxcodecpro._internal;
-
-import cpp.Int64;
+package hxcodec._internal;
 
 #if (!(desktop || android) && macro)
-#error "LibVLC only supports the Windows, Mac, Linux, and Android target platforms."
+#error 'LibVLC only supports the Windows, Mac, Linux, and Android target platforms.'
 #end
 
 /**
  * @see https://videolan.videolan.me/vlc/group__libvlc__media.html
  */
-@:buildXml("<include name='${haxelib:hxcodecpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
-@:include("vlc/vlc.h") // Include VLC functions and types
+@:buildXml("<include name='${haxelib:hxcodec}/project/Build.xml' />") // Link static/dynamic libraries for VLC
+@:include('vlc/vlc.h') // Include VLC functions and types
 @:keep // Fix issues with DCE
 @:unreflective // TODO: Write down why this is needed
 extern class LibVLCMedia
@@ -29,7 +27,7 @@ extern class LibVLCMedia
    * @param psz_mrl the media location
    * @return the newly created media or NULL on error
    */
-  @:native("libvlc_media_new_location")
+  @:native('libvlc_media_new_location')
   static function new_location(psz_mrl:String):LibVLC_Media;
 
   /**
@@ -40,7 +38,7 @@ extern class LibVLCMedia
    * @param path local filesystem path
    * @return the newly created media or NULL on error
    */
-  @:native("libvlc_media_new_path")
+  @:native('libvlc_media_new_path')
   static function new_path(path:String):LibVLC_Media;
 
   /**
@@ -68,7 +66,7 @@ extern class LibVLCMedia
    *
    * @version LibVLC 3.0.0 and later.
    */
-  @:native("libvlc_media_new_callbacks")
+  @:native('libvlc_media_new_callbacks')
   static function new_callbacks(open_cb:LibVLC_Media_Open_Callback, read_cb:LibVLC_Media_Read_Callback, seek_cb:LibVLC_Media_Seek_Callback,
     close_cb:LibVLC_Media_Close_Callback, opaque:VoidStar):LibVLC_Media;
 
@@ -102,7 +100,7 @@ extern class LibVLCMedia
    * @return -1 in case of error, 0 otherwise
    * @version LibVLC 4.0.0 or later
    */
-  @:native("libvlc_media_parse_request")
+  @:native('libvlc_media_parse_request')
   static function parse_request(inst:LibVLC_Instance, p_md:LibVLC_Media, parse_flag:LibVLC_MediaParseFlag_T, timeout:Int):Int;
 
   /**
@@ -117,7 +115,7 @@ extern class LibVLCMedia
    * @param p_md media descriptor object
    * @version LibVLC 3.0.0 or later
    */
-  @:native("libvlc_media_parse_stop")
+  @:native('libvlc_media_parse_stop')
   static function parse_stop(inst:LibVLC_Instance, p_md:LibVLC_Media):Void;
 
   /**
@@ -131,7 +129,7 @@ extern class LibVLCMedia
    * @return a value of the LibVLC_MediaParsedStatus enum
    * @version LibVLC 3.0.0 or later
    */
-  @:native("libvlc_media_get_parsed_status")
+  @:native('libvlc_media_get_parsed_status')
   static function get_parsed_status(p_md:LibVLC_Media):LibVLC_MediaParsedStatus;
 
   /**
@@ -141,7 +139,7 @@ extern class LibVLCMedia
    *
    * @param p_md the media descriptor
    */
-  @:native("libvlc_media_retain")
+  @:native('libvlc_media_retain')
   static function retain(p_md:LibVLC_Media):Void;
 
   /**
@@ -152,7 +150,7 @@ extern class LibVLCMedia
    *
    * @param p_md the media descriptor
    */
-  @:native("libvlc_media_release")
+  @:native('libvlc_media_release')
   static function release(p_md:LibVLC_Media):Void;
 
   /**
@@ -173,7 +171,7 @@ extern class LibVLCMedia
    * @param p_md the media descriptor
    * @param psz_options the options (as a string)
    */
-  @:native("libvlc_media_add_option")
+  @:native('libvlc_media_add_option')
   static function add_option(p_md:LibVLC_Media, psz_options:String):Void;
 
   /**
@@ -193,7 +191,7 @@ extern class LibVLCMedia
    * @param psz_options the options (as a string)
    * @param i_flags the flags for this option
    */
-  @:native("libvlc_media_add_option_flag")
+  @:native('libvlc_media_add_option_flag')
   static function add_option_flag(p_md:LibVLC_Media, psz_options:String, i_flags:Int):Void;
 
   /**
@@ -203,7 +201,7 @@ extern class LibVLCMedia
    * @param p_md a media descriptor object
    * @return event manager object
    */
-  @:native("libvlc_media_event_manager")
+  @:native('libvlc_media_event_manager')
   static function event_manager(p_md:LibVLC_Media):LibVLC_EventManager;
 
   /**
@@ -216,7 +214,7 @@ extern class LibVLCMedia
    * @param p_md media descriptor object
    * @return duration of media item or -1 on error
    */
-  @:native("libvlc_media_get_duration")
+  @:native('libvlc_media_get_duration')
   static function get_duration(p_md:LibVLC_Media):cpp.Int64;
 
   /**
@@ -225,6 +223,6 @@ extern class LibVLCMedia
    * @param p_md a media descriptor object
    * @return string with mrl of media descriptor object
    */
-  @:native("libvlc_media_get_mrl")
+  @:native('libvlc_media_get_mrl')
   static function get_mrl(p_md:LibVLC_Media):String;
 }

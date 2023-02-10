@@ -1,16 +1,14 @@
-package hxcodecpro._internal;
+package hxcodec._internal;
 
-import cpp.Int64;
-
-#if (!(desktop || android) && macro)
-#error "LibVLC only supports the Windows, Mac, Linux, and Android target platforms."
+#if (!(desktop || android))
+#error 'LibVLC only supports the Windows, Mac, Linux, and Android target platforms.'
 #end
 
 /**
  * @see https://videolan.videolan.me/vlc/group__libvlc__media__player.html
  */
-@:buildXml("<include name='${haxelib:hxcodecpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
-@:include("vlc/vlc.h") // Include VLC functions and types
+@:buildXml("<include name='${haxelib:hxcodeccpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
+@:include('vlc/vlc.h') // Include VLC functions and types
 @:keep // Fix issues with DCE
 @:unreflective // TODO: Write down why this is needed
 extern class LibVLCMediaPlayer
@@ -24,7 +22,7 @@ extern class LibVLCMediaPlayer
    * @return a new media player object, or NULL on error.
    * It must be released by libvlc_media_player_release().
    */
-  @:native("libvlc_media_player_new_from_media")
+  @:native('libvlc_media_player_new_from_media')
   static function new_from_media(inst:LibVLC_Instance, p_md:LibVLC_Media):LibVLC_MediaPlayer;
 
   /**
@@ -33,7 +31,7 @@ extern class LibVLCMediaPlayer
    * @param p_mi the Media Player
    * @return the event manager associated with p_mi
    */
-  @:native("libvlc_media_player_event_manager")
+  @:native('libvlc_media_player_event_manager')
   static function event_manager(p_mi:LibVLC_MediaPlayer):LibVLC_EventManager;
 
   /**
@@ -43,7 +41,7 @@ extern class LibVLCMediaPlayer
    * @retval true media player is playing
    * @retval false media player is not playing
    */
-  @:native("libvlc_media_player_is_playing")
+  @:native('libvlc_media_player_is_playing')
   static function is_playing(p_mi:LibVLC_MediaPlayer):Bool;
 
   /**
@@ -52,8 +50,22 @@ extern class LibVLCMediaPlayer
    * @param p_mi the Media Player
    * @return 0 if playback started (and was already started), or -1 on error.
    */
-  @:native("libvlc_media_player_play")
+  @:native('libvlc_media_player_play')
   static function play(p_mi:LibVLC_MediaPlayer):Int;
+
+  /**
+   * Stop asynchronously
+   *
+   * @note This function is asynchronous. In case of success, the user should
+   * wait for the libvlc_MediaPlayerStopped event to know when the stop is
+   * finished.
+   *
+   * @param p_mi the Media Player
+   * @return 0 if the player is being stopped, -1 otherwise (no-op)
+   * @version LibVLC 4.0.0 or later
+   */
+  @:native('libvlc_media_player_stop_async')
+  static function stop_async(p_mi:LibVLC_MediaPlayer):Int;
 
   /**
    * Pause or resume (no effect if there is no media)
@@ -62,7 +74,7 @@ extern class LibVLCMediaPlayer
    * @param do_pause play/resume if zero, pause if non-zero
    * @version LibVLC 1.1.1 or later
    */
-  @:native("libvlc_media_player_set_pause")
+  @:native('libvlc_media_player_set_pause')
   static function set_pause(mp:LibVLC_MediaPlayer, do_pause:Int):Void;
 
   /**
@@ -70,7 +82,7 @@ extern class LibVLCMediaPlayer
    *
    * @param p_mi the Media Player
    */
-  @:native("libvlc_media_player_pause")
+  @:native('libvlc_media_player_pause')
   static function pause(p_mi:LibVLC_MediaPlayer):Void;
 
   /**
@@ -81,7 +93,7 @@ extern class LibVLCMediaPlayer
    * @param p_mi the Media Player
    * @return movie play rate
    */
-  @:native("libvlc_media_player_get_rate")
+  @:native('libvlc_media_player_get_rate')
   static function get_rate(p_mi:LibVLC_MediaPlayer):Float;
 
   /**
@@ -92,7 +104,7 @@ extern class LibVLCMediaPlayer
    * @return -1 if an error was detected, 0 otherwise (but even then, it might
    * not actually work depending on the underlying media protocol)
    */
-  @:native("libvlc_media_player_set_rate")
+  @:native('libvlc_media_player_set_rate')
   static function set_rate(p_mi:LibVLC_MediaPlayer, rate:Float):Int;
 
   /**
@@ -101,7 +113,7 @@ extern class LibVLCMediaPlayer
    * @param p_mi the Media Player
    * @return movie position, or -1. in case of error
    */
-  @:native("libvlc_media_player_get_position")
+  @:native('libvlc_media_player_get_position')
   static function get_position(p_mi:LibVLC_MediaPlayer):Float;
 
   /**
@@ -114,7 +126,7 @@ extern class LibVLCMediaPlayer
    * @param f_pos the position
    * @return 0 on success, -1 on error
    */
-  @:native("libvlc_media_player_set_position")
+  @:native('libvlc_media_player_set_position')
   static function set_position(p_mi:LibVLC_MediaPlayer, f_pos:Float, b_fast:Bool):Int;
 
   /**
@@ -123,7 +135,7 @@ extern class LibVLCMediaPlayer
    * @param p_mi the Media Player
    * @return the movie length (in ms), or -1 if there is no media.
    */
-  @:native("libvlc_media_player_get_length")
+  @:native('libvlc_media_player_get_length')
   static function get_length(p_mi:LibVLC_MediaPlayer):cpp.Int64;
 
   /**
@@ -132,7 +144,7 @@ extern class LibVLCMediaPlayer
    * @param p_mi the Media Player
    * @return the movie time (in ms), or -1 if there is no media.
    */
-  @:native("libvlc_media_player_get_time")
+  @:native('libvlc_media_player_get_time')
   static function get_time(p_mi:LibVLC_MediaPlayer):cpp.Int64;
 
   /**
@@ -144,7 +156,7 @@ extern class LibVLCMediaPlayer
    * \param i_time the movie time (in ms).
    * \return 0 on success, -1 on error
    */
-  @:native("libvlc_media_player_set_time")
+  @:native('libvlc_media_player_set_time')
   static function set_time(p_mi:LibVLC_MediaPlayer, i_time:cpp.Int64, b_fast:Bool):Void;
 
   /**
@@ -154,7 +166,7 @@ extern class LibVLCMediaPlayer
    * \retval true media player can seek
    * \retval false media player cannot seek
    */
-  @:native("libvlc_media_player_is_seekable")
+  @:native('libvlc_media_player_is_seekable')
   static function is_seekable(p_mi:LibVLC_MediaPlayer):Bool;
 
   /**
@@ -164,7 +176,7 @@ extern class LibVLCMediaPlayer
    * \retval true media player can be paused
    * \retval false media player cannot be paused
    */
-  @:native("libvlc_media_player_can_pause")
+  @:native('libvlc_media_player_can_pause')
   static function can_pause(p_mi:LibVLC_MediaPlayer):Bool;
 
   /**
@@ -193,7 +205,7 @@ extern class LibVLCMediaPlayer
    * is no track for a category, the returned list will have a size of 0, delete
    * with libvlc_media_tracklist_delete()
    */
-  @:native("libvlc_media_player_get_tracklist")
+  @:native('libvlc_media_player_get_tracklist')
   static function get_tracklist(p_mi:LibVLC_MediaPlayer, type:LibVLC_MediaTrackType, selected:Bool):LibVLC_MediaTracklist;
 
   /**
@@ -210,10 +222,13 @@ extern class LibVLCMediaPlayer
    * @return a valid track or NULL if there is no selected tracks for this type,
    * release it with libvlc_media_track_release().
    */
-  @:native("libvlc_media_player_get_selected_track")
+  @:native('libvlc_media_player_get_selected_track')
   static function get_selected_track(p_mi:LibVLC_MediaPlayer, type:LibVLC_MediaTrackType):LibVLC_MediaTrack;
 }
 
+/**
+ * Helper functions for LibVLCMediaPlayer.
+ */
 class LibVLCMediaPlayerHelper
 {
   /**

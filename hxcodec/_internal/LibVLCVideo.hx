@@ -1,16 +1,14 @@
-package hxcodecpro._internal;
-
-import cpp.Int64;
+package hxcodec._internal;
 
 #if (!(desktop || android) && macro)
-#error "LibVLC only supports the Windows, Mac, Linux, and Android target platforms."
+#error 'LibVLC only supports the Windows, Mac, Linux, and Android target platforms.'
 #end
 
 /**
  * @see https://videolan.videolan.me/vlc/group__libvlc__video.html
  */
-@:buildXml("<include name='${haxelib:hxcodecpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
-@:include("vlc/vlc.h") // Include VLC functions and types
+@:buildXml("<include name='${haxelib:hxcodec}/project/Build.xml' />") // Link static/dynamic libraries for VLC
+@:include('vlc/vlc.h') // Include VLC functions and types
 @:keep // Fix issues with DCE
 @:unreflective // TODO: Write down why this is needed
 extern class LibVLCVideo
@@ -52,7 +50,7 @@ extern class LibVLCVideo
    * @param opaque private pointer for the three callbacks (as first parameter)
    * @version LibVLC 1.1.1 or later
    */
-  @:native("libvlc_video_set_callbacks")
+  @:native('libvlc_video_set_callbacks')
   static function set_callbacks(mp:LibVLC_MediaPlayer, lock:LibVLC_Video_Lock_Callback, unlock:LibVLC_Video_Unlock_Callback,
     display:LibVLC_Video_Display_Callback, opaque:VoidStar):Void;
 
@@ -65,6 +63,6 @@ extern class LibVLCVideo
    * @param cleanup callback to release any allocated resources (or NULL)
    * @version LibVLC 2.0.0 or later
    */
-  @:native("libvlc_video_set_format_callbacks")
+  @:native('libvlc_video_set_format_callbacks')
   static function set_format_callbacks(mp:LibVLC_MediaPlayer, setup:LibVLC_Video_Setup_Callback, cleanup:LibVLC_Video_Cleanup_Callback):Void;
 }

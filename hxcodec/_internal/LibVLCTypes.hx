@@ -1,4 +1,4 @@
-package hxcodecpro._internal;
+package hxcodec._internal;
 
 import cpp.RawPointer;
 import cpp.RawConstPointer;
@@ -133,9 +133,12 @@ typedef LibVLC_Video_Display_Callback = cpp.Callable<(opaque:VoidStar, picture:V
  */
 typedef LibVLC_Instance = RawPointer<LibVLC_Instance_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal libvlc instance data structure.
+ */
+@:include('vlc/vlc.h')
 @:keep
-@:native("libvlc_instance_t")
+@:native('libvlc_instance_t')
 extern class LibVLC_Instance_T {}
 
 /**
@@ -143,9 +146,12 @@ extern class LibVLC_Instance_T {}
  */
 typedef LibVLC_ModuleDescription = RawPointer<LibVLC_ModuleDescription_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal module description data structure.
+ */
+@:include('vlc/vlc.h')
 @:keep
-@:native("libvlc_module_description_t")
+@:native('libvlc_module_description_t')
 extern class LibVLC_ModuleDescription_T {}
 
 /**
@@ -154,9 +160,12 @@ extern class LibVLC_ModuleDescription_T {}
  */
 typedef LibVLC_AudioOutput = RawPointer<LibVLC_AudioOutput_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal audio output data structure.
+ */
+@:include('vlc/vlc.h')
 @:keep
-@:native("libvlc_audio_output_t")
+@:native('libvlc_audio_output_t')
 extern class LibVLC_AudioOutput_T {}
 
 /**
@@ -164,23 +173,38 @@ extern class LibVLC_AudioOutput_T {}
  */
 typedef LibVLC_AudioOutputDevice = RawPointer<LibVLC_AudioOutputDevice_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal audio output device data structure.
+ */
+@:include('vlc/vlc.h')
 @:keep
-@:native("libvlc_audio_output_device_t")
+@:native('libvlc_audio_output_device_t')
 extern class LibVLC_AudioOutputDevice_T {}
 
+/**
+ * A media item.
+ */
 typedef LibVLC_Media = RawPointer<LibVLC_Media_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal media item data structure.
+ */
+@:include('vlc/vlc.h')
 @:keep
-@:native("libvlc_media_t")
+@:native('libvlc_media_t')
 extern class LibVLC_Media_T {}
 
+/**
+ * A media track.
+ */
 typedef LibVLC_MediaTrack = RawPointer<LibVLC_MediaTrack_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal media track data structure.
+ */
+@:include('vlc/vlc.h')
 @:keep
-@:native("libvlc_media_track_t")
+@:native('libvlc_media_track_t')
 extern class LibVLC_MediaTrack_T {}
 
 /**
@@ -188,9 +212,12 @@ extern class LibVLC_MediaTrack_T {}
  */
 typedef LibVLC_MediaTracklist = RawPointer<LibVLC_MediaTracklist_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal media track list data structure.
+ */
+@:include('vlc/vlc.h')
 @:keep
-@:native("libvlc_media_tracklist_t")
+@:native('libvlc_media_tracklist_t')
 extern class LibVLC_MediaTracklist_T {}
 
 /**
@@ -198,9 +225,12 @@ extern class LibVLC_MediaTracklist_T {}
  */
 typedef LibVLC_AudioTrack = RawPointer<LibVLC_AudioTrack_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal audio track data structure.
+ */
+@:include('vlc/vlc.h')
 @:keep
-@:native("libvlc_audio_track_t")
+@:native('libvlc_audio_track_t')
 extern class LibVLC_AudioTrack_T {}
 
 /**
@@ -208,9 +238,12 @@ extern class LibVLC_AudioTrack_T {}
  */
 typedef LibVLC_VideoTrack = RawPointer<LibVLC_VideoTrack_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal video track data structure.
+ */
+@:include('vlc/vlc.h')
 @:keep
-@:native("libvlc_video_track_t")
+@:native('libvlc_video_track_t')
 extern class LibVLC_VideoTrack_T {}
 
 /**
@@ -218,9 +251,12 @@ extern class LibVLC_VideoTrack_T {}
  */
 typedef LibVLC_MediaPlayer = RawPointer<LibVLC_MediaPlayer_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal media player data structure.
+ */
+@:include('vlc/vlc.h')
 @:keep
-@:native("libvlc_media_player_t")
+@:native('libvlc_media_player_t')
 extern class LibVLC_MediaPlayer_T {}
 
 /**
@@ -228,9 +264,12 @@ extern class LibVLC_MediaPlayer_T {}
  */
 typedef LibVLC_EventManager = RawPointer<LibVLC_EventManager_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal event manager structure.
+ */
+@:include('vlc/vlc.h')
 @:keep
-@:native("libvlc_event_manager_t")
+@:native('libvlc_event_manager_t')
 extern class LibVLC_EventManager_T {}
 
 /**
@@ -238,23 +277,32 @@ extern class LibVLC_EventManager_T {}
  */
 typedef LibVLC_Event = RawPointer<LibVLC_Event_T>;
 
-@:include("vlc/vlc.h")
+/**
+ * Internal event structure.
+ */
+@:include('vlc/vlc.h')
 @:structAccess
 @:keep
-@:native("libvlc_event_t")
+@:native('libvlc_event_t')
 extern class LibVLC_Event_T
 {
   var type:LibVLC_EventType;
   var u:LibVLC_Event_U;
 }
 
-@:native("void *const *")
+/**
+ * A C++ `void * const *` type.
+ */
+@:native('void *const *')
 extern class VoidStarConstStar {}
 
-@:include("vlc/vlc.h")
+/**
+ * Internal event union.
+ */
+@:include('vlc/vlc.h')
 @:structAccess
 @:keep
-@:native("libvlc_event_t::u")
+@:native('libvlc_event_t::u')
 extern class LibVLC_Event_U
 {
   var media_player_position_changed:LibVLC_MediaPlayer_PositionChanged;
@@ -265,55 +313,73 @@ extern class LibVLC_Event_U
   var media_player_pausable_changed:LibVLC_MediaPlayer_PausableChanged;
 }
 
-@:include("vlc/vlc.h")
+/**
+ * Internal type for media player position changed event.
+ */
+@:include('vlc/vlc.h')
 @:structAccess
 @:keep
-@:native("media_player_position_changed")
+@:native('media_player_position_changed')
 extern class LibVLC_MediaPlayer_PositionChanged
 {
   var new_position:Float;
 }
 
-@:include("vlc/vlc.h")
+/**
+ * Internal type for media player time changed event.
+ */
+@:include('vlc/vlc.h')
 @:structAccess
 @:keep
-@:native("media_player_time_changed")
+@:native('media_player_time_changed')
 extern class LibVLC_MediaPlayer_TimeChanged
 {
   var new_time:Int64;
 }
 
-@:include("vlc/vlc.h")
+/**
+ * Internal type for media player length change event.
+ */
+@:include('vlc/vlc.h')
 @:structAccess
 @:keep
-@:native("media_player_length_changed")
+@:native('media_player_length_changed')
 extern class LibVLC_MediaPlayer_LengthChanged
 {
   var new_length:Int64;
 }
 
-@:include("vlc/vlc.h")
+/**
+ * Internal type for media player buffering event.
+ */
+@:include('vlc/vlc.h')
 @:structAccess
 @:keep
-@:native("media_player_buffering")
+@:native('media_player_buffering')
 extern class LibVLC_MediaPlayer_Buffering
 {
   var new_cache:Float;
 }
 
-@:include("vlc/vlc.h")
+/**
+ * Internal type for media player seekable changed event.
+ */
+@:include('vlc/vlc.h')
 @:structAccess
 @:keep
-@:native("media_player_seekable_changed")
+@:native('media_player_seekable_changed')
 extern class LibVLC_MediaPlayer_SeekableChanged
 {
   var new_seekable:Bool;
 }
 
-@:include("vlc/vlc.h")
+/**
+ * Internal type for media player pauseable changed event.
+ */
+@:include('vlc/vlc.h')
 @:structAccess
 @:keep
-@:native("media_player_pausable_changed")
+@:native('media_player_pausable_changed')
 extern class LibVLC_MediaPlayer_PausableChanged
 {
   var new_pausable:Bool;
@@ -331,19 +397,19 @@ enum abstract LibVLC_EventType(Int) from Int to Int
   /**
    * Metadata of a LibVLC_Media changed
    */
-  var MediaMetaChanged = 0;
+  public var MediaMetaChanged = 0;
 
   /**
    * Subitem was added to a LibVLC_Media
    * @see libvlc_media_subitems()
    */
-  var MediaSubItemAdded = 1;
+  public var MediaSubItemAdded = 1;
 
   /**
    * Duration of a LibVLC_Media changed
    * @see libvlc_media_get_duration()
    */
-  var MediaDurationChanged = 2;
+  public var MediaDurationChanged = 2;
 
   /**
    * Parsing state of a LibVLC_Media changed
@@ -351,121 +417,252 @@ enum abstract LibVLC_EventType(Int) from Int to Int
    *      libvlc_media_get_parsed_status(),
    *      libvlc_media_parse_stop()
    */
-  var MediaParsedChanged = 3;
+  public var MediaParsedChanged = 3;
 
-  // var MediaFreed = 4; // REMOVED
-  // var MediaStateChanged = 5; // REMOVED
+  // MediaFreed: 4 // REMOVED
+  // MediaStateChanged: 5 // REMOVED
 
   /**
    * Subitem tree was added to a LibVLC_Media
    */
-  var MediaSubItemTreeAdded = 6;
+  public var MediaSubItemTreeAdded = 6;
 
   /**
    * A thumbnail generation for this LibVLC_Media completed.
    * @see libvlc_media_thumbnail_request_by_time()
    * @see libvlc_media_thumbnail_request_by_pos()
    */
-  var MediaThumbnailGenerated = 7;
+  public var MediaThumbnailGenerated = 7;
 
   /**
    * One or more embedded thumbnails were found during the media preparsing
    * The user can hold these picture(s) using libvlc_picture_retain if they
    * wish to use them
    */
-  var MediaAttachedThumbnailsFound = 8;
+  public var MediaAttachedThumbnailsFound = 8;
 
-  var MediaPlayerMediaChanged = 256;
-  var MediaPlayerNothingSpecial = 257;
-  var MediaPlayerOpening = 258;
-  var MediaPlayerBuffering = 259;
-  var MediaPlayerPlaying = 260;
-  var MediaPlayerPaused = 261;
-  var MediaPlayerStopped = 262;
-  var MediaPlayerForward = 263;
-  var MediaPlayerBackward = 264;
-  var MediaPlayerEndReached = 265;
-  var MediaPlayerStopping = 265;
-  var MediaPlayerEncounteredError = 266;
-  var MediaPlayerTimeChanged = 267;
-  var MediaPlayerPositionChanged = 268;
-  var MediaPlayerSeekableChanged = 269;
-  var MediaPlayerPausableChanged = 270;
-  // var MediaPlayerTitleChanged = 271; // REMOVED
-  var MediaPlayerSnapshotTaken = 272;
-  var MediaPlayerLengthChanged = 273;
-  var MediaPlayerVout = 274;
-  // var MediaPlayerScrambledChanged = 275; // REMOVED
+  /**
+   * Played media changed.
+   */
+  public var MediaPlayerMediaChanged = 256;
+
+  /**
+   * ??? Unknown
+   */
+  public var MediaPlayerNothingSpecial = 257;
+
+  /**
+   * Opening media with media player.
+   */
+  public var MediaPlayerOpening = 258;
+
+  /**
+   * Media player: media item is buffering
+   */
+  public var MediaPlayerBuffering = 259;
+
+  /**
+   * Media player is playing.
+   */
+  public var MediaPlayerPlaying = 260;
+
+  /**
+   * Media player is paused.
+   */
+  public var MediaPlayerPaused = 261;
+
+  /**
+   * Media player is stopped.
+   */
+  public var MediaPlayerStopped = 262;
+
+  /**
+   * Media player skipped forward.
+   */
+  public var MediaPlayerForward = 263;
+
+  /**
+   * Media player skipped backward.
+   */
+  public var MediaPlayerBackward = 264;
+
+  /**
+   * Media player reached end of media.
+   */
+  public var MediaPlayerEndReached = 265;
+
+  /**
+   * Media player currently stopping.
+   */
+  public var MediaPlayerStopping = 265;
+
+  /**
+   * Media player encountered an error.
+   */
+  public var MediaPlayerEncounteredError = 266;
+
+  /**
+   * Media player time changed.
+   */
+  public var MediaPlayerTimeChanged = 267;
+
+  /**
+   * Media player position changed.
+   */
+  public var MediaPlayerPositionChanged = 268;
+
+  /**
+   * Media player seekable status changed.
+   */
+  public var MediaPlayerSeekableChanged = 269;
+
+  /**
+   * Media player pausable status changed.
+   */
+  public var MediaPlayerPausableChanged = 270;
+
+  // MediaPlayerTitleChanged: 271 // REMOVED
+
+  /**
+   * Media player snapshot taken.
+   */
+  public var MediaPlayerSnapshotTaken = 272;
+
+  /**
+   * Media player media item length changed.
+   */
+  public var MediaPlayerLengthChanged = 273;
+
+  /**
+   * Media player vout???
+   */
+  public var MediaPlayerVout = 274;
+
+  /**
+   * Media player scrambled status changed.
+   */
+  // MediaPlayerScrambledChanged: 275 // REMOVED
 
   /**
    * A track was added, cf. media_player_es_changed in @ref libvlc_event_t.u
    * to get the id of the new track.
    */
-  var MediaPlayerESAdded = 276;
+  public var MediaPlayerESAdded = 276;
 
-  /** A track was removed, cf. media_player_es_changed in @ref
-   * libvlc_event_t.u to get the id of the removed track. */
-  var MediaPlayerESDeleted = 277;
+  /**
+   * A track was removed, cf. media_player_es_changed in @ref
+   * libvlc_event_t.u to get the id of the removed track.
+   */
+  public var MediaPlayerESDeleted = 277;
 
-  /** Tracks were selected or unselected, cf.
+  /**
+   * Tracks were selected or unselected, cf.
    * media_player_es_selection_changed in @ref libvlc_event_t.u to get the
-   * unselected and/or the selected track ids. */
-  var MediaPlayerESSelected = 278;
+   * unselected and/or the selected track ids.
+   */
+  public var MediaPlayerESSelected = 278;
 
-  var MediaPlayerCorked = 279;
-  var MediaPlayerUncorked = 280;
-  var MediaPlayerMuted = 281;
-  var MediaPlayerUnmuted = 282;
-  var MediaPlayerAudioVolume = 283;
-  var MediaPlayerAudioDevice = 284;
+  /**
+   * Audio policy corked?
+   */
+  public var MediaPlayerCorked = 279;
 
-  /** A track was updated, cf. media_player_es_changed in @ref
-   * libvlc_event_t.u to get the id of the updated track. */
-  var MediaPlayerESUpdated = 285;
+  /**
+   * Audio policy uncorked?
+   */
+  public var MediaPlayerUncorked = 280;
 
-  var MediaPlayerProgramAdded = 286;
-  var MediaPlayerProgramDeleted = 287;
-  var MediaPlayerProgramSelected = 288;
-  var MediaPlayerProgramUpdated = 289;
+  /**
+   * Media player muted.
+   */
+  public var MediaPlayerMuted = 281;
+
+  /**
+   * Media player unmuted.
+   */
+  public var MediaPlayerUnmuted = 282;
+
+  /**
+   * Media player audio volume changed.
+   */
+  public var MediaPlayerAudioVolume = 283;
+
+  /**
+   * Media player audio device changed.
+   */
+  public var MediaPlayerAudioDevice = 284;
+
+  /**
+   * A track was updated, cf. media_player_es_changed in @ref
+   * libvlc_event_t.u to get the id of the updated track.
+   */
+  public var MediaPlayerESUpdated = 285;
+
+  /**
+   * Media player program added.
+   */
+  public var MediaPlayerProgramAdded = 286;
+
+  /**
+   * Media player program deleted.
+   */
+  public var MediaPlayerProgramDeleted = 287;
+
+  /**
+   * Media player program selected.
+   */
+  public var MediaPlayerProgramSelected = 288;
+
+  /**
+   * Media player program updated.
+   */
+  public var MediaPlayerProgramUpdated = 289;
 
   /**
    * The title list changed, call
    * libvlc_media_player_get_full_title_descriptions() to get the new list.
    */
-  var MediaPlayerTitleListChanged = 290;
+  public var MediaPlayerTitleListChanged = 290;
 
   /**
    * The title selection changed, cf media_player_title_selection_changed in
    * @ref libvlc_event_t.u
    */
-  var MediaPlayerTitleSelectionChanged = 291;
+  public var MediaPlayerTitleSelectionChanged = 291;
 
-  var MediaPlayerChapterChanged = 292;
-  var MediaPlayerRecordChanged = 293;
+  /**
+   * Chapter of media changed
+   */
+  public var MediaPlayerChapterChanged = 292;
+
+  /**
+   * Recording status changed???
+   */
+  public var MediaPlayerRecordChanged = 293;
 
   /**
    * A @link #libvlc_media_t media item@endlink was added to a
    * @link #libvlc_media_list_t media list@endlink.
    */
-  var MediaListItemAdded = 512;
+  public var MediaListItemAdded = 512;
 
   /**
    * A @link #libvlc_media_t media item@endlink is about to get
    * added to a @link #libvlc_media_list_t media list@endlink.
    */
-  var MediaListWillAddItem = 513;
+  public var MediaListWillAddItem = 513;
 
   /**
    * A @link #libvlc_media_t media item@endlink was deleted from
    * a @link #libvlc_media_list_t media list@endlink.
    */
-  var MediaListItemDeleted = 514;
+  public var MediaListItemDeleted = 514;
 
   /**
    * A @link #libvlc_media_t media item@endlink is about to get
    * deleted from a @link #libvlc_media_list_t media list@endlink.
    */
-  var MediaListWillDeleteItem = 515;
+  public var MediaListWillDeleteItem = 515;
 
   /**
    * A @link #libvlc_media_list_t media list@endlink has reached the
@@ -473,59 +670,59 @@ enum abstract LibVLC_EventType(Int) from Int to Int
    * All @link #libvlc_media_t items@endlink were either added (in
    * case of a @ref libvlc_media_discoverer_t) or parsed (preparser).
    */
-  var MediaListEndReached = 516;
+  public var MediaListEndReached = 516;
 
   /**
    * @deprecated No longer used.
    * This belonged to the removed libvlc_media_list_view_t
    */
-  var MediaListViewItemAdded = 768;
+  public var MediaListViewItemAdded = 768;
 
   /**
    * @deprecated No longer used.
    * This belonged to the removed libvlc_media_list_view_t
    */
-  var MediaListViewWillAddItem = 769;
+  public var MediaListViewWillAddItem = 769;
 
   /**
    * @deprecated No longer used.
    * This belonged to the removed libvlc_media_list_view_t
    */
-  var MediaListViewItemDeleted = 770;
+  public var MediaListViewItemDeleted = 770;
 
   /**
    * @deprecated No longer used.
    * This belonged to the removed libvlc_media_list_view_t
    */
-  var MediaListViewWillDeleteItem = 771;
+  public var MediaListViewWillDeleteItem = 771;
 
   /**
    * Playback of a @link libvlc_media_list_player_t has started.
    */
-  var MediaListPlayerPlayed = 1024;
+  public var MediaListPlayerPlayed = 1024;
 
   /**
    * The current @link libvlc_media_t of a @link libvlc_media_list_player_t
    * has changed to a different item.
    */
-  var MediaListPlayerNextItemSet = 1025;
+  public var MediaListPlayerNextItemSet = 1025;
 
   /**
    * Playback of a @link libvlc_media_list_player_t has stopped.
    */
-  var MediaListPlayerStopped = 1026;
+  public var MediaListPlayerStopped = 1026;
 
   /**
    * A new @link libvlc_renderer_item_t was found by a @link libvlc_renderer_discoverer_t .
    * The renderer item is valid until deleted.
    */
-  var RendererDiscovererItemAdded = 1282;
+  public var RendererDiscovererItemAdded = 1282;
 
   /**
    * A previously discovered @link libvlc_renderer_item_t was deleted by a @link libvlc_renderer_discoverer_t .
    * The renderer item is no longer valid.
    */
-  var RendererDiscovererItemDeleted = 1283;
+  public var RendererDiscovererItemDeleted = 1283;
 }
 
 /**
@@ -533,12 +730,35 @@ enum abstract LibVLC_EventType(Int) from Int to Int
  */
 enum abstract LibVLC_AudioOutputMixMode(Int) from Int to Int
 {
-  var AudioMixMode_Unset = 0;
-  var AudioMixMode_Stereo = 1;
-  var AudioMixMode_Binaural = 2;
-  var AudioMixMode_4_0 = 3;
-  var AudioMixMode_5_1 = 4;
-  var AudioMixMode_7_1 = 5;
+  /**
+   * Unset
+   */
+  public var AudioMixMode_Unset = 0;
+
+  /**
+   * Stereo
+   */
+  public var AudioMixMode_Stereo = 1;
+
+  /**
+   * Binaural
+   */
+  public var AudioMixMode_Binaural = 2;
+
+  /**
+   * 4.0 Surround
+   */
+  public var AudioMixMode_4_0 = 3;
+
+  /**
+   * 5.1 Surround
+   */
+  public var AudioMixMode_5_1 = 4;
+
+  /**
+   * 7.1 Surround
+   */
+  public var AudioMixMode_7_1 = 5;
 }
 
 /**
@@ -546,13 +766,40 @@ enum abstract LibVLC_AudioOutputMixMode(Int) from Int to Int
  */
 enum abstract LibVLC_AudioOutputStereoMode(Int) from Int to Int
 {
-  var AudioStereoMode_Unset = 0;
-  var AudioStereoMode_Stereo = 1;
-  var AudioStereoMode_RStereo = 2;
-  var AudioStereoMode_Left = 3;
-  var AudioStereoMode_Right = 4;
-  var AudioStereoMode_Dolbys = 5;
-  var AudioStereoMode_Mono = 7;
+  /**
+   * Unset
+   */
+  public var AudioStereoMode_Unset = 0;
+
+  /**
+   * Stereo
+   */
+  public var AudioStereoMode_Stereo = 1;
+
+  /**
+   * RStereo
+   */
+  public var AudioStereoMode_RStereo = 2;
+
+  /**
+   * Left
+   */
+  public var AudioStereoMode_Left = 3;
+
+  /**
+   * Right
+   */
+  public var AudioStereoMode_Right = 4;
+
+  /**
+   * Dolbys
+   */
+  public var AudioStereoMode_Dolbys = 5;
+
+  /**
+   * Mono
+   */
+  public var AudioStereoMode_Mono = 7;
 }
 
 /**
@@ -564,40 +811,63 @@ enum abstract LibVLC_AudioOutputStereoMode(Int) from Int to Int
  */
 enum abstract LibVLC_MediaPlayerRole(Int) from Int to Int
 {
-  /** Don't use a media player role */
-  var None = 0;
+  /**
+   * Don't use a media player role
+   */
+  public var None = 0;
 
-  /** Music (or radio) playback */
-  var Music = 1;
+  /**
+   * Music (or radio) playback
+   */
+  public var Music = 1;
 
-  /** Video playback */
-  var Video = 2;
+  /**
+   * Video playback
+   */
+  public var Video = 2;
 
-  /** Speech, real-time communication */
-  var Communication = 3;
+  /**
+   * Speech, real-time communication
+   */
+  public var Communication = 3;
 
-  /** Video game */
-  var Game = 4;
+  /**
+   * Video game
+   */
+  public var Game = 4;
 
-  /** User interaction feedback */
-  var Notification = 5;
+  /**
+   * User interaction feedback
+   */
+  public var Notification = 5;
 
-  /** Embedded animation (e.g. in web page) */
-  var Animation = 6;
+  /**
+   * Embedded animation (e.g. in web page)
+   */
+  public var Animation = 6;
 
-  /** Audio editing/production */
-  var Production = 7;
+  /**
+   * Audio editing/production
+   */
+  public var Production = 7;
 
-  /** Accessibility */
-  var Accessibility = 8;
+  /**
+   * Accessibility
+   */
+  public var Accessibility = 8;
 
-  /** Testing */
-  // var Test = 9;
+  /**
+   * Testing
+   */
+  // Test: 9;
 }
 
-@:include("vlc/vlc.h")
+/**
+ * Internal type for media parse flags.
+ */
+@:include('vlc/vlc.h')
 @:unreflective
-@:native("libvlc_media_parse_flag_t")
+@:native('libvlc_media_parse_flag_t')
 extern class LibVLC_MediaParseFlag_T {}
 
 /**
@@ -605,18 +875,27 @@ extern class LibVLC_MediaParseFlag_T {}
  */
 abstract LibVLC_MediaParseFlag(Int) from Int to Int
 {
-  inline public function new(i:Int)
+  public inline function new(i:Int)
   {
     this = i;
   }
 
+  /**
+   * Convert the field to its internal native type.
+   * @return A value of the internal type.
+   */
   @:to(LibVLC_MediaParseFlag_T)
   @:unreflective
-  public inline function toNative()
+  public inline function toNative():LibVLC_MediaParseFlag_T
   {
-    return untyped __cpp__("((libvlc_media_parse_flag_t)({0}))", this);
+    return untyped __cpp__('((libvlc_media_parse_flag_t)({0}))', this);
   }
 
+  /**
+   * Conver the internal native type to an enum.
+   * @param value A value of the native type.
+   * @return A value of the enum value.
+   */
   @:from(LibVLC_MediaParseFlag_T)
   @:unreflective
   public static inline function fromNative(value:LibVLC_MediaParseFlag_T):LibVLC_MediaParseFlag
@@ -624,33 +903,72 @@ abstract LibVLC_MediaParseFlag(Int) from Int to Int
     return new LibVLC_MediaParseFlag(untyped value);
   }
 
-  public static var media_parse_local(default, null) = new LibVLC_MediaParseFlag(untyped __cpp__("libvlc_media_parse_local"));
-  public static var media_parse_network(default, null) = new LibVLC_MediaParseFlag(untyped __cpp__("media_parse_network"));
-  public static var media_fetch_local(default, null) = new LibVLC_MediaParseFlag(untyped __cpp__("media_fetch_local"));
-  public static var media_fetch_network(default, null) = new LibVLC_MediaParseFlag(untyped __cpp__("media_fetch_network"));
-  public static var media_do_interact(default, null) = new LibVLC_MediaParseFlag(untyped __cpp__("media_do_interact"));
-  public static var media_no_skip(default, null) = new LibVLC_MediaParseFlag(untyped __cpp__("media_no_skip"));
+  /**
+   * Parse media if it's a local file. 
+   */
+  public static var media_parse_local(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_parse_local'));
+
+  /**
+   * Parse media even if it's a network file. 
+   */
+  public static var media_parse_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('media_parse_network'));
+
+  /**
+   * Fetch meta and cover art using local resources. 
+   */
+  public static var media_fetch_local(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('media_fetch_local'));
+
+  /**
+   * Fetch meta and cover art using network resources. 
+   */
+  public static var media_fetch_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('media_fetch_network'));
+
+  /**
+   * Interact with the user (via libvlc_dialog_cbs) when preparsing this item (and not its sub items).
+   * Set this flag in order to receive a callback when the input is asking for credentials. 
+   */
+  public static var media_do_interact(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('media_do_interact'));
+
+  /**
+   * Force parsing the media even if it would be skipped. 
+   */
+  public static var media_no_skip(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('media_no_skip'));
 }
 
-@:include("vlc/vlc.h")
+/**
+ * Internal type for media track types.
+ */
+@:include('vlc/vlc.h')
 @:unreflective
-@:native("libvlc_track_type_t")
+@:native('libvlc_track_type_t')
 extern class LibVLC_MediaTrackType_T {}
 
+/**
+ * Media track types.
+ */
 abstract LibVLC_MediaTrackType(Int) from Int to Int
 {
-  inline public function new(i:Int)
+  public inline function new(i:Int)
   {
     this = i;
   }
 
+  /**
+   * Convert the field to its internal native type.
+   * @return A value of the internal type.
+   */
   @:to(LibVLC_MediaTrackType_T)
   @:unreflective
-  public inline function toNative()
+  public inline function toNative():LibVLC_MediaTrackType_T
   {
-    return untyped __cpp__("((libvlc_track_type_t)({0}))", this);
+    return untyped __cpp__('((libvlc_track_type_t)({0}))', this);
   }
 
+  /**
+   * Conver the internal native type to an enum.
+   * @param value A value of the native type.
+   * @return A value of the enum value.
+   */
   @:from(LibVLC_MediaTrackType_T)
   @:unreflective
   public static inline function fromNative(value:LibVLC_MediaTrackType_T):LibVLC_MediaTrackType
@@ -658,10 +976,25 @@ abstract LibVLC_MediaTrackType(Int) from Int to Int
     return new LibVLC_MediaTrackType(untyped value);
   }
 
-  public static var libvlc_track_unknown(default, null) = new LibVLC_MediaTrackType(untyped __cpp__("libvlc_track_unknown"));
-  public static var libvlc_track_audio(default, null) = new LibVLC_MediaTrackType(untyped __cpp__("libvlc_track_audio"));
-  public static var libvlc_track_video(default, null) = new LibVLC_MediaTrackType(untyped __cpp__("libvlc_track_video"));
-  public static var libvlc_track_text(default, null) = new LibVLC_MediaTrackType(untyped __cpp__("libvlc_track_text"));
+  /**
+   * An unknown track (possibly data)
+   */
+  public static var libvlc_track_unknown(default, null):Int = new LibVLC_MediaTrackType(untyped __cpp__('libvlc_track_unknown'));
+
+  /**
+   * An audio track
+   */
+  public static var libvlc_track_audio(default, null):Int = new LibVLC_MediaTrackType(untyped __cpp__('libvlc_track_audio'));
+
+  /**
+   * A video track
+   */
+  public static var libvlc_track_video(default, null):Int = new LibVLC_MediaTrackType(untyped __cpp__('libvlc_track_video'));
+
+  /**
+   * A text track (used for subtitles, captions, etc.)
+   */
+  public static var libvlc_track_text(default, null):Int = new LibVLC_MediaTrackType(untyped __cpp__('libvlc_track_text'));
 }
 
 /**
@@ -672,30 +1005,30 @@ enum abstract LibVLC_MediaParsedStatus(Int) from Int to Int
   /**
    * None
    */
-  var media_parsed_status_none = 0;
+  public var media_parsed_status_none = 0;
 
   /**
    * Pending
    */
-  var media_parsed_status_pending = 1;
+  public var media_parsed_status_pending = 1;
 
   /**
    * Skipped
    */
-  var media_parsed_status_skipped = 2;
+  public var media_parsed_status_skipped = 2;
 
   /**
    * Failed
    */
-  var media_parsed_status_failed = 3;
+  public var media_parsed_status_failed = 3;
 
   /**
    * Timeout
    */
-  var media_parsed_status_timeout = 4;
+  public var media_parsed_status_timeout = 4;
 
   /**
    * Done
    */
-  var media_parsed_status_done = 5;
+  public var media_parsed_status_done = 5;
 }

@@ -1,16 +1,14 @@
-package hxcodecpro._internal;
-
-import cpp.Int64;
+package hxcodec._internal;
 
 #if (!(desktop || android) && macro)
-#error "LibVLC only supports the Windows, Mac, Linux, and Android target platforms."
+#error 'LibVLC only supports the Windows, Mac, Linux, and Android target platforms.'
 #end
 
 /**
  * @see https://videolan.videolan.me/vlc/group__libvlc__media__track.html
  */
-@:buildXml("<include name='${haxelib:hxcodecpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
-@:include("vlc/vlc.h") // Include VLC functions and types
+@:buildXml("<include name='${haxelib:hxcodec}/project/Build.xml' />") // Link static/dynamic libraries for VLC
+@:include('vlc/vlc.h') // Include VLC functions and types
 @:keep // Fix issues with DCE
 @:unreflective // TODO: Write down why this is needed
 extern class LibVLCMediaTrack
@@ -26,7 +24,7 @@ extern class LibVLCMediaTrack
    * @param track valid track
    * @return the same track, need to be released with libvlc_media_track_release()
    */
-  @:native("libvlc_media_track_hold")
+  @:native('libvlc_media_track_hold')
   static function hold(track:LibVLC_MediaTrack):LibVLC_MediaTrack;
 
   /**
@@ -44,10 +42,13 @@ extern class LibVLCMediaTrack
    *
    * @param track valid track
    */
-  @:native("libvlc_media_track_release")
+  @:native('libvlc_media_track_release')
   static function release(track:LibVLC_MediaTrack):Void;
 }
 
+/**
+ * Helper functions for LibVLCMediaTrack.
+ */
 class LibVLCMediaTrackHelper
 {
   /**

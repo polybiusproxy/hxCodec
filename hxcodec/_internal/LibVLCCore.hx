@@ -1,20 +1,13 @@
-package hxcodecpro._internal;
+package hxcodec._internal;
 
-import cpp.RawPointer;
 import cpp.RawConstPointer;
-import cpp.Int64;
-import cpp.UInt32;
-
-#if (!(desktop || android) && macro)
-#error "LibVLC only supports the Windows, Mac, Linux, and Android target platforms."
-#end
 
 /**
  * TODO: These functions and documentation were copied from the VLC headers manually. It would be nice to automate this process.
  * @see https://videolan.videolan.me/vlc/group__libvlc__core.html
  */
-@:buildXml("<include name='${haxelib:hxcodecpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
-@:include("vlc/vlc.h") // Include VLC functions and types
+@:buildXml("<include name='${haxelib:hxcodeccpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
+@:include('vlc/vlc.h') // Include VLC functions and types
 @:keep // Fix issues with DCE
 @:unreflective // TODO: Write down why this is needed
 extern class LibVLCCore
@@ -71,13 +64,13 @@ extern class LibVLCCore
     * cross-platform compatibility with regards to init() arguments.
     * We recommend that you do not use them, other than when debugging.
     *
-    * @note hxCodecPro renames this to `init` since `new` is a reserved word in Haxe.
+    * @note hxCodec renames this to `init` since `new` is a reserved word in Haxe.
     * @param argc the number of arguments (should be 0)
     * @param argv list of arguments (should be NULL)
     * @return the libvlc instance or NULL in case of error
    */
-  @:native("libvlc_new")
-  static function init(argc:Int, argv:RawConstPointer<String>):LibVLCTypes.LibVLC_Instance;
+  @:native('libvlc_new')
+  static function init(argc:Int, argv:RawConstPointer<String>):LibVLC_Instance;
 
   /**
    * Decrement the reference count of a libvlc instance, and destroy it
@@ -85,8 +78,8 @@ extern class LibVLCCore
    *
    * @param p_instance the instance to destroy
    */
-  @:native("libvlc_release")
-  static function release(p_instance:LibVLCTypes.LibVLC_Instance):Void;
+  @:native('libvlc_release')
+  static function release(p_instance:LibVLC_Instance):Void;
 
   /**
    * Increments the reference count of a libvlc instance.
@@ -94,8 +87,8 @@ extern class LibVLCCore
    *
    * @param p_instance the instance to reference
    */
-  @:native("libvlc_retain")
-  static function retain(p_instance:LibVLCTypes.LibVLC_Instance):Void;
+  @:native('libvlc_retain')
+  static function retain(p_instance:LibVLC_Instance):Void;
 
   /**
    * Get the ABI version of the libvlc library.
@@ -112,7 +105,7 @@ extern class LibVLCCore
    *
    * @note This the same value as the .so version but cross platform.
    */
-  @:native("libvlc_abi_version")
+  @:native('libvlc_abi_version')
   static function abi_version():Int;
 
   /**
@@ -122,8 +115,8 @@ extern class LibVLCCore
    * @param name interface name, or NULL for default
    * @return 0 on success, -1 on error.
    */
-  @:native("libvlc_add_intf")
-  static function add_intf(p_instance:LibVLCTypes.LibVLC_Instance, name:String):Int;
+  @:native('libvlc_add_intf')
+  static function add_intf(p_instance:LibVLC_Instance, name:String):Int;
 
   /**
    * Registers a callback for the LibVLC exit event. This is mostly useful if
@@ -141,8 +134,8 @@ extern class LibVLCCore
    *           or NULL to disable the exit handler (as by default)
    * @param opaque data pointer for the callback
    */
-  @:native("libvlc_set_exit_handler")
-  static function set_exit_handler(p_instance:LibVLCTypes.LibVLC_Instance, cb:LibVLCTypes.LibVLC_Exit_Callback, opaque:LibVLCTypes.VoidStar):Void;
+  @:native('libvlc_set_exit_handler')
+  static function set_exit_handler(p_instance:LibVLC_Instance, cb:LibVLC_Exit_Callback, opaque:VoidStar):Void;
 
   /**
    * Sets the application name. LibVLC passes this as the user agent string
@@ -153,8 +146,8 @@ extern class LibVLCCore
    * @param http HTTP User Agent, e.g. `FooBar/1.2.3 Python/2.6.0`
    * @version LibVLC 1.1.1 or later
    */
-  @:native("libvlc_set_user_agent")
-  static function set_user_agent(p_instance:LibVLCTypes.LibVLC_Instance, name:String, http:String):Void;
+  @:native('libvlc_set_user_agent')
+  static function set_user_agent(p_instance:LibVLC_Instance, name:String, http:String):Void;
 
   /**
    * Sets some meta-information about the application.
@@ -166,8 +159,8 @@ extern class LibVLCCore
    * @param icon application icon name, e.g. `foobar`
    * @version LibVLC 2.1.0 or later.
    */
-  @:native("libvlc_set_app_id")
-  static function set_app_id(p_instance:LibVLCTypes.LibVLC_Instance, id:String, version:String, icon:String):Void;
+  @:native('libvlc_set_app_id')
+  static function set_app_id(p_instance:LibVLC_Instance, id:String, version:String, icon:String):Void;
 
   /**
    * Retrieve libvlc version.
@@ -176,7 +169,7 @@ extern class LibVLCCore
    *
    * @return a string containing the libvlc version
    */
-  @:native("libvlc_get_version")
+  @:native('libvlc_get_version')
   static function get_version():String;
 
   /**
@@ -186,7 +179,7 @@ extern class LibVLCCore
    *
    * @return a string containing the libvlc compiler version
    */
-  @:native("libvlc_get_compiler")
+  @:native('libvlc_get_compiler')
   static function get_compiler():String;
 
   /**
@@ -196,7 +189,7 @@ extern class LibVLCCore
    *
    * @return a string containing the libvlc changeset
    */
-  @:native("libvlc_get_changeset")
+  @:native('libvlc_get_changeset')
   static function get_changeset():String;
 
   /**
@@ -206,16 +199,16 @@ extern class LibVLCCore
    *
    * @param ptr the pointer
    */
-  @:native("libvlc_free")
-  static function free(ptr:LibVLCTypes.VoidStar):Void;
+  @:native('libvlc_free')
+  static function free(ptr:VoidStar):Void;
 
   /**
    * Release a list of module descriptions.
    *
    * @param p_list the list to be released
    */
-  @:native("libvlc_free")
-  static function libvlc_module_description_list_release(p_list:LibVLCTypes.LibVLC_ModuleDescription):Void;
+  @:native('libvlc_free')
+  static function libvlc_module_description_list_release(p_list:LibVLC_ModuleDescription):Void;
 
   /**
    * Returns a list of audio filters that are available.
@@ -228,8 +221,8 @@ extern class LibVLCCore
    * @see libvlc_module_description_t
    * @see libvlc_module_description_list_release
    */
-  @:native("libvlc_audio_filter_list_get")
-  static function libvlc_audio_filter_list_get(p_instance:LibVLCTypes.LibVLC_Instance):LibVLCTypes.LibVLC_ModuleDescription;
+  @:native('libvlc_audio_filter_list_get')
+  static function libvlc_audio_filter_list_get(p_instance:LibVLC_Instance):LibVLC_ModuleDescription;
 
   /**
    * Returns a list of video filters that are available.
@@ -242,6 +235,33 @@ extern class LibVLCCore
    * @see libvlc_module_description_t
    * @see libvlc_module_description_list_release
    */
-  @:native("libvlc_video_filter_list_get")
-  static function libvlc_video_filter_list_get(p_instance:LibVLCTypes.LibVLC_Instance):LibVLCTypes.LibVLC_ModuleDescription;
+  @:native('libvlc_video_filter_list_get')
+  static function libvlc_video_filter_list_get(p_instance:LibVLC_Instance):LibVLC_ModuleDescription;
+}
+
+/**
+ * Helper functions for LibVLCCore.
+ */
+class LibVLCCoreHelper
+{
+  /**
+   * Initializes a LibVLC instance.
+   * @param debug Whether to enable additional verbosity.
+   * @return The newly initialized LibVLC instance.
+   */
+  @:functionCode('
+    if (debug)
+    {
+      char* libvlc_argv[] = {
+        "vlc", "--verbose=2", "--extraintf=logger", "--file-logging", "--logfile=vlc-log.txt"
+      };
+      return libvlc_new(5, libvlc_argv);
+    } else {
+      return libvlc_new(0, NULL);
+    }
+  ')
+  public static function initialize(debug:Bool = false):LibVLC_Instance
+  {
+    throw 'functionCode';
+  }
 }

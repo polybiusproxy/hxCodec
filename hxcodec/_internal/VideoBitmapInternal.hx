@@ -1,12 +1,13 @@
-package hxcodecpro._internal;
+package hxcodec._internal;
 
+import hxcodec.base.Callback;
 import haxe.io.Path;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.events.Event;
 import openfl.Lib;
-import hxcodecpro._internal.LibVLCMediaPlayer.LibVLCMediaPlayerHelper;
-import hxcodecpro._internal.LibVLCMediaTrack.LibVLCMediaTrackHelper;
+import hxcodec._internal.LibVLCMediaPlayer.LibVLCMediaPlayerHelper;
+import hxcodec._internal.LibVLCMediaTrack.LibVLCMediaTrackHelper;
 
 /**
  * Utilizes LibVLC externs as a bitmap that can be displayed.
@@ -70,6 +71,9 @@ static void mediaCallbacks(const libvlc_event_t *event, void *data)
     case libvlc_MediaParsedChanged:
       self->flags[8] = true;
       break;
+    case libvlc_MediaMetaChanged:
+      self->flags[9] = true;
+      break;
 	}
 }
 
@@ -108,19 +112,35 @@ static void playerCallbacks(const libvlc_event_t *event, void *data)
 class VideoBitmapInternal extends Bitmap
 {
   /**
-   * The current timestamp in the video.
+   * The current timestamp in the video, in seconds.
    * Set this to seek to a specific time in the video.
    */
-  public var time(get, set):Int;
+  public var time(get, set):Float;
 
-  @:noCompletion function get_time():Int
+  @:noCompletion function get_time():Float
+  {
+    return this.timeMs / 1000;
+  }
+
+  @:noCompletion function set_time(value:Float):Int
+  {
+    return (this.timeMs = Std.int(value * 1000));
+  }
+
+  /**
+   * The current timestamp in the video, in milliseconds.
+   * Set this to seek to a specific time in the video.
+   */
+  public var timeMs(get, set):Int;
+
+  @:noCompletion function get_timeMs():Int
   {
     if (mediaPlayer != null) return LibVLCMediaPlayer.get_time(mediaPlayer);
 
     return 0;
   }
 
-  @:noCompletion function set_time(value:Int):Int
+  @:noCompletion function set_timeMs(value:Int):Int
   {
     if (mediaPlayer != null) LibVLCMediaPlayer.set_time(mediaPlayer, value, SHOULD_FAST_SEEK);
 
@@ -145,18 +165,6 @@ class VideoBitmapInternal extends Bitmap
     if (mediaPlayer != null) LibVLCMediaPlayer.set_position(mediaPlayer, value, SHOULD_FAST_SEEK);
 
     return value;
-  }
-
-  /**
-   * The length of the video, in milliseconds.
-   */
-  public var length(get, never):Int;
-
-  @:noCompletion function get_length():Int
-  {
-    if (mediaPlayer != null) return LibVLCMediaPlayer.get_length(mediaPlayer);
-
-    return 0;
   }
 
   /**
@@ -203,6 +211,25 @@ class VideoBitmapInternal extends Bitmap
     return value;
   }
 
+  /**
+   * Whether the media is muted.
+   */
+  public var muteAudio(get, set):Bool;
+
+  @:noCompletion function get_muteAudio():Bool
+  {
+    if (mediaPlayer != null) return LibVLCAudio.get_mute(mediaPlayer) > 0;
+
+    return false;
+  }
+
+  @:noCompletion function set_muteAudio(value:Bool):Bool
+  {
+    if (mediaPlayer != null) LibVLCAudio.set_mute(mediaPlayer, value);
+
+    return value;
+  }
+
   public var delay(get, set):Int;
 
   @:noCompletion function get_delay():Int
@@ -219,16 +246,16 @@ class VideoBitmapInternal extends Bitmap
     return value;
   }
 
-  public var rate(get, set):Float;
+  public var playbackRate(get, set):Float;
 
-  @:noCompletion function get_rate():Float
+  @:noCompletion function get_playbackRate():Float
   {
     if (mediaPlayer != null) return LibVLCMediaPlayer.get_rate(mediaPlayer);
 
     return 0;
   }
 
-  @:noCompletion function set_rate(value:Float):Float
+  @:noCompletion function set_playbackRate(value:Float):Float
   {
     if (mediaPlayer != null) LibVLCMediaPlayer.set_rate(mediaPlayer, value);
 
@@ -316,14 +343,52 @@ class VideoBitmapInternal extends Bitmap
   public var isDisplaying(default, null):Bool = false;
 
   // Callbacks
-  public var onOpening:Void->Void;
-  public var onPlaying:Void->Void;
-  public var onPaused:Void->Void;
-  public var onStopped:Void->Void;
-  public var onEndReached:Void->Void;
-  public var onEncounteredError:Void->Void;
-  public var onForward:Void->Void;
-  public var onBackward:Void->Void;
+
+  /**
+   * Callback for when the media player is opening.
+   * - This callback has no parameters.
+   */
+  public var onOpening(default, null):CallbackVoid;
+
+  /**
+   * Callback for when the media player begins playing.
+   * @param path The path of the current media.
+   */
+  public var onPlaying(default, null):Callback<String>;
+
+  /**
+   * Callback for when the media player is paused.
+   * - This callback has no parameters.
+   */
+  public var onPaused(default, null):CallbackVoid;
+
+  /**
+   * Callback for when the media player is stopped.
+   * - This callback has no parameters.
+   */
+  public var onStopped(default, null):CallbackVoid;
+
+  /**
+   * Callback for when the media player is buffering.
+   * - This callback has no parameters.
+   */
+  public var onEndReached(default, null):CallbackVoid;
+
+  /**
+   * Callback for when the media player encounters an error.
+   * @param error The error message.
+   */
+  public var onEncounteredError(default, null):Callback<String>;
+
+  /**
+   * Callback for when the media player is skipped forward.
+   */
+  public var onForward(default, null):CallbackVoid;
+
+  /**
+   * Callback for when the media player is skipped backward.
+   */
+  public var onBackward(default, null):CallbackVoid;
 
   // LibVLC
   var instance:LibVLC_Instance;
@@ -334,6 +399,8 @@ class VideoBitmapInternal extends Bitmap
   var mediaPlayerEventManager:LibVLC_EventManager;
 
   // Declarations
+  static final FLAG_COUNT = 10;
+
   var flags:Array<Bool> = [];
   var pixels:cpp.Pointer<cpp.UInt8>;
   var buffer:haxe.io.BytesData;
@@ -345,7 +412,7 @@ class VideoBitmapInternal extends Bitmap
   {
     super(bitmapData, AUTO, true);
 
-    for (event in 0...7)
+    for (event in 0...FLAG_COUNT)
       flags[event] = false;
 
     instance = LibVLCCore.init(0, null);
@@ -354,16 +421,24 @@ class VideoBitmapInternal extends Bitmap
 
   public function play(?location:String = null, loop:Bool = false, ?remote:Bool = false):Void
   {
-    final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
+    if (remote)
+    {
+      mediaItem = LibVLCMedia.new_location(location);
+    }
+    else
+    {
+      final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
+      mediaItem = LibVLCMedia.new_path(path);
+    }
 
     #if HXC_DEBUG_TRACE
     trace("setting path to: " + path);
     #end
 
-    mediaItem = LibVLCMedia.new_path(path);
     mediaPlayer = LibVLCMediaPlayer.new_from_media(instance, mediaItem);
 
-    // TODO: This is async, so we need to wait for the event to fire before we can set the callbacks.
+    // Parsing is async, so we need to set the callbacks before we wait for the event to fire.
+
     var flag:LibVLC_MediaParseFlag = LibVLC_MediaParseFlag.media_parse_local;
     if (remote) flag = LibVLC_MediaParseFlag.media_parse_network;
     LibVLCMedia.parse_request(instance, mediaItem, flag, PARSE_TIMEOUT);
@@ -394,17 +469,21 @@ class VideoBitmapInternal extends Bitmap
     if (buffer == null || (buffer != null && buffer.length > 0)) buffer = [];
 
     isDisplaying = false;
+  }
 
+  function setupEventManagers():Void
+  {
     // These callbacks are used to redirect the video output to the texture.
     LibVLCVideo.set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
     LibVLCVideo.set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
 
+    // These callbacks are used to track the status of the media's parsing.
     mediaEventManager = LibVLCMedia.event_manager(mediaItem);
-
+    LibVLCEvents.attach(mediaEventManager, LibVLC_EventType.MediaMetaChanged, untyped __cpp__('mediaCallbacks'), untyped __cpp__('this'));
     LibVLCEvents.attach(mediaEventManager, LibVLC_EventType.MediaParsedChanged, untyped __cpp__('mediaCallbacks'), untyped __cpp__('this'));
 
+    // These callbacks are used to track the status of the media player's playback.
     mediaPlayerEventManager = LibVLCMediaPlayer.event_manager(mediaPlayer);
-
     LibVLCEvents.attach(mediaPlayerEventManager, LibVLC_EventType.MediaPlayerOpening, untyped __cpp__('playerCallbacks'), untyped __cpp__('this'));
     LibVLCEvents.attach(mediaPlayerEventManager, LibVLC_EventType.MediaPlayerPlaying, untyped __cpp__('playerCallbacks'), untyped __cpp__('this'));
     LibVLCEvents.attach(mediaPlayerEventManager, LibVLC_EventType.MediaPlayerStopped, untyped __cpp__('playerCallbacks'), untyped __cpp__('this'));
@@ -417,17 +496,23 @@ class VideoBitmapInternal extends Bitmap
 
   public function stop():Void
   {
-    // if (mediaPlayer != null) LibVLCMediaPlayer.stop(mediaPlayer);
+    // The media player stop function is async.
+    if (mediaPlayer != null) LibVLCMediaPlayer.stop_async(mediaPlayer);
   }
 
   public function pause():Void
   {
-    // if (mediaPlayer != null) LibVLCMediaPlayer.set_pause(mediaPlayer, 1);
+    if (mediaPlayer != null) LibVLCMediaPlayer.set_pause(mediaPlayer, 1);
   }
 
   public function resume():Void
   {
-    // if (mediaPlayer != null) LibVLCMediaPlayer.set_pause(mediaPlayer, 0);
+    if (mediaPlayer != null) LibVLCMediaPlayer.set_pause(mediaPlayer, 0);
+  }
+
+  public function togglePaused():Void
+  {
+    if (mediaPlayer != null) LibVLCMediaPlayer.pause(mediaPlayer);
   }
 
   public function dispose():Void
@@ -470,19 +555,10 @@ class VideoBitmapInternal extends Bitmap
     #end
   }
 
-  function onEnterFrame(e:Event):Void
+  public function printParsedStatus():Void
   {
-    checkFlags();
-
-    // If the mediaPlayer is playing, the texture is linked to VLC,
-    // the video dimensions are known, and the pixel buffer is not empty,
-    // we can render the video.
-    if ((isPlaying && isDisplaying) && (videoWidth > 0 && videoHeight > 0) && pixels != null)
-    {
-      var time:Int = Lib.getTimer();
-      var elements:Int = videoWidth * videoHeight * 4;
-      render(time - currentTime, elements);
-    }
+    var currentParsedStatus:LibVLC_MediaParsedStatus = LibVLCMedia.get_parsed_status(mediaItem);
+    trace('Parsed status: $currentParsedStatus');
   }
 
   function onMediaParsedChanged():Void
@@ -509,54 +585,74 @@ class VideoBitmapInternal extends Bitmap
     }
   }
 
+  function onMediaMetaChanged():Void
+  {
+    trace('Media meta changed!');
+  }
+
+  function onEnterFrame(e:Event):Void
+  {
+    checkFlags();
+
+    // If the mediaPlayer is playing, the texture is linked to VLC,
+    // the video dimensions are known, and the pixel buffer is not empty,
+    // we can render the video.
+    if ((isPlaying && isDisplaying) && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+    {
+      var time:Int = Lib.getTimer();
+      var elements:Int = videoWidth * videoHeight * 4;
+      render(time, elements);
+    }
+  }
+
   function checkFlags():Void
   {
     if (flags[0])
     {
       flags[0] = false;
-      if (onOpening != null) onOpening();
+      onOpening.dispatch();
     }
 
     if (flags[1])
     {
       flags[1] = false;
-      if (onPlaying != null) onPlaying();
+      onPlaying.dispatch("Unknown");
     }
 
     if (flags[2])
     {
       flags[2] = false;
-      if (onPaused != null) onPaused();
+      onPaused.dispatch();
     }
 
     if (flags[3])
     {
       flags[3] = false;
-      if (onStopped != null) onStopped();
+      onStopped.dispatch();
     }
 
     if (flags[4])
     {
       flags[4] = false;
-      if (onEndReached != null) onEndReached();
+      onEndReached.dispatch();
     }
 
     if (flags[5])
     {
       flags[5] = false;
-      if (onEncounteredError != null) onEncounteredError();
+      onEncounteredError.dispatch("");
     }
 
     if (flags[6])
     {
       flags[6] = false;
-      if (onForward != null) onForward();
+      onForward.dispatch();
     }
 
     if (flags[7])
     {
       flags[7] = false;
-      if (onBackward != null) onBackward();
+      onBackward.dispatch();
     }
 
     if (flags[8])
@@ -564,10 +660,18 @@ class VideoBitmapInternal extends Bitmap
       flags[8] = false;
       onMediaParsedChanged();
     }
+
+    if (flags[9])
+    {
+      flags[9] = false;
+      onMediaMetaChanged();
+    }
   }
 
-  function render(deltaTime:Float, elementsCount:Int):Void
+  function render(time:Float, elementsCount:Int):Void
   {
+    var deltaTime:Float = time - currentTime;
+
     // Initialize the `texture` if necessary.
     if (texture == null) texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
 
@@ -577,9 +681,9 @@ class VideoBitmapInternal extends Bitmap
     // When you set a `bitmapData`, `smoothing` goes `false` for some reason.
     if (!smoothing) smoothing = true;
 
-    if (deltaTime > (1000 / skipStepLimit == 0 ? (fps * rate) : skipStepLimit))
+    if (deltaTime > (1000 / skipStepLimit == 0 ? (fps * playbackRate) : skipStepLimit))
     {
-      currentTime = deltaTime;
+      currentTime = time;
 
       #if HXC_DEBUG_TRACE
       trace('rendering...');

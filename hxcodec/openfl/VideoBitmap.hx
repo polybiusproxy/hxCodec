@@ -1,7 +1,7 @@
-package hxcodecpro.openfl;
+package hxcodec.openfl;
 
 import openfl.events.Event;
-import hxcodecpro._internal.VideoBitmapInternal;
+import hxcodec._internal.VideoBitmapInternal;
 
 class VideoBitmap extends VideoBitmapInternal
 {

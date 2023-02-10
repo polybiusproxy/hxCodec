@@ -1,4 +1,4 @@
-package hxcodecpro.flixel;
+package hxcodec.flixel;
 
 import flixel.FlxSubState;
 

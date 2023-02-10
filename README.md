@@ -3,7 +3,7 @@
 <!-- https://badgen.net/ includes badges that Shields.io is missing, like HaxeLib. -->
 ![](https://badgen.net/haxelib/v/hxcodec) ![](https://badgen.net/haxelib/d/hxcodec)
 
-![](https://badgen.net/github/open-issues/polybiusproxy/hxcodec) ![](https://badgen.net/github/contributors/polybiusproxy/hxcodec) ![](https://badgen.net/badge/license/MIT/blue)
+![](https://badgen.net/github/star/polybiusproxy/hxcodec) ![](https://badgen.net/github/open-issues/polybiusproxy/hxcodec) ![](https://badgen.net/github/contributors/polybiusproxy/hxcodec) ![](https://badgen.net/badge/license/MIT/blue)
 
 hxCodec is a library for [Haxe](https://haxe.org/) which provides utilities for audio and video, including:
 
@@ -85,10 +85,10 @@ hxCodec is made available under the MIT License. Check [LICENSE.md](./LICENSE.md
 hxCodec, when used on desktop platforms, links with code from VLC, which is made available under the Lesser GPLv2 license. Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information. 
 
 ## Credits
-- [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
-- [Jigsaw](https://github.com/MAJigsaw77) - Programmer and Android support.
+- [PolybiusProxy](https://github.com/polybiusproxy) - Lead Programmer
 - [EliteMasterEric](https://github.com/EliteMasterEric) - Programmer (v3 rewrite)
-- [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Erizur](https://github.com/Erizur) - Linux support.
+- [Jigsaw](https://github.com/MAJigsaw77) - Programmer (v2) and Android support (v2)
+- [Erizur](https://github.com/Erizur) - Linux support (v2)
 - [BushTrain460615](https://github.com/BushTrain460615) - macOS Support (v2)
-- [Jonnycat] (https://github.com/JonnycatMeow) - Mac Support (v3)
+- [Jonnycat](https://github.com/JonnycatMeow) - Mac Support (v3)
+- [datee](https://github.com/datee) - Creator of HaxeVLC

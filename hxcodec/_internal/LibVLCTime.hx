@@ -1,16 +1,16 @@
-package hxcodecpro._internal;
+package hxcodec._internal;
 
 import cpp.Int64;
 
 #if (!(desktop || android) && macro)
-#error "LibVLC only supports the Windows, Mac, Linux, and Android target platforms."
+#error 'LibVLC only supports the Windows, Mac, Linux, and Android target platforms.'
 #end
 
 /**
  * @see https://videolan.videolan.me/vlc/group__libvlc__clock.html
  */
-@:buildXml("<include name='${haxelib:hxcodecpro}/project/Build.xml' />") // Link static/dynamic libraries for VLC
-@:include("vlc/vlc.h") // Include VLC functions and types
+@:buildXml("<include name='${haxelib:hxcodec}/project/Build.xml' />") // Link static/dynamic libraries for VLC
+@:include('vlc/vlc.h') // Include VLC functions and types
 @:keep // Fix issues with DCE
 @:unreflective // TODO: Write down why this is needed
 extern class LibVLCTime
@@ -23,7 +23,7 @@ extern class LibVLCTime
    * (e.g. the system uptime, the time since the system was booted).
    * @note On systems that support it, the POSIX monotonic clock is used.
    */
-  @:native("libvlc_clock")
+  @:native('libvlc_clock')
   static function clock():Int64;
 
   /**
@@ -32,6 +32,6 @@ extern class LibVLCTime
    * @return negative if timestamp is in the past,
    * positive if it is in the future
    */
-  @:native("libvlc_clock")
+  @:native('libvlc_clock')
   static function delay(pts:Int):Int64;
 }
