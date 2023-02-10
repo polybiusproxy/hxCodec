@@ -14,16 +14,16 @@ import openfl.Lib;
 class VideoSprite extends Sprite implements IVideoPlayer
 {
   /**
-   * The current position of the video, in seconds.
+   * The current position of the video, in milliseconds.
    */
-  public var time(get, set):Float;
+  public var time(get, set):Int;
 
-  function get_time():Float
+  function get_time():Int
   {
     return video.time;
   }
 
-  function set_time(value:Float):Float
+  function set_time(value:Int):Int
   {
     video.time = value;
     return value;

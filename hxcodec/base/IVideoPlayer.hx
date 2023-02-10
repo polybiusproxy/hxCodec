@@ -9,10 +9,10 @@ import hxcodec.base.Callback.CallbackVoid;
 interface IVideoPlayer
 {
   /**
-   * The current position of the video, in seconds.
+   * The current position of the video, in milliseconds.
    * Set this value to seek to a specific position in the video.
    */
-  public var time(get, set):Float;
+  public var time(get, set):Int;
 
   /**
    * The current position of the video, as a percentage between 0.0 and 1.0.

@@ -40,7 +40,7 @@ class Main extends Sprite
       case 82: // R
         video.playVideoFromUrl('https://upload.wikimedia.org/wikipedia/commons/a/a7/View_of_Planet_Earth_%284K%29.webm');
       case 84: // T
-        video.playVideo('assets/earth.webm');
+        video.playVideo('assets/earth.mp4');
       case 89: // Y
         video.playVideo('assets/earth.webm');
 
@@ -51,9 +51,9 @@ class Main extends Sprite
       case 68: // D
         video.stop();
       case 70: // F
-        video.time -= 5.0;
+        video.time -= 5000;
       case 71: // G
-        video.time += 5.0;
+        video.time += 5000;
       case 72: // H
         video.position = 0.0;
       case 74: // J

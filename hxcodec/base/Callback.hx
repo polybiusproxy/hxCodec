@@ -11,7 +11,31 @@ package hxcodec.base;
  * - Use `callback.dispatch(arg)` from the caller to dispatch an event to all callbacks.
  */
 #if flixel
-typedef Callback<T> = FlxTypedSignal<T>;
+import flixel.util.FlxSignal;
+import flixel.util.FlxSignal.FlxTypedSignal;
+
+
+@:forward(add, addOnce, remove, has, removeAll)
+abstract Callback<T>(FlxTypedSignal<T->Void>) {
+  public function new() {
+    this = new FlxTypedSignal<T->Void>();
+  }
+
+  public function dispatch(value:T) {
+    this.dispatch(value);
+  }
+}
+
+@:forward(add, addOnce, remove, has, removeAll)
+abstract CallbackVoid(FlxSignal) {
+  public function new() {
+    this = new FlxSignal();
+  }
+
+  public function dispatch() {
+    this.dispatch();
+  }
+}
 #else
 class Callback<T>
 {
@@ -165,30 +189,35 @@ typedef CallbackHandler<T> =
    */
   var pendingCleanup:Bool;
 }
-#end
 
 /**
  * A callback with no argument.
  */
-@:forward
-abstract CallbackVoid(Callback<NoUse>)
-{
-  public function dispatch():Void
-  {
-    this.dispatch(NoUse);
-  }
-
-  public function add(cb:Void->Void):Void
-  {
-    @:privateAccess
-    this.handlers.push(
-      {
-        dispatch: function(_:NoUse):Void cb(),
-        once: false,
-        pendingCleanup: false
-      });
-  }
-}
+ @:forward
+ abstract CallbackVoid(Callback<NoUse>)
+ {
+   public function new():Void
+   {
+     this = new Callback<NoUse>();
+   }
+ 
+   public function dispatch():Void
+   {
+     this.dispatch(NoUse);
+   }
+ 
+   public function add(cb:Void->Void):Void
+   {
+     @:privateAccess
+     this.handlers.push(
+       {
+         dispatch: function(_:NoUse):Void cb(),
+         once: false,
+         pendingCleanup: false
+       });
+   }
+ }
+#end
 
 /**
  * A "meaningless" type.

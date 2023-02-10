@@ -111,36 +111,21 @@ static void playerCallbacks(const libvlc_event_t *event, void *data)
 }')
 class VideoBitmapInternal extends Bitmap
 {
-  /**
-   * The current timestamp in the video, in seconds.
-   * Set this to seek to a specific time in the video.
-   */
-  public var time(get, set):Float;
-
-  @:noCompletion function get_time():Float
-  {
-    return this.timeMs / 1000;
-  }
-
-  @:noCompletion function set_time(value:Float):Int
-  {
-    return (this.timeMs = Std.int(value * 1000));
-  }
 
   /**
    * The current timestamp in the video, in milliseconds.
    * Set this to seek to a specific time in the video.
    */
-  public var timeMs(get, set):Int;
+  public var time(get, set):Int;
 
-  @:noCompletion function get_timeMs():Int
+  @:noCompletion function get_time():Int
   {
     if (mediaPlayer != null) return LibVLCMediaPlayer.get_time(mediaPlayer);
 
     return 0;
   }
 
-  @:noCompletion function set_timeMs(value:Int):Int
+  @:noCompletion function set_time(value:Int):Int
   {
     if (mediaPlayer != null) LibVLCMediaPlayer.set_time(mediaPlayer, value, SHOULD_FAST_SEEK);
 
@@ -346,7 +331,6 @@ class VideoBitmapInternal extends Bitmap
 
   /**
    * Callback for when the media player is opening.
-   * - This callback has no parameters.
    */
   public var onOpening(default, null):CallbackVoid;
 
@@ -358,25 +342,21 @@ class VideoBitmapInternal extends Bitmap
 
   /**
    * Callback for when the media player is paused.
-   * - This callback has no parameters.
    */
   public var onPaused(default, null):CallbackVoid;
 
   /**
    * Callback for when the media player is stopped.
-   * - This callback has no parameters.
    */
   public var onStopped(default, null):CallbackVoid;
 
   /**
-   * Callback for when the media player is buffering.
-   * - This callback has no parameters.
+   * Callback for when the media player reaches the end.
    */
   public var onEndReached(default, null):CallbackVoid;
 
   /**
    * Callback for when the media player encounters an error.
-   * @param error The error message.
    */
   public var onEncounteredError(default, null):Callback<String>;
 
@@ -417,6 +397,19 @@ class VideoBitmapInternal extends Bitmap
 
     instance = LibVLCCore.init(0, null);
     audioOutput = LibVLCAudio.output_list_get(instance);
+
+    setupCallbacks();
+  }
+  
+  function setupCallbacks():Void {
+    onOpening = new CallbackVoid();
+    onPlaying = new Callback<String>();
+    onStopped = new CallbackVoid();
+    onPaused = new CallbackVoid();
+    onEndReached = new CallbackVoid();
+    onEncounteredError = new Callback<String>();
+    onForward = new CallbackVoid();
+    onBackward = new CallbackVoid();
   }
 
   public function play(?location:String = null, loop:Bool = false, ?remote:Bool = false):Void
@@ -438,6 +431,7 @@ class VideoBitmapInternal extends Bitmap
     mediaPlayer = LibVLCMediaPlayer.new_from_media(instance, mediaItem);
 
     // Parsing is async, so we need to set the callbacks before we wait for the event to fire.
+    setupEventManagers();
 
     var flag:LibVLC_MediaParseFlag = LibVLC_MediaParseFlag.media_parse_local;
     if (remote) flag = LibVLC_MediaParseFlag.media_parse_network;
@@ -451,8 +445,6 @@ class VideoBitmapInternal extends Bitmap
     {
       LibVLCMedia.add_option(mediaItem, "input-repeat=0");
     }
-
-    // LibVLCMedia.release(mediaItem);
 
     if (texture != null)
     {
@@ -541,15 +533,6 @@ class VideoBitmapInternal extends Bitmap
 
     isDisplaying = false;
 
-    onOpening = null;
-    onPlaying = null;
-    onStopped = null;
-    onPaused = null;
-    onEndReached = null;
-    onEncounteredError = null;
-    onForward = null;
-    onBackward = null;
-
     #if HXC_DEBUG_TRACE
     trace('disposing done!');
     #end
@@ -590,7 +573,11 @@ class VideoBitmapInternal extends Bitmap
     trace('Media meta changed!');
   }
 
-  function onEnterFrame(e:Event):Void
+  /**
+   * Must be called every frame.
+   * Handles checking video flags and rendering the video to the texture.
+   */
+  public function onEnterFrame(_:Event):Void
   {
     checkFlags();
 
@@ -605,6 +592,10 @@ class VideoBitmapInternal extends Bitmap
     }
   }
 
+  /**
+   * Must be called every frame. Flags get set to true in the callbacks (in C++)
+   * and get checked here to dispatch the appropriate signals.
+   */
   function checkFlags():Void
   {
     if (flags[0])
