@@ -111,7 +111,6 @@ static void playerCallbacks(const libvlc_event_t *event, void *data)
 }')
 class VideoBitmapInternal extends Bitmap
 {
-
   /**
    * The current timestamp in the video, in milliseconds.
    * Set this to seek to a specific time in the video.
@@ -388,6 +387,8 @@ class VideoBitmapInternal extends Bitmap
   var currentTime:Float = 0;
   var skipStepLimit:Float = 0;
 
+  static final DEBUG:Bool = #if debug true #else false #end;
+
   public function new():Void
   {
     super(bitmapData, AUTO, true);
@@ -395,13 +396,15 @@ class VideoBitmapInternal extends Bitmap
     for (event in 0...FLAG_COUNT)
       flags[event] = false;
 
-    instance = LibVLCCore.init(0, null);
+    // instance = LibVLCCore.init(0, null);
+    instance = LibVLCCore.LibVLCCoreHelper.initialize(DEBUG);
     audioOutput = LibVLCAudio.output_list_get(instance);
 
     setupCallbacks();
   }
-  
-  function setupCallbacks():Void {
+
+  function setupCallbacks():Void
+  {
     onOpening = new CallbackVoid();
     onPlaying = new Callback<String>();
     onStopped = new CallbackVoid();

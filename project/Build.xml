@@ -30,8 +30,9 @@
 
     <!-- Linked libraries for Linux. -->
     <target id="haxe" tool="linker" if="linux">
-        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Linux/libvlc.so.12.0.0" if="HXCPP_M64" />
-        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Linux/libvlccore.so.9.0.0" if="HXCPP_M64" />
+        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Linux/libvlc.so.12" if="HXCPP_M64" />
+        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Linux/libvlccore.so.9" if="HXCPP_M64" />
+		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Linux/libidn.so.11" if="HXCPP_M64" />
     </target>
 
     <!-- Linked libraries for Android. -->

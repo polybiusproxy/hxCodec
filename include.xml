@@ -15,7 +15,7 @@
     </section>
 
     <section if="linux">
-        <assets path="thirdparty/lib/vlc/Linux/" rename="" />
+        <assets path="thirdparty/lib/vlc/Linux/" rename="./lib/" />
     </section>
 
     <!-- Android dynamic libraries -->

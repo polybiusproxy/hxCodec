@@ -249,19 +249,28 @@ class LibVLCCoreHelper
    * @param debug Whether to enable additional verbosity.
    * @return The newly initialized LibVLC instance.
    */
+  // ,  "--extraintf=logger", "--file-logging", "--logfile=vlc-log.txt"
   @:functionCode('
     if (debug)
     {
       char* libvlc_argv[] = {
-        "vlc", "--verbose=2", "--extraintf=logger", "--file-logging", "--logfile=vlc-log.txt"
+        "vlc", "--verbose=2"
       };
-      return libvlc_new(5, libvlc_argv);
+      return libvlc_new(2, libvlc_argv);
     } else {
       return libvlc_new(0, NULL);
     }
   ')
-  public static function initialize(debug:Bool = false):LibVLC_Instance
+  static function _init(debug:Bool = false):LibVLC_Instance
   {
     throw 'functionCode';
+  }
+
+  public static function initialize(debug:Bool = false):LibVLC_Instance
+  {
+    trace('Initializing LibVLC...');
+    var instance = _init(debug);
+    if (instance == null) throw 'LibVLC initialization failed.';
+    return instance;
   }
 }
