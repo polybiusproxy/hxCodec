@@ -30,6 +30,17 @@ typedef VoidStar = cpp.Star<cpp.Void>;
  */
 typedef ConstCharPointer = cpp.ConstPointer<cpp.Char>;
 
+typedef CharPointer = cpp.Pointer<cpp.Char>;
+
+/**
+ * A `const char * *` variable.
+ * This is used to represent a pointer to a pointer to a null-terminated string.
+ */
+typedef ConstCharPointerPointer = cpp.Pointer<ConstCharPointer>;
+
+typedef UnsignedPointer = cpp.Pointer<cpp.UInt32>;
+typedef UInt64Pointer = cpp.Pointer<cpp.UInt64>;
+
 //
 // CALLBACK TYPES
 //
@@ -122,6 +133,20 @@ typedef LibVLC_Video_Unlock_Callback = cpp.Callable<(data:VoidStar, id:VoidStar,
  */
 typedef LibVLC_Video_Display_Callback = cpp.Callable<(opaque:VoidStar, picture:VoidStar) -> Void>;
 
+/**
+ * Callback prototype for LibVLC log message handler.
+ *
+ * @param data data pointer as given to libvlc_log_set()
+ * @param level message level (@ref libvlc_log_level)
+ * @param ctx message context (meta-information about the message)
+ * @param fmt printf() format string (as defined by ISO C11)
+ * @param args variable argument list for the format
+ * @note Log message handlers <b>must</b> be thread-safe.
+ * @warning The message context pointer, the format string parameters and the
+ *          variable arguments are only valid until the callback returns.
+ */
+typedef LibVLC_Log_Callback = cpp.Callable<(data:VoidStar, level:Int, ctx:LibVLC_Log, fmt:ConstCharPointer, args:CharPointer) -> Void>;
+
 //
 // STRUCT TYPES
 //
@@ -153,6 +178,19 @@ typedef LibVLC_ModuleDescription = RawPointer<LibVLC_ModuleDescription_T>;
 @:keep
 @:native('libvlc_module_description_t')
 extern class LibVLC_ModuleDescription_T {}
+
+/**
+ * Description of a log message.
+ */
+typedef LibVLC_Log = RawPointer<LibVLC_Log_T>;
+
+/**
+ * Internal log message data structure.
+ */
+@:include('vlc/vlc.h')
+@:keep
+@:native('libvlc_log_t')
+extern class LibVLC_Log_T {}
 
 /**
  * Description for audio output.
@@ -1031,4 +1069,30 @@ enum abstract LibVLC_MediaParsedStatus(Int) from Int to Int
    * Done
    */
   public var media_parsed_status_done = 5;
+}
+
+/**
+ * Logging message level.
+ */
+enum abstract LibVLC_LogLevel(Int) from Int to Int
+{
+  /**
+   * Debug message
+   */
+  public var LIBVLC_DEBUG = 0;
+
+  /**
+   * Important informational message
+   */
+  public var LIBVLC_NOTICE = 2;
+
+  /**
+   * Warning (potential error) message
+   */
+  public var LIBVLC_WARNING = 3;
+
+  /**
+   * Error message
+   */
+  public var LIBVLC_ERROR = 4;
 }

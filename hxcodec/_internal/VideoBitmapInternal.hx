@@ -8,6 +8,7 @@ import openfl.events.Event;
 import openfl.Lib;
 import hxcodec._internal.LibVLCMediaPlayer.LibVLCMediaPlayerHelper;
 import hxcodec._internal.LibVLCMediaTrack.LibVLCMediaTrackHelper;
+import hxcodec._internal.LibVLCLogging.LibVLCLoggingHelper;
 
 /**
  * Utilizes LibVLC externs as a bitmap that can be displayed.
@@ -387,6 +388,8 @@ class VideoBitmapInternal extends Bitmap
   var currentTime:Float = 0;
   var skipStepLimit:Float = 0;
 
+  var logger:LibVLCLoggingHelper;
+
   static final DEBUG:Bool = #if debug true #else false #end;
 
   public function new():Void
@@ -398,9 +401,15 @@ class VideoBitmapInternal extends Bitmap
 
     // instance = LibVLCCore.init(0, null);
     instance = LibVLCCore.LibVLCCoreHelper.initialize(DEBUG);
+    logger = LibVLCLogging.LibVLCLoggingHelper.logToCallback(instance, onVLCLog);
+
     audioOutput = LibVLCAudio.output_list_get(instance);
 
     setupCallbacks();
+  }
+
+  function onVLCLog(messsage:String):Void {
+    trace(messsage);
   }
 
   function setupCallbacks():Void
@@ -582,6 +591,7 @@ class VideoBitmapInternal extends Bitmap
    */
   public function onEnterFrame(_:Event):Void
   {
+    logger.update();
     checkFlags();
 
     // If the mediaPlayer is playing, the texture is linked to VLC,
