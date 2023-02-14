@@ -8,7 +8,6 @@ This version is a full rewrite by EliteMasterEric, based on the old codebase, wi
 ## Added
 - Added premade classes for video playback on HaxeFlixel.
     - Added `FlxVideoState` which plays videos.
-    - Added `FlxVideoSubState` which plays videos.
     - Added `FlxCutsceneState` which plays a specific video (with the option to skip) before switching to the next state.
 - All video player classes now have new video controls and metadata available.
     - Play a video (or switch what video is playing) with `video.playVideo`
@@ -42,5 +41,6 @@ This version is a full rewrite by EliteMasterEric, based on the old codebase, wi
 - Added new documentation for most functions.
 - Added Haxe Checkstyle to maintain consistent code style and formatting in Haxe code.
 ## Known Issues
+- Video sprites crash the game when used in an FlxSubState due to differences in how they are rendered.
 - Support for Mac, Linux, and Android is currently not tested and may not be functional.
 - Support for iOS is in progress and is not currently functional.

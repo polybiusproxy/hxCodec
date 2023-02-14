@@ -205,6 +205,10 @@ class FlxVideoState extends FlxState
   {
     super();
 
+    // Create the video sprite in the constructor so that
+    // callbacks can be assigned before the state is entered.
+    video = new FlxVideoSprite(0, 0);
+
     this.nextVideo = path;
   }
 
@@ -212,7 +216,6 @@ class FlxVideoState extends FlxState
   {
     super.create();
 
-    video = new FlxVideoSprite(0, 0);
     video.autoResize = true;
     add(video);
 

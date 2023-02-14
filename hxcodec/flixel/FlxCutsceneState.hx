@@ -28,7 +28,7 @@ class FlxCutsceneState extends FlxVideoState
     super.create();
 
     // Move to next state if video finishes.
-    video.onEndReached.add(onVideoEnded);
+    this.onEndReached.add(onVideoEnded);
   }
 
   public override function update(elapsed:Float):Void
@@ -44,7 +44,7 @@ class FlxCutsceneState extends FlxVideoState
 
   function onVideoEnded():Void
   {
-    video.stop();
+    this.stop();
 
     // This null check means that if the next state is null,
     // the game will stay on the cutscene state.
