@@ -15,9 +15,11 @@ class VideoHandler extends VLCBitmap
 {
 	public var canSkip:Bool = true;
 	public var skipKeys:Array<FlxKey> = [FlxKey.SPACE];
+	public var volumeMult:Float = 1;
 
 	public var canUseSound:Bool = true;
 	public var canUseAutoResize:Bool = true;
+	public var canAutoPause:Bool = true;
 
 	public var openingCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
@@ -42,7 +44,7 @@ class VideoHandler extends VLCBitmap
 		#end
 
 		// The Media Player isn't `null at this point...
-		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #end FlxG.sound.volume * 100);
+		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #end volumeMult * FlxG.sound.volume * 100);
 
 		if (openingCallback != null)
 		    openingCallback();
@@ -99,7 +101,7 @@ class VideoHandler extends VLCBitmap
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
-		if (FlxG.autoPause)
+		if (FlxG.autoPause && canAutoPause)
 		{
 			FlxG.signals.focusGained.add(resume);
 			FlxG.signals.focusLost.add(pause);
@@ -129,7 +131,7 @@ class VideoHandler extends VLCBitmap
 			height = calcSize(1);
 		}
 
-		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #end FlxG.sound.volume * 100);
+		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #end volumeMult * FlxG.sound.volume * 100);
 	}
 
 	public function calcSize(Ind:Int):Int
