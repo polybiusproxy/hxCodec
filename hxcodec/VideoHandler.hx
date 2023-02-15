@@ -13,9 +13,9 @@ import hxcodec.vlc.VLCBitmap;
  */
 class VideoHandler extends VLCBitmap
 {
-	public var canSkip:Bool = true;
 	public var skipKeys:Array<FlxKey> = [FlxKey.SPACE];
 
+	public var canSkip:Bool = true;
 	public var canUseSound:Bool = true;
 	public var canUseAutoResize:Bool = true;
 
@@ -42,7 +42,7 @@ class VideoHandler extends VLCBitmap
 		#end
 
 		// The Media Player isn't `null at this point...
-		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #end FlxG.sound.volume * 100);
+		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #else (!canUseSound ? 0 : 1) * #end FlxG.sound.volume * 100);
 
 		if (openingCallback != null)
 		    openingCallback();
@@ -129,7 +129,7 @@ class VideoHandler extends VLCBitmap
 			height = calcSize(1);
 		}
 
-		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #end FlxG.sound.volume * 100);
+		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #else (!canUseSound ? 0 : 1) * #end FlxG.sound.volume * 100);
 	}
 
 	public function calcSize(Ind:Int):Int
