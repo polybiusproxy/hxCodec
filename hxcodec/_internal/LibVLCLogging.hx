@@ -118,24 +118,20 @@ extern class LibVLCLogging
 @:cppNamespaceCode('
 static void logCallback(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
 {
-  LibVLCLoggingHelper_obj *self = (LibVLCLoggingHelper_obj*) data;
+  LibVLCLoggingHelper_obj* self = static_cast<LibVLCLoggingHelper_obj*>(data);
 
-  char* msg;
-  // Formats string (using va_list)
-  if (vasprintf( &msg, fmt, args ) < 0) {
+  char* msg = NULL; // set it to null otherwise it will be some random ass bytes, it is not null by default.
+  if (vasprintf(&msg,fmt,args) < 0) {
     self->message = "Failed to format log message.";
-    return;
   }
-
+  
   if (self->message != NULL) {
-    // Concatenate messages
-    char* msgOld = self->message;
-    std::string total = std::string(msgOld) + "~\\n~" + std::string(msg); 
-    self->message = total.c_str();
+    std::string msg = std::string(self->message.get_raw()) + "\\n";
+    msg.append(std::string(msg));
+    self->message = msg.c_str();
   } else {
     self->message = msg;
   }
-
   return;
 }')
 class LibVLCLoggingHelper
