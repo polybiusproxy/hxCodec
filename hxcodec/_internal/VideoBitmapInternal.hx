@@ -433,6 +433,11 @@ class VideoBitmapInternal extends Bitmap
     else
     {
       final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
+      if (!sys.FileSystem.exists(path)) {
+        throw "File not found: " + path;
+      } else {
+        trace("Media file found: " + path);
+      }
       mediaItem = LibVLCMedia.new_path(path);
     }
 
@@ -447,7 +452,7 @@ class VideoBitmapInternal extends Bitmap
 
     var flag:LibVLC_MediaParseFlag = LibVLC_MediaParseFlag.media_parse_local;
     if (remote) flag = LibVLC_MediaParseFlag.media_parse_network;
-    LibVLCMedia.parse_request(instance, mediaItem, flag, PARSE_TIMEOUT);
+    //LibVLCMedia.parse_request(instance, mediaItem, flag, PARSE_TIMEOUT);
 
     if (loop)
     {
@@ -473,6 +478,8 @@ class VideoBitmapInternal extends Bitmap
     if (buffer == null || (buffer != null && buffer.length > 0)) buffer = [];
 
     isDisplaying = false;
+
+    LibVLCMediaPlayer.play(mediaPlayer);
   }
 
   function setupEventManagers():Void
@@ -644,6 +651,7 @@ class VideoBitmapInternal extends Bitmap
     if (flags[5])
     {
       flags[5] = false;
+      trace('Encountered error in the media player!');
       onEncounteredError.dispatch("");
     }
 

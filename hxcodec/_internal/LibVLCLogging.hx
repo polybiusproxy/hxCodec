@@ -1,5 +1,8 @@
 package hxcodec._internal;
 
+import cpp.NativeString;
+import cpp.ConstCharStar;
+import cpp.StdStringRef;
 #if (!(desktop || android) && macro)
 #error 'LibVLC only supports the Windows, Mac, Linux, and Android target platforms.'
 #end
@@ -111,16 +114,27 @@ extern class LibVLCLogging
   static function set_file(p_instance:LibVLC_Instance, stream:cpp.FILE):Void;
 }
 
+@:cppInclude('string')
 @:cppNamespaceCode('
 static void logCallback(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
 {
   LibVLCLoggingHelper_obj *self = (LibVLCLoggingHelper_obj*) data;
 
+  char* msg;
   // Formats string (using va_list)
-  // Writes up to 256 characters to the buffer
-  char msg[256];
-  vsnprintf(msg, 256, fmt, args);
-  self->message = msg;
+  if (vasprintf( &msg, fmt, args ) < 0) {
+    self->message = "Failed to format log message.";
+    return;
+  }
+
+  if (self->message != NULL) {
+    // Concatenate messages
+    char* msgOld = self->message;
+    std::string total = std::string(msgOld) + "~\\n~" + std::string(msg); 
+    self->message = total.c_str();
+  } else {
+    self->message = msg;
+  }
 
   return;
 }')
@@ -180,19 +194,14 @@ class LibVLCLoggingHelper
     throw 'functionCode';
   }
 
-  // Messages are passed as ConstCharPointer because
-  // we can't initialize a HaxeString from C++ code.
-  var message:ConstCharPointer = null;
+  var message:cpp.Pointer<cpp.Char> = null;
   public function update() {
-    var msg:String = cpp.NativeString.fromPointer(message);
-    if (msg != null) {
+    if (message != null) {
+      var msg:String = NativeString.fromPointer(message);
       callback(msg);
       message = null;
     }
-    // else {
-    //   callback("NULL");
-    // }
-  }  
+  }
 }
 
 class LibVLCLoggingCallbackHandler {
