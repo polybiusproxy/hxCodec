@@ -3,6 +3,7 @@ package hxcodec._internal;
 import cpp.NativeString;
 import cpp.ConstCharStar;
 import cpp.StdStringRef;
+
 #if (!(desktop || android) && macro)
 #error 'LibVLC only supports the Windows, Mac, Linux, and Android target platforms.'
 #end
@@ -116,22 +117,48 @@ extern class LibVLCLogging
 
 @:cppInclude('string')
 @:cppNamespaceCode('
+#include <stdlib.h>
+#include <stdarg.h>
+// thanks StackOverflow
+int vasprintf(char **strp, const char *fmt, va_list ap) {
+    // _vscprintf tells you how big the buffer needs to be
+    int len = _vscprintf(fmt, ap);
+    if (len == -1) {
+        return -1;
+    }
+    size_t size = (size_t)len + 1;
+    char *str = (char*) malloc(size);
+    if (!str) {
+        return -1;
+    }
+    // _vsprintf_s is the "secure" version of vsprintf
+    int r = vsprintf_s(str, len + 1, fmt, ap);
+    if (r == -1) {
+        free(str);
+        return -1;
+    }
+    *strp = str;
+    return r;
+}
+
+class LibVLCLogMessageContainer {
+  public:
+    static std::vector<char*> messages;
+};
+
+std::vector<char*> LibVLCLogMessageContainer::messages = {};
+
 static void logCallback(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
 {
   LibVLCLoggingHelper_obj* self = static_cast<LibVLCLoggingHelper_obj*>(data);
 
   char* msg = NULL; // set it to null otherwise it will be some random ass bytes, it is not null by default.
   if (vasprintf(&msg,fmt,args) < 0) {
-    self->message = "Failed to format log message.";
+    msg = "Failed to format log message.";
   }
   
-  if (self->message != NULL) {
-    std::string msg = std::string(self->message.get_raw()) + "\\n";
-    msg.append(std::string(msg));
-    self->message = msg.c_str();
-  } else {
-    self->message = msg;
-  }
+  LibVLCLogMessageContainer::messages.push_back(msg);
+
   return;
 }')
 class LibVLCLoggingHelper
@@ -173,7 +200,8 @@ class LibVLCLoggingHelper
 
   public function new() {}
 
-  public function setup(p_instance:LibVLC_Instance, callback:String->Void):Void {
+  public function setup(p_instance:LibVLC_Instance, callback:String->Void):Void
+  {
     this.p_instance = p_instance;
     this.callback = callback;
 
@@ -186,20 +214,32 @@ class LibVLCLoggingHelper
     libvlc_log_set(p_instance, logCallback, this);
     return;
   ')
-  function setCallback():Void {
+  function setCallback():Void
+  {
     throw 'functionCode';
   }
 
-  var message:cpp.Pointer<cpp.Char> = null;
-  public function update() {
-    if (message != null) {
-      var msg:String = NativeString.fromPointer(message);
+  public function update()
+  {
+    var messages:StdVectorChar = untyped __cpp__('&LibVLCLogMessageContainer::messages');
+    var messagesOut:Array<String> = [];
+
+    while (messages.size() > 0)
+    {
+      // Pop the last message in the vector.
+      var msg:cpp.Pointer<cpp.Char> = messages.back();
+      var msgStr:String = NativeString.fromPointer(msg);
+
+      messagesOut.insert(0, msgStr);
+
+      messages.pop_back();
+    }
+
+    for (msg in messagesOut)
+    {
       callback(msg);
-      message = null;
     }
   }
 }
 
-class LibVLCLoggingCallbackHandler {
-
-}
+class LibVLCLoggingCallbackHandler {}

@@ -180,6 +180,21 @@ typedef LibVLC_ModuleDescription = RawPointer<LibVLC_ModuleDescription_T>;
 extern class LibVLC_ModuleDescription_T {}
 
 /**
+ * An `std::vector<char*>*` instance.
+ */
+@:keep
+@:native('std::vector<char*>*')
+extern class StdVectorChar
+{
+  function size():Int;
+  function at(index:Int):cpp.Pointer<cpp.Char>;
+  function back():cpp.Pointer<cpp.Char>;
+  function front():cpp.Pointer<cpp.Char>;
+  function push_back(value:cpp.Pointer<cpp.Char>):Void;
+  function pop_back():Void;
+}
+
+/**
  * Description of a log message.
  */
 typedef LibVLC_Log = RawPointer<LibVLC_Log_T>;
