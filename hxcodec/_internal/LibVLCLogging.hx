@@ -230,7 +230,7 @@ class LibVLCLoggingHelper
       messagesOut.insert(0, msgStr);
 
       // Free the message.
-
+      CharStar.free(msg);
       messages.pop_back();
     }
 
