@@ -5,14 +5,14 @@
 		<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/include/" /> 
 
 		<section if="iphoneos">
-			<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/ndll/iOS/plugins/"/>
+			<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/lib/vlc/iOS/plugins/"/>
 		</section>
 	</files>
 	<files id="__main__">
 		<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/include/" /> 
 		
 		<section if="iphoneos">
-			<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/ndll/iOS/plugins/"/>
+			<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/lib/vlc/iOS/plugins/"/>
 		</section>
 	</files>
 
@@ -37,8 +37,8 @@
 
     <!-- Linked libraries for Android. -->
 	<target id="haxe" tool="linker" if="android">
-		<lib name="${haxelib:hxcodec}/thirdparty/ndll/Android/armeabi-v7a/libvlc.so" if="HXCPP_ARMV7" />
-		<lib name="${haxelib:hxcodec}/thirdparty/ndll/Android/arm64-v8a/libvlc.so" if="HXCPP_ARM64" />
+		<lib name="${haxelib:hxCodec}/ndll/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
+		<lib name="${haxelib:hxCodec}/ndll/Android/libvlc-64.so" if="HXCPP_ARM64" />
 	</target> 
 
     <!-- Linked libraries for iOS. -->
