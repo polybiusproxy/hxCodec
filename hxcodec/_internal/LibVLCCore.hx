@@ -1,7 +1,5 @@
 package hxcodec._internal;
 
-import cpp.RawConstPointer;
-
 /**
  * TODO: These functions and documentation were copied from the VLC headers manually. It would be nice to automate this process.
  * @see https://videolan.videolan.me/vlc/group__libvlc__core.html
@@ -65,12 +63,12 @@ extern class LibVLCCore
     * We recommend that you do not use them, other than when debugging.
     *
     * @note hxCodec renames this to `init` since `new` is a reserved word in Haxe.
-    * @param argc the number of arguments (should be 0)
-    * @param argv list of arguments (should be NULL)
+    * @param argc the number of arguments
+    * @param argv list of arguments
     * @return the libvlc instance or NULL in case of error
    */
   @:native('libvlc_new')
-  static function init(argc:Int, argv:RawConstPointer<String>):LibVLC_Instance;
+  static function init(argc:Int, argv:ConstCharStar):LibVLC_Instance;
 
   /**
    * Decrement the reference count of a libvlc instance, and destroy it
@@ -244,14 +242,8 @@ extern class LibVLCCore
  */
 class LibVLCCoreHelper
 {
-  /**
-   * Initializes a LibVLC instance.
-   * @param debug Whether to enable additional verbosity.
-   * @return The newly initialized LibVLC instance.
-   */
-  // ,  "--extraintf=logger", "--file-logging", "--logfile=vlc-log.txt"
   @:functionCode('
-    if (debug)
+    if (verbose)
     {
       char* libvlc_argv[] = {
         "vlc", "--verbose=2"
@@ -261,15 +253,20 @@ class LibVLCCoreHelper
       return libvlc_new(0, NULL);
     }
   ')
-  static function _init(debug:Bool = false):LibVLC_Instance
+  static function _init(verbose:Bool = false):LibVLC_Instance
   {
     throw 'functionCode';
   }
 
-  public static function initialize(debug:Bool = false):LibVLC_Instance
+  /**
+   * Initializes a LibVLC instance.
+   * @param verbose Whether to enable verbose logging.
+   * @return The newly initialized LibVLC instance.
+   */
+  public static function initialize(verbose:Bool = false):LibVLC_Instance
   {
     trace('Initializing LibVLC...');
-    var instance = _init(debug);
+    var instance = _init(verbose);
     if (instance == null) throw 'LibVLC initialization failed.';
     return instance;
   }

@@ -38,7 +38,7 @@ extern class LibVLCLogging
    * @version LibVLC 2.1.0 or later
    */
   @:native('libvlc_log_get_context')
-  static function get_context(ctx:LibVLC_Log, module:ConstCharPointerPointer, file:ConstCharPointerPointer, line:UnsignedPointer):Void;
+  static function get_context(ctx:LibVLC_Log, module:ConstCharStarStar, file:ConstCharStarStar, line:UnsignedStar):Void;
 
   /**
    * Gets log message info.
@@ -66,7 +66,7 @@ extern class LibVLCLogging
    * @version LibVLC 2.1.0 or later
    */
   @:native('libvlc_log_get_object')
-  static function get_object(ctx:LibVLC_Log, name:ConstCharPointerPointer, header:ConstCharPointerPointer, id:UInt64Pointer):Void;
+  static function get_object(ctx:LibVLC_Log, name:ConstCharStarStar, header:ConstCharStarStar, id:UInt64Star):Void;
 
   /**
    * Unsets the logging callback.
@@ -141,13 +141,6 @@ int vasprintf(char **strp, const char *fmt, va_list ap) {
     return r;
 }
 
-class LibVLCLogMessageContainer {
-  public:
-    static std::vector<char*> messages;
-};
-
-std::vector<char*> LibVLCLogMessageContainer::messages = {};
-
 static void logCallback(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
 {
   LibVLCLoggingHelper_obj* self = static_cast<LibVLCLoggingHelper_obj*>(data);
@@ -156,8 +149,8 @@ static void logCallback(void *data, int level, const libvlc_log_t *ctx, const ch
   if (vasprintf(&msg,fmt,args) < 0) {
     msg = "Failed to format log message.";
   }
-  
-  LibVLCLogMessageContainer::messages.push_back(msg);
+
+  self->messages.push_back(msg);
 
   return;
 }')
@@ -198,7 +191,10 @@ class LibVLCLoggingHelper
   var p_instance:LibVLC_Instance;
   var callback:String->Void;
 
-  public function new() {}
+  public function new()
+  {
+    messages = StdVectorChar.create();
+  }
 
   public function setup(p_instance:LibVLC_Instance, callback:String->Void):Void
   {
@@ -219,18 +215,21 @@ class LibVLCLoggingHelper
     throw 'functionCode';
   }
 
+  var messages:StdVectorChar;
+
   public function update()
   {
-    var messages:StdVectorChar = untyped __cpp__('&LibVLCLogMessageContainer::messages');
     var messagesOut:Array<String> = [];
 
     while (messages.size() > 0)
     {
       // Pop the last message in the vector.
-      var msg:cpp.Pointer<cpp.Char> = messages.back();
+      var msg:CharStar = messages.back();
       var msgStr:String = NativeString.fromPointer(msg);
 
       messagesOut.insert(0, msgStr);
+
+      // Free the message.
 
       messages.pop_back();
     }
@@ -241,5 +240,3 @@ class LibVLCLoggingHelper
     }
   }
 }
-
-class LibVLCLoggingCallbackHandler {}
