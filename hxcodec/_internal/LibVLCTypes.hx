@@ -1,7 +1,7 @@
 package hxcodec._internal;
 
-#if !cpp
-#error "This file is only meant to be used with the C++ target."
+#if (!cpp && macro)
+#error 'LibVLC only supports target platforms based on C++.'
 #end
 
 /**

@@ -1,5 +1,9 @@
 package hxcodec._internal;
 
+#if (!cpp && macro)
+#error 'LibVLC only supports target platforms based on C++.'
+#end
+
 /**
  * TODO: These functions and documentation were copied from the VLC headers manually. It would be nice to automate this process.
  * @see https://videolan.videolan.me/vlc/group__libvlc__core.html
