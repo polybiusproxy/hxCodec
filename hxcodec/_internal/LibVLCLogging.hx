@@ -4,8 +4,8 @@ import cpp.NativeString;
 import cpp.ConstCharStar;
 import cpp.StdStringRef;
 
-#if (!(desktop || android) && macro)
-#error 'LibVLC only supports the Windows, Mac, Linux, and Android target platforms.'
+#if (!cpp && macro)
+#error 'LibVLC only supports target platforms based on C++.'
 #end
 
 /**
