@@ -105,6 +105,7 @@ typedef UInt32Star = cpp.Pointer<cpp.UInt32>;
 typedef Int64Star = cpp.Pointer<cpp.Int64>;
 typedef Int32Star = cpp.Pointer<cpp.Int32>;
 typedef UnsignedStar = UInt32Star;
+typedef SizeStar = cpp.Pointer<cpp.SizeT>;
 
 // Raw pointers used for callbacks
 
@@ -251,6 +252,21 @@ typedef LibVLC_Instance = cpp.RawPointer<LibVLC_Instance_T>;
 @:keep
 @:native('libvlc_instance_t')
 extern class LibVLC_Instance_T {}
+
+/**
+ * A module.
+ */
+typedef Module = cpp.RawPointer<Module_T>;
+
+typedef ModuleList = cpp.RawPointer<Module>;
+
+/**
+ * Internal module data structure.
+ */
+@:include('vlc/vlc.h')
+@:keep
+@:native('module_t')
+extern class Module_T {}
 
 /**
  * Description of a module.

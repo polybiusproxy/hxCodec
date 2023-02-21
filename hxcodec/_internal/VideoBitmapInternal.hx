@@ -409,7 +409,7 @@ class VideoBitmapInternal extends Bitmap
   }
 
   function onVLCLog(messsage:String):Void {
-    trace(messsage);
+    trace(messsage, null); // Null the posInfos because VideoBitmapInternal is not the real caller
   }
 
   function setupCallbacks():Void

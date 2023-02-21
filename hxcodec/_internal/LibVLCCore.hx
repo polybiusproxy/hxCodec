@@ -250,9 +250,9 @@ class LibVLCCoreHelper
     if (verbose)
     {
       char* libvlc_argv[] = {
-        "vlc", "--verbose=2"
+        "vlc", "--verbose=2", "--reset-plugins-cache"
       };
-      return libvlc_new(2, libvlc_argv);
+      return libvlc_new(3, libvlc_argv);
     } else {
       return libvlc_new(0, NULL);
     }

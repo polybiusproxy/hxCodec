@@ -113,9 +113,21 @@ extern class LibVLCLogging
    */
   @:native('libvlc_log_set_file')
   static function set_file(p_instance:LibVLC_Instance, stream:cpp.FILE):Void;
+
+  /**
+   * Gets the flat list of VLC modules.
+   *
+   * @param n [OUT] pointer to the number of modules
+   * @return table of module pointers (release with module_list_free()),
+   *         or NULL in case of error (in that case, *n is zeroed).
+   */
+  @:native('module_list_get')
+  static function module_list_get(n:SizeStar):ModuleList;
 }
 
 @:cppInclude('string')
+@:include('vlc/vlc.h')
+#if windows
 @:cppNamespaceCode('
 #include <stdlib.h>
 #include <stdarg.h>
@@ -154,6 +166,60 @@ static void logCallback(void *data, int level, const libvlc_log_t *ctx, const ch
 
   return;
 }')
+#else
+@:cppNamespaceCode('
+static void logCallback(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
+{
+  LibVLCLoggingHelper_obj* self = static_cast<LibVLCLoggingHelper_obj*>(data);
+
+  char* msg = NULL; // set it to null otherwise it will be some random ass bytes, it is not null by default.
+  if (vasprintf(&msg,fmt,args) < 0) {
+    msg = "Failed to format log message.";
+  }
+
+  // Get full logging context.
+  const char* ctx_module;
+  const char* ctx_file;
+  unsigned int ctx_line;
+  libvlc_log_get_context(ctx, &ctx_module, &ctx_file, &ctx_line);
+
+  std::string msgFull = "[";
+  
+  switch(level) {
+    case LIBVLC_DEBUG:
+      msgFull.append("DEBUG");
+      break;
+    case LIBVLC_NOTICE:
+      msgFull.append("INFO ");
+      break;
+    case LIBVLC_WARNING:
+      msgFull.append("WARN ");
+      break;
+    case LIBVLC_ERROR:
+      msgFull.append("ERROR");
+      break;
+  }
+  msgFull.append("] (");
+  msgFull.append(ctx_module);
+  msgFull.append(":");
+  msgFull.append(ctx_file);
+  msgFull.append("#");
+  msgFull.append(std::to_string(ctx_line));
+  msgFull.append(") ");
+  msgFull.append(std::string(msg));
+
+  size_t len = msgFull.length();
+
+  // Copy the string to a char array.
+  char* msgFullArr = new char[len + 1];
+  memcpy(msgFullArr, msgFull.c_str(), len);
+  msgFullArr[len] = \'\\0\';
+
+  self->messages.push_back(msgFullArr);
+
+  return;
+}')
+#end
 class LibVLCLoggingHelper
 {
   @:functionCode('
@@ -179,6 +245,8 @@ class LibVLCLoggingHelper
     LibVLCLogging.set_file(p_instance, stream);
 
     trace('Initialized LibVLC logging.');
+    
+    // var modules = getModuleList();
   }
 
   public static function logToCallback(p_instance:LibVLC_Instance, callback:String->Void):LibVLCLoggingHelper
@@ -230,7 +298,6 @@ class LibVLCLoggingHelper
       messagesOut.insert(0, msgStr);
 
       // Free the message.
-      CharStar.free(msg);
       messages.pop_back();
     }
 
