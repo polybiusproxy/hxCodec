@@ -11,12 +11,8 @@
 *.ndll filter=lfs diff=lfs merge=lfs -text
 *.so filter=lfs diff=lfs merge=lfs -text
 lib/** filter=lfs diff=lfs merge=lfs -text
-ndll/* filter=lfs diff=lfs merge=lfs -text
-ndll/**/* filter=lfs diff=lfs merge=lfs -text
-thirdparty/* filter=lfs diff=lfs merge=lfs -text
-thirdparty/** filter=lfs diff=lfs merge=lfs -text
-thirdparty/**/* filter=lfs diff=lfs merge=lfs -text
 ndll/** filter=lfs diff=lfs merge=lfs -text
+thirdparty/** filter=lfs diff=lfs merge=lfs -text
 thirdparty/include/** !text -filter -merge -diff
 **/*.so filter=lfs diff=lfs merge=lfs -text
 . !text !filter !merge !diff
