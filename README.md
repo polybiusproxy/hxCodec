@@ -1,192 +1,56 @@
-# hxCodec
-A library which adds native video support for OpenFL and HaxeFlixel.
+# hxCodecPro
 
-Using [libVLC](https://www.videolan.org/vlc/libvlc.html), hxCodec allows to play hundreds of video codecs.
+![](https://badgen.net/github/star/polybiusproxy/hxcodec) ![](https://badgen.net/github/open-issues/polybiusproxy/hxcodec) ![](https://badgen.net/github/contributors/polybiusproxy/hxcodec) ![](https://badgen.net/badge/license/MIT/blue)
 
-**[Original repository](https://github.com/polybiusproxy/PolyEngine)**          
-**[Click here to check the roadmap](https://github.com/polybiusproxy/hxCodec/projects/1)**
+hxCodec is a library for [Haxe](https://haxe.org/) which provides utilities for audio and video, including:
 
---------------------------
+- Audio and video playback with every imaginable codec, for frameworks such as OpenFL and HaxeFlixel.
+- Support for Windows, Mac, Linux, HTML5, and mobile.
+- Efficient playback with features like streaming and hardware decoding.
 
-## Instructions for Friday Night Funkin'
+hxCodecPro is powered by [libVLC](https://www.videolan.org/vlc/libvlc.html).
 
-1. Install the Haxelib
-You can install it through haxelib:
-```
-haxelib install hxCodec
-```
+## Why hxCodecPro?
 
-You can also install it through Git for the latest updates:
-```
-haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
-```
+hxCodecPro has the following advantages over [hxCodec](https://github.com/polybiusproxy/hxCodec/) (its predecessor):
+- Underlying libVLC libraries updated to 4.0 to take advantage of bleeding-edge development features.
+- Cleaner codebase
 
-2. Add this code in `Project.xml`
-```xml
-<haxelib name="hxCodec" if="desktop || android" />
-```
+And coming soon:
+- Streaming playback for higher performance
+- Playback over network (play videos from URLs)
+- Compatibility with web (using browser playback when appropriate)
+- New performance improvements taking advance
+- MP3 audio playback
+- Uncompressed audio for web
 
-**OPTIONAL: If you want debug traces in your console, add this code:**
-```xml
-<!-- Show debug traces for hxCodec -->
-<haxedef name="HXC_DEBUG_TRACE" if="debug" />
-```
+## Installation
 
-3. Create a folder called `videos` in your `assets/preload` folder.
-
-4. Add this code in `Paths.hx`:
-```haxe
-inline static public function video(key:String)
-{
-	return 'assets/videos/$key';
-}
-```
-
---------------------------
-
-### Playing videos
-
-1. Put your video in the videos folder.
-
-**Note: hxCodec supports all the video formats VLC can play!**
-
-2. Add somewhere in PlayState:
-```haxe
-function playCutscene(name:String, atEndOfSong:Bool = false)
-{
-	inCutscene = true;
-	FlxG.sound.music.stop();
-
-	var video:VideoHandler = new VideoHandler();
-	video.finishCallback = function()
-	{
-		if (atEndOfSong)
-		{
-			if (storyPlaylist.length <= 0)
-				FlxG.switchState(new StoryMenuState());
-			else
-			{
-				SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
-				FlxG.switchState(new PlayState());
-			}
-		}
-		else
-			startCountdown();
-	}
-	video.playVideo(Paths.video(name));
-}
-```
-
---------------------------
-
-#### Examples
-
-At the PlayState "create()" function:
-```haxe
-switch (curSong.toLowerCase())
-{
-	case 'song1':
-		playCutscene('song1scene.asf');
-	case 'song2':
-		playCutscene('song2scene.avi');
-	default:
-		startCountdown();
-}
-```
-
-At the PlayState "endSong()" function:
-```haxe
-if (SONG.song.toLowerCase() == 'song1')
-	playCutscene('song1scene.mjpeg', true);
-```
-
-#### Examples for Kade Engine 1.8
-
-At the PlayState "create()" function:
-```haxe
-generateSong(SONG.songId);
-
-switch (curSong.toLowerCase())
-{
-	case 'song1':
-		playCutscene('song1scene.mp4');
-	default:
-		startCountdown();
-}
+Install `hxCodecPro` via Haxelib:
 
 ```
-
-At the PlayState "endSong()" function:
-```haxe
-PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
-FlxG.sound.music.stop();
-
-switch (curSong.toLowerCase())
-{
-	case 'song1':
-		playCutscene('song1scene.ogg', true);
-	case 'song2':
-		playCutscene('song2scene.wav', true);
-}
+haxelib install hxcodecpro
 ```
 
---------------------------
+## Advanced Usage
 
-## Building
+- Follow this guide to cross-compile libvlc.dll:
+    - https://code.videolan.org/videolan/vlc/-/blob/master/doc/BUILD-win32.md
 
-### Windows and MacOS
+## Licensing
 
-You don't need any special instructions in order to build for Windows or MacOS.
-Just pull the `lime build windows` / `lime build mac` command and the library will be building with your game.
+hxCodecPro is made available under the MIT License. Check [LICENSE.md](./LICENSE.md) for more information.
 
-### Linux
+hxCodecPro is built using code adapted from [hxCodec](https://github.com/polybiusproxy/hxCodec/), which is also under the MIT License.
 
-In order to make your game work with the library, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
-
-Example with APT:
-```
-sudo apt-get install libvlc-dev
-sudo apt-get install libvlccore-dev
-sudo apt-get install glibc-source
-sudo apt-get install libidn12
-sudo apt-get install libidn-dev
-```
-
-### Android
-
-**Currently, hxCodec can load videos only from internal / external storage (not on the application storage).**
-
-In order this method for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
-
-To install it, enter the following in a terminal:
-```
-haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
-```
-
-Next, add this into `Project.xml`
-```xml
-<haxelib name="extension-androidtools" if="android" />
-```
-
-You can can choose whether you want to use after you inport this in your code.
-
-```haxe
-import android.content.Context;
-```
-
-* From internal storage, `Context.getFilesDir()` or `Context.getCacheDir()`
-
-* From external storage, `Context.getExternalFilesDir()` or `Context.getExternalCacheDir()`.
-
-You will also have to put the location manually in the paths and to copy that video to the respective path.
-
---------------------------
+hxCodecPro, when used on desktop platforms, links with code from VLC, which is made available under the Lesser GPLv2 license. Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information. 
 
 ## Credits
-
-- [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
-- [Jigsaw](https://github.com/MAJigsaw77) - Programmer and Android support.
-- [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Erizur](https://github.com/Erizur) - Linux support.
-- [BushTrain460615](https://github.com/BushTrain460615) - macOS Support.
-- The contributors.
+- [PolybiusProxy](https://github.com/polybiusproxy) - Lead Programmer
+- [EliteMasterEric](https://github.com/EliteMasterEric) - Programmer (v3 rewrite)
+- [Jigsaw](https://github.com/MAJigsaw77) - Programmer (v2) and Android support (v2)
+- [Erizur](https://github.com/Erizur) - Linux support (v2)
+- [BushTrain460615](https://github.com/BushTrain460615) - macOS Support (v2)
+- [Jonnycat](https://github.com/JonnycatMeow) - Mac Support (v3)
+- [KadeDev](https://github.com/KadeDev) - Assisted with C++ interop
+- [datee](https://github.com/datee) - Creator of HaxeVLC

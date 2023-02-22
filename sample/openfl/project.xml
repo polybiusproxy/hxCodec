@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<!-- Window title and version -->
+	<meta
+		title="hxcodec Sample (Basic OpenFL)"
+		package="hxcodec.sample.openfl"
+		version="1.0.0"
+		company="hxcodec" />
+
+	<!-- Main class and export settings -->
+	<app main="Main" path="export" file="Sample" />
+
+	<!-- These window settings apply to all targets -->
+	<window width="1280" height="720" background="#000000" hardware="true" vsync="false" />
+
+	<!-- HTML5-specific -->
+	<window if="html5" resizable="true" />
+
+	<!-- Desktop-specific -->
+	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false" />
+
+	<!-- Mobile-specific -->
+	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false" />
+
+	<!-- Classpath and assets -->
+	<source path="src" />
+	<assets path="assets" />
+
+	<!-- Haxelibs -->
+	<haxelib name="lime" />
+	<haxelib name="openfl" />
+	<haxelib name="hxcodec" />
+</project>
