@@ -1,4 +1,8 @@
+# Build artifacts
 sample/**/bin/
 sample/**/export/
 .haxelib/
 build/
+
+# Too big! Sorry!
+thirdparty/
