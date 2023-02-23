@@ -162,7 +162,45 @@ static void logCallback(void *data, int level, const libvlc_log_t *ctx, const ch
     msg = "Failed to format log message.";
   }
 
-  self->messages.push_back(msg);
+  // Get full logging context.
+  const char* ctx_module;
+  const char* ctx_file;
+  unsigned int ctx_line;
+  libvlc_log_get_context(ctx, &ctx_module, &ctx_file, &ctx_line);
+
+  std::string msgFull = "[";
+  
+  switch(level) {
+    case LIBVLC_DEBUG:
+      msgFull.append("DEBUG");
+      break;
+    case LIBVLC_NOTICE:
+      msgFull.append("INFO ");
+      break;
+    case LIBVLC_WARNING:
+      msgFull.append("WARN ");
+      break;
+    case LIBVLC_ERROR:
+      msgFull.append("ERROR");
+      break;
+  }
+  msgFull.append("] (");
+  msgFull.append(ctx_module);
+  msgFull.append(":");
+  msgFull.append(ctx_file);
+  msgFull.append("#");
+  msgFull.append(std::to_string(ctx_line));
+  msgFull.append(") ");
+  msgFull.append(std::string(msg));
+
+  size_t len = msgFull.length();
+
+  // Copy the string to a char array.
+  char* msgFullArr = new char[len + 1];
+  memcpy(msgFullArr, msgFull.c_str(), len);
+  msgFullArr[len] = \'\\0\';
+
+  self->messages.push_back(msgFullArr);
 
   return;
 }')
@@ -245,7 +283,7 @@ class LibVLCLoggingHelper
     LibVLCLogging.set_file(p_instance, stream);
 
     trace('Initialized LibVLC logging.');
-    
+
     // var modules = getModuleList();
   }
 

@@ -408,8 +408,9 @@ class VideoBitmapInternal extends Bitmap
     setupCallbacks();
   }
 
-  function onVLCLog(messsage:String):Void {
-    trace(messsage, null); // Null the posInfos because VideoBitmapInternal is not the real caller
+  function onVLCLog(messsage:String):Void
+  {
+    Sys.println(messsage); // Don't print posinfos.
   }
 
   function setupCallbacks():Void
@@ -433,9 +434,12 @@ class VideoBitmapInternal extends Bitmap
     else
     {
       final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
-      if (!sys.FileSystem.exists(path)) {
+      if (!sys.FileSystem.exists(path))
+      {
         throw "File not found: " + path;
-      } else {
+      }
+      else
+      {
         trace("Media file found: " + path);
       }
       mediaItem = LibVLCMedia.new_path(path);
@@ -452,7 +456,7 @@ class VideoBitmapInternal extends Bitmap
 
     var flag:LibVLC_MediaParseFlag = LibVLC_MediaParseFlag.media_parse_local;
     if (remote) flag = LibVLC_MediaParseFlag.media_parse_network;
-    //LibVLCMedia.parse_request(instance, mediaItem, flag, PARSE_TIMEOUT);
+    // LibVLCMedia.parse_request(instance, mediaItem, flag, PARSE_TIMEOUT);
 
     if (loop)
     {
