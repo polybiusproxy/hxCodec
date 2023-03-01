@@ -31,9 +31,9 @@
 
     <!-- Linked libraries for Android. -->
 	<target id="haxe" tool="linker" if="android">
-		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Android/libvlc-64.so" if="HXCPP_ARM64" />
-		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
-		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Android/libvlc-x86.so" if="HXCPP_X86" />
-		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Android/libvlc-x86_64.so" if="HXCPP_X86_64" />
+		<lib name="${haxelib:hxcodec}/ndll/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
+		<lib name="${haxelib:hxcodec}/ndll/Android/libvlc-64.so" if="HXCPP_ARM64" />
+		<lib name="${haxelib:hxcodec}/ndll/Android/libvlc-x86.so" if="HXCPP_X86" />
+		<lib name="${haxelib:hxcodec}/ndll/Android/libvlc-x86_64.so" if="HXCPP_X86_64" />
 	</target>
 </xml>

@@ -7,7 +7,6 @@ import hxcodec.flixel.FlxCutsceneState;
 
 class PlayState extends FlxState
 {
-
   public override function create()
   {
     super.create();
@@ -32,5 +31,16 @@ class PlayState extends FlxState
       var cutscene:FlxCutsceneState = new FlxCutsceneState('assets/stressCutscene.mp4', new PlayState());
       FlxG.switchState(cutscene);
     }
+
+    #if mobile
+    for (touch in FlxG.touches.list)
+    {
+      if (touch.justPressed)
+      {
+        var cutscene:FlxCutsceneState = new FlxCutsceneState('assets/stressCutscene.mp4', new PlayState());
+        FlxG.switchState(cutscene);
+      }
+    }
+    #end
   }
 }

@@ -6,3 +6,7 @@ build/
 
 # Too big! Sorry!
 thirdparty/
+ndll/
+
+# We need includes.
+!thirdparty/include/

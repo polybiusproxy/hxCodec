@@ -42,15 +42,8 @@
 # define LIBVLC_API
 #endif
 
-#ifdef LIBVLC_INTERNAL_
-/* Avoid unhelpful warnings from libvlc with our deprecated APIs */
-#   define LIBVLC_DEPRECATED
-#elif defined(__GNUC__) && \
-      (__GNUC__ > 3 || __GNUC__ == 3 && __GNUC_MINOR__ > 0)
-# define LIBVLC_DEPRECATED __attribute__((deprecated))
-#else
-# define LIBVLC_DEPRECATED
-#endif
+// HXCODEC CHANGE: Remove deprecated attribute
+#define LIBVLC_DEPRECATED
 
 #include <stdio.h>
 #include <stdarg.h>
