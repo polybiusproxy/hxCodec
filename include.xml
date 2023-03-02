@@ -10,7 +10,7 @@
     </section>
 
     <section if="mac">
-        <assets path="thirdparty/lib/vlc/Mac/" rename="../MacOS" />
+        <assets path="thirdparty/lib/vlc/Mac/" rename="../MacOS/lib/" />
     </section>
 
     <section if="linux">
