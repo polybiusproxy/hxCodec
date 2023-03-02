@@ -20,6 +20,8 @@
     <target id="haxe" tool="linker" if="mac">
         <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/arm64/libvlc.12.dylib" if="HXCPP_ARM64" />
         <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/arm64/libvlccore.9.dylib" if="HXCPP_ARM64" />
+        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlc.12.dylib" if="HXCPP_M64" />
+        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlccore.9.dylib" if="HXCPP_M64" />
         <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlc.12.dylib" if="HXCPP_X86_64" />
         <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlccore.9.dylib" if="HXCPP_X86_64" />
     </target>
