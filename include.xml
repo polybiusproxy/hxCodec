@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension>
+    <!--
+    <haxeflag name="--macro" value="hxcodec._internal.macro.ThirdPartyValidMacro.thirdPartyExistsWindows()" />
+    -->
+
     <!-- Windows dynamic libraries -->
     <section if="windows">
         <!--
