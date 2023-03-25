@@ -75,6 +75,15 @@ class VideoSprite extends FlxSprite
 		}
 	}
 
+	override function destroy()
+	{
+		@:privateAccess
+		if (bitmap != null)
+			bitmap.onVLCEndReached();
+			
+		super.destroy();
+	}
+
 	/**
 	 * Native video support for Flixel & OpenFL
 	 * @param Path Example: `your/video/here.mp4`
