@@ -77,7 +77,8 @@ class VideoSprite extends FlxSprite
 
 	override function destroy(){
 		@:privateAccess
-		bitmap.onVLCEndReached();
+		if (bitmap != null)
+			bitmap.onVLCEndReached();
 		super.destroy();
 	}
 
