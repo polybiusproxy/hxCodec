@@ -19,7 +19,7 @@ class VideoSprite extends FlxSprite
 	public var graphicLoadedCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
 
-	public function new(X:Float = 0, Y:Float = 0)
+	public function new(X:Float = 0, Y:Float = 0):Void
 	{
 		super(X, Y);
 
@@ -45,13 +45,13 @@ class VideoSprite extends FlxSprite
 	}
 
 	private var oneTime:Bool = false;
-	override function update(elapsed:Float)
+	override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
 
-		if (bitmap.isPlaying && bitmap.isDisplaying && bitmap.bitmapData != null && !oneTime)
+		if ((bitmap != null && (bitmap.isPlaying && bitmap.isDisplaying && bitmap.bitmapData != null)) && !oneTime)
 		{
-			var graphic:FlxGraphic = FlxG.bitmap.add(bitmap.bitmapData, false, bitmap.mrl);
+			var graphic:FlxGraphic = FlxG.bitmap.add(bitmap.bitmapData, false, bitmap.mrl); // mrl usually starts with file:/// but is fine ig
 			if (graphic.imageFrame.frame == null)
 			{
 				#if HXC_DEBUG_TRACE
@@ -75,7 +75,7 @@ class VideoSprite extends FlxSprite
 		}
 	}
 
-	override function destroy()
+	override function destroy():Void
 	{
 		@:privateAccess
 		if (bitmap != null && bitmap.onEndReached != null)
