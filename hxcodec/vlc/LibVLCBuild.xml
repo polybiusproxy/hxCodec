@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="LibVLCBuild.xsd"?>
 <xml>
+	<pragma once="true" />
+
 	<files id="haxe">
 		<compilervalue name="-I" value="${haxelib:hxCodec}/lib/vlc/include/" />
 	</files>
