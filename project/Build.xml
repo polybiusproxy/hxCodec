@@ -2,40 +2,41 @@
 <xml>
 	<pragma once="true" />
 
-    <!-- Header files for all platforms. -->
+	<!-- Header files for all platforms. -->
 	<files id="haxe">
-		<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/include/" /> 
-        <compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/lib/vlc/iOS/plugins/" if="iphoneos"/>
-	</files>
-	<files id="__main__">
-		<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/include/" /> 
-        <compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/lib/vlc/plugins/" if="iphoneos"/> 
+		<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/include/" />
+		<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/lib/vlc/iOS/plugins/" if="iphoneos" />
 	</files>
 
-    <!-- Linked libraries for Windows. -->
-    <target id="haxe" tool="linker" toolid="exe" if="windows">
+	<files id="__main__">
+		<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/include/" />
+		<compilervalue name="-I" value="${haxelib:hxcodec}/thirdparty/lib/vlc/plugins/" if="iphoneos" />
+	</files>
+
+	<!-- Linked libraries for Windows. -->
+	<target id="haxe" tool="linker" toolid="exe" if="windows">
 		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Windows/x64/libvlc.lib" if="HXCPP_M64" />
 		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Windows/x64/libvlccore.lib" if="HXCPP_M64" />
 	</target>
 
-    <!-- Linked libraries for Mac. -->
-    <target id="haxe" tool="linker" if="mac">
-        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/arm64/libvlc.12.dylib" if="HXCPP_ARM64" />
-        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/arm64/libvlccore.9.dylib" if="HXCPP_ARM64" />
-        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlc.12.dylib" if="HXCPP_M64" />
-        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlccore.9.dylib" if="HXCPP_M64" />
-        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlc.12.dylib" if="HXCPP_X86_64" />
-        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlccore.9.dylib" if="HXCPP_X86_64" />
-    </target>
+	<!-- Linked libraries for Mac. -->
+	<target id="haxe" tool="linker" if="mac">
+		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/arm64/libvlc.12.dylib" if="HXCPP_ARM64" />
+		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/arm64/libvlccore.9.dylib" if="HXCPP_ARM64" />
+		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlc.12.dylib" if="HXCPP_M64" />
+		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlccore.9.dylib" if="HXCPP_M64" />
+		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlc.12.dylib" if="HXCPP_X86_64" />
+		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Mac/x86_64/libvlccore.9.dylib" if="HXCPP_X86_64" />
+	</target>
 
-    <!-- Linked libraries for Linux. -->
-    <target id="haxe" tool="linker" if="linux">
-        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Linux/libvlc.so.12" if="HXCPP_M64" />
-        <lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Linux/libvlccore.so.9" if="HXCPP_M64" />
+	<!-- Linked libraries for Linux. -->
+	<target id="haxe" tool="linker" if="linux">
+		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Linux/libvlc.so.12" if="HXCPP_M64" />
+		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Linux/libvlccore.so.9" if="HXCPP_M64" />
 		<lib name="${haxelib:hxcodec}/thirdparty/lib/vlc/Linux/libidn.so.11" if="HXCPP_M64" />
-    </target>
+	</target>
 
-    <!-- Linked libraries for Android. -->
+	<!-- Linked libraries for Android. -->
 	<target id="haxe" tool="linker" if="android">
 		<lib name="${haxelib:hxcodec}/ndll/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
 		<lib name="${haxelib:hxcodec}/ndll/Android/libvlc-64.so" if="HXCPP_ARM64" />
