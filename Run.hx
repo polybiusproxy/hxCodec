@@ -48,13 +48,18 @@ class Run
     {
       var fileName:String = sourceFile;
       var destinationFile:String = destinationPath + "/" + fileName;
-      if (FileSystem.isDirectory(sourceFile))
+
+      if (FileSystem.isDirectory(sourcePath + "/" + sourceFile))
       {
         FileSystem.createDirectory(destinationFile);
-        copyFolder(sourceFile, destinationFile);
+        copyFolder(sourcePath + "/" + sourceFile, destinationFile);
       }
       else
       {
+        trace(sourcePath);
+        trace(sourceFile);
+        var input:Bytes = File.getBytes(sourcePath + "/" + sourceFile);
+        File.saveBytes(destinationPath + "/" + sourceFile, input);
         // FileSystem.copyFile(sourceFile, destinationFile);
       }
     }
