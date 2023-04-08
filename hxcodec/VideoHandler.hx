@@ -1,11 +1,11 @@
 package hxcodec;
 
-import flixel.input.keyboard.FlxKey;
 import flixel.FlxG;
+import flixel.input.keyboard.FlxKey;
 import openfl.Lib;
 import openfl.events.Event;
-import sys.FileSystem;
 import hxcodec.vlc.VLCBitmap;
+import sys.FileSystem;
 
 /**
  * Handles video playback.
@@ -137,24 +137,15 @@ class VideoHandler extends VLCBitmap
 		volume = Std.int(#if FLX_SOUND_SYSTEM ((FlxG.sound.muted || !canUseSound) ? 0 : 1) * #else (!canUseSound ? 0 : 1) * #end FlxG.sound.volume * 100);
 	}
 
-	public function calcSize(Ind:Int):Int
+	public function calcSize(What:Int):Int
 	{
-		var appliedWidth:Float = Lib.current.stage.stageHeight * (FlxG.width / FlxG.height);
-		var appliedHeight:Float = Lib.current.stage.stageWidth * (FlxG.height / FlxG.width);
+		final appliedWidth:Float = Lib.current.stage.stageHeight * (FlxG.width / FlxG.height);
+		final appliedHeight:Float = Lib.current.stage.stageWidth * (FlxG.height / FlxG.width);
 
-		if (appliedHeight > Lib.current.stage.stageHeight)
-			appliedHeight = Lib.current.stage.stageHeight;
-
-		if (appliedWidth > Lib.current.stage.stageWidth)
-			appliedWidth = Lib.current.stage.stageWidth;
-
-		switch (Ind)
-		{
-			case 0:
-				return Std.int(appliedWidth);
-			case 1:
-				return Std.int(appliedHeight);
-		}
+		if (What == 0)
+			return Std.int(appliedWidth > Lib.current.stage.stageWidth ? Lib.current.stage.stageWidth : appliedWidth);
+		else if (What == 1)
+			return Std.int(appliedHeight > Lib.current.stage.stageHeight ? Lib.current.stage.stageHeight : appliedHeight);
 
 		return 0;
 	}
