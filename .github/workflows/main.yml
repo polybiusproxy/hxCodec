@@ -5,10 +5,11 @@ on:
   workflow_dispatch:
 jobs:
   Job:
-    runs-on: ubuntu-latest
-    permissions:
-        contents: write
-        actions: write
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -21,6 +22,7 @@ jobs:
           haxe-version: 4.3.0
 
       - name: Installing Libs
+        if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get install libvlc-dev
           sudo apt-get install libvlccore-dev
@@ -37,4 +39,13 @@ jobs:
           haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
 
       - name: Building
+        if: matrix.os == 'windows-latest'
+        run: cd sample && haxelib run lime build windows -debug
+
+      - name: Building
+        if: matrix.os == 'macos-latest'
+        run: cd sample && haxelib run lime build mac -debug
+
+      - name: Building
+        if: matrix.os == 'ubuntu-latest'
         run: cd sample && haxelib run lime build linux -debug
