@@ -451,7 +451,7 @@ class VLCBitmap extends Bitmap
 		if (mediaItem != null)
 			return LibVLC.media_get_mrl(mediaItem).toString();
 
-		return '';
+		return null;
 	}
 
 	@:noCompletion private function get_volume():Int
