@@ -14,7 +14,7 @@ import sys.FileSystem;
 class VideoHandler extends VLCBitmap
 {
 	#if FLX_KEYBOARD
-	public var skipKeys:Array<FlxKey> = [FlxKey.SPACE];
+	public var skipKeys:Array<FlxKey> = [ENTER, SPACE];
 	#end
 
 	public var canSkip:Bool = true;
@@ -24,7 +24,7 @@ class VideoHandler extends VLCBitmap
 	public var openingCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
 
-	private var pauseMusic:Bool = false;
+	private var __pauseMusic:Bool = false;
 
 	public function new(IndexModifier:Int = 0):Void
 	{
@@ -62,7 +62,7 @@ class VideoHandler extends VLCBitmap
 		trace("the video reached the end!");
 		#end
 
-		if (FlxG.sound.music != null && pauseMusic)
+		if (FlxG.sound.music != null && __pauseMusic)
 			FlxG.sound.music.resume();
 
 		if (FlxG.stage.hasEventListener(Event.ENTER_FRAME))
@@ -96,7 +96,7 @@ class VideoHandler extends VLCBitmap
 	 */
 	public function playVideo(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Int
 	{
-		pauseMusic = PauseMusic;
+		__pauseMusic = PauseMusic;
 
 		if (FlxG.sound.music != null && PauseMusic)
 			FlxG.sound.music.pause();
