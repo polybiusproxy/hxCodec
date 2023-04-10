@@ -12,7 +12,6 @@ import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
 import openfl.utils.ByteArray;
-import hxcodec.vlc.LibVLC;
 
 /**
  * ...
