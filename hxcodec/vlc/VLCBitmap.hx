@@ -20,6 +20,7 @@ import hxcodec.vlc.LibVLC;
  *
  * This class lets you to use LibVLC externs as a bitmap that you can displaylist along other items.
  */
+@:headerInclude('assert.h')
 @:cppNamespaceCode('
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
@@ -54,18 +55,23 @@ static void *lock(void *data, void **p_pixels)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 	*p_pixels = self->pixels;
-	return NULL;
+	return NULL; /* picture identifier, not needed here */
 }
 
 static void unlock(void *data, void *id, void *const *p_pixels)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
+
+ 	assert(id == NULL); /* picture identifier, not needed here */
 }
 
 static void display(void *data, void *picture)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
+
 	self->isDisplaying = true;
+
+	assert(id == NULL); /* picture identifier, not needed here */
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
