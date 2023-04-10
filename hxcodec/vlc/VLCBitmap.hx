@@ -126,7 +126,7 @@ class VLCBitmap extends Bitmap
 	public var onPaused:Void->Void;
 	public var onStopped:Void->Void;
 	public var onEndReached:Void->Void;
-	public var onEncounteredError:Void->Void;
+	public var onEncounteredError:String->Void;
 	public var onForward:Void->Void;
 	public var onBackward:Void->Void;
 
@@ -338,7 +338,7 @@ class VLCBitmap extends Bitmap
 		{
 			flags[5] = false;
 			if (onEncounteredError != null)
-				onEncounteredError();
+				onEncounteredError(LibVLC.errmsg().toString());
 		}
 
 		if (flags[6])
