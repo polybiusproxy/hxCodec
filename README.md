@@ -4,6 +4,8 @@
 
 A library which adds native video support for OpenFL and HaxeFlixel.
 
+--------------------------
+
 Using [libVLC](https://www.videolan.org/vlc/libvlc.html), hxCodec allows to play hundreds of video codecs.<br />
 **hxCodec supports all the video formats VLC can play!**
 
@@ -42,9 +44,9 @@ Add this code in the Project.xml file:
 ## Playing videos
 
 You can play videos in just 2 lines of code:
-```haxe
+```hx
 var video:VideoHandler = new VideoHandler();
-video.playVideo('test.mp4');
+video.playVideo('assets/video.mp4');
 ```
 
 --------------------------
@@ -61,7 +63,7 @@ Just run the `lime build windows` / `lime build mac` command and the library wil
 In order to make your game work with the library, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
 
 Example with APT:
-```
+```bash
 sudo apt-get install libvlc-dev
 sudo apt-get install libvlccore-dev
 sudo apt-get install glibc-source
@@ -101,7 +103,7 @@ You will also have to put the location manually in the paths and to copy that vi
 
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Jigsaw](https://github.com/MAJigsaw77) - Programmer and Android support.
-- [Erizur](https://github.com/Erizur) - Linux support.
-- [BushTrain460615](https://github.com/BushTrain460615) - macOS Support.
-- The contributors.
+- [Jigsaw](https://github.com/MAJigsaw77) - Programmer and Android Support.
+- [Erizur](https://github.com/Erizur) - Linux Support.
+- [BushTrain460615](https://github.com/BushTrain460615) - MacOS Support.
+- The Contributors.
