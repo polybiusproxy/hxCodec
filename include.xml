@@ -2,8 +2,6 @@
 <?xml-model href="include.xsd"?>
 <extension>
 
-	<!--<assets path="NOTICE-LINUX.md" rename='NOTICE.txt' if="linux" />-->
-
 	<assets path="include/Mac" rename="../MacOS" if="mac" />
 	<assets path="include/Windows" rename='' if="windows" />
 
