@@ -3,9 +3,6 @@ package hxcodec.vlc;
 #if !(desktop || android)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
 #end
-import cpp.NativeArray;
-import cpp.Pointer;
-import cpp.UInt8;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
@@ -106,7 +103,6 @@ static void callbacks(const libvlc_event_t *event, void *data)
 class VLCBitmap extends Bitmap
 {
 	// Variables
-	public var skipStepLimit:Float = 0;
 	public var videoWidth(default, null):Int = 0;
 	public var videoHeight(default, null):Int = 0;
 	public var isDisplaying(default, null):Bool = false;
@@ -136,7 +132,7 @@ class VLCBitmap extends Bitmap
 
 	// Declarations
 	private var flags:Array<Bool> = [];
-	private var pixels:Pointer<UInt8>;
+	private var pixels:cpp.Pointer<cpp.UInt8>;
 	private var buffer:BytesData;
 	private var texture:RectangleTexture;
 
@@ -164,7 +160,7 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Playback Methods
-	public function play(?location:String = null, loop:Bool = false):Void
+	public function play(?location:String = null, loop:Bool = false):Int
 	{
 		final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
 
@@ -215,7 +211,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 
-		LibVLC.media_player_play(mediaPlayer);
+		return LibVLC.media_player_play(mediaPlayer);
 	}
 
 	public function stop():Void
@@ -374,7 +370,7 @@ class VLCBitmap extends Bitmap
 		if (!smoothing)
 			smoothing = true;
 
-		if (deltaTime > (1000 / skipStepLimit == 0 ? (fps * rate) : skipStepLimit))
+		if (deltaTime > (1000 / (fps * rate)))
 		{
 			currentTime = deltaTime;
 
@@ -382,7 +378,7 @@ class VLCBitmap extends Bitmap
 			trace('rendering...');
 			#end
 
-			NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
+			cpp.NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
 
 			if (texture != null && (buffer != null && buffer.length > 0))
 			{
