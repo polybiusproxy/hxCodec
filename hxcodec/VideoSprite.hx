@@ -25,7 +25,7 @@ class VideoSprite extends FlxSprite
 
 		makeGraphic(1, 1, FlxColor.TRANSPARENT);
 
-		bitmap = new VideoHandler();
+		bitmap = new VideoHandler(false);
 		bitmap.canUseAutoResize = false;
 		bitmap.visible = false;
 		bitmap.openingCallback = function()
