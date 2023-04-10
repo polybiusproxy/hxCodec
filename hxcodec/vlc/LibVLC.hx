@@ -173,8 +173,11 @@ typedef LibVLC_Event_Callback = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC
 typedef LibVLC_Video_Setup_Callback = cpp.Callable<(opaque:cpp.Pointer<cpp.Pointer<cpp.Void>>, chroma:cpp.Pointer<cpp.Char>, width:cpp.Pointer<cpp.UInt32>, height:cpp.Pointer<cpp.UInt32>, pitches:cpp.Pointer<cpp.UInt32>, lines:cpp.Pointer<cpp.UInt32>) -> cpp.UInt32>;
 typedef LibVLC_Video_Cleanup_Callback = cpp.Callable<(opaque:cpp.Pointer<cpp.Void>) -> Void>;
 typedef LibVLC_Video_Lock_Callback = cpp.Callable<(data:cpp.Pointer<cpp.Void>, p_pixels:cpp.Pointer<cpp.Pointer<cpp.Void>>) -> cpp.Pointer<cpp.Void>>;
-typedef LibVLC_Video_Unlock_Callback = cpp.Callable<(data:cpp.Pointer<cpp.Void>, id:cpp.Pointer<cpp.Void>, p_pixels:hxcodec.vlc.helpers.VoidStarConstStar) -> Void>;
+typedef LibVLC_Video_Unlock_Callback = cpp.Callable<(data:cpp.Pointer<cpp.Void>, id:cpp.Pointer<cpp.Void>, p_pixels:VoidStarConstStar) -> Void>;
 typedef LibVLC_Video_Display_Callback = cpp.Callable<(opaque:cpp.Pointer<cpp.Void>, picture:cpp.Pointer<cpp.Void>) -> Void>;
+
+@:native("void *const *")
+extern class VoidStarConstStar {}
 
 @:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
 @:include("vlc/vlc.h")
