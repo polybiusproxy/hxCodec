@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="include.xsd"?>
 <extension>
 
 	<assets path="project/vlc/dlls/Mac" rename="../MacOS" if="macos" />
