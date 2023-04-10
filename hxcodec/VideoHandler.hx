@@ -120,13 +120,13 @@ class VideoHandler extends VLCBitmap
 	private function update(?E:Event):Void
 	{
 		#if FLX_KEYBOARD
-		if (canSkip && FlxG.keys.anyJustPressed(skipKeys) && (isPlaying && isDisplaying))
+		if (canSkip && FlxG.keys.anyJustPressed(skipKeys) && isPlaying)
 			onVLCEndReached();
 		#end
 
 		#if FLX_TOUCH
 		for (touch in FlxG.touches.list)
-			if (canSkip && touch.justPressed && (isPlaying && isDisplaying))
+			if (canSkip && touch.justPressed && isPlaying)
 				onVLCEndReached();
 		#end
 
