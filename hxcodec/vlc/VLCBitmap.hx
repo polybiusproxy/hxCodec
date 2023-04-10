@@ -174,7 +174,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.media_parse(mediaItem);
 
 		if (loop)
-			LibVLC.media_add_option(mediaItem, #if android "input-repeat=65535" #else "input-repeat=-1" #end);
+			LibVLC.media_add_option(mediaItem, #if windows "input-repeat=-1" #else "input-repeat=65535" #end);
 		else
 			LibVLC.media_add_option(mediaItem, "input-repeat=0");
 
