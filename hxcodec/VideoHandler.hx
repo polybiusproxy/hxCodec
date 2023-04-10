@@ -50,9 +50,9 @@ class VideoHandler extends VLCBitmap
 		    openingCallback();
 	}
 
-	private function onVLCEncounteredError():Void
+	private function onVLCEncounteredError(msg:String):Void
 	{
-		Lib.application.window.alert('Error cannot be specified', "VLC Error!");
+		Lib.application.window.alert(msg, "VLC Error!");
 		onVLCEndReached();
 	}
 
