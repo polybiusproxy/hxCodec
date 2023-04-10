@@ -2,7 +2,7 @@
 <?xml-model href="include.xsd"?>
 <extension>
 
-	<assets path="project/vlc/dlls/Mac" rename="../MacOS" if="mac" />
+	<assets path="project/vlc/dlls/Mac" rename="../MacOS" if="macos" />
 	<assets path="project/vlc/dlls/Windows" rename='' if="windows" />
 
 	<ndll name="c++_shared" if="android" />
