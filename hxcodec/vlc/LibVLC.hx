@@ -105,7 +105,7 @@ extern class LibVLC
 	static function media_parse(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
 
 	@:native("libvlc_media_player_play")
-	static function media_player_play(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Void;
+	static function media_player_play(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
 
 	@:native("libvlc_media_player_stop")
 	static function media_player_stop(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Void;
