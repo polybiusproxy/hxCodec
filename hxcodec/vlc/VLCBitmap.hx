@@ -399,7 +399,7 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function get_time():Int
 	{
 		if (mediaPlayer != null)
-			return LibVLC.media_player_get_time(mediaPlayer);
+			return LibVLC.media_player_get_time(mediaPlayer).toInt();
 
 		return 0;
 	}
@@ -431,7 +431,7 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function get_length():Int
 	{
 		if (mediaPlayer != null)
-			return LibVLC.media_player_get_length(mediaPlayer);
+			return LibVLC.media_player_get_length(mediaPlayer).toInt();
 
 		return 0;
 	}
@@ -439,7 +439,7 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function get_duration():Int
 	{
 		if (mediaItem != null)
-			return LibVLC.media_get_duration(mediaItem);
+			return LibVLC.media_get_duration(mediaItem).toInt();
 
 		return 0;
 	}
@@ -471,7 +471,7 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function get_delay():Int
 	{
 		if (mediaPlayer != null)
-			return LibVLC.audio_get_delay(mediaPlayer);
+			return LibVLC.audio_get_delay(mediaPlayer).toInt();
 
 		return 0;
 	}
