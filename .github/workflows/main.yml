@@ -36,7 +36,7 @@ jobs:
           haxelib install lime --quiet
           haxelib install openfl --quiet
           haxelib install flixel --quiet
-          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git --quiet
 
       - name: Building Windows
         if: matrix.os == 'windows-latest'
