@@ -12,7 +12,7 @@ package hxcodec.vlc;
 #error "The current target platform isn't supported by hxCodec. If you are targeting Windows/Mac/Linux/Android and you are getting this message, please contact us.";
 #end
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:unreflective
 @:keep
@@ -179,37 +179,37 @@ typedef LibVLC_Video_Display_Callback = cpp.Callable<(opaque:cpp.Pointer<cpp.Voi
 @:native("void *const *")
 extern class VoidStarConstStar {}
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:keep
 @:native("libvlc_instance_t")
 extern class LibVLC_Instance_T {}
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:keep
 @:native("libvlc_audio_output_t")
 extern class LibVLC_AudioOutput_T {}
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:keep
 @:native("libvlc_media_t")
 extern class LibVLC_Media_T {}
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:keep
 @:native("libvlc_media_player_t")
 extern class LibVLC_MediaPlayer_T {}
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:keep
 @:native("libvlc_event_manager_t")
 extern class LibVLC_EventManager_T {}
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:structAccess
 @:keep
@@ -220,7 +220,7 @@ extern class LibVLC_Event_T
 	var u:LibVLC_Event_U;
 }
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:structAccess
 @:keep
@@ -235,7 +235,7 @@ extern class LibVLC_Event_U
 	var media_player_pausable_changed:LibVLC_MediaPlayer_PausableChanged;
 }
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:structAccess
 @:keep
@@ -245,7 +245,7 @@ extern class LibVLC_MediaPlayer_PositionChanged
 	var new_position:Float;
 }
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:structAccess
 @:keep
@@ -255,7 +255,7 @@ extern class LibVLC_MediaPlayer_TimeChanged
 	var new_time:cpp.Int64;
 }
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:structAccess
 @:keep
@@ -265,7 +265,7 @@ extern class LibVLC_MediaPlayer_LengthChanged
 	var new_length:cpp.Int64;
 }
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:structAccess
 @:keep
@@ -275,7 +275,7 @@ extern class LibVLC_MediaPlayer_Buffering
 	var new_cache:Float;
 }
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:structAccess
 @:keep
@@ -285,7 +285,7 @@ extern class LibVLC_MediaPlayer_SeekableChanged
 	var new_seekable:Bool;
 }
 
-@:buildXml("<include name='${haxelib:hxCodec}/project/Build.xml' />")
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:structAccess
 @:keep
