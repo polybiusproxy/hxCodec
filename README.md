@@ -45,7 +45,7 @@ Add this code in the Project.xml file:
 
 You can play videos in just 2 lines of code:
 ```hx
-var video:VideoHandler = new VideoHandler();
+var video:hxcodec.VideoHandler = new hxcodec.VideoHandler();
 video.playVideo('assets/video.mp4');
 ```
 
