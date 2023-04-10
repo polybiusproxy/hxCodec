@@ -156,7 +156,7 @@ extern class LibVLC
 	static function media_player_get_length(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.Int64;
 
 	@:native("libvlc_media_player_new_from_media")
-	static function media_player_new_from_media(p_md:LibVLC_Media):cpp.RawPointer<LibVLC_MediaPlayer_T>;
+	static function media_player_new_from_media(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.RawPointer<LibVLC_MediaPlayer_T>;
 
 	@:native("libvlc_video_set_format_callbacks")
 	static function video_set_format_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, setup:LibVLC_Video_Setup_Callback, cleanup:LibVLC_Video_Cleanup_Callback):Void;
