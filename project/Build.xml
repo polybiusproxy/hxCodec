@@ -3,11 +3,11 @@
 	<pragma once="true" />
 
 	<files id="haxe">
-		<compilervalue name="-I" value="${haxelib:hxCodec}/project/vlc/include" />
+		<compilerflag value="-I${haxelib:hxCodec}/project/vlc/include" />
 	</files>
 
 	<files id="__main__">
-		<compilervalue name="-I" value="${haxelib:hxCodec}/project/vlc/include" />
+		<compilerflag value="-I${haxelib:hxCodec}/project/vlc/include" />
 	</files>
 
 	<target id="haxe" tool="linker" toolid="exe" if="windows">

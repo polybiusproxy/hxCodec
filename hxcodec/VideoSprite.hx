@@ -49,7 +49,7 @@ class VideoSprite extends FlxSprite
 	{
 		super.update(elapsed);
 
-		if ((bitmap != null && (bitmap.isPlaying && bitmap.isDisplaying && bitmap.bitmapData != null)) && !oneTime)
+		if ((bitmap != null && (bitmap.isPlaying && bitmap.bitmapData != null)) && !oneTime)
 		{
 			var graphic:FlxGraphic = FlxG.bitmap.add(bitmap.bitmapData, false, bitmap.mrl); // mrl usually starts with file:/// but is fine ig
 			if (graphic.imageFrame.frame == null)

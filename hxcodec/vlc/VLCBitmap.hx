@@ -1,18 +1,18 @@
 package hxcodec.vlc;
 
-#if !(desktop || android)
-#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
+#if (!(desktop || android) && macro)
+#error "The current target platform isn't supported by hxCodec. If you are targeting Windows/Mac/Linux/Android and you are getting this message, please contact us.";
 #end
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
+import hxcodec.vlc.LibVLC;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
 import openfl.utils.ByteArray;
-import hxcodec.vlc.LibVLC;
 
 /**
  * ...
@@ -20,6 +20,7 @@ import hxcodec.vlc.LibVLC;
  *
  * This class lets you to use LibVLC externs as a bitmap that you can displaylist along other items.
  */
+@:headerInclude('assert.h')
 @:cppNamespaceCode('
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
@@ -38,7 +39,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = _w;
 	self->videoHeight = _h;
 
-	if (self->pixels != NULL || self->pixels != nullptr)
+	if (self->pixels != nullptr)
 		delete self->pixels;
 
 	self->pixels = new unsigned char[_frame];
@@ -54,18 +55,19 @@ static void *lock(void *data, void **p_pixels)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 	*p_pixels = self->pixels;
-	return NULL;
+	return NULL; /* picture identifier, not needed here */
 }
 
 static void unlock(void *data, void *id, void *const *p_pixels)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
+ 	assert(id == NULL); /* picture identifier, not needed here */
 }
 
-static void display(void *data, void *picture)
+static void display(void *data, void *id)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
-	self->isDisplaying = true;
+	assert(id == NULL); /* picture identifier, not needed here */
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
@@ -100,12 +102,12 @@ static void callbacks(const libvlc_event_t *event, void *data)
 			break;
 	}
 }')
+@:keep
 class VLCBitmap extends Bitmap
 {
 	// Variables
 	public var videoWidth(default, null):Int = 0;
 	public var videoHeight(default, null):Int = 0;
-	public var isDisplaying(default, null):Bool = false;
 
 	public var time(get, set):Int;
 	public var position(get, set):Float;
@@ -195,8 +197,6 @@ class VLCBitmap extends Bitmap
 		if (buffer == null || (buffer != null && buffer.length > 0))
 			buffer = [];
 
-		isDisplaying = false;
-
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
 
@@ -259,8 +259,6 @@ class VLCBitmap extends Bitmap
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
 
-		isDisplaying = false;
-
 		onOpening = null;
 		onPlaying = null;
 		onStopped = null;
@@ -289,7 +287,7 @@ class VLCBitmap extends Bitmap
 	{
 		checkFlags();
 
-		if ((isPlaying && isDisplaying) && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
 			var time:Int = Lib.getTimer();
 			var elements:Int = videoWidth * videoHeight * 4;
