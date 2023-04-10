@@ -6,6 +6,7 @@ package hxcodec.vlc;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
+import hxcodec.vlc.LibVLC;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
