@@ -105,6 +105,7 @@ static void callbacks(const libvlc_event_t *event, void *data)
 			break;
 	}
 }')
+@:keep
 class VLCBitmap extends Bitmap
 {
 	// Variables
