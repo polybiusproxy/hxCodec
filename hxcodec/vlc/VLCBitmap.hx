@@ -64,20 +64,20 @@ static void unlock(void *data, void *id, void *const *p_pixels)
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 
 	/* VLC just rendered the video, but we can also render stuff */
-	uint16_t *_pixels = *p_pixels;
+	uint16_t *pixels = (uint16_t*) *p_pixels;
 
 	for (int y = 10; y < 40; y++)
 	{
 		for (int x = 10; x < 40; x++)
 		{
 			if (x < 13 || y < 13 || x > 36 || y > 36)
-				_pixels[y * self->videoWidth + x] = 0xffff;
+				pixels[y * self->videoWidth + x] = 0xffff;
 			else
-				_pixels[y * self->videoHeight + x] = 0x0;
+				pixels[y * self->videoHeight + x] = 0x0;
 		}
 	}
 
- 	assert(id == NULL); /* picture identifier, not needed here */
+	assert(id == NULL); /* picture identifier, not needed here */
 }
 
 static void display(void *data, void *id)
