@@ -26,7 +26,7 @@ class VideoHandler extends VLCBitmap
 
 	private var __pauseMusic:Bool = false;
 
-	public function new(IndexModifier:Int = 0):Void
+	public function new(AddBelowMouse:Bool = true, IndexModifier:Int = 0):Void
 	{
 		super();
 
@@ -34,7 +34,8 @@ class VideoHandler extends VLCBitmap
 		onEndReached = onVLCEndReached;
 		onEncounteredError = onVLCEncounteredError;
 
-		FlxG.addChildBelowMouse(this, IndexModifier);
+		if (AddBelowMouse)
+			FlxG.addChildBelowMouse(this, IndexModifier);
 	}
 
 	private function onVLCOpening():Void 
