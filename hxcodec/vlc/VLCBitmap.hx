@@ -399,7 +399,13 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function get_time():Int
 	{
 		if (mediaPlayer != null)
+		{
+			#if (haxe >= "4.3.0")
 			return LibVLC.media_player_get_time(mediaPlayer).toInt();
+			#else
+			return LibVLC.media_player_get_time(mediaPlayer);
+			#end
+		}
 
 		return 0;
 	}
@@ -431,7 +437,13 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function get_length():Int
 	{
 		if (mediaPlayer != null)
+		{
+			#if (haxe >= "4.3.0")
 			return LibVLC.media_player_get_length(mediaPlayer).toInt();
+			#else
+			return LibVLC.media_player_get_length(mediaPlayer);
+			#end
+		}
 
 		return 0;
 	}
@@ -439,7 +451,13 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function get_duration():Int
 	{
 		if (mediaItem != null)
+		{
+			#if (haxe >= "4.3.0")
 			return LibVLC.media_get_duration(mediaItem).toInt();
+			#else
+			return LibVLC.media_get_duration(mediaItem);
+			#end
+		}
 
 		return 0;
 	}
@@ -471,7 +489,13 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function get_delay():Int
 	{
 		if (mediaPlayer != null)
+		{
+			#if (haxe >= "4.3.0")
 			return LibVLC.audio_get_delay(mediaPlayer).toInt();
+			#else
+			return LibVLC.audio_get_delay(mediaPlayer);
+			#end
+		}
 
 		return 0;
 	}
