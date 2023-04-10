@@ -89,7 +89,9 @@ class VideoSprite extends FlxSprite
 	 * @param Path Example: `your/video/here.mp4`
 	 * @param Loop Loop the video.
 	 * @param PauseMusic Pause music until the video ends.
+	 *
+	 * @return 0 if playback started (and was already started), or -1 on error.
 	 */
-	public function playVideo(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Void
-		bitmap.playVideo(Path, Loop, PauseMusic);
+	public function playVideo(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Int
+		return bitmap.playVideo(Path, Loop, PauseMusic);
 }

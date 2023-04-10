@@ -3,9 +3,6 @@ package hxcodec.vlc;
 #if !(desktop || android)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
 #end
-import cpp.NativeArray;
-import cpp.Pointer;
-import cpp.UInt8;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
@@ -106,7 +103,6 @@ static void callbacks(const libvlc_event_t *event, void *data)
 class VLCBitmap extends Bitmap
 {
 	// Variables
-	public var skipStepLimit:Float = 0;
 	public var videoWidth(default, null):Int = 0;
 	public var videoHeight(default, null):Int = 0;
 	public var isDisplaying(default, null):Bool = false;
@@ -130,22 +126,22 @@ class VLCBitmap extends Bitmap
 	public var onPaused:Void->Void;
 	public var onStopped:Void->Void;
 	public var onEndReached:Void->Void;
-	public var onEncounteredError:Void->Void;
+	public var onEncounteredError:String->Void;
 	public var onForward:Void->Void;
 	public var onBackward:Void->Void;
 
 	// Declarations
 	private var flags:Array<Bool> = [];
-	private var pixels:Pointer<UInt8>;
+	private var pixels:cpp.Pointer<cpp.UInt8>;
 	private var buffer:BytesData;
 	private var texture:RectangleTexture;
 
 	// LibVLC
-	private var instance:LibVLC_Instance;
-	private var audioOutput:LibVLC_AudioOutput;
-	private var mediaPlayer:LibVLC_MediaPlayer;
-	private var mediaItem:LibVLC_Media;
-	private var eventManager:LibVLC_EventManager;
+	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
+	private var audioOutput:cpp.RawPointer<LibVLC_AudioOutput_T>;
+	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
+	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
+	private var eventManager:cpp.RawPointer<LibVLC_EventManager_T>;
 
 	public function new():Void
 	{
@@ -164,7 +160,7 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Playback Methods
-	public function play(?location:String = null, loop:Bool = false):Void
+	public function play(?location:String = null, loop:Bool = false):Int
 	{
 		final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
 
@@ -178,7 +174,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.media_parse(mediaItem);
 
 		if (loop)
-			LibVLC.media_add_option(mediaItem, #if android "input-repeat=65535" #else "input-repeat=-1" #end);
+			LibVLC.media_add_option(mediaItem, #if windows "input-repeat=-1" #else "input-repeat=65535" #end);
 		else
 			LibVLC.media_add_option(mediaItem, "input-repeat=0");
 
@@ -215,7 +211,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 
-		LibVLC.media_player_play(mediaPlayer);
+		return LibVLC.media_player_play(mediaPlayer);
 	}
 
 	public function stop():Void
@@ -342,7 +338,7 @@ class VLCBitmap extends Bitmap
 		{
 			flags[5] = false;
 			if (onEncounteredError != null)
-				onEncounteredError();
+				onEncounteredError(LibVLC.errmsg().toString());
 		}
 
 		if (flags[6])
@@ -374,7 +370,7 @@ class VLCBitmap extends Bitmap
 		if (!smoothing)
 			smoothing = true;
 
-		if (deltaTime > (1000 / skipStepLimit == 0 ? (fps * rate) : skipStepLimit))
+		if (deltaTime > (1000 / (fps * rate)))
 		{
 			currentTime = deltaTime;
 
@@ -382,7 +378,7 @@ class VLCBitmap extends Bitmap
 			trace('rendering...');
 			#end
 
-			NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
+			cpp.NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
 
 			if (texture != null && (buffer != null && buffer.length > 0))
 			{
@@ -453,9 +449,9 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function get_mrl():String
 	{
 		if (mediaItem != null)
-			return LibVLC.media_get_mrl(mediaItem);
+			return LibVLC.media_get_mrl(mediaItem).toString();
 
-		return '';
+		return null;
 	}
 
 	@:noCompletion private function get_volume():Int

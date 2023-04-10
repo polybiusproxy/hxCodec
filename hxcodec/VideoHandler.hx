@@ -50,9 +50,9 @@ class VideoHandler extends VLCBitmap
 		    openingCallback();
 	}
 
-	private function onVLCEncounteredError():Void
+	private function onVLCEncounteredError(msg:String):Void
 	{
-		Lib.application.window.alert('Error cannot be specified', "VLC Error!");
+		Lib.application.window.alert(msg, "VLC Error!");
 		onVLCEndReached();
 	}
 
@@ -91,8 +91,10 @@ class VideoHandler extends VLCBitmap
 	 * @param Path Example: `your/video/here.mp4`
 	 * @param Loop Loop the video.
 	 * @param PauseMusic Pause music until the video ends.
+	 *
+	 * @return 0 if playback started (and was already started), or -1 on error.
 	 */
-	public function playVideo(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Void
+	public function playVideo(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Int
 	{
 		pauseMusic = PauseMusic;
 
@@ -110,9 +112,9 @@ class VideoHandler extends VLCBitmap
 		// in case if you want to use another dir then the application one.
 		// android can already do this, it can't use application's storage.
 		if (FileSystem.exists(Sys.getCwd() + Path))
-			play(Sys.getCwd() + Path, Loop);
+			return play(Sys.getCwd() + Path, Loop);
 		else
-			play(Path, Loop);
+			return play(Path, Loop);
 	}
 
 	private function update(?E:Event):Void
