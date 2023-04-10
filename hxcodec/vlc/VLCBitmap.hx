@@ -137,11 +137,11 @@ class VLCBitmap extends Bitmap
 	private var texture:RectangleTexture;
 
 	// LibVLC
-	private var instance:LibVLC_Instance;
-	private var audioOutput:LibVLC_AudioOutput;
-	private var mediaPlayer:LibVLC_MediaPlayer;
-	private var mediaItem:LibVLC_Media;
-	private var eventManager:LibVLC_EventManager;
+	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
+	private var audioOutput:cpp.RawPointer<LibVLC_AudioOutput_T>;
+	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
+	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
+	private var eventManager:cpp.RawPointer<LibVLC_EventManager_T>;
 
 	public function new():Void
 	{
@@ -449,7 +449,7 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function get_mrl():String
 	{
 		if (mediaItem != null)
-			return LibVLC.media_get_mrl(mediaItem);
+			return LibVLC.media_get_mrl(mediaItem).toString();
 
 		return '';
 	}
