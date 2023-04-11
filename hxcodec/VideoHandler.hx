@@ -26,7 +26,7 @@ class VideoHandler extends VLCBitmap
 
 	private var __pauseMusic:Bool = false;
 
-	public function new(AddBelowMouse:Bool = true, IndexModifier:Int = 0):Void
+	public function new(IndexModifier:Int = 0):Void
 	{
 		super();
 
