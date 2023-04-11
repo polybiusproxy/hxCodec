@@ -1,24 +1,38 @@
 package hxcodec.tools.commands;
 
+import haxe.Rest;
 import haxe.io.Bytes;
 import sys.FileSystem;
 import sys.io.File;
 
-class Setup implements ICommand
+class Setup
 {
   static final WINDOWS_NIGHTLIES_URL = "https://artifacts.videolan.org/vlc/nightly-win64/20230223-0428/vlc-4.0.0-dev-win64-0801b577.zip";
 
-  var verbose:Bool = false;
+  public function new() {}
 
-  public function new(verbose:Bool)
+  @:defaultCommand
+  public function perform(args:Rest<String>):Void
   {
-    this.verbose = verbose;
+    // Main.print(args);
+
+    if (args.length == 0)
+    {
+      Main.print("no arguments given for setup command");
+      return;
+    }
+
+    switch (args[0])
+    {
+      case "windows":
+        setupWindows();
+      default:
+        Main.print("unknown command");
+    }
   }
 
-  public function perform(args):Void
+  private function setupWindows()
   {
-    trace(args);
-
     if (!FileSystem.exists("./thirdparty/winDebug.zip")) Sys.command("powershell", ["thirdparty/win64.ps1"]);
     FileSystem.createDirectory("./temp");
     Zip.unzip("./thirdparty/winDebug.zip", "./temp");
@@ -38,7 +52,7 @@ class Setup implements ICommand
   {
     if (!FileSystem.exists(path))
     {
-      trace("file " + path + " dont exist!");
+      Main.print("file " + path + " dont exist!");
       return;
     }
 
@@ -67,8 +81,8 @@ class Setup implements ICommand
       }
       else
       {
-        trace(sourcePath);
-        trace(sourceFile);
+        Main.print(sourcePath);
+        Main.print(sourceFile);
         var input:Bytes = File.getBytes(sourcePath + "/" + sourceFile);
         File.saveBytes(destinationPath + "/" + sourceFile, input);
         // FileSystem.copyFile(sourceFile, destinationFile);
@@ -93,25 +107,6 @@ class Setup implements ICommand
         sys.FileSystem.deleteFile(path + '/' + entry);
       }
     }
-  }
-
-  function downloadFileToTemp(url:String, name:String)
-  {
-    /*
-      var tempDir = File.systemTempDirectory;
-      var tempFile = tempDir.resolvePath(name);
-      var request = new URLRequest(url);
-      var stream = new FileStream();
-      stream.open(tempFile, FileMode.WRITE);
-      var loader = new URLLoader();
-      loader.dataFormat = URLLoaderDataFormat.BINARY;
-      loader.addEventListener(Event.COMPLETE, function(e:Event) {
-          stream.writeBytes(loader.data);
-          stream.close();
-          trace("Downloaded " + name + " to " + tempFile.nativePath);
-      });
-      loader.load(request);
-     */
   }
 }
 
@@ -148,11 +143,11 @@ class Zip
 
           if (file == "")
           {
-            if (path != "") trace("created " + path);
+            if (path != "") Main.print("created " + path);
             continue; // was just a directory
           }
           path += file;
-          trace("unzip " + path);
+          Main.print("unzip " + path);
 
           var data = haxe.zip.Reader.unzip(_entry);
           var f = File.write(_dest + "/" + path, true);
