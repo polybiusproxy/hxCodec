@@ -10,3 +10,4 @@ ndll/
 
 # We need includes.
 !thirdparty/include/
+!thirdparty/win64.ps1
