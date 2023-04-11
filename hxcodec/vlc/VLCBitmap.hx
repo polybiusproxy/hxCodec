@@ -336,7 +336,7 @@ class VLCBitmap extends Bitmap
 		{
 			flags[5] = false;
 			if (onEncounteredError != null)
-				onEncounteredError(LibVLC.errmsg().toString());
+				onEncounteredError(cast(LibVLC.errmsg(), String));
 		}
 
 		if (flags[6])
@@ -465,7 +465,7 @@ class VLCBitmap extends Bitmap
 	@:noCompletion private function get_mrl():String
 	{
 		if (mediaItem != null)
-			return LibVLC.media_get_mrl(mediaItem).toString();
+			return cast(LibVLC.media_get_mrl(mediaItem), String);
 
 		return null;
 	}
