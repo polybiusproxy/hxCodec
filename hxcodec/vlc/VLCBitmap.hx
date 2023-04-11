@@ -70,7 +70,7 @@ static void unlock(void *data, void *id, void *const *p_pixels)
 	{
 		for (int x = 10; x < 40; x++)
 		{
-			if (videoWidth > 0 && videoHeight > 0)
+			if (self->videoWidth > 0 && self->videoHeight > 0)
 			{
 				if (x < 13 || y < 13 || x > 36 || y > 36)
 					pixels[y * self->videoWidth + x] = 0xffff;
