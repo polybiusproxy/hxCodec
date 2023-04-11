@@ -34,8 +34,7 @@ class VideoHandler extends VLCBitmap
 		onEndReached = onVLCEndReached;
 		onEncounteredError = onVLCEncounteredError;
 
-		if (AddBelowMouse)
-			FlxG.addChildBelowMouse(this, IndexModifier);
+		FlxG.addChildBelowMouse(this, IndexModifier);
 	}
 
 	private function onVLCOpening():Void 
