@@ -61,7 +61,7 @@ static void *lock(void *data, void **p_pixels)
 static void unlock(void *data, void *id, void *const *p_pixels)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
- 	assert(id == NULL); /* picture identifier, not needed here */
+	assert(id == NULL); /* picture identifier, not needed here */
 }
 
 static void display(void *data, void *id)
