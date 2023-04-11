@@ -70,10 +70,13 @@ static void unlock(void *data, void *id, void *const *p_pixels)
 	{
 		for (int x = 10; x < 40; x++)
 		{
-			if (x < 13 || y < 13 || x > 36 || y > 36)
-				pixels[y * self->videoWidth + x] = 0xffff;
-			else
-				pixels[y * self->videoHeight + x] = 0x0;
+			if (videoWidth > 0 && videoHeight > 0)
+			{
+				if (x < 13 || y < 13 || x > 36 || y > 36)
+					pixels[y * self->videoWidth + x] = 0xffff;
+				else
+					pixels[y * self->videoHeight + x] = 0x0;
+			}
 		}
 	}
 
