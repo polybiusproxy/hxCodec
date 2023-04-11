@@ -1,17 +1,26 @@
 package hxcodec.tools.commands;
 
-class Help {
+class Help
+{
   static final LIBRARY_NAME:String = "hxcodec";
   static final VERSION = haxe.macro.Compiler.getDefine("hxcodec");
 
-  public static function printVersion():Void {
+  public static function printVersion():Void
+  {
     var versionStr:String = '${LIBRARY_NAME} Command Line Tools (v${VERSION})';
 
     Main.print(versionStr);
     Main.print('');
   }
 
-  public static function printHelp():Void {
+  @:defaultCommand
+  public function run():Void
+  {
+    Help.printHelp();
+  }
+
+  public static function printHelp():Void
+  {
     printVersion();
 
     Main.print('Usage: haxelib run ${LIBRARY_NAME} <command> [options]');
@@ -33,22 +42,27 @@ class Help {
     Main.print('');
   }
 
-  public static function printUnknownArgs(unknownArgs:Array<String>):Void {
-    for (i in 0...unknownArgs.length) {
+  public static function printUnknownArgs(unknownArgs:Array<String>):Void
+  {
+    for (i in 0...unknownArgs.length)
+    {
       Main.print('Unknown argument: ${unknownArgs[i]}');
     }
   }
 
-  public static function printCommandHelp(command:String):Void {
+  public static function printCommandHelp(command:String):Void
+  {
     printVersion();
 
-    switch (command) {
+    switch (command)
+    {
       case 'setup':
         printCommandHelp_setup();
     }
   }
 
-  public static function printCommandHelp_setup():Void {
+  public static function printCommandHelp_setup():Void
+  {
     Main.print('Usage: haxelib run ${LIBRARY_NAME} setup [options]');
     Main.print('');
     Main.print('Options:');

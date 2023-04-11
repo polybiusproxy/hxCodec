@@ -1,18 +1,55 @@
 package hxcodec.tools;
 
+import haxe.Rest;
 import hxcodec.tools.commands.Help;
 import hxcodec.tools.commands.Setup;
+import tink.Cli;
 
 using StringTools;
 
-class Main {
-  static var quiet:Bool = false;
+class HxCodecCli
+{
+  public function new() {}
 
-  public static function main() {
-    parseArgs(Sys.args());
+  // @:command
+  // public var setup:Setup;
+  @:command
+  public var help:Help;
+
+  public var version:Bool = false;
+
+  public var quiet:Bool = false;
+
+  @:defaultCommand
+  public function run(rest:Rest<String>)
+  {
+    if (version) Help.printVersion();
+
+    // Help.printHelp();
+    // trace("WAHOO! " + setup);
   }
 
-  static function parseArgs(args:Array<String>):Void {
+  public function print(value:String)
+  {
+    if (quiet) return;
+    #if sys Sys.println(value); #end
+  }
+}
+
+class Main
+{
+  static var cli:HxCodecCli;
+
+  public static function main()
+  {
+    cli = new HxCodecCli();
+    Cli.process(Sys.args(), cli).handle(Cli.exit);
+
+    // parseArgs(Sys.args());
+  }
+
+  static function parseArgs(args:Array<String>):Void
+  {
     var _exePath:String = args.shift();
 
     var command:String = null;
@@ -20,76 +57,77 @@ class Main {
     var commandArgs:Array<String> = [];
 
     // Flags
-    var help:Bool = false;
     var verbose:Bool = false;
 
-    while (args.length > 0) {
+    while (args.length > 0)
+    {
       var arg:String = args.shift();
 
-      if (arg.startsWith('-')) {
-        switch (arg) {
-          // Flags
-          case '-v':
-          case '--version':
-            Help.printVersion();
-            return;
-          case '-h':
-          case '--help':
-            help = true;
+      trace(arg);
+
+      if (arg.startsWith('-'))
+      {
+        switch (arg)
+        {
           case '--verbose':
             verbose = true;
-          case '--quiet':
-            quiet = true;
           default:
             unknownArgs.push(arg);
         }
-      } else if (command == null) {
-        switch (arg) {
+      }
+      else if (command == null)
+      {
+        switch (arg)
+        {
           // Commands
+          case 'setup':
+            command = 'init';
           case 'init':
             command = 'init';
-          case 'help':
-            help = true;
           default:
             unknownArgs.push(arg);
         }
-      } else {
+      }
+      else
+      {
         commandArgs.push(arg);
       }
     }
 
-    if (command == null) {
-      if (unknownArgs.length > 0) {
+    if (command == null)
+    {
+      if (unknownArgs.length > 0)
+      {
         Help.printUnknownArgs(unknownArgs);
       }
 
       Help.printHelp();
       return;
-    } else {
-      if (unknownArgs.length > 0) {
+    }
+    else
+    {
+      if (unknownArgs.length > 0)
+      {
         Help.printUnknownArgs(unknownArgs);
-      } else {
-        if (help) {
-          Help.printCommandHelp(command);
-        } else {
-          performCommand(command, commandArgs, verbose);
-        }
+      }
+      else
+      {
+        performCommand(command, commandArgs, verbose);
       }
     }
   }
 
-  public static function performCommand(command:String, args:Array<String>, verbose:Bool):Void {
-    switch (command) {
+  public static function performCommand(command:String, args:Array<String>, verbose:Bool):Void
+  {
+    switch (command)
+    {
       case 'init':
-        new Setup(verbose).perform(args);
+        // new Setup(verbose).perform(args);
     }
   }
 
-  public static inline function print(value:String) {
-    if (quiet)
-      return;
-    #if sys
-    Sys.println(value);
-    #end
+  public static inline function print(value:String)
+  {
+    cli.print(value);
   }
 }

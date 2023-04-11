@@ -15,8 +15,10 @@ class Setup implements ICommand
     this.verbose = verbose;
   }
 
-  public function perform(args:Array<String>):Void
+  public function perform(args):Void
   {
+    trace(args);
+
     if (!FileSystem.exists("./thirdparty/winDebug.zip")) Sys.command("powershell", ["thirdparty/win64.ps1"]);
     FileSystem.createDirectory("./temp");
     Zip.unzip("./thirdparty/winDebug.zip", "./temp");
