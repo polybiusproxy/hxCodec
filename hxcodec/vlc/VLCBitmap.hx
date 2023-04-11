@@ -21,7 +21,6 @@ import openfl.utils.ByteArray;
  * This class lets you to use LibVLC externs as a bitmap that you can displaylist along other items.
  */
 @:headerInclude('assert.h')
-@:headerInclude('stdint.h')
 @:cppNamespaceCode('
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
@@ -62,24 +61,6 @@ static void *lock(void *data, void **p_pixels)
 static void unlock(void *data, void *id, void *const *p_pixels)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
-
-	/* VLC just rendered the video, but we can also render stuff */
-	uint16_t *pixels = (uint16_t*) *p_pixels;
-
-	for (int y = 10; y < 40; y++)
-	{
-		for (int x = 10; x < 40; x++)
-		{
-			if (self->videoWidth > 0 && self->videoHeight > 0)
-			{
-				if (x < 13 || y < 13 || x > 36 || y > 36)
-					pixels[y * self->videoWidth + x] = 0xffff;
-				else
-					pixels[y * self->videoHeight + x] = 0x0;
-			}
-		}
-	}
-
 	assert(id == NULL); /* picture identifier, not needed here */
 }
 
