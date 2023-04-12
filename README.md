@@ -33,7 +33,7 @@ Add this code in the Project.xml file:
 <haxelib name="hxCodec" if="desktop || android" />
 ```
 
-**OPTIONAL: If you want debug traces in your console, add this:**
+**OPTIONAL: If you want debug traces in your console when compiling in debug mode, add this:**
 ```xml
 <!-- Show debug traces for hxCodec -->
 <haxedef name="HXC_DEBUG_TRACE" if="debug" />
@@ -105,5 +105,5 @@ You will also have to put the location manually in the paths and to copy that vi
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [Jigsaw](https://github.com/MAJigsaw77) - Programmer and Android support.
 - [Erizur](https://github.com/Erizur) - Linux support.
-- [BushTrain460615](https://github.com/BushTrain460615) - macOS support.
+- [BushTrain](https://github.com/BushTrain460615) - macOS support.
 - The contributors.
