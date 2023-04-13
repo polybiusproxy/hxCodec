@@ -283,7 +283,7 @@ class VLCBitmap extends Bitmap
 	}
 
 	private var currentTime:Float = 0;
-	private function onEnterFrame(e:Event):Void
+	private function onEnterFrame(?e:Event):Void
 	{
 		checkFlags();
 
