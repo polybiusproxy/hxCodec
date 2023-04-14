@@ -106,11 +106,11 @@ class VideoHandler extends VLCBitmap
 	 *
 	 * @param Path Example: `your/video/here.mp4`
 	 * @param Loop Loop the video.
-	 * @param PauseMusic Pause music until the video ends.
+	 * @param PauseMusic Pause music until the video ends if `FLX_SOUND_SYSTEM` is defined.
 	 *
 	 * @return 0 if playback started (and was already started), or -1 on error.
 	 */
-	public function playVideo(Path:String, Loop:Bool = false #if FLX_SOUND_SYSTEM , PauseMusic:Bool = false #end):Int
+	public function playVideo(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Int
 	{
 		#if FLX_SOUND_SYSTEM
 		__pauseMusic = PauseMusic;
