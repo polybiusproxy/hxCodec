@@ -33,7 +33,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = _w;
 	self->videoHeight = _h;
 
-	if (self->pixels != nullptr)
+	if (self->pixels != NULL || self->pixels != nullptr)
 		delete self->pixels;
 
 	self->pixels = new unsigned char[_frame];
@@ -49,7 +49,7 @@ static void *lock(void *data, void **p_pixels)
 {
 	VideoBitmapInternal_obj *self = (VideoBitmapInternal_obj*) data;
 	*p_pixels = self->pixels;
-	return NULL; /* picture identifier, not needed here */
+	return NULL;
 }
 
 static void unlock(void *data, void *id, void *const *p_pixels)
@@ -60,7 +60,7 @@ static void unlock(void *data, void *id, void *const *p_pixels)
 static void display(void *data, void *id)
 {
 	VideoBitmapInternal_obj *self = (VideoBitmapInternal_obj*) data;
-	// assert(id == NULL); /* picture identifier, not needed here */
+	self->isDisplaying = true;
 }
 
 static void mediaCallbacks(const libvlc_event_t *event, void *data)
@@ -628,7 +628,7 @@ class VideoBitmapInternal extends Bitmap
     // If the mediaPlayer is playing, the texture is linked to VLC,
     // the video dimensions are known, and the pixel buffer is not empty,
     // we can render the video.
-    if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+    if ((isPlaying && isDisplaying) && (videoWidth > 0 && videoHeight > 0) && pixels != null)
     {
       var time:Int = Lib.getTimer();
       var elements:Int = videoWidth * videoHeight * 4;
