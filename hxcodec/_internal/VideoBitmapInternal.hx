@@ -480,7 +480,7 @@ class VideoBitmapInternal extends Bitmap
 
     if (loop)
     {
-      LibVLCMedia.add_option(mediaItem, #if windows "input-repeat=-1" #else "input-repeat=65535" #end);
+      LibVLCMedia.add_option(mediaItem, "input-repeat=65535");
     }
     else
     {
