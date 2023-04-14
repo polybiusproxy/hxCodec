@@ -1,7 +1,9 @@
 package hxcodec;
 
 import flixel.FlxG;
+#if FLX_KEYBOARD
 import flixel.input.keyboard.FlxKey;
+#end
 import openfl.Lib;
 import openfl.events.Event;
 import hxcodec.vlc.VLCBitmap;
