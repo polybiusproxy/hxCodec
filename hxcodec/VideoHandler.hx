@@ -7,6 +7,12 @@ import openfl.events.Event;
 import hxcodec.vlc.VLCBitmap;
 import sys.FileSystem;
 
+enum ScaleType
+{
+	GAME;
+	VIDEO;
+}
+
 /**
  * Handles video playback.
  * Use bitmap to connect to a graphic or use `VideoSprite`.
@@ -19,7 +25,9 @@ class VideoHandler extends VLCBitmap
 
 	public var canSkip:Bool = true;
 	public var canUseSound:Bool = true;
+
 	public var canUseAutoResize:Bool = true;
+	public var useScaleBy:ScaleType = GAME;
 
 	public var openingCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
@@ -141,13 +149,17 @@ class VideoHandler extends VLCBitmap
 
 	public function calcSize(What:Int):Int
 	{
-		final appliedWidth:Float = Lib.current.stage.stageHeight * (FlxG.width / FlxG.height);
-		final appliedHeight:Float = Lib.current.stage.stageWidth * (FlxG.height / FlxG.width);
-
-		if (What == 0)
-			return Std.int(appliedWidth > Lib.current.stage.stageWidth ? Lib.current.stage.stageWidth : appliedWidth);
-		else if (What == 1)
-			return Std.int(appliedHeight > Lib.current.stage.stageHeight ? Lib.current.stage.stageHeight : appliedHeight);
+		switch (What)
+		{
+			case 0:
+				var appliedWidth:Float = Lib.current.stage.stageHeight;
+				appliedWidth *= useScaleBy == GAME ? (FlxG.width / FlxG.height) : (videoWidth / videoHeight);
+				return Std.int(appliedWidth > Lib.current.stage.stageWidth ? Lib.current.stage.stageWidth : appliedWidth);
+			case 1:
+				var appliedHeight:Float = Lib.current.stage.stageWidth;
+				appliedHeight *= useScaleBy == GAME ? (FlxG.height / FlxG.width) : (videoHeight / videoWidth);
+				return Std.int(appliedHeight > Lib.current.stage.stageHeight ? Lib.current.stage.stageHeight : appliedHeight);
+		}
 
 		return 0;
 	}
