@@ -60,7 +60,7 @@ static void unlock(void *data, void *id, void *const *p_pixels)
 static void display(void *data, void *id)
 {
 	VideoBitmapInternal_obj *self = (VideoBitmapInternal_obj*) data;
-	assert(id == NULL); /* picture identifier, not needed here */
+	// assert(id == NULL); /* picture identifier, not needed here */
 }
 
 static void mediaCallbacks(const libvlc_event_t *event, void *data)
@@ -123,9 +123,9 @@ class VideoBitmapInternal extends Bitmap
     if (mediaPlayer != null)
       {
         #if (haxe >= "4.3.0")
-        return LibVLC.media_player_get_time(mediaPlayer).toInt();
+        return LibVLCMediaPlayer.get_time(mediaPlayer).toInt();
         #else
-        return LibVLC.media_player_get_time(mediaPlayer);
+        return LibVLCMediaPlayer.get_time(mediaPlayer);
         #end
       }
 
@@ -168,9 +168,9 @@ class VideoBitmapInternal extends Bitmap
   {
     if (mediaItem != null) {
       #if (haxe >= "4.3.0")
-			return LibVLC.media_get_duration(mediaItem).toInt();
+			return LibVLCMedia.get_duration(mediaItem).toInt();
 			#else
-			return LibVLC.media_get_duration(mediaItem);
+			return LibVLCMedia.get_duration(mediaItem);
 			#end
     }
 
@@ -186,7 +186,7 @@ class VideoBitmapInternal extends Bitmap
   @:noCompletion function get_mrl():String
   {
 		if (mediaItem != null)
-			return cast(LibVLC.media_get_mrl(mediaItem), String);
+			return cast(LibVLCMedia.get_mrl(mediaItem), String);
 
 		return null;
   }
@@ -235,9 +235,9 @@ class VideoBitmapInternal extends Bitmap
   {
     if (mediaPlayer != null) {
       #if (haxe >= "4.3.0")
-			return LibVLC.audio_get_delay(mediaPlayer).toInt();
+			return LibVLCAudio.get_delay(mediaPlayer).toInt();
 			#else
-			return LibVLC.audio_get_delay(mediaPlayer);
+			return LibVLCAudio.get_delay(mediaPlayer);
 			#end
     }
 
@@ -676,7 +676,7 @@ class VideoBitmapInternal extends Bitmap
     {
       flags[5] = false;
       trace('Encountered error in the media player!');
-      onEncounteredError.dispatch(LibVLCErrorHelper.getErrorMessage());
+      onEncounteredError.dispatch(LibVLCError.LibVLCErrorHelper.getErrorMessage());
     }
 
     if (flags[6])
@@ -703,7 +703,7 @@ class VideoBitmapInternal extends Bitmap
       onMediaMetaChanged();
     }
   }
-R
+
   function render(time:Float, elementsCount:Int):Void
   {
     var deltaTime:Float = time - currentTime;
