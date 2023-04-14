@@ -4,9 +4,9 @@ import flixel.FlxG;
 #if FLX_KEYBOARD
 import flixel.input.keyboard.FlxKey;
 #end
+import hxcodec.vlc.VLCBitmap;
 import openfl.Lib;
 import openfl.events.Event;
-import hxcodec.vlc.VLCBitmap;
 import sys.FileSystem;
 
 enum ScaleType
