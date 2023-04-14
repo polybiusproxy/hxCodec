@@ -33,7 +33,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = _w;
 	self->videoHeight = _h;
 
-	if (self->pixels != NULL || self->pixels != nullptr)
+	if (self->pixels != nullptr)
 		delete self->pixels;
 
 	self->pixels = new unsigned char[_frame];
@@ -49,7 +49,7 @@ static void *lock(void *data, void **p_pixels)
 {
 	VideoBitmapInternal_obj *self = (VideoBitmapInternal_obj*) data;
 	*p_pixels = self->pixels;
-	return NULL;
+	return NULL; /* picture identifier, not needed here */
 }
 
 static void unlock(void *data, void *id, void *const *p_pixels)
@@ -57,10 +57,10 @@ static void unlock(void *data, void *id, void *const *p_pixels)
 	VideoBitmapInternal_obj *self = (VideoBitmapInternal_obj*) data;
 }
 
-static void display(void *data, void *picture)
+static void display(void *data, void *id)
 {
 	VideoBitmapInternal_obj *self = (VideoBitmapInternal_obj*) data;
-	self->isDisplaying = true;
+	assert(id == NULL); /* picture identifier, not needed here */
 }
 
 static void mediaCallbacks(const libvlc_event_t *event, void *data)
@@ -120,7 +120,14 @@ class VideoBitmapInternal extends Bitmap
 
   @:noCompletion function get_time():Int
   {
-    if (mediaPlayer != null) return LibVLCMediaPlayer.get_time(mediaPlayer);
+    if (mediaPlayer != null)
+      {
+        #if (haxe >= "4.3.0")
+        return LibVLC.media_player_get_time(mediaPlayer).toInt();
+        #else
+        return LibVLC.media_player_get_time(mediaPlayer);
+        #end
+      }
 
     return 0;
   }
@@ -159,7 +166,13 @@ class VideoBitmapInternal extends Bitmap
 
   @:noCompletion function get_duration():Int
   {
-    if (mediaItem != null) return LibVLCMedia.get_duration(mediaItem);
+    if (mediaItem != null) {
+      #if (haxe >= "4.3.0")
+			return LibVLC.media_get_duration(mediaItem).toInt();
+			#else
+			return LibVLC.media_get_duration(mediaItem);
+			#end
+    }
 
     return 0;
   }
@@ -172,9 +185,10 @@ class VideoBitmapInternal extends Bitmap
 
   @:noCompletion function get_mrl():String
   {
-    if (mediaItem != null) return LibVLCMedia.get_mrl(mediaItem);
+		if (mediaItem != null)
+			return cast(LibVLC.media_get_mrl(mediaItem), String);
 
-    return '';
+		return null;
   }
 
   /**
@@ -219,7 +233,13 @@ class VideoBitmapInternal extends Bitmap
 
   @:noCompletion function get_delay():Int
   {
-    if (mediaPlayer != null) return LibVLCAudio.get_delay(mediaPlayer);
+    if (mediaPlayer != null) {
+      #if (haxe >= "4.3.0")
+			return LibVLC.audio_get_delay(mediaPlayer).toInt();
+			#else
+			return LibVLC.audio_get_delay(mediaPlayer);
+			#end
+    }
 
     return 0;
   }
@@ -425,7 +445,7 @@ class VideoBitmapInternal extends Bitmap
     onBackward = new CallbackVoid();
   }
 
-  public function play(?location:String = null, loop:Bool = false, ?remote:Bool = false):Void
+  public function play(?location:String = null, loop:Bool = false, ?remote:Bool = false):Int
   {
     if (remote)
     {
@@ -460,7 +480,7 @@ class VideoBitmapInternal extends Bitmap
 
     if (loop)
     {
-      LibVLCMedia.add_option(mediaItem, #if android "input-repeat=65535" #else "input-repeat=-1" #end);
+      LibVLCMedia.add_option(mediaItem, #if windows "input-repeat=-1" #else "input-repeat=65535" #end);
     }
     else
     {
@@ -483,7 +503,7 @@ class VideoBitmapInternal extends Bitmap
 
     isDisplaying = false;
 
-    LibVLCMediaPlayer.play(mediaPlayer);
+    return LibVLCMediaPlayer.play(mediaPlayer);
   }
 
   function setupEventManagers():Void
@@ -608,7 +628,7 @@ class VideoBitmapInternal extends Bitmap
     // If the mediaPlayer is playing, the texture is linked to VLC,
     // the video dimensions are known, and the pixel buffer is not empty,
     // we can render the video.
-    if ((isPlaying && isDisplaying) && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+    if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
     {
       var time:Int = Lib.getTimer();
       var elements:Int = videoWidth * videoHeight * 4;
@@ -656,7 +676,7 @@ class VideoBitmapInternal extends Bitmap
     {
       flags[5] = false;
       trace('Encountered error in the media player!');
-      onEncounteredError.dispatch("");
+      onEncounteredError.dispatch(LibVLCErrorHelper.getErrorMessage());
     }
 
     if (flags[6])
@@ -683,7 +703,7 @@ class VideoBitmapInternal extends Bitmap
       onMediaMetaChanged();
     }
   }
-
+R
   function render(time:Float, elementsCount:Int):Void
   {
     var deltaTime:Float = time - currentTime;

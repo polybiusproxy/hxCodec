@@ -1,0 +1,51 @@
+name: Testing
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  Job:
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          submodules: true
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.0
+
+      - name: Installing Libs
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get install libvlc-dev
+          sudo apt-get install libvlccore-dev
+          sudo apt-get install glibc-source
+          sudo apt-get install libidn12
+          sudo apt-get install libidn-dev
+
+      - name: Installing Haxe Libraries
+        run: |
+          haxelib install hxcpp --quiet
+          haxelib install lime --quiet
+          haxelib install openfl --quiet
+          haxelib install flixel --quiet
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git --quiet
+
+      - name: Building Windows
+        if: matrix.os == 'windows-latest'
+        run: cd sample/flixel-cutscene && haxelib run lime build windows -debug
+
+      - name: Building Mac
+        if: matrix.os == 'macos-latest'
+        run: cd sample/flixel-cutscene && haxelib run lime build mac -debug
+
+      - name: Building Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: cd sample/flixel-cutscene && haxelib run lime build linux -debug

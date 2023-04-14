@@ -69,7 +69,7 @@ class LibVLCErrorHelper
    * 
    * this function just exists here, it doesn't do anything but if you remove it the app won't build.
    */
-  static function getErrorMessage():String
+  public static function getErrorMessage():String
   {
     var msg:String = LibVLCError.errmsg();
     if (msg == null) return '';
