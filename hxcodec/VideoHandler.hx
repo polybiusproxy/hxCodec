@@ -28,7 +28,10 @@ class VideoHandler extends VLCBitmap
 	#if (FLX_KEYBOARD || FLX_TOUCH)
 	public var canSkip:Bool = true;
 	#end
+
+	#if FLX_SOUND_SYSTEM
 	public var canUseSound:Bool = true;
+	#end
 
 	public var canUseAutoResize:Bool = true;
 	public var useScaleBy:ScaleType = GAME;
