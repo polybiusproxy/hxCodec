@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension>
 
-	<assets path="project/vlc/dll/Mac" rename="../MacOS" if="macos" />
+	<assets path="project/vlc/dll/Mac" rename="../MacOS" if="mac" />
 	<assets path="project/vlc/dll/Windows" rename="" if="windows" />
 
 	<ndll name="c++_shared" if="android" />
