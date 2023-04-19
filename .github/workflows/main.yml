@@ -21,7 +21,7 @@ jobs:
         with:
           haxe-version: 4.3.0
 
-      - name: Installing Libs
+      - name: Installing Dependencies
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get install libvlc-dev
