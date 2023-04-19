@@ -23,12 +23,7 @@ jobs:
 
       - name: Installing Dependencies
         if: matrix.os == 'ubuntu-latest'
-        run: |
-          sudo apt-get install libvlc-dev
-          sudo apt-get install libvlccore-dev
-          sudo apt-get install glibc-source
-          sudo apt-get install libidn12
-          sudo apt-get install libidn-dev
+        run: sudo apt-get install libvlc-dev libvlccore-dev
 
       - name: Installing Haxe Libraries
         run: |

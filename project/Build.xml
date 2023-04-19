@@ -17,8 +17,8 @@
 
 	<target id="haxe" tool="linker">
 		<section if="linux">
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Linux/libvlc.so.5" if="HXCPP_M64" />
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Linux/libvlccore.so.9" if="HXCPP_M64" />
+			<lib name="-lvlc" />
+			<lib name="-lvlccore" />
 		</section>
 
 		<section if="macos">
