@@ -60,15 +60,12 @@ Just run the `lime build windows` / `lime build mac` command and the library wil
 
 ### Linux
 
-In order to make your game work with the library, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
+In order to build a application with the library, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
 
 Example with APT:
 ```bash
 sudo apt-get install libvlc-dev
 sudo apt-get install libvlccore-dev
-sudo apt-get install glibc-source
-sudo apt-get install libidn12
-sudo apt-get install libidn-dev
 ```
 
 ### Android
