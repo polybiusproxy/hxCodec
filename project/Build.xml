@@ -10,12 +10,12 @@
 		<compilerflag value="-I${haxelib:hxCodec}/project/vlc/include" />
 	</files>
 
-	<target id="haxe" tool="linker" toolid="exe" if="windows">
-		<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlc.lib" if="HXCPP_M64" />
-		<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlccore.lib" if="HXCPP_M64" />
-	</target>
+	<target id="haxe">
+		<section if="windows">
+			<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlc.lib" if="HXCPP_M64" />
+			<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlccore.lib" if="HXCPP_M64" />
+		</section>
 
-	<target id="haxe" tool="linker">
 		<section if="linux">
 			<lib name="-lvlc" />
 			<lib name="-lvlccore" />
