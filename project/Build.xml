@@ -17,8 +17,8 @@
 
 	<target id="haxe" tool="linker">
 		<section if="linux">
-			<lib name="-llibvlc" />
-			<lib name="-llibvlccore" />
+			<lib name="-lvlc" />
+			<lib name="-lvlccore" />
 		</section>
 
 		<section if="macos">
