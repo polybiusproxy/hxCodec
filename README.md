@@ -99,7 +99,6 @@ You will also have to put the location manually in the paths and to copy that vi
 
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Jigsaw](https://github.com/MAJigsaw77) - Programmer and Android support.
-- [Erizur](https://github.com/Erizur) - Linux support.
+- [Jigsaw](https://github.com/MAJigsaw77) - Programmer, Android & Linux support.
 - [BushTrain](https://github.com/BushTrain460615) - macOS support.
 - The contributors.
