@@ -1,5 +1,6 @@
 package hxcodec.tools.commands;
 
+import sys.io.Process;
 import haxe.Rest;
 import haxe.io.Bytes;
 import sys.FileSystem;
@@ -33,19 +34,22 @@ class Setup
 
   private function setupWindows()
   {
-    if (!FileSystem.exists("./thirdparty/winDebug.zip")) Sys.command("powershell", ["thirdparty/win64.ps1"]);
-    FileSystem.createDirectory("./temp");
-    Zip.unzip("./thirdparty/winDebug.zip", "./temp");
+    var libpath:Process = new Process("haxelib", ["libpath", "hxcodec"]);
+    var libString:String = libpath.stdout.readLine();
 
-    copyPasteShit("./temp/vlc-4.0.0-dev/plugins", "./thirdparty");
-    copyPasteShit("./temp/vlc-4.0.0-dev/libvlc.dll", "./thirdparty/libvlc.dll");
-    copyPasteShit("./temp/vlc-4.0.0-dev/libvlccore.dll", "./thirdparty/libvlccore.dll");
+    if (!FileSystem.exists(libString + "thirdparty/winDebug.zip")) Sys.command("powershell", ["thirdparty/win64.ps1", libString]);
+    FileSystem.createDirectory(libString + "temp");
+    Zip.unzip(libString + "thirdparty/winDebug.zip", libString + "temp");
+
+    copyPasteShit(libString + "temp/vlc-4.0.0-dev/plugins", libString + "thirdparty");
+    copyPasteShit(libString + "temp/vlc-4.0.0-dev/libvlc.dll", libString + "thirdparty/libvlc.dll");
+    copyPasteShit(libString + "temp/vlc-4.0.0-dev/libvlccore.dll", libString + "thirdparty/libvlccore.dll");
 
     // cleanup stuff
 
-    deleteDirRecursively("./temp");
+    deleteDirRecursively(libString + "temp");
 
-    FileSystem.deleteDirectory("./temp");
+    FileSystem.deleteDirectory(libString + "temp");
   }
 
   private function copyPasteShit(path:String, dest:String)
@@ -58,7 +62,10 @@ class Setup
 
     if (FileSystem.isDirectory(path))
     {
-      copyFolder(path, "./thirdparty");
+      var libpath:Process = new Process("haxelib", ["libpath", "hxcodec"]);
+      var libString:String = libpath.stdout.readLine();
+
+      copyFolder(path, libString + "thirdparty");
       return;
     }
 
