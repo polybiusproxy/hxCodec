@@ -291,7 +291,7 @@ class VLCBitmap extends Bitmap
 		{
 			var time:Int = Lib.getTimer();
 			var elements:Int = videoWidth * videoHeight * 4;
-			render(time - currentTime, elements);
+			render(Math.abs(time - currentTime), elements);
 		}
 	}
 
