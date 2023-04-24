@@ -41,9 +41,9 @@ class Setup
     FileSystem.createDirectory(libString + "temp");
     Zip.unzip(libString + "thirdparty/winDebug.zip", libString + "temp");
 
-    copyPasteShit(libString + "temp/vlc-4.0.0-dev/plugins", libString + "thirdparty");
-    copyPasteShit(libString + "temp/vlc-4.0.0-dev/libvlc.dll", libString + "thirdparty/libvlc.dll");
-    copyPasteShit(libString + "temp/vlc-4.0.0-dev/libvlccore.dll", libString + "thirdparty/libvlccore.dll");
+    copyPasteShit(libString + "temp/vlc-4.0.0-dev/plugins", libString + "thirdparty/dll/vlc/Windows");
+    copyPasteShit(libString + "temp/vlc-4.0.0-dev/libvlc.dll", libString + "thirdparty/dll/vlc/Windows/libvlc.dll");
+    copyPasteShit(libString + "temp/vlc-4.0.0-dev/libvlccore.dll", libString + "thirdparty/dll/vlc/Windows/libvlccore.dll");
 
     // cleanup stuff
 
