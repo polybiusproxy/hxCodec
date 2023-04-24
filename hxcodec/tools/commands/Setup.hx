@@ -54,6 +54,9 @@ class Setup
 
   private function copyPasteShit(path:String, dest:String)
   {
+    var libpath:Process = new Process("haxelib", ["libpath", "hxcodec"]);
+    var libString:String = libpath.stdout.readLine();
+
     if (!FileSystem.exists(path))
     {
       Main.print("file " + path + " dont exist!");
@@ -62,10 +65,7 @@ class Setup
 
     if (FileSystem.isDirectory(path))
     {
-      var libpath:Process = new Process("haxelib", ["libpath", "hxcodec"]);
-      var libString:String = libpath.stdout.readLine();
-
-      copyFolder(path, libString + "thirdparty");
+      copyFolder(path, dest);
       return;
     }
 
