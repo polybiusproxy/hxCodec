@@ -40,9 +40,10 @@ class Setup
     if (!FileSystem.exists(libString + "thirdparty/winDebug.zip")) Sys.command("powershell", ["thirdparty/win64.ps1", libString]);
     FileSystem.createDirectory(libString + "temp");
     FileSystem.createDirectory(libString + "thirdparty/dll/vlc/Windows");
+    FileSystem.createDirectory(libString + "thirdparty/dll/vlc/Windows/plugins");
     Zip.unzip(libString + "thirdparty/winDebug.zip", libString + "temp");
 
-    copyPasteShit(libString + "temp/vlc-4.0.0-dev/plugins", libString + "thirdparty/dll/vlc/Windows");
+    copyPasteShit(libString + "temp/vlc-4.0.0-dev/plugins", libString + "thirdparty/dll/vlc/Windows/plugins");
     copyPasteShit(libString + "temp/vlc-4.0.0-dev/libvlc.dll", libString + "thirdparty/dll/vlc/Windows/libvlc.dll");
     copyPasteShit(libString + "temp/vlc-4.0.0-dev/libvlccore.dll", libString + "thirdparty/dll/vlc/Windows/libvlccore.dll");
 
