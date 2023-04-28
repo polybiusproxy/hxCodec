@@ -140,7 +140,6 @@ class VLCBitmap extends Bitmap
 
 	// LibVLC
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
-	private var audioOutput:cpp.RawPointer<LibVLC_AudioOutput_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
 	private var eventManager:cpp.RawPointer<LibVLC_EventManager_T>;
@@ -153,7 +152,6 @@ class VLCBitmap extends Bitmap
 			flags[event] = false;
 
 		instance = LibVLC.init(0, null);
-		audioOutput = LibVLC.audio_output_list_get(instance);
 
 		if (stage != null)
 			onAddedToStage();
