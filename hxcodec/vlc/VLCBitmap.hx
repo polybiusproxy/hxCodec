@@ -134,8 +134,8 @@ class VLCBitmap extends Bitmap
 
 	// Declarations
 	private var flags:Array<Bool> = [];
+	private var buffer:BytesData = [];
 	private var pixels:cpp.Pointer<cpp.UInt8>;
-	private var buffer:BytesData;
 	private var texture:RectangleTexture;
 
 	// LibVLC
@@ -172,12 +172,7 @@ class VLCBitmap extends Bitmap
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
 		LibVLC.media_parse(mediaItem);
-
-		if (loop)
-			LibVLC.media_add_option(mediaItem, #if windows "input-repeat=-1" #else "input-repeat=65535" #end);
-		else
-			LibVLC.media_add_option(mediaItem, "input-repeat=0");
-
+		LibVLC.media_add_option(mediaItem, loop ? "input-repeat=65535" : "input-repeat=0");
 		LibVLC.media_release(mediaItem);
 
 		if (texture != null)
@@ -192,14 +187,13 @@ class VLCBitmap extends Bitmap
 			bitmapData = null;
 		}
 
-		if (buffer == null || (buffer != null && buffer.length > 0))
+		if (buffer != null && buffer.length > 0)
 			buffer = [];
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
 
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
-
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
