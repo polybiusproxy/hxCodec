@@ -4,6 +4,24 @@
 	<assets path="project/vlc/dll/Mac" rename="../MacOS" if="mac" />
 	<assets path="project/vlc/dll/Windows" rename="" if="windows" />
 
+	<section if="ios">
+        	<!--dependency name="MobileVLCKit.framework" path="project/vlc/frameworks" -->
+
+        	<dependency name="AVFoundation.framework" />
+        	<dependency name="CFNetwork.framework" />
+        	<dependency name="CoreFoundation.framework" />
+        	<dependency name="CoreGraphics.framework" />
+        	<dependency name="CoreMedia.framework" />
+        	<dependency name="QuartzCore.framework" />
+        	<dependency name="Security.framework" />
+        	<dependency name="VideoToolbox.framework" />
+
+        	<dependency name="libbz2.tbd" />
+        	<dependency name="libc++.tbd" />
+        	<dependency name="libiconv.tbd" />
+        	<dependency name="libxml2.tbd" />
+	</section>
+
 	<ndll name="c++_shared" if="android" />
 	<ndll name="vlc" if="android" />
 
