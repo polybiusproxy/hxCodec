@@ -22,7 +22,9 @@
         	<dependency name="libxml2.tbd" />
 	</section>
 
-	<ndll name="c++_shared" if="android" />
-	<ndll name="vlc" if="android" />
+	<section if="android">
+		<ndll name="c++_shared" dir="project/vlc/lib" />
+		<ndll name="vlc" dir="project/vlc/lib" />
+	</section>
 
 </extension>
