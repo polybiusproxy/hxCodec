@@ -25,5 +25,12 @@
 			<lib name="-lvlc" />
 			<lib name="-lvlccore" />
 		</section>
+
+		<section if="android">
+			<lib name="${haxelib:hxCodec}/ndll/Android/libvlc-64.so" if="HXCPP_ARM64" />
+			<lib name="${haxelib:hxCodec}/ndll/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
+			<lib name="${haxelib:hxCodec}/ndll/Android/libvlc-x86.so" if="HXCPP_X86" />
+			<lib name="${haxelib:hxCodec}/ndll/Android/libvlc-x86_64.so" if="HXCPP_X86_64" />
+		</section>
 	</target>
 </xml>
