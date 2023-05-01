@@ -23,8 +23,8 @@
 	</section>
 
 	<section if="android">
-		<ndll name="c++_shared" />
-		<ndll name="vlc" />
+		<ndll name="c++_shared" dir="project/vlc/lib" />
+		<ndll name="vlc" dir="project/vlc/lib" />
 	</section>
 
 </extension>
