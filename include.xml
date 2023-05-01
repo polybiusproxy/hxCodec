@@ -23,8 +23,8 @@
 	</section>
 
 	<section if="android">
-		<ndll name="c++_shared" haxelib="hxCodec" dir="project/vlc/lib" />
-		<ndll name="vlc" haxelib="hxCodec" dir="project/vlc/lib" />
+		<ndll name="c++_shared" />
+		<ndll name="vlc" />
 	</section>
 
 </extension>
