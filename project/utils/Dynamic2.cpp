@@ -1,6 +1,5 @@
 #include <hxcpp.h>
-
-#include <hxcpp_ext/Dynamic2.h>
+#include <Dynamic2.h>
 
 namespace hx {
 
