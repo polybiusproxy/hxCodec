@@ -16,8 +16,11 @@
 		<file name="${haxelib:hxCodec}/project/utils/Dynamic2.cpp" />
 
 		<section if="windows">
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlc.lib" if="HXCPP_M64" />
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlccore.lib" if="HXCPP_M64" />
+			<lib name="${haxelib:hxCodec}/project/vlc/lib/Win64/libvlc.lib" if="HXCPP_M64" />
+			<lib name="${haxelib:hxCodec}/project/vlc/lib/Win64/libvlccore.lib" if="HXCPP_M64" />
+
+			<lib name="${haxelib:hxCodec}/project/vlc/lib/Win32/libvlc.lib" if="HXCPP_M32" />
+			<lib name="${haxelib:hxCodec}/project/vlc/lib/Win32/libvlccore.lib" if="HXCPP_M32" />
 		</section>
 
 		<section if="macos">
