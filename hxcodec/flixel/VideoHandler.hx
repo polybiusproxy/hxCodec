@@ -9,6 +9,12 @@ import openfl.Lib;
 import openfl.events.Event;
 import sys.FileSystem;
 
+enum ScaleType
+{
+	GAME;
+	VIDEO;
+}
+
 class VideoHandler extends VideoBitmap
 {
 	#if FLX_KEYBOARD
