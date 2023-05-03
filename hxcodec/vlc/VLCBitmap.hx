@@ -29,10 +29,8 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 
 	unsigned _w = (*width);
 	unsigned _h = (*height);
-	unsigned _pitch = _w * 4;
-	unsigned _frame = _w *_h * 4;
 
-	(*pitches) = _pitch;
+	(*pitches) = _w * 4;
 	(*lines) = _h;
 
 	memcpy(chroma, "RV32", 4);
@@ -43,7 +41,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	if (self->pixels != nullptr)
 		delete self->pixels;
 
-	self->pixels = new unsigned char[_frame];
+	self->pixels = new unsigned char[_w *_h * 4];
 	return 1;
 }
 
@@ -301,10 +299,6 @@ class VLCBitmap extends Bitmap
 		if (deltaTime > (1000 / (fps * rate)))
 		{
 			currentTime = deltaTime;
-
-			#if HXC_DEBUG_TRACE
-			trace('rendering...');
-			#end
 
 			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), elementsCount);
 
