@@ -223,9 +223,6 @@ class VLCBitmap extends Bitmap
 		if (isPlaying)
 			stop();
 
-		if (stage.hasEventListener(Event.ENTER_FRAME))
-			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-
 		if (texture != null)
 		{
 			texture.dispose();
