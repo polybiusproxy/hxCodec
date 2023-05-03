@@ -7,10 +7,7 @@ A library which adds native video support on HaxeFlixel.
 --------------------------
 
 Using [libVLC](https://www.videolan.org/vlc/libvlc.html), hxCodec allows to play hundreds of video codecs.
-
-**hxCodec supports all the video formats VLC can play!**
-
-**[Original repository](https://github.com/polybiusproxy/PolyEngine)**          
+          
 **[Click here to check the roadmap](https://github.com/polybiusproxy/hxCodec/projects/1)**
 
 --------------------------
@@ -46,7 +43,7 @@ Add this code in the Project.xml file:
 
 You can play videos in just 2 lines of code:
 ```hx
-var video:hxcodec.VideoHandler = new hxcodec.VideoHandler();
+var video:hxcodec.flixel.VideoHandler = new hxcodec.flixel.VideoHandler();
 video.playVideo('assets/video.mp4');
 ```
 
