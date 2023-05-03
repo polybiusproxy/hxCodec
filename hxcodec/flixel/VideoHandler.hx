@@ -152,12 +152,12 @@ class VideoHandler extends VideoBitmap
 
 		if (canUseAutoResize)
 		{
-			if (!maintainAspectRatio && (videoWidth == 0 && videoHeight == 0))
+			if (!maintainAspectRatio && (videoWidth != 0 && videoHeight != 0))
 			{
 				width = FlxG.stage.stageWidth;
 				height = FlxG.stage.stageHeight;
 			}
-			else if (videoWidth == 0 && videoHeight == 0)
+			else if (videoWidth != 0 && videoHeight != 0)
 			{
 				var aspectRatio:Float = useScaleBy == GAME ? (FlxG.width / FlxG.height) : (videoWidth / videoHeight);
 
