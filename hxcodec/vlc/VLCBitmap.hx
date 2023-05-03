@@ -7,6 +7,7 @@ import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
 import hxcodec.vlc.LibVLC;
+import hxcodec.base.Callback;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -85,8 +86,7 @@ static void callbacks(const libvlc_event_t *event, void *data)
 	}
 }')
 @:keep
-class VLCBitmap extends Bitmap
-{
+class VLCBitmap extends Bitmap {
 	// Variables
 	public var videoWidth(default, null):cpp.UInt32 = 0;
 	public var videoHeight(default, null):cpp.UInt32 = 0;
@@ -103,16 +103,51 @@ class VLCBitmap extends Bitmap
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 	public var canPause(get, never):Bool;
+	public var playbackRate(get, set):Float;
+	public var muteAudio(get, set):Bool;
 
 	// Callbacks
-	public var onOpening:Void->Void;
-	public var onPlaying:Void->Void;
-	public var onPaused:Void->Void;
-	public var onStopped:Void->Void;
-	public var onEndReached:Void->Void;
-	public var onEncounteredError:String->Void;
-	public var onForward:Void->Void;
-	public var onBackward:Void->Void;
+
+	/**
+	 * Callback for when the media player is opening.
+	 */
+	public var onOpening(default, null):CallbackVoid;
+
+	/**
+	 * Callback for when the media player begins playing.
+	 * @param path The path of the current media.
+	 */
+	public var onPlaying(default, null):Callback<String>;
+
+	/**
+	 * Callback for when the media player is paused.
+	 */
+	public var onPaused(default, null):CallbackVoid;
+
+	/**
+	 * Callback for when the media player is stopped.
+	 */
+	public var onStopped(default, null):CallbackVoid;
+
+	/**
+	 * Callback for when the media player reaches the end.
+	 */
+	public var onEndReached(default, null):CallbackVoid;
+
+	/**
+	 * Callback for when the media player encounters an error.
+	 */
+	public var onEncounteredError(default, null):Callback<String>;
+
+	/**
+	 * Callback for when the media player is skipped forward.
+	 */
+	public var onForward(default, null):CallbackVoid;
+
+	/**
+	 * Callback for when the media player is skipped backward.
+	 */
+	public var onBackward(default, null):CallbackVoid;
 
 	// Declarations
 	private var flags:Array<Bool> = [];
@@ -126,29 +161,37 @@ class VLCBitmap extends Bitmap
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
 	private var eventManager:cpp.RawPointer<LibVLC_EventManager_T>;
 
-	public function new():Void
-	{
+	public function new():Void {
 		super(bitmapData, AUTO, true);
 
 		for (event in 0...7)
 			flags[event] = false;
 
 		instance = LibVLC.create(0, null);
+
+		setupCallbacks();
+	}
+
+	function setupCallbacks():Void {
+		onOpening = new CallbackVoid();
+		onPlaying = new Callback<String>();
+		onStopped = new CallbackVoid();
+		onPaused = new CallbackVoid();
+		onEndReached = new CallbackVoid();
+		onEncounteredError = new Callback<String>();
+		onForward = new CallbackVoid();
+		onBackward = new CallbackVoid();
 	}
 
 	// Playback Methods
-	public function play(?location:String = null, loop:Bool = false):Int
-	{
-		if (location.startsWith('https://') || location.startsWith('file://'))
-		{
+	public function play(?location:String = null, loop:Bool = false):Int {
+		if (location.startsWith('https://') || location.startsWith('file://')) {
 			#if HXC_DEBUG_TRACE
 			trace("setting location to: " + location);
 			#end
 
 			mediaItem = LibVLC.media_new_location(instance, location);
-		}
-		else
-		{
+		} else {
 			final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
 
 			#if HXC_DEBUG_TRACE
@@ -164,14 +207,12 @@ class VLCBitmap extends Bitmap
 		LibVLC.media_add_option(mediaItem, loop ? "input-repeat=65535" : "input-repeat=0");
 		LibVLC.media_release(mediaItem);
 
-		if (texture != null)
-		{
+		if (texture != null) {
 			texture.dispose();
 			texture = null;
 		}
 
-		if (bitmapData != null)
-		{
+		if (bitmapData != null) {
 			bitmapData.dispose();
 			bitmapData = null;
 		}
@@ -196,26 +237,27 @@ class VLCBitmap extends Bitmap
 		return LibVLC.media_player_play(mediaPlayer);
 	}
 
-	public function stop():Void
-	{
+	public function stop():Void {
 		if (mediaPlayer != null)
 			LibVLC.media_player_stop(mediaPlayer);
 	}
 
-	public function pause():Void
-	{
+	public function pause():Void {
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_pause(mediaPlayer, 1);
 	}
 
-	public function resume():Void
-	{
+	public function resume():Void {
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_pause(mediaPlayer, 0);
 	}
 
-	public function dispose():Void
-	{
+	public function togglePaused():Void {
+		if (mediaPlayer != null)
+			LibVLC.media_player_pause(mediaPlayer);
+	}
+
+	public function dispose():Void {
 		#if HXC_DEBUG_TRACE
 		trace('disposing...');
 		#end
@@ -226,14 +268,12 @@ class VLCBitmap extends Bitmap
 		if (stage.hasEventListener(Event.ENTER_FRAME))
 			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 
-		if (texture != null)
-		{
+		if (texture != null) {
 			texture.dispose();
 			texture = null;
 		}
 
-		if (bitmapData != null)
-		{
+		if (bitmapData != null) {
 			bitmapData.dispose();
 			bitmapData = null;
 		}
@@ -258,20 +298,17 @@ class VLCBitmap extends Bitmap
 	// Internal Methods
 	private var currentTime:Float = 0;
 
-	private function onEnterFrame(?e:Event):Void
-	{
+	private function onEnterFrame(?e:Event):Void {
 		checkFlags();
 
-		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
-		{
+		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null) {
 			var time:Int = Lib.getTimer();
 			var elements:Int = videoWidth * videoHeight * 4;
 			render(Math.abs(time - currentTime), elements);
 		}
 	}
 
-	private function render(deltaTime:Float, elementsCount:Int):Void
-	{
+	private function render(deltaTime:Float, elementsCount:Int):Void {
 		// Initialize the `texture` if necessary.
 		if (texture == null)
 			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
@@ -280,17 +317,14 @@ class VLCBitmap extends Bitmap
 		if (bitmapData == null && texture != null)
 			bitmapData = BitmapData.fromTexture(texture);
 
-		if (deltaTime > (1000 / (fps * rate)))
-		{
+		if (deltaTime > (1000 / (fps * rate))) {
 			currentTime = deltaTime;
 
 			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), elementsCount);
 
-			if (texture != null && (buffer != null && buffer.length > 0))
-			{
+			if (texture != null && (buffer != null && buffer.length > 0)) {
 				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= elementsCount)
-				{
+				if (bytes.length >= elementsCount) {
 					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
 					width++;
 					width--;
@@ -303,70 +337,52 @@ class VLCBitmap extends Bitmap
 		}
 	}
 
-	private function checkFlags():Void
-	{
-		if (flags[0])
-		{
+	private function checkFlags():Void {
+		if (flags[0]) {
 			flags[0] = false;
-			if (onOpening != null)
-				onOpening();
+			onOpening.dispatch();
 		}
 
-		if (flags[1])
-		{
+		if (flags[1]) {
 			flags[1] = false;
-			if (onPlaying != null)
-				onPlaying();
+			// TODO: Make this include the filename.
+			onPlaying.dispatch("Unknown");
 		}
 
-		if (flags[2])
-		{
+		if (flags[2]) {
 			flags[2] = false;
-			if (onPaused != null)
-				onPaused();
+			onPaused.dispatch();
 		}
 
-		if (flags[3])
-		{
+		if (flags[3]) {
 			flags[3] = false;
-			if (onStopped != null)
-				onStopped();
+			onStopped.dispatch();
 		}
 
-		if (flags[4])
-		{
+		if (flags[4]) {
 			flags[4] = false;
-			if (onEndReached != null)
-				onEndReached();
+			onEndReached.dispatch();
 		}
 
-		if (flags[5])
-		{
+		if (flags[5]) {
 			flags[5] = false;
-			if (onEncounteredError != null)
-				onEncounteredError(cast(LibVLC.errmsg(), String));
+			onEncounteredError.dispatch(cast(LibVLC.errmsg(), String));
 		}
 
-		if (flags[6])
-		{
+		if (flags[6]) {
 			flags[6] = false;
-			if (onForward != null)
-				onForward();
+			onForward.dispatch();
 		}
 
-		if (flags[7])
-		{
+		if (flags[7]) {
 			flags[7] = false;
-			if (onBackward != null)
-				onBackward();
+			onBackward.dispatch();
 		}
 	}
 
 	// Get & Set Methods
-	@:noCompletion private function get_time():Int
-	{
-		if (mediaPlayer != null)
-		{
+	@:noCompletion private function get_time():Int {
+		if (mediaPlayer != null) {
 			#if (haxe >= "4.3.0")
 			return LibVLC.media_player_get_time(mediaPlayer).toInt();
 			#else
@@ -377,34 +393,29 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function set_time(value:Int):Int
-	{
+	@:noCompletion private function set_time(value:Int):Int {
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_time(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion private function get_position():Float
-	{
+	@:noCompletion private function get_position():Float {
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_position(mediaPlayer);
 
 		return 0;
 	}
 
-	@:noCompletion private function set_position(value:Float):Float
-	{
+	@:noCompletion private function set_position(value:Float):Float {
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_position(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion private function get_length():Int
-	{
-		if (mediaPlayer != null)
-		{
+	@:noCompletion private function get_length():Int {
+		if (mediaPlayer != null) {
 			#if (haxe >= "4.3.0")
 			return LibVLC.media_player_get_length(mediaPlayer).toInt();
 			#else
@@ -415,10 +426,8 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function get_duration():Int
-	{
-		if (mediaItem != null)
-		{
+	@:noCompletion private function get_duration():Int {
+		if (mediaItem != null) {
 			#if (haxe >= "4.3.0")
 			return LibVLC.media_get_duration(mediaItem).toInt();
 			#else
@@ -429,34 +438,29 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function get_mrl():String
-	{
+	@:noCompletion private function get_mrl():String {
 		if (mediaItem != null)
 			return cast(LibVLC.media_get_mrl(mediaItem), String);
 
 		return null;
 	}
 
-	@:noCompletion private function get_volume():Int
-	{
+	@:noCompletion private function get_volume():Int {
 		if (mediaPlayer != null)
 			return LibVLC.audio_get_volume(mediaPlayer);
 
 		return 0;
 	}
 
-	@:noCompletion private function set_volume(value:Int):Int
-	{
+	@:noCompletion private function set_volume(value:Int):Int {
 		if (mediaPlayer != null)
 			LibVLC.audio_set_volume(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion private function get_delay():Int
-	{
-		if (mediaPlayer != null)
-		{
+	@:noCompletion private function get_delay():Int {
+		if (mediaPlayer != null) {
 			#if (haxe >= "4.3.0")
 			return LibVLC.audio_get_delay(mediaPlayer).toInt();
 			#else
@@ -467,64 +471,84 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function set_delay(value:Int):Int
-	{
+	@:noCompletion private function set_delay(value:Int):Int {
 		if (mediaPlayer != null)
 			LibVLC.audio_set_delay(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion private function get_rate():Float
-	{
+	@:noCompletion private function get_rate():Float {
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_rate(mediaPlayer);
 
 		return 0;
 	}
 
-	@:noCompletion private function set_rate(value:Float):Float
-	{
+	@:noCompletion private function set_rate(value:Float):Float {
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_rate(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion private function get_fps():Float
-	{
+	@:noCompletion private function get_fps():Float {
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_fps(mediaPlayer);
 
 		return 0;
 	}
 
-	@:noCompletion private function get_isPlaying():Bool
-	{
+	@:noCompletion private function get_isPlaying():Bool {
 		if (mediaPlayer != null)
 			return LibVLC.media_player_is_playing(mediaPlayer);
 
 		return false;
 	}
 
-	@:noCompletion private function get_isSeekable():Bool
-	{
+	@:noCompletion private function get_isSeekable():Bool {
 		if (mediaPlayer != null)
 			return LibVLC.media_player_is_seekable(mediaPlayer);
 
 		return false;
 	}
 
-	@:noCompletion private function get_canPause():Bool
-	{
+	@:noCompletion private function get_canPause():Bool {
 		if (mediaPlayer != null)
 			return LibVLC.media_player_can_pause(mediaPlayer);
 
 		return false;
 	}
 
-	@:noCompletion private override function set_height(value:Float):Float
-	{
+	@:noCompletion function get_muteAudio():Bool {
+		if (mediaPlayer != null)
+			return LibVLC.audio_get_mute(mediaPlayer) > 0;
+
+		return false;
+	}
+
+	@:noCompletion function set_muteAudio(value:Bool):Bool {
+		if (mediaPlayer != null)
+			LibVLC.audio_set_mute(mediaPlayer, value);
+
+		return value;
+	}
+
+	@:noCompletion function get_playbackRate():Float {
+		if (mediaPlayer != null)
+			return LibVLC.media_player_get_rate(mediaPlayer);
+
+		return 0;
+	}
+
+	@:noCompletion function set_playbackRate(value:Float):Float {
+		if (mediaPlayer != null)
+			LibVLC.media_player_set_rate(mediaPlayer, value);
+
+		return value;
+	}
+
+	@:noCompletion private override function set_height(value:Float):Float {
 		if (__bitmapData != null)
 			scaleY = value / __bitmapData.height;
 		else if (videoHeight != 0)
@@ -535,8 +559,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private override function set_width(value:Float):Float
-	{
+	@:noCompletion private override function set_width(value:Float):Float {
 		if (__bitmapData != null)
 			scaleX = value / __bitmapData.width;
 		else if (videoWidth != 0)
@@ -547,8 +570,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private override function set_bitmapData(value:BitmapData):BitmapData
-	{
+	@:noCompletion private override function set_bitmapData(value:BitmapData):BitmapData {
 		__bitmapData = value;
 		__setRenderDirty();
 		__imageVersion = -1;

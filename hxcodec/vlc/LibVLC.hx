@@ -69,6 +69,12 @@ extern class LibVLC
 	@:native("libvlc_audio_set_volume")
 	static function audio_set_volume(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_volume:Int):Int;
 
+	@:native("libvlc_audio_get_mute")
+	static function audio_get_mute(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
+
+	@:native("libvlc_audio_set_mute")
+	static function audio_set_mute(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_status:Bool):Int;
+
 	@:native("libvlc_event_attach")
 	static function event_attach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_EventType, f_callback:LibVLC_Event_Callback,
 		user_data:cpp.Pointer<cpp.Void>):Int;
@@ -109,6 +115,9 @@ extern class LibVLC
 
 	@:native("libvlc_media_player_stop")
 	static function media_player_stop(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Void;
+
+	@:native("libvlc_media_player_pause")
+	static function media_player_pause(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Void;
 
 	@:native("libvlc_media_player_set_pause")
 	static function media_player_set_pause(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, do_pause:Int):Void;
