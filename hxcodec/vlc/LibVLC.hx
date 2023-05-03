@@ -9,7 +9,7 @@
 package hxcodec.vlc;
 
 #if (!(desktop || android) && macro)
-#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
+#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us."
 #end
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
@@ -159,7 +159,8 @@ extern class LibVLC
 	static function media_player_new_from_media(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.RawPointer<LibVLC_MediaPlayer_T>;
 
 	@:native("libvlc_video_set_format_callbacks")
-	static function video_set_format_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, setup:LibVLC_Video_Setup_Callback, cleanup:LibVLC_Video_Cleanup_Callback):Void;
+	static function video_set_format_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, setup:LibVLC_Video_Setup_Callback,
+		cleanup:LibVLC_Video_Cleanup_Callback):Void;
 
 	@:native("libvlc_video_set_callbacks")
 	static function video_set_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, lock:LibVLC_Video_Lock_Callback, unlock:LibVLC_Video_Unlock_Callback,
@@ -171,9 +172,16 @@ extern class LibVLC
 
 // These aren't really made to be used in haxe
 typedef LibVLC_Event_Callback = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC_Event_T>, p_data:cpp.RawPointer<cpp.Void>) -> Void>;
-typedef LibVLC_Video_Setup_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.RawPointer<cpp.Char>, width:cpp.RawPointer<cpp.UInt32>, height:cpp.RawPointer<cpp.UInt32>, pitches:cpp.RawPointer<cpp.UInt32>, lines:cpp.RawPointer<cpp.UInt32>) -> cpp.UInt32>;
+
+typedef LibVLC_Video_Setup_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.RawPointer<cpp.Char>,
+		width:cpp.RawPointer<cpp.UInt32>, height:cpp.RawPointer<cpp.UInt32>, pitches:cpp.RawPointer<cpp.UInt32>,
+		lines:cpp.RawPointer<cpp.UInt32>) -> cpp.UInt32>;
+
 typedef LibVLC_Video_Cleanup_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>) -> Void>;
-typedef LibVLC_Video_Lock_Callback = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, p_pixels:cpp.RawPointer<cpp.RawPointer<cpp.Void>>) -> cpp.RawPointer<cpp.Void>>;
+
+typedef LibVLC_Video_Lock_Callback = cpp.Callable<(data:cpp.RawPointer<cpp.Void>,
+		p_pixels:cpp.RawPointer<cpp.RawPointer<cpp.Void>>) -> cpp.RawPointer<cpp.Void>>;
+
 typedef LibVLC_Video_Unlock_Callback = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, id:cpp.RawPointer<cpp.Void>, p_pixels:VoidStarConstStar) -> Void>;
 typedef LibVLC_Video_Display_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, picture:cpp.RawPointer<cpp.Void>) -> Void>;
 

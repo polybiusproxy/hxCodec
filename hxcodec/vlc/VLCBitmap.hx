@@ -1,7 +1,7 @@
 package hxcodec.vlc;
 
 #if (!(desktop || android) && macro)
-#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us.";
+#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us."
 #end
 import haxe.io.Bytes;
 import haxe.io.BytesData;
@@ -134,11 +134,6 @@ class VLCBitmap extends Bitmap
 			flags[event] = false;
 
 		instance = LibVLC.create(0, null);
-
-		if (stage != null)
-			onAddedToStage();
-		else
-			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 	}
 
 	// Playback Methods
@@ -261,15 +256,8 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Internal Methods
-	private function onAddedToStage(?e:Event):Void
-	{
-		if (hasEventListener(Event.ADDED_TO_STAGE))
-			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-
-		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-	}
-
 	private var currentTime:Float = 0;
+
 	private function onEnterFrame(?e:Event):Void
 	{
 		checkFlags();
@@ -291,10 +279,6 @@ class VLCBitmap extends Bitmap
 		// Initialize the `bitmapData` if necessary.
 		if (bitmapData == null && texture != null)
 			bitmapData = BitmapData.fromTexture(texture);
-
-		// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
-		if (!smoothing)
-			smoothing = true;
 
 		if (deltaTime > (1000 / (fps * rate)))
 		{
@@ -561,5 +545,13 @@ class VLCBitmap extends Bitmap
 			scaleX = 1;
 
 		return value;
+	}
+
+	@:noCompletion private override function set_bitmapData(value:BitmapData):BitmapData
+	{
+		__bitmapData = value;
+		__setRenderDirty();
+		__imageVersion = -1;
+		return __bitmapData;
 	}
 }
