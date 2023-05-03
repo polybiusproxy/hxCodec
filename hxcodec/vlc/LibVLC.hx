@@ -19,7 +19,7 @@ package hxcodec.vlc;
 extern class LibVLC
 {
 	@:native("libvlc_new")
-	static function init(argc:Int, argv:cpp.RawConstPointer<cpp.ConstCharStar>):cpp.RawPointer<LibVLC_Instance_T>;
+	static function create(argc:Int, argv:cpp.ConstCharStar):cpp.RawPointer<LibVLC_Instance_T>;
 
 	@:native("libvlc_release")
 	static function release(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
@@ -170,12 +170,12 @@ extern class LibVLC
 }
 
 // These aren't really made to be used in haxe
-typedef LibVLC_Event_Callback = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC_Event_T>, p_data:cpp.Star<cpp.Void>) -> Void>;
-typedef LibVLC_Video_Setup_Callback = cpp.Callable<(opaque:cpp.Star<cpp.Star<cpp.Void>>, chroma:cpp.Star<cpp.Char>, width:cpp.Star<cpp.UInt32>, height:cpp.Star<cpp.UInt32>, pitches:cpp.Star<cpp.UInt32>, lines:cpp.Star<cpp.UInt32>) -> cpp.UInt32>;
-typedef LibVLC_Video_Cleanup_Callback = cpp.Callable<(opaque:cpp.Star<cpp.Void>) -> Void>;
-typedef LibVLC_Video_Lock_Callback = cpp.Callable<(data:cpp.Star<cpp.Void>, p_pixels:cpp.Star<cpp.Star<cpp.Void>>) -> cpp.Star<cpp.Void>>;
-typedef LibVLC_Video_Unlock_Callback = cpp.Callable<(data:cpp.Star<cpp.Void>, id:cpp.Star<cpp.Void>, p_pixels:VoidStarConstStar) -> Void>;
-typedef LibVLC_Video_Display_Callback = cpp.Callable<(opaque:cpp.Star<cpp.Void>, picture:cpp.Star<cpp.Void>) -> Void>;
+typedef LibVLC_Event_Callback = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC_Event_T>, p_data:cpp.RawPointer<cpp.Void>) -> Void>;
+typedef LibVLC_Video_Setup_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.RawPointer<cpp.Char>, width:cpp.RawPointer<cpp.UInt32>, height:cpp.RawPointer<cpp.UInt32>, pitches:cpp.RawPointer<cpp.UInt32>, lines:cpp.RawPointer<cpp.UInt32>) -> cpp.UInt32>;
+typedef LibVLC_Video_Cleanup_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>) -> Void>;
+typedef LibVLC_Video_Lock_Callback = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, p_pixels:cpp.RawPointer<cpp.RawPointer<cpp.Void>>) -> cpp.RawPointer<cpp.Void>>;
+typedef LibVLC_Video_Unlock_Callback = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, id:cpp.RawPointer<cpp.Void>, p_pixels:VoidStarConstStar) -> Void>;
+typedef LibVLC_Video_Display_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, picture:cpp.RawPointer<cpp.Void>) -> Void>;
 
 @:native("void *const *")
 extern class VoidStarConstStar {}

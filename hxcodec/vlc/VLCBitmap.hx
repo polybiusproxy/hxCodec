@@ -14,13 +14,14 @@ import openfl.display3D.textures.RectangleTexture;
 import openfl.events.Event;
 import openfl.utils.ByteArray;
 
+using StringTools;
+
 /**
  * ...
  * @author Mihai Alexandru (M.A. Jigsaw).
  *
  * This class lets you to use LibVLC externs as a bitmap that you can displaylist along other items.
  */
-@:headerInclude('assert.h')
 @:cppNamespaceCode('
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
@@ -39,35 +40,18 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = _w;
 	self->videoHeight = _h;
 
-	if (self->pixels != NULL || self->pixels != nullptr)
+	if (self->pixels != nullptr)
 		delete self->pixels;
 
 	self->pixels = new unsigned char[_frame];
 	return 1;
 }
 
-static void format_cleanup(void *data)
-{
-	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
-}
-
 static void *lock(void *data, void **p_pixels)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 	*p_pixels = self->pixels;
-	return NULL; /* picture identifier, not needed here */
-}
-
-static void unlock(void *data, void *id, void *const *p_pixels)
-{
-	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
-	assert(id == NULL); /* picture identifier, not needed here */
-}
-
-static void display(void *data, void *id)
-{
-	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
-	assert(id == NULL); /* picture identifier, not needed here */
+	return nullptr; /* picture identifier, not needed here */
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
@@ -106,8 +90,8 @@ static void callbacks(const libvlc_event_t *event, void *data)
 class VLCBitmap extends Bitmap
 {
 	// Variables
-	public var videoWidth(default, null):Int = 0;
-	public var videoHeight(default, null):Int = 0;
+	public var videoWidth(default, null):cpp.UInt32 = 0;
+	public var videoHeight(default, null):cpp.UInt32 = 0;
 
 	public var time(get, set):Int;
 	public var position(get, set):Float;
@@ -134,8 +118,8 @@ class VLCBitmap extends Bitmap
 
 	// Declarations
 	private var flags:Array<Bool> = [];
+	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var buffer:BytesData = [];
-	private var pixels:cpp.Pointer<cpp.UInt8>;
 	private var texture:RectangleTexture;
 
 	// LibVLC
@@ -151,7 +135,7 @@ class VLCBitmap extends Bitmap
 		for (event in 0...7)
 			flags[event] = false;
 
-		instance = LibVLC.init(0, null);
+		instance = LibVLC.create(0, null);
 
 		if (stage != null)
 			onAddedToStage();
@@ -162,13 +146,25 @@ class VLCBitmap extends Bitmap
 	// Playback Methods
 	public function play(?location:String = null, loop:Bool = false):Int
 	{
-		final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
+		if (location.startsWith('https://') || location.startsWith('file://'))
+		{
+			#if HXC_DEBUG_TRACE
+			trace("setting location to: " + location);
+			#end
 
-		#if HXC_DEBUG_TRACE
-		trace("setting path to: " + path);
-		#end
+			mediaItem = LibVLC.media_new_location(instance, location);
+		}
+		else
+		{
+			final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
 
-		mediaItem = LibVLC.media_new_path(instance, path);
+			#if HXC_DEBUG_TRACE
+			trace("setting path to: " + path);
+			#end
+
+			mediaItem = LibVLC.media_new_path(instance, path);
+		}
+
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
 		LibVLC.media_parse(mediaItem);
@@ -190,14 +186,15 @@ class VLCBitmap extends Bitmap
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
 
-		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('format_cleanup'));
-		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('unlock'), untyped __cpp__('display'), untyped __cpp__('this'));
+		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), null);
+		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
 
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
+
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
@@ -287,6 +284,47 @@ class VLCBitmap extends Bitmap
 		}
 	}
 
+	private function render(deltaTime:Float, elementsCount:Int):Void
+	{
+		// Initialize the `texture` if necessary.
+		if (texture == null)
+			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
+
+		// Initialize the `bitmapData` if necessary.
+		if (bitmapData == null && texture != null)
+			bitmapData = BitmapData.fromTexture(texture);
+
+		// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
+		if (!smoothing)
+			smoothing = true;
+
+		if (deltaTime > (1000 / (fps * rate)))
+		{
+			currentTime = deltaTime;
+
+			#if HXC_DEBUG_TRACE
+			trace('rendering...');
+			#end
+
+			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), elementsCount);
+
+			if (texture != null && (buffer != null && buffer.length > 0))
+			{
+				var bytes:Bytes = Bytes.ofData(buffer);
+				if (bytes.length >= elementsCount)
+				{
+					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
+					width++;
+					width--;
+				}
+				#if HXC_DEBUG_TRACE
+				else
+					trace("Too small frame, can't render :(");
+				#end
+			}
+		}
+	}
+
 	private function checkFlags():Void
 	{
 		if (flags[0])
@@ -343,47 +381,6 @@ class VLCBitmap extends Bitmap
 			flags[7] = false;
 			if (onBackward != null)
 				onBackward();
-		}
-	}
-
-	private function render(deltaTime:Float, elementsCount:Int):Void
-	{
-		// Initialize the `texture` if necessary.
-		if (texture == null)
-			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
-
-		// Initialize the `bitmapData` if necessary.
-		if (bitmapData == null && texture != null)
-			bitmapData = BitmapData.fromTexture(texture);
-
-		// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
-		if (!smoothing)
-			smoothing = true;
-
-		if (deltaTime > (1000 / (fps * rate)))
-		{
-			currentTime = deltaTime;
-
-			#if HXC_DEBUG_TRACE
-			trace('rendering...');
-			#end
-
-			cpp.NativeArray.setUnmanagedData(buffer, pixels, elementsCount);
-
-			if (texture != null && (buffer != null && buffer.length > 0))
-			{
-				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= elementsCount)
-				{
-					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
-					width++;
-					width--;
-				}
-				#if HXC_DEBUG_TRACE
-				else
-					trace("Too small frame, can't render :(");
-				#end
-			}
 		}
 	}
 
