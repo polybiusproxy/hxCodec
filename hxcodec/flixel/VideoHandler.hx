@@ -152,26 +152,26 @@ class VideoHandler extends VideoBitmap
 
 		if (canUseAutoResize)
 		{
-			if (!maintainAspectRatio && (videoWidth == 0 && videoHeight == 0))
+			if (!maintainAspectRatio && (videoWidth != 0 && videoHeight != 0))
 			{
-				width = Lib.current.stage.stageWidth;
-				height = Lib.current.stage.stageHeight;
+				width = FlxG.stage.stageWidth;
+				height = FlxG.stage.stageHeight;
 			}
-			else if (videoWidth == 0 && videoHeight == 0)
+			else if (videoWidth != 0 && videoHeight != 0)
 			{
 				var aspectRatio:Float = useScaleBy == GAME ? (FlxG.width / FlxG.height) : (videoWidth / videoHeight);
 
-				if (Lib.current.stage.stageWidth / Lib.current.stage.stageHeight > aspectRatio)
+				if (FlxG.stage.stageWidth / FlxG.stage.stageHeight > aspectRatio)
 				{
 					// stage is wider than video
-					width = Lib.current.stage.stageHeight * aspectRatio;
-					height = Lib.current.stage.stageHeight;
+					width = FlxG.stage.stageHeight * aspectRatio;
+					height = FlxG.stage.stageHeight;
 				}
 				else
 				{
 					// stage is taller than video
-					width = Lib.current.stage.stageWidth;
-					height = Lib.current.stage.stageWidth * (1 / aspectRatio);
+					width = FlxG.stage.stageWidth;
+					height = FlxG.stage.stageWidth * (1 / aspectRatio);
 				}
 			}
 		}
