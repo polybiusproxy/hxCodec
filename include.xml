@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension>
 
-	<assets path="project/vlc/dll/Mac" rename="../MacOS" if="mac" />
-	<assets path="project/vlc/dll/Windows" rename="" if="windows" />
+	<section if="windows">
+		<assets path="project/vlc/dll/Windows" rename="" />
+	</section>
+
+	<section if="mac">
+		<assets path="project/vlc/dll/Mac" rename="../MacOS" />
+	</section>
 
 	<section if="ios">
 		<!--dependency name="MobileVLCKit.framework" path="project/vlc/frameworks" -->
