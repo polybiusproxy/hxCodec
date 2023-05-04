@@ -1,7 +1,7 @@
 {
 	"name": "hxCodec",
 	"url": "https://github.com/polybiusproxy/hxCodec",
-	"license": "MIT",
+	"license": "Mozilla Public License 2.0",
 	"tags": [
 		"libvlc",
 		"video",
