@@ -2,7 +2,8 @@
 <extension>
 
 	<section if="windows">
-		<assets path="project/vlc/dll/Win64" rename="" />
+		<assets path="project/vlc/dll/Win64" rename="" unless="32" />
+		<assets path="project/vlc/dll/Win32" rename="" if="32" />
 	</section>
 
 	<section if="mac">
