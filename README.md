@@ -93,11 +93,11 @@ You will also have to put the location manually in the paths and to copy that vi
 
 ## Licensing
 
-**hxCodec** is made available under the **MIT License**. Check [LICENSE](./LICENSE) for more information.
+**hxCodec** is made available under the **Mozilla Public License 2.0**. Check [LICENSE](./LICENSE) for more information.
 
 ![](https://github.com/videolan/vlc/blob/master/share/icons/256x256/vlc.png)
 
-**libVLC** is the engine of **VLC** released under the **LGPLv2 License** (or later). Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.
+**libVLC** is the engine of **VLC** released under the **LGPLv2 license** (or later). Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.
 
 ## Credits
 
