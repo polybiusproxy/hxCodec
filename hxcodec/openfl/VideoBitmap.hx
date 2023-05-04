@@ -1,5 +1,6 @@
 package hxcodec.openfl;
 
+import hxcodec.base.IVideoPlayer;
 import hxcodec.vlc.VLCBitmap;
 import openfl.events.Event;
 

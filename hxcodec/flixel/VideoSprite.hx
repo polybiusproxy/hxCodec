@@ -94,7 +94,7 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 		return videoBitmap.volume = value;
 	}
 
-	#if (FLX_KEYBOARD || FLX_TOUCH)
+	#if FLX_KEYBOARD
 	public var canSkip(get, set):Bool;
 
 	function get_canSkip():Bool {
