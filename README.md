@@ -97,7 +97,7 @@ You will also have to put the location manually in the paths and to copy that vi
 
 ![](https://github.com/videolan/vlc/blob/master/share/icons/256x256/vlc.png)
 
-**libVLC** is the engine of **VLC** released under the **LGPLv2 license** (or later). Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.
+**libVLC** is the engine of **VLC** released under the **LGPLv2 License** (or later). Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.
 
 ## Credits
 
