@@ -2,7 +2,7 @@
 <extension>
 
 	<section if="windows">
-		<assets path="project/vlc/dll/Windows" rename="" />
+		<assets path="project/vlc/dll/Win64" rename="" />
 	</section>
 
 	<section if="mac">
