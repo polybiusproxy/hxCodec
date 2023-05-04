@@ -17,14 +17,7 @@
 
 		<section if="windows">
 			<section if="HXCPP_M64">
-				<libpath name="${haxelib:hxCodec}/project/vlc/lib/Win64" />
-
-				<lib name="libvlc.lib" />
-				<lib name="libvlccore.lib" />
-			</section>
-
-			<section if="HXCPP_M32">
-				<libpath name="${haxelib:hxCodec}/project/vlc/lib/Win32" />
+				<libpath name="${haxelib:hxCodec}/project/vlc/lib/Windows" />
 
 				<lib name="libvlc.lib" />
 				<lib name="libvlccore.lib" />
