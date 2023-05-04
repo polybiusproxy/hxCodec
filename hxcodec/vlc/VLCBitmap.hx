@@ -345,8 +345,7 @@ class VLCBitmap extends Bitmap {
 
 		if (flags[1]) {
 			flags[1] = false;
-			// TODO: Make this include the filename.
-			onPlaying.dispatch("Unknown");
+			onPlaying.dispatch(mrl);
 		}
 
 		if (flags[2]) {
