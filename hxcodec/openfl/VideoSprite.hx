@@ -12,7 +12,7 @@ import sys.FileSystem;
 class VideoSprite extends Sprite
 {
 	public var bitmap:VideoBitmap;
-	public var autoResize:Bool = false;
+	public var autoResize:Bool = true;
 	public var maintainAspectRatio:Bool = true;
 
 	public var openingCallback:Void->Void = null;
