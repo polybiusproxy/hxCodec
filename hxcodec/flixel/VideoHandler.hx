@@ -89,7 +89,7 @@ class VideoHandler extends VideoBitmap
 	private function onVLCEncounteredError(msg:String):Void
 	{
 		Lib.application.window.alert(msg, "VLC Error!");
-		onVLCEndReached();
+		onEndReached.dispatch();
 	}
 
 	private function onVLCEndReached():Void
@@ -158,13 +158,13 @@ class VideoHandler extends VideoBitmap
 	{
 		#if FLX_KEYBOARD
 		if (canSkip && FlxG.keys.anyJustPressed(skipKeys) && isPlaying)
-			onVLCEndReached();
+			onEndReached.dispatch();
 		#end
 
 		#if FLX_TOUCH
 		for (touch in FlxG.touches.list)
 			if (canSkip && touch.justPressed && isPlaying)
-				onVLCEndReached();
+				onEndReached.dispatch();
 		#end
 
 		if (canUseAutoResize)
