@@ -24,16 +24,6 @@ abstract Callback<T>(FlxTypedSignal<T->Void>) {
   public function dispatch(value:T) {
     this.dispatch(value);
   }
-
-  /**
-   * Add this function to the callback when attempting to do `callback = function()`
-   */
-  @:deprecated("Please use callback.add(func) instead.")
-  @:op(A = B)
-  public function addCallback(cb:T->Void):T->Void {
-    this.add(cb);
-    return cb;
-  }
 }
 
 @:forward(add, addOnce, remove, has, removeAll)
@@ -44,16 +34,6 @@ abstract CallbackVoid(FlxSignal) {
 
   public function dispatch() {
     this.dispatch();
-  }
-
-  /**
-   * Add this function to the callback when attempting to do `callback = function()`
-   */
-  @:deprecated("Please use callback.add(func) instead.")
-  @:op(A = B)
-  public function addCallback(cb:Void->Void):Void->Void {
-    this.add(cb);
-    return cb;
   }
 }
 #else
@@ -80,13 +60,6 @@ class Callback<T>
   {
     if (cb == null) return;
     registerCallback(cb, false);
-  }
-
-  @:deprecated("Please use callback.add(func) instead.")
-  @:op(A = B)
-  public function addViaAssignment(cb:T->Void):T->Void {
-    add(cb);
-    return cb;
   }
 
   /**
@@ -243,13 +216,6 @@ typedef CallbackHandler<T> =
          pendingCleanup: false
        });
    }
-
-   // @:deprecated("Please use callback.add(func) instead.")
-   // @:op(A = B)
-   // public function addViaAssignment(cb:Void->Void):Void->Void {
-   //   add(cb);
-   //   return cb;
-   // }
  }
 #end
 

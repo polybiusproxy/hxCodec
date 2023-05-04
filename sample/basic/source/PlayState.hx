@@ -1,7 +1,7 @@
 package;
 
 import flixel.FlxState;
-import hxcodec.VideoHandler;
+import hxcodec.flixel.VideoHandler;
 
 class PlayState extends FlxState
 {

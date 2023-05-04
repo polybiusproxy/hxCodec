@@ -4,6 +4,7 @@ import flixel.FlxG;
 #if FLX_KEYBOARD
 import flixel.input.keyboard.FlxKey;
 #end
+import hxcodec.base.Callback;
 import hxcodec.openfl.VideoBitmap;
 import openfl.Lib;
 import openfl.events.Event;
@@ -33,8 +34,30 @@ class VideoHandler extends VideoBitmap
 	public var maintainAspectRatio:Bool = true;
 	public var useScaleBy:ScaleType = GAME;
 
-	public var openingCallback:Void->Void = null;
-	public var finishCallback:Void->Void = null;
+	@:deprecated("Use videoHandler.onOpening.add() instead.")
+	public var openingCallback(get, set):Void->Void;
+
+	function get_openingCallback():Void->Void {
+		return () -> this.onOpening.dispatch();
+	}
+
+	function set_openingCallback(input:Void->Void):Void->Void {
+		this.onOpening.add(input);
+		return input;
+	}
+
+	@:deprecated("Use videoHandler.onEndReached.add() instead.")
+	public var finishCallback(get, set):Void->Void;
+
+	function get_finishCallback():Void->Void {
+		return () -> this.onEndReached.dispatch();
+	}
+
+	function set_finishCallback(input:Void->Void):Void->Void {
+		this.onEndReached.add(input);
+		return input;
+	}
+
 
 	#if FLX_SOUND_SYSTEM
 	private var __pauseMusic:Bool = false;
@@ -44,9 +67,9 @@ class VideoHandler extends VideoBitmap
 	{
 		super();
 
-		onOpening = onVLCOpening;
-		onEndReached = onVLCEndReached;
-		onEncounteredError = onVLCEncounteredError;
+		onOpening.add(onVLCOpening);
+		onEndReached.add(onVLCEndReached);
+		onEncounteredError.add(onVLCEncounteredError);
 
 		FlxG.addChildBelowMouse(this, IndexModifier);
 	}
@@ -61,9 +84,6 @@ class VideoHandler extends VideoBitmap
 		// The Media Player isn't `null at this point...
 		volume = Std.int(((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100));
 		#end
-
-		if (openingCallback != null)
-			openingCallback();
 	}
 
 	private function onVLCEncounteredError(msg:String):Void
@@ -98,9 +118,6 @@ class VideoHandler extends VideoBitmap
 		dispose();
 
 		FlxG.removeChild(this);
-
-		if (finishCallback != null)
-			finishCallback();
 	}
 
 	/**
