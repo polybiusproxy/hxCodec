@@ -182,7 +182,7 @@ extern class LibVLC
 // These aren't really made to be used in haxe
 typedef LibVLC_Event_Callback = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC_Event_T>, p_data:cpp.RawPointer<cpp.Void>) -> Void>;
 
-typedef LibVLC_Video_Setup_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.ChatStar,
+typedef LibVLC_Video_Setup_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.CharStar,
 		width:cpp.RawPointer<cpp.UInt32>, height:cpp.RawPointer<cpp.UInt32>, pitches:cpp.RawPointer<cpp.UInt32>,
 		lines:cpp.RawPointer<cpp.UInt32>) -> cpp.UInt32>;
 
