@@ -16,7 +16,7 @@ enum ScaleType
 	VIDEO;
 }
 
-class VideoHandler extends VideoBitmap
+class FlxVideoHandler extends VideoBitmap
 {
 	#if FLX_KEYBOARD
 	public var skipKeys:Array<FlxKey> = [ENTER, SPACE];

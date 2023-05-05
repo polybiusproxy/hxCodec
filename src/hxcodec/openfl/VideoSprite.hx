@@ -11,7 +11,8 @@ import sys.FileSystem;
 /**
  * This class allows you to play videos using sprites (Sprite).
  */
-class VideoSprite extends Sprite implements IVideoPlayer {
+class VideoSprite extends Sprite implements IVideoPlayer
+{
 	public var openingCallback:Void->Void = null;
 	public var finishCallback:Void->Void = null;
 
@@ -20,11 +21,13 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var time(get, set):Int;
 
-	function get_time():Int {
+	function get_time():Int
+	{
 		return videoBitmap.time;
 	}
 
-	function set_time(value:Int):Int {
+	function set_time(value:Int):Int
+	{
 		videoBitmap.time = value;
 		return value;
 	}
@@ -34,11 +37,13 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var position(get, set):Float;
 
-	function get_position():Float {
+	function get_position():Float
+	{
 		return videoBitmap.position;
 	}
 
-	function set_position(value:Float):Float {
+	function set_position(value:Float):Float
+	{
 		videoBitmap.position = value;
 		return value;
 	}
@@ -48,7 +53,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var duration(get, null):Float;
 
-	function get_duration():Float {
+	function get_duration():Float
+	{
 		return videoBitmap.duration;
 	}
 
@@ -57,7 +63,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var isPlaying(get, null):Bool;
 
-	function get_isPlaying():Bool {
+	function get_isPlaying():Bool
+	{
 		return videoBitmap.isPlaying;
 	}
 
@@ -66,11 +73,13 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var muteAudio(get, set):Bool;
 
-	function get_muteAudio():Bool {
+	function get_muteAudio():Bool
+	{
 		return videoBitmap.muteAudio;
 	}
 
-	function set_muteAudio(value:Bool):Bool {
+	function set_muteAudio(value:Bool):Bool
+	{
 		videoBitmap.muteAudio = value;
 		return value;
 	}
@@ -80,11 +89,13 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var playbackRate(get, set):Float;
 
-	function get_playbackRate():Float {
+	function get_playbackRate():Float
+	{
 		return videoBitmap.playbackRate;
 	}
 
-	function set_playbackRate(value:Float):Float {
+	function set_playbackRate(value:Float):Float
+	{
 		videoBitmap.playbackRate = value;
 		return value;
 	}
@@ -94,11 +105,13 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var volume(get, set):Int;
 
-	function get_volume():Int {
+	function get_volume():Int
+	{
 		return videoBitmap.volume;
 	}
 
-	function set_volume(value:Int):Int {
+	function set_volume(value:Int):Int
+	{
 		videoBitmap.volume = value;
 		return value;
 	}
@@ -126,7 +139,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var onOpening(get, null):CallbackVoid;
 
-	function get_onOpening():CallbackVoid {
+	function get_onOpening():CallbackVoid
+	{
 		return videoBitmap.onOpening;
 	}
 
@@ -136,7 +150,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var onPlaying(get, null):Callback<String>;
 
-	function get_onPlaying():Callback<String> {
+	function get_onPlaying():Callback<String>
+	{
 		return videoBitmap.onPlaying;
 	}
 
@@ -146,7 +161,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var onPaused(get, null):CallbackVoid;
 
-	function get_onPaused():CallbackVoid {
+	function get_onPaused():CallbackVoid
+	{
 		return videoBitmap.onPaused;
 	}
 
@@ -156,7 +172,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var onStopped(get, null):CallbackVoid;
 
-	function get_onStopped():CallbackVoid {
+	function get_onStopped():CallbackVoid
+	{
 		return videoBitmap.onStopped;
 	}
 
@@ -166,7 +183,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var onEndReached(get, null):CallbackVoid;
 
-	function get_onEndReached():CallbackVoid {
+	function get_onEndReached():CallbackVoid
+	{
 		return videoBitmap.onEndReached;
 	}
 
@@ -176,7 +194,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var onEncounteredError(get, null):Callback<String>;
 
-	function get_onEncounteredError():Callback<String> {
+	function get_onEncounteredError():Callback<String>
+	{
 		return videoBitmap.onEncounteredError;
 	}
 
@@ -185,7 +204,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var onForward(get, null):CallbackVoid;
 
-	function get_onForward():CallbackVoid {
+	function get_onForward():CallbackVoid
+	{
 		return videoBitmap.onForward;
 	}
 
@@ -194,11 +214,13 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 */
 	public var onBackward(get, null):CallbackVoid;
 
-	function get_onBackward():CallbackVoid {
+	function get_onBackward():CallbackVoid
+	{
 		return videoBitmap.onBackward;
 	}
 
-	public function new():Void {
+	public function new():Void
+	{
 		super();
 
 		videoBitmap = new VideoBitmap();
@@ -216,7 +238,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	 *
 	 * @return 0 if playback started (and was already started), or -1 on error.
 	 */
-	public function playVideo(Path:String, Loop:Bool = false):Int {
+	public function playVideo(Path:String, Loop:Bool = false):Int
+	{
 		// stage.addEventListener(Event.ENTER_FRAME, update);
 
 		// in case if you want to use another dir then the application one.
@@ -228,7 +251,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	}
 
 	// Internal Methods
-	private function onVLCOpening():Void {
+	private function onVLCOpening():Void
+	{
 		#if HXC_DEBUG_TRACE
 		trace("the video is opening!");
 		#end
@@ -237,7 +261,8 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 			openingCallback();
 	}
 
-	private function onVLCEncounteredError(msg:String):Void {
+	private function onVLCEncounteredError(msg:String):Void
+	{
 		Lib.application.window.alert(msg, "VLC Error!");
 		onVLCEndReached();
 	}
@@ -245,32 +270,37 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 	/**
 	 * Pause the video.
 	 */
-	public function pause():Void {
+	public function pause():Void
+	{
 		videoBitmap.pause();
 	}
 
 	/**
 	 * Resume the video.
 	 */
-	public function resume():Void {
+	public function resume():Void
+	{
 		videoBitmap.resume();
 	}
 
 	/**
 	 * Toggle the video between playing and paused.
 	 */
-	public function togglePaused():Void {
+	public function togglePaused():Void
+	{
 		videoBitmap.togglePaused();
 	}
 
 	/**
 	 * Stop the video.
 	 */
-	public function stop():Void {
+	public function stop():Void
+	{
 		videoBitmap.stop();
 	}
 
-	private function onVLCEndReached():Void {
+	private function onVLCEndReached():Void
+	{
 		#if HXC_DEBUG_TRACE
 		trace("the video reached the end!");
 		#end
@@ -286,19 +316,27 @@ class VideoSprite extends Sprite implements IVideoPlayer {
 			finishCallback();
 	}
 
-	private function update(e:Event):Void {
-		if (autoResize) {
-			if (!maintainAspectRatio && (videoBitmap.videoWidth > 0 && videoBitmap.videoHeight > 0)) {
+	private function update(e:Event):Void
+	{
+		if (autoResize)
+		{
+			if (!maintainAspectRatio && (videoBitmap.videoWidth > 0 && videoBitmap.videoHeight > 0))
+			{
 				width = Lib.current.stage.stageWidth;
 				height = Lib.current.stage.stageHeight;
-			} else if (videoBitmap.videoWidth > 0 && videoBitmap.videoHeight > 0) {
+			}
+			else if (videoBitmap.videoWidth > 0 && videoBitmap.videoHeight > 0)
+			{
 				var aspectRatio:Float = videoBitmap.videoWidth / videoBitmap.videoHeight;
 
-				if (Lib.current.stage.stageWidth / Lib.current.stage.stageHeight > aspectRatio) {
+				if (Lib.current.stage.stageWidth / Lib.current.stage.stageHeight > aspectRatio)
+				{
 					// stage is wider than video
 					width = Lib.current.stage.stageHeight * aspectRatio;
 					height = Lib.current.stage.stageHeight;
-				} else {
+				}
+				else
+				{
 					// stage is taller than video
 					width = Lib.current.stage.stageWidth;
 					height = Lib.current.stage.stageWidth * (1 / aspectRatio);

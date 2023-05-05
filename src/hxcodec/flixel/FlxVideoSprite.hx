@@ -4,22 +4,25 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.util.FlxColor;
-import hxcodec.flixel.VideoHandler;
+import hxcodec.flixel.FlxVideoHandler;
 import hxcodec.base.Callback;
 import hxcodec.base.IVideoPlayer;
 
-class VideoSprite extends FlxSprite implements IVideoPlayer {
+class FlxVideoSprite extends FlxSprite implements IVideoPlayer
+{
 	/**
 	 * The current position of the video, in milliseconds.
 	 * Set this value to seek to a specific position in the video.
 	 */
 	public var time(get, set):Int;
 
-	function get_time():Int {
+	function get_time():Int
+	{
 		return videoBitmap.time;
 	}
 
-	function set_time(value:Int):Int {
+	function set_time(value:Int):Int
+	{
 		return videoBitmap.time = value;
 	}
 
@@ -29,11 +32,13 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var position(get, set):Float;
 
-	function get_position():Float {
+	function get_position():Float
+	{
 		return videoBitmap.position;
 	}
 
-	function set_position(value:Float):Float {
+	function set_position(value:Float):Float
+	{
 		return videoBitmap.position = value;
 	}
 
@@ -42,7 +47,8 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var duration(get, null):Float;
 
-	function get_duration():Float {
+	function get_duration():Float
+	{
 		return videoBitmap.duration;
 	}
 
@@ -51,7 +57,8 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var isPlaying(get, null):Bool;
 
-	function get_isPlaying():Bool {
+	function get_isPlaying():Bool
+	{
 		return videoBitmap.isPlaying;
 	}
 
@@ -60,11 +67,13 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var muteAudio(get, set):Bool;
 
-	function get_muteAudio():Bool {
+	function get_muteAudio():Bool
+	{
 		return videoBitmap.muteAudio;
 	}
 
-	function set_muteAudio(value:Bool):Bool {
+	function set_muteAudio(value:Bool):Bool
+	{
 		return videoBitmap.muteAudio = value;
 	}
 
@@ -73,11 +82,13 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var playbackRate(get, set):Float;
 
-	function get_playbackRate():Float {
+	function get_playbackRate():Float
+	{
 		return videoBitmap.playbackRate;
 	}
 
-	function set_playbackRate(value:Float):Float {
+	function set_playbackRate(value:Float):Float
+	{
 		return videoBitmap.playbackRate = value;
 	}
 
@@ -86,22 +97,26 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var volume(get, set):Int;
 
-	function get_volume():Int {
+	function get_volume():Int
+	{
 		return videoBitmap.volume;
 	}
 
-	function set_volume(value:Int):Int {
+	function set_volume(value:Int):Int
+	{
 		return videoBitmap.volume = value;
 	}
 
 	#if FLX_KEYBOARD
 	public var canSkip(get, set):Bool;
 
-	function get_canSkip():Bool {
+	function get_canSkip():Bool
+	{
 		return videoBitmap.canSkip;
 	}
 
-	function set_canSkip(value:Bool):Bool {
+	function set_canSkip(value:Bool):Bool
+	{
 		return videoBitmap.canSkip = value;
 	}
 	#end
@@ -111,9 +126,11 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var canvasWidth(default, set):Null<Int> = null;
 
-	function set_canvasWidth(value:Int):Int {
+	function set_canvasWidth(value:Int):Int
+	{
 		this.canvasWidth = value;
-		if (canvasWidth != null && canvasHeight != null) {
+		if (canvasWidth != null && canvasHeight != null)
+		{
 			setGraphicSize(canvasWidth, canvasHeight);
 			updateHitbox();
 		}
@@ -125,25 +142,29 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var canvasHeight(default, set):Null<Int> = null;
 
-	function set_canvasHeight(value:Int):Int {
+	function set_canvasHeight(value:Int):Int
+	{
 		this.canvasHeight = value;
-		if (canvasWidth != null && canvasHeight != null) {
+		if (canvasWidth != null && canvasHeight != null)
+		{
 			setGraphicSize(canvasWidth, canvasHeight);
 			updateHitbox();
 		}
 		return this.canvasHeight;
 	}
 
-	var videoBitmap:VideoHandler;
+	var videoBitmap:FlxVideoHandler;
 
 	@:deprecated("Use videoHandler.onOpening.add() instead.")
 	public var openingCallback(get, set):Void->Void;
 
-	function get_openingCallback():Void->Void {
+	function get_openingCallback():Void->Void
+	{
 		return () -> this.onOpening.dispatch();
 	}
 
-	function set_openingCallback(input:Void->Void):Void->Void {
+	function set_openingCallback(input:Void->Void):Void->Void
+	{
 		this.onOpening.add(input);
 		return input;
 	}
@@ -151,11 +172,13 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	@:deprecated("Use videoHandler.onEndReached.add() instead.")
 	public var finishCallback(get, set):Void->Void;
 
-	function get_finishCallback():Void->Void {
+	function get_finishCallback():Void->Void
+	{
 		return () -> this.onEndReached.dispatch();
 	}
 
-	function set_finishCallback(input:Void->Void):Void->Void {
+	function set_finishCallback(input:Void->Void):Void->Void
+	{
 		this.onEndReached.add(input);
 		return input;
 	}
@@ -165,7 +188,8 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var onOpening(get, null):CallbackVoid;
 
-	function get_onOpening():CallbackVoid {
+	function get_onOpening():CallbackVoid
+	{
 		return videoBitmap.onOpening;
 	}
 
@@ -175,7 +199,8 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var onPlaying(get, null):Callback<String>;
 
-	function get_onPlaying():Callback<String> {
+	function get_onPlaying():Callback<String>
+	{
 		return videoBitmap.onPlaying;
 	}
 
@@ -184,7 +209,8 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var onPaused(get, null):CallbackVoid;
 
-	function get_onPaused():CallbackVoid {
+	function get_onPaused():CallbackVoid
+	{
 		return videoBitmap.onPaused;
 	}
 
@@ -193,7 +219,8 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var onStopped(get, null):CallbackVoid;
 
-	function get_onStopped():CallbackVoid {
+	function get_onStopped():CallbackVoid
+	{
 		return videoBitmap.onStopped;
 	}
 
@@ -202,7 +229,8 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var onEndReached(get, null):CallbackVoid;
 
-	function get_onEndReached():CallbackVoid {
+	function get_onEndReached():CallbackVoid
+	{
 		return videoBitmap.onEndReached;
 	}
 
@@ -211,7 +239,8 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var onEncounteredError(get, null):Callback<String>;
 
-	function get_onEncounteredError():Callback<String> {
+	function get_onEncounteredError():Callback<String>
+	{
 		return videoBitmap.onEncounteredError;
 	}
 
@@ -220,7 +249,8 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var onForward(get, null):CallbackVoid;
 
-	function get_onForward():CallbackVoid {
+	function get_onForward():CallbackVoid
+	{
 		return videoBitmap.onForward;
 	}
 
@@ -229,22 +259,25 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 */
 	public var onBackward(get, null):CallbackVoid;
 
-	function get_onBackward():CallbackVoid {
+	function get_onBackward():CallbackVoid
+	{
 		return videoBitmap.onBackward;
 	}
 
 	public var graphicLoadedCallback:CallbackVoid = null;
 
-	public function new(X:Float = 0, Y:Float = 0):Void {
+	public function new(X:Float = 0, Y:Float = 0):Void
+	{
 		super(X, Y);
 
 		makeGraphic(1, 1, FlxColor.TRANSPARENT);
 
-		videoBitmap = new VideoHandler();
+		videoBitmap = new FlxVideoHandler();
 		videoBitmap.canUseAutoResize = false;
 		videoBitmap.visible = false;
 
-		videoBitmap.onEndReached.add(function() {
+		videoBitmap.onEndReached.add(function()
+		{
 			oneTime = false;
 
 			kill();
@@ -253,12 +286,15 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 
 	private var oneTime:Bool = false;
 
-	override function update(elapsed:Float):Void {
+	override function update(elapsed:Float):Void
+	{
 		super.update(elapsed);
 
-		if ((videoBitmap != null && (videoBitmap.isPlaying && videoBitmap.bitmapData != null)) && !oneTime) {
+		if ((videoBitmap != null && (videoBitmap.isPlaying && videoBitmap.bitmapData != null)) && !oneTime)
+		{
 			var graphic:FlxGraphic = FlxG.bitmap.add(videoBitmap.bitmapData, false, videoBitmap.mrl); // mrl usually starts with file:/// but is fine ig
-			if (graphic.imageFrame.frame == null) {
+			if (graphic.imageFrame.frame == null)
+			{
 				#if HXC_DEBUG_TRACE
 				trace('the frame of the image is null?');
 				#end
@@ -267,7 +303,8 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 
 			loadGraphic(graphic);
 
-			if (canvasWidth != null && canvasHeight != null) {
+			if (canvasWidth != null && canvasHeight != null)
+			{
 				setGraphicSize(canvasWidth, canvasHeight);
 				updateHitbox();
 			}
@@ -283,21 +320,24 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 * Stop the video.
 	 * This will reset the video to the beginning and stop playback.
 	 */
-	public function stop():Void {
+	public function stop():Void
+	{
 		videoBitmap.stop();
 	}
 
 	/**
 	 * Pause the video.
 	 */
-	public function pause():Void {
+	public function pause():Void
+	{
 		videoBitmap.pause();
 	}
 
 	/**
 	 * Resume the video, if it is paused.
 	 */
-	public function resume():Void {
+	public function resume():Void
+	{
 		videoBitmap.resume();
 	}
 
@@ -305,11 +345,13 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 * If the video is playing, it will be paused.
 	 * If the video is paused, it will be resumed.
 	 */
-	public function togglePaused():Void {
+	public function togglePaused():Void
+	{
 		videoBitmap.togglePaused();
 	}
 
-	override function destroy():Void {
+	override function destroy():Void
+	{
 		if (videoBitmap != null && videoBitmap.onEndReached != null)
 			videoBitmap.onEndReached.dispatch();
 
@@ -323,7 +365,8 @@ class VideoSprite extends FlxSprite implements IVideoPlayer {
 	 *
 	 * @return 0 if playback started (and was already started), or -1 on error.
 	 */
-	public function playVideo(Path:String, Loop:Bool = false):Int {
+	public function playVideo(Path:String, Loop:Bool = false):Int
+	{
 		return videoBitmap.playVideo(Path, Loop);
 	}
 }

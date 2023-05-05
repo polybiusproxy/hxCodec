@@ -11,7 +11,7 @@ import hxcodec.base.Callback;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.display3D.textures.RectangleTexture;
+import openfl.display3D.textures.Texture;
 import openfl.events.Event;
 import openfl.utils.ByteArray;
 
@@ -24,6 +24,35 @@ using StringTools;
  * This class lets you to use LibVLC externs as a bitmap that you can displaylist along other items.
  */
 @:cppNamespaceCode('
+#ifndef vasprintf // https://gist.github.com/cmitu/b67a7ed67b19176f35f1ac06099d02af#file-sdlvlc-cxx-L26
+int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
+{
+	int count = vsnprintf(NULL, 0, fmt, ap); // Query the buffer size required.
+
+	*sptr = NULL;
+
+	if (count >= 0)
+	{
+		char* p = static_cast<char*>(malloc(count + 1)); // Allocate memory for it.
+
+		if (p == NULL)
+			return -1;
+
+		if (vsnprintf(p, count + 1, fmt, ap) == count) // We should have used exactly what was required.
+		{
+			*sptr = p;
+		}
+		else // Otherwise something is wrong, likely a bug in vsnprintf. If so free the memory and report the error.
+		{
+			free(p);
+			return -1;
+		}
+	}
+
+	return count;
+}
+#endif // vasprintf
+
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*)(*data);
@@ -50,7 +79,7 @@ static void *lock(void *data, void **p_pixels)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 	*p_pixels = self->pixels;
-	return nullptr; /* picture identifier, not needed here */
+	return nullptr; // picture identifier, not needed here
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
@@ -86,7 +115,8 @@ static void callbacks(const libvlc_event_t *event, void *data)
 	}
 }')
 @:keep
-class VLCBitmap extends Bitmap {
+class VLCBitmap extends Bitmap
+{
 	// Variables
 	public var videoWidth(default, null):cpp.UInt32 = 0;
 	public var videoHeight(default, null):cpp.UInt32 = 0;
@@ -136,6 +166,7 @@ class VLCBitmap extends Bitmap {
 
 	/**
 	 * Callback for when the media player encounters an error.
+	 * @param error The encountered error.
 	 */
 	public var onEncounteredError(default, null):Callback<String>;
 
@@ -153,7 +184,7 @@ class VLCBitmap extends Bitmap {
 	private var flags:Array<Bool> = [];
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var buffer:BytesData = [];
-	private var texture:RectangleTexture;
+	private var texture:Texture;
 
 	// LibVLC
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
@@ -161,18 +192,13 @@ class VLCBitmap extends Bitmap {
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
 	private var eventManager:cpp.RawPointer<LibVLC_EventManager_T>;
 
-	public function new():Void {
+	public function new():Void
+	{
 		super(bitmapData, AUTO, true);
 
 		for (event in 0...7)
 			flags[event] = false;
 
-		instance = LibVLC.create(0, null);
-
-		setupCallbacks();
-	}
-
-	function setupCallbacks():Void {
 		onOpening = new CallbackVoid();
 		onPlaying = new Callback<String>();
 		onStopped = new CallbackVoid();
@@ -181,17 +207,23 @@ class VLCBitmap extends Bitmap {
 		onEncounteredError = new Callback<String>();
 		onForward = new CallbackVoid();
 		onBackward = new CallbackVoid();
+
+		instance = LibVLC.create(0, null);
 	}
 
 	// Playback Methods
-	public function play(?location:String = null, loop:Bool = false):Int {
-		if (location.startsWith('https://') || location.startsWith('file://')) {
+	public function play(?location:String = null, loop:Bool = false):Int
+	{
+		if (location.startsWith('https://') || location.startsWith('file://'))
+		{
 			#if HXC_DEBUG_TRACE
 			trace("setting location to: " + location);
 			#end
 
 			mediaItem = LibVLC.media_new_location(instance, location);
-		} else {
+		}
+		else
+		{
 			final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
 
 			#if HXC_DEBUG_TRACE
@@ -207,12 +239,14 @@ class VLCBitmap extends Bitmap {
 		LibVLC.media_add_option(mediaItem, loop ? "input-repeat=65535" : "input-repeat=0");
 		LibVLC.media_release(mediaItem);
 
-		if (texture != null) {
+		if (texture != null)
+		{
 			texture.dispose();
 			texture = null;
 		}
 
-		if (bitmapData != null) {
+		if (bitmapData != null)
+		{
 			bitmapData.dispose();
 			bitmapData = null;
 		}
@@ -237,27 +271,32 @@ class VLCBitmap extends Bitmap {
 		return LibVLC.media_player_play(mediaPlayer);
 	}
 
-	public function stop():Void {
+	public function stop():Void
+	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_stop(mediaPlayer);
 	}
 
-	public function pause():Void {
+	public function pause():Void
+	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_pause(mediaPlayer, 1);
 	}
 
-	public function resume():Void {
+	public function resume():Void
+	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_pause(mediaPlayer, 0);
 	}
 
-	public function togglePaused():Void {
+	public function togglePaused():Void
+	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_pause(mediaPlayer);
 	}
 
-	public function dispose():Void {
+	public function dispose():Void
+	{
 		#if HXC_DEBUG_TRACE
 		trace('disposing...');
 		#end
@@ -268,12 +307,14 @@ class VLCBitmap extends Bitmap {
 		if (stage.hasEventListener(Event.ENTER_FRAME))
 			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 
-		if (texture != null) {
+		if (texture != null)
+		{
 			texture.dispose();
 			texture = null;
 		}
 
-		if (bitmapData != null) {
+		if (bitmapData != null)
+		{
 			bitmapData.dispose();
 			bitmapData = null;
 		}
@@ -298,33 +339,35 @@ class VLCBitmap extends Bitmap {
 	// Internal Methods
 	private var currentTime:Float = 0;
 
-	private function onEnterFrame(?e:Event):Void {
+	private function onEnterFrame(?e:Event):Void
+	{
 		checkFlags();
 
-		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null) {
-			var time:Int = Lib.getTimer();
-			var elements:Int = videoWidth * videoHeight * 4;
-			render(Math.abs(time - currentTime), elements);
-		}
+		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+			renderVideo(Math.abs(Lib.getTimer() - currentTime), videoWidth * videoHeight * 4);
 	}
 
-	private function render(deltaTime:Float, elementsCount:Int):Void {
+	private function renderVideo(deltaTime:Float, elementsCount:UInt):Void
+	{
 		// Initialize the `texture` if necessary.
 		if (texture == null)
-			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
+			texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
 
 		// Initialize the `bitmapData` if necessary.
 		if (bitmapData == null && texture != null)
 			bitmapData = BitmapData.fromTexture(texture);
 
-		if (deltaTime > (1000 / (fps * rate))) {
+		if (deltaTime > (1000 / (fps * rate)))
+		{
 			currentTime = deltaTime;
 
 			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), elementsCount);
 
-			if (texture != null && (buffer != null && buffer.length > 0)) {
+			if (texture != null && (buffer != null && buffer.length > 0))
+			{
 				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= elementsCount) {
+				if (bytes.length >= elementsCount)
+				{
 					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
 					width++;
 					width--;
@@ -337,51 +380,62 @@ class VLCBitmap extends Bitmap {
 		}
 	}
 
-	private function checkFlags():Void {
-		if (flags[0]) {
+	private function checkFlags():Void
+	{
+		if (flags[0])
+		{
 			flags[0] = false;
 			onOpening.dispatch();
 		}
 
-		if (flags[1]) {
+		if (flags[1])
+		{
 			flags[1] = false;
 			onPlaying.dispatch(mrl);
 		}
 
-		if (flags[2]) {
+		if (flags[2])
+		{
 			flags[2] = false;
 			onPaused.dispatch();
 		}
 
-		if (flags[3]) {
+		if (flags[3])
+		{
 			flags[3] = false;
 			onStopped.dispatch();
 		}
 
-		if (flags[4]) {
+		if (flags[4])
+		{
 			flags[4] = false;
 			onEndReached.dispatch();
 		}
 
-		if (flags[5]) {
+		if (flags[5])
+		{
 			flags[5] = false;
 			onEncounteredError.dispatch(cast(LibVLC.errmsg(), String));
 		}
 
-		if (flags[6]) {
+		if (flags[6])
+		{
 			flags[6] = false;
 			onForward.dispatch();
 		}
 
-		if (flags[7]) {
+		if (flags[7])
+		{
 			flags[7] = false;
 			onBackward.dispatch();
 		}
 	}
 
 	// Get & Set Methods
-	@:noCompletion private function get_time():Int {
-		if (mediaPlayer != null) {
+	@:noCompletion private function get_time():Int
+	{
+		if (mediaPlayer != null)
+		{
 			#if (haxe >= "4.3.0")
 			return LibVLC.media_player_get_time(mediaPlayer).toInt();
 			#else
@@ -392,29 +446,34 @@ class VLCBitmap extends Bitmap {
 		return 0;
 	}
 
-	@:noCompletion private function set_time(value:Int):Int {
+	@:noCompletion private function set_time(value:Int):Int
+	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_time(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion private function get_position():Float {
+	@:noCompletion private function get_position():Float
+	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_position(mediaPlayer);
 
 		return 0;
 	}
 
-	@:noCompletion private function set_position(value:Float):Float {
+	@:noCompletion private function set_position(value:Float):Float
+	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_position(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion private function get_length():Int {
-		if (mediaPlayer != null) {
+	@:noCompletion private function get_length():Int
+	{
+		if (mediaPlayer != null)
+		{
 			#if (haxe >= "4.3.0")
 			return LibVLC.media_player_get_length(mediaPlayer).toInt();
 			#else
@@ -425,8 +484,10 @@ class VLCBitmap extends Bitmap {
 		return 0;
 	}
 
-	@:noCompletion private function get_duration():Int {
-		if (mediaItem != null) {
+	@:noCompletion private function get_duration():Int
+	{
+		if (mediaItem != null)
+		{
 			#if (haxe >= "4.3.0")
 			return LibVLC.media_get_duration(mediaItem).toInt();
 			#else
@@ -437,29 +498,34 @@ class VLCBitmap extends Bitmap {
 		return 0;
 	}
 
-	@:noCompletion private function get_mrl():String {
+	@:noCompletion private function get_mrl():String
+	{
 		if (mediaItem != null)
 			return cast(LibVLC.media_get_mrl(mediaItem), String);
 
 		return null;
 	}
 
-	@:noCompletion private function get_volume():Int {
+	@:noCompletion private function get_volume():Int
+	{
 		if (mediaPlayer != null)
 			return LibVLC.audio_get_volume(mediaPlayer);
 
 		return 0;
 	}
 
-	@:noCompletion private function set_volume(value:Int):Int {
+	@:noCompletion private function set_volume(value:Int):Int
+	{
 		if (mediaPlayer != null)
 			LibVLC.audio_set_volume(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion private function get_delay():Int {
-		if (mediaPlayer != null) {
+	@:noCompletion private function get_delay():Int
+	{
+		if (mediaPlayer != null)
+		{
 			#if (haxe >= "4.3.0")
 			return LibVLC.audio_get_delay(mediaPlayer).toInt();
 			#else
@@ -470,84 +536,96 @@ class VLCBitmap extends Bitmap {
 		return 0;
 	}
 
-	@:noCompletion private function set_delay(value:Int):Int {
+	@:noCompletion private function set_delay(value:Int):Int
+	{
 		if (mediaPlayer != null)
 			LibVLC.audio_set_delay(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion private function get_rate():Float {
+	@:noCompletion private function get_rate():Float
+	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_rate(mediaPlayer);
 
 		return 0;
 	}
 
-	@:noCompletion private function set_rate(value:Float):Float {
+	@:noCompletion private function set_rate(value:Float):Float
+	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_rate(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion private function get_fps():Float {
+	@:noCompletion private function get_fps():Float
+	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_fps(mediaPlayer);
 
 		return 0;
 	}
 
-	@:noCompletion private function get_isPlaying():Bool {
+	@:noCompletion private function get_isPlaying():Bool
+	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_is_playing(mediaPlayer);
 
 		return false;
 	}
 
-	@:noCompletion private function get_isSeekable():Bool {
+	@:noCompletion private function get_isSeekable():Bool
+	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_is_seekable(mediaPlayer);
 
 		return false;
 	}
 
-	@:noCompletion private function get_canPause():Bool {
+	@:noCompletion private function get_canPause():Bool
+	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_can_pause(mediaPlayer);
 
 		return false;
 	}
 
-	@:noCompletion function get_muteAudio():Bool {
+	@:noCompletion function get_muteAudio():Bool
+	{
 		if (mediaPlayer != null)
 			return LibVLC.audio_get_mute(mediaPlayer) > 0;
 
 		return false;
 	}
 
-	@:noCompletion function set_muteAudio(value:Bool):Bool {
+	@:noCompletion function set_muteAudio(value:Bool):Bool
+	{
 		if (mediaPlayer != null)
 			LibVLC.audio_set_mute(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion function get_playbackRate():Float {
+	@:noCompletion function get_playbackRate():Float
+	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_rate(mediaPlayer);
 
 		return 0;
 	}
 
-	@:noCompletion function set_playbackRate(value:Float):Float {
+	@:noCompletion function set_playbackRate(value:Float):Float
+	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_rate(mediaPlayer, value);
 
 		return value;
 	}
 
-	@:noCompletion private override function set_height(value:Float):Float {
+	@:noCompletion private override function set_height(value:Float):Float
+	{
 		if (__bitmapData != null)
 			scaleY = value / __bitmapData.height;
 		else if (videoHeight != 0)
@@ -558,7 +636,8 @@ class VLCBitmap extends Bitmap {
 		return value;
 	}
 
-	@:noCompletion private override function set_width(value:Float):Float {
+	@:noCompletion private override function set_width(value:Float):Float
+	{
 		if (__bitmapData != null)
 			scaleX = value / __bitmapData.width;
 		else if (videoWidth != 0)
@@ -569,7 +648,8 @@ class VLCBitmap extends Bitmap {
 		return value;
 	}
 
-	@:noCompletion private override function set_bitmapData(value:BitmapData):BitmapData {
+	@:noCompletion private override function set_bitmapData(value:BitmapData):BitmapData
+	{
 		__bitmapData = value;
 		__setRenderDirty();
 		__imageVersion = -1;
