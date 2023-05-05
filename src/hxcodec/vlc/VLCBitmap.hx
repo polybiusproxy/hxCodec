@@ -240,11 +240,8 @@ class VLCBitmap extends Bitmap
 		LibVLC.media_add_option(mediaItem, loop ? "input-repeat=65535" : "input-repeat=0");
 		LibVLC.media_release(mediaItem);
 
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
+		if (buffer != null && buffer.length > 0)
+			buffer = [];
 
 		if (bitmapData != null)
 		{
@@ -252,8 +249,11 @@ class VLCBitmap extends Bitmap
 			bitmapData = null;
 		}
 
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), null);
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
@@ -308,11 +308,8 @@ class VLCBitmap extends Bitmap
 		if (stage.hasEventListener(Event.ENTER_FRAME))
 			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
+		if (buffer != null && buffer.length > 0)
+			buffer = [];
 
 		if (bitmapData != null)
 		{
@@ -320,8 +317,11 @@ class VLCBitmap extends Bitmap
 			bitmapData = null;
 		}
 
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
 
 		onOpening = null;
 		onPlaying = null;
