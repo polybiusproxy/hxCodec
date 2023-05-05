@@ -11,9 +11,6 @@ class PlayState extends FlxState {
 	override public function create():Void {
 		this.bgColor = 0xFFFF00FF;
 
-		video = new VideoHandler();
-		video.playVideo('assets/video.mp4');
-
 		var text:FlxText = new FlxText(0, 0, FlxG.width, "");
 		text.setFormat(null, 16, 0xFFFFFFFF, "center");
 
@@ -28,7 +25,8 @@ class PlayState extends FlxState {
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.Q) {
-			video.playVideo('assets/video.mp4');
+			video = new VideoHandler();
+			video.playVideo('assets/video.mp4');	
 		}
 
 		if (FlxG.keys.justPressed.A) {
