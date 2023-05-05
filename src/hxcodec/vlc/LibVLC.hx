@@ -177,9 +177,26 @@ extern class LibVLC
 
 	@:native("libvlc_video_get_size")
 	static function video_get_size(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, num:UInt, width:cpp.Pointer<cpp.UInt32>, height:cpp.Pointer<cpp.UInt32>):Int;
+
+	@:native('libvlc_log_get_context')
+	static function log_get_context(ctx:cpp.RawConstPointer<LibVLC_Log_T>, module:cpp.RawPointer<cpp.ConstCharStar>, file:cpp.RawPointer<cpp.ConstCharStar>, line:cpp.Pointer<cpp.UInt32>):Void;
+
+	@:native('libvlc_log_get_object')
+	static function log_get_object(ctx:cpp.RawConstPointer<LibVLC_Log_T>, name:cpp.RawPointer<cpp.ConstCharStar>, header:cpp.RawPointer<cpp.ConstCharStar>, id:cpp.Pointer<cpp.UInt32>):Void;
+
+	@:native('libvlc_log_unset')
+	static function log_unset(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
+
+	@:native('libvlc_log_set')
+	static function log_set(p_instance:cpp.RawPointer<LibVLC_Instance_T>, cb:LibVLC_Log_CB, data:cpp.Pointer<cpp.Void>):Void;
+
+	@:native('libvlc_log_set_file')
+	static function log_set_file(p_instance:cpp.RawPointer<LibVLC_Instance_T>, stream:cpp.FILE):Void;
 }
 
-// These aren't really made to be used in haxe
+typedef LibVLC_Log_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, level:Int, ctx:cpp.RawConstPointer<LibVLC_Log_T>, fmt:cpp.ConstCharStar,
+		args:cpp.VarList) -> Void>;
+
 typedef LibVLC_Event_Callback = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC_Event_T>, p_data:cpp.RawPointer<cpp.Void>) -> Void>;
 
 typedef LibVLC_Video_Setup_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.CharStar, width:cpp.RawPointer<cpp.UInt32>,
@@ -195,6 +212,12 @@ typedef LibVLC_Video_Display_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.
 
 @:native("void *const *")
 extern class VoidStarConstStar {}
+
+@:buildXml('<include name="${haxelib:hxvlc}/project/Build.xml" />')
+@:include("vlc.h")
+@:keep
+@:native("libvlc_log_t")
+extern class LibVLC_Log_T {}
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
@@ -310,6 +333,14 @@ extern class LibVLC_MediaPlayer_SeekableChanged
 extern class LibVLC_MediaPlayer_PausableChanged
 {
 	var new_pausable:Bool;
+}
+
+enum abstract LibVLC_Log_Level(Int) from Int to Int
+{
+	final LIBVLC_DEBUG = 0; /* Debug message */
+	final LIBVLC_NOTICE = 2; /* Important informational message */
+	final LIBVLC_WARNING = 3; /* Warning (potential error) message */
+	final LIBVLC_ERROR = 4; /* Error message */
 }
 
 enum abstract LibVLC_EventType(Int) from Int to Int
