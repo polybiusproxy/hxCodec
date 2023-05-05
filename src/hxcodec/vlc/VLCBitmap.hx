@@ -118,6 +118,26 @@ static void callbacks(const libvlc_event_t *event, void *data)
 @:keep
 class VLCBitmap extends Bitmap
 {
+	// LibVLC Static Functions
+	private static function logging(data:cpp.RawPointer<cpp.Void>, level:Int, ctx:cpp.RawConstPointer<LibVLC_Log_T>, fmt:cpp.ConstCharStar, args:cpp.VarList):Void
+	{
+		var msg:cpp.CharStar = "";
+		if (untyped __cpp__('vasprintf({0}, {1}, {2})', cpp.RawPointer.addressOf(msg), fmt, args) < 0)
+			msg = "Failed to format log message.";
+
+		switch (cast(level, LibVLC_Log_Level))
+		{
+			case LIBVLC_DEBUG: /* Debug message */
+				Sys.println("[ DEBUG ] " + cast(msg, String));
+			case LIBVLC_NOTICE: /* Important informational message */
+				Sys.println("[ INFO ] " + cast(msg, String));
+			case LIBVLC_WARNING: /* Warning (potential error) message */
+				Sys.println("[ WARING ] " + cast(msg, String));
+			case LIBVLC_ERROR: /* Error message */
+				Sys.println("[ ERROR ] " + cast(msg, String));
+		}
+	}
+
 	// Variables
 	public var videoWidth(default, null):cpp.UInt32 = 0;
 	public var videoHeight(default, null):cpp.UInt32 = 0;
@@ -210,6 +230,8 @@ class VLCBitmap extends Bitmap
 		onBackward = new CallbackVoid();
 
 		instance = LibVLC.create(0, null);
+
+		LibVLC.log_set(instance, cpp.Function.fromStaticFunction(logging), untyped __cpp__('this'));
 	}
 
 	// Playback Methods
