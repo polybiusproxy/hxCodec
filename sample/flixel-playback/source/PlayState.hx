@@ -3,10 +3,10 @@ package;
 import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.FlxState;
-import hxcodec.flixel.VideoHandler;
+import hxcodec.flixel.FlxVideoHandler;
 
 class PlayState extends FlxState {
-	var video:VideoHandler;
+	var video:FlxVideoHandler;
 
 	override public function create():Void {
 		this.bgColor = 0xFFFF00FF;
@@ -25,7 +25,7 @@ class PlayState extends FlxState {
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.Q) {
-			video = new VideoHandler();
+			video = new FlxVideoHandler();
 			video.playVideo('assets/video.mp4');	
 		}
 

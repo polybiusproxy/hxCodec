@@ -30,7 +30,7 @@ class FlxVideoHandler extends VideoBitmap
 	public var canUseSound:Bool = true;
 	#end
 
-	public var canUseAutoResize:Bool = false;
+	public var canUseAutoResize:Bool = true;
 	public var maintainAspectRatio:Bool = true;
 	public var useScaleBy:ScaleType = GAME;
 

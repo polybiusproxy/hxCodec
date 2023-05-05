@@ -1,7 +1,7 @@
 package;
 
 import flixel.FlxState;
-import hxcodec.flixel.VideoHandler;
+import hxcodec.flixel.FlxVideoHandler;
 
 class PlayState extends FlxState
 {
@@ -9,7 +9,7 @@ class PlayState extends FlxState
 	{
 		this.bgColor = 0xFFFF00FF;
 
-		var video:VideoHandler = new VideoHandler();
+		var video:FlxVideoHandler = new FlxVideoHandler();
 		video.playVideo('assets/video.mp4');
 
 		super.create();

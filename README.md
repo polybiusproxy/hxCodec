@@ -1,6 +1,6 @@
 # hxCodec
 
-![](https://img.shields.io/github/repo-size/polybiusproxy/hxCodec) ![](https://badgen.net/github/open-issues/polybiusproxy/hxCodec) ![](https://badgen.net/badge/license/MIT/green)
+![](https://img.shields.io/github/repo-size/polybiusproxy/hxCodec) ![](https://badgen.net/github/open-issues/polybiusproxy/hxCodec) ![](https://badgen.net/badge/license/MPL2.0/green)
 
 A library which adds native video support on HaxeFlixel.
 
@@ -93,7 +93,7 @@ You will also have to put the location manually in the paths and to copy that vi
 
 ## Licensing
 
-**hxCodec** is made available under the **MIT License**. Check [LICENSE](./LICENSE) for more information.
+**hxCodec** is made available under the **Mozilla Public License 2.0**. Check [LICENSE](./LICENSE) for more information.
 
 ![](https://github.com/videolan/vlc/blob/master/share/icons/256x256/vlc.png)
 
