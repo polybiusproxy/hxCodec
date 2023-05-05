@@ -23,6 +23,7 @@ using StringTools;
  *
  * This class lets you to use LibVLC externs as a bitmap that you can displaylist along other items.
  */
+@:headerInclude('stdio.h')
 @:cppNamespaceCode('
 #ifndef vasprintf // https://gist.github.com/cmitu/b67a7ed67b19176f35f1ac06099d02af#file-sdlvlc-cxx-L26
 int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
