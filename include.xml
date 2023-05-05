@@ -32,4 +32,6 @@
 		<ndll name="vlc" dir="project/vlc/lib" />
 	</section>
 
+	<source path="src" />
+
 </extension>
