@@ -24,35 +24,6 @@ using StringTools;
  */
 @:headerInclude('stdio.h')
 @:cppNamespaceCode('
-#ifndef vasprintf // https://gist.github.com/cmitu/b67a7ed67b19176f35f1ac06099d02af#file-sdlvlc-cxx-L26
-int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
-{
-	int count = vsnprintf(NULL, 0, fmt, ap); // Query the buffer size required.
-
-	*sptr = NULL;
-
-	if (count >= 0)
-	{
-		char* p = static_cast<char*>(malloc(count + 1)); // Allocate memory for it.
-
-		if (p == NULL)
-			return -1;
-
-		if (vsnprintf(p, count + 1, fmt, ap) == count) // We should have used exactly what was required.
-		{
-			*sptr = p;
-		}
-		else // Otherwise something is wrong, likely a bug in vsnprintf. If so free the memory and report the error.
-		{
-			free(p);
-			return -1;
-		}
-	}
-
-	return count;
-}
-#endif // vasprintf
-
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*)(*data);
@@ -117,26 +88,6 @@ static void callbacks(const libvlc_event_t *event, void *data)
 @:keep
 class VLCBitmap extends Bitmap
 {
-	// LibVLC Static Functions
-	private static function logging(data:cpp.RawPointer<cpp.Void>, level:Int, ctx:cpp.RawConstPointer<LibVLC_Log_T>, fmt:cpp.ConstCharStar, args:cpp.VarList):Void
-	{
-		var msg:cpp.CharStar = "";
-		if (untyped __cpp__('vasprintf({0}, {1}, {2})', cpp.RawPointer.addressOf(msg), fmt, args) < 0)
-			msg = "Failed to format log message.";
-
-		switch (cast(level, LibVLC_Log_Level))
-		{
-			case LIBVLC_DEBUG: /* Debug message */
-				Sys.println("[ DEBUG ] " + cast(msg, String));
-			case LIBVLC_NOTICE: /* Important informational message */
-				Sys.println("[ INFO ] " + cast(msg, String));
-			case LIBVLC_WARNING: /* Warning (potential error) message */
-				Sys.println("[ WARING ] " + cast(msg, String));
-			case LIBVLC_ERROR: /* Error message */
-				Sys.println("[ ERROR ] " + cast(msg, String));
-		}
-	}
-
 	// Variables
 	public var videoWidth(default, null):UInt = 0;
 	public var videoHeight(default, null):UInt = 0;
@@ -202,6 +153,7 @@ class VLCBitmap extends Bitmap
 
 	// Declarations
 	private var flags:Array<Bool> = [];
+	private var oldTime:Float = 0;
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var buffer:BytesData = [];
 	private var texture:Texture;
@@ -229,8 +181,6 @@ class VLCBitmap extends Bitmap
 		onBackward = new CallbackVoid();
 
 		instance = LibVLC.create(0, null);
-
-		// LibVLC.log_set(instance, cpp.Function.fromStaticFunction(logging), untyped __cpp__('this'));
 	}
 
 	// Playback Methods
@@ -566,7 +516,7 @@ class VLCBitmap extends Bitmap
 			if (bitmapData == null && texture != null)
 				bitmapData = BitmapData.fromTexture(texture);
 
-			__renderVideo(deltaTime);
+			__renderVideo();
 		}
 	}
 
@@ -603,25 +553,30 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Internal Methods
-	@:noCompletion private function __renderVideo(deltaTime:Int):Void
+	@:noCompletion private function __renderVideo():Void
 	{
-		// TODO: Render with it's playbackRate and FPS, Std.int(1000 / (fps * rate))
+		var currentTime:Int = Lib.getTimer();
 
-		cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
-
-		if (texture != null && (buffer != null && buffer.length > 0))
+		if (Math.abs(time - oldTime) > Std.int(1000 / (fps * rate)))
 		{
-			var bytes:Bytes = Bytes.ofData(buffer);
-			if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
+			oldTime = currentTime;
+
+			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
+
+			if (texture != null && (buffer != null && buffer.length > 0))
 			{
-				texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
-				width++;
-				width--;
+				var bytes:Bytes = Bytes.ofData(buffer);
+				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
+				{
+					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
+					width++;
+					width--;
+				}
+				#if HXC_DEBUG_TRACE
+				else
+					trace("Too small frame, can't render :(");
+				#end
 			}
-			#if HXC_DEBUG_TRACE
-			else
-				trace("Too small frame, can't render :(");
-			#end
 		}
 	}
 
