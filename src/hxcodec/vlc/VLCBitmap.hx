@@ -231,7 +231,7 @@ class VLCBitmap extends Bitmap
 
 		instance = LibVLC.create(0, null);
 
-		LibVLC.log_set(instance, cpp.Function.fromStaticFunction(logging), untyped __cpp__('this'));
+		// LibVLC.log_set(instance, cpp.Function.fromStaticFunction(logging), untyped __cpp__('this'));
 	}
 
 	// Playback Methods
