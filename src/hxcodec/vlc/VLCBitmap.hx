@@ -356,74 +356,6 @@ class VLCBitmap extends Bitmap
 		#end
 	}
 
-	// Internal Methods
-
-	private function __renderVideo():Void
-	{
-		var currentTime:Int = Lib.getTimer();
-
-		if (Math.abs(currentTime - oldTime) > (1000 / (fps * rate)))
-		{
-			oldTime = currentTime;
-
-			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
-
-			if (texture != null && (buffer != null && buffer.length > 0))
-			{
-				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
-				{
-					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
-					width++;
-					width--;
-				}
-				#if HXC_DEBUG_TRACE
-				else
-					trace("Too small frame, can't render :(");
-				#end
-			}
-		}
-	}
-
-	private function __checkFlags():Void
-	{
-		for (i in 0...7)
-		{
-			if (flags[i])
-			{
-				flags[i] = false;
-
-				switch (i)
-				{
-					case 0:
-						if (onOpening != null)
-							onOpening.dispatch();
-					case 1:
-						if (onPlaying != null)
-							onPlaying.dispatch(mrl);
-					case 2:
-						if (onPaused != null)
-							onPaused.dispatch();
-					case 3:
-						if (onStopped != null)
-							onStopped.dispatch();
-					case 4:
-						if (onEndReached != null)
-							onEndReached.dispatch();
-					case 5:
-						if (onEncounteredError != null)
-							onEncounteredError.dispatch(cast(LibVLC.errmsg(), String));
-					case 6:
-						if (onForward != null)
-							onForward.dispatch();
-					case 7:
-						if (onBackward != null)
-							onBackward.dispatch();
-				}
-			}
-		}
-	}
-
 	// Get & Set Methods
 	@:noCompletion private function get_time():Int
 	{
@@ -669,5 +601,72 @@ class VLCBitmap extends Bitmap
 		__setRenderDirty();
 		__imageVersion = -1;
 		return __bitmapData;
+	}
+
+	// Internal Methods
+	@:noCompletion private function __renderVideo():Void
+	{
+		final currentTime:Int = Lib.getTimer();
+
+		if (Math.abs(currentTime - oldTime) <= (1000 / (fps * rate)))
+		{
+			oldTime = currentTime;
+
+			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
+
+			if (texture != null && (buffer != null && buffer.length > 0))
+			{
+				var bytes:Bytes = Bytes.ofData(buffer);
+				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
+				{
+					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
+					width++;
+					width--;
+				}
+				#if HXC_DEBUG_TRACE
+				else
+					trace("Too small frame, can't render :(");
+				#end
+			}
+		}
+	}
+
+	@:noCompletion private function __checkFlags():Void
+	{
+		for (i in 0...7)
+		{
+			if (flags[i])
+			{
+				flags[i] = false;
+
+				switch (i)
+				{
+					case 0:
+						if (onOpening != null)
+							onOpening.dispatch();
+					case 1:
+						if (onPlaying != null)
+							onPlaying.dispatch(mrl);
+					case 2:
+						if (onPaused != null)
+							onPaused.dispatch();
+					case 3:
+						if (onStopped != null)
+							onStopped.dispatch();
+					case 4:
+						if (onEndReached != null)
+							onEndReached.dispatch();
+					case 5:
+						if (onEncounteredError != null)
+							onEncounteredError.dispatch(cast(LibVLC.errmsg(), String));
+					case 6:
+						if (onForward != null)
+							onForward.dispatch();
+					case 7:
+						if (onBackward != null)
+							onBackward.dispatch();
+				}
+			}
+		}
 	}
 }
