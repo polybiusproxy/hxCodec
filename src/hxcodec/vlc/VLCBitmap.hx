@@ -385,62 +385,42 @@ class VLCBitmap extends Bitmap
 		}
 	}
 
-	private function checkFlags():Void
+	private function __checkFlags():Void
 	{
-		if (flags[0])
+		for (i in 0...7)
 		{
-			flags[0] = false;
-			if (onOpening != null)
-				onOpening.dispatch();
-		}
+			if (flags[i])
+			{
+				flags[i] = false;
 
-		if (flags[1])
-		{
-			flags[1] = false;
-			if (onPlaying != null)
-				onPlaying.dispatch(mrl);
-		}
-
-		if (flags[2])
-		{
-			flags[2] = false;
-			if (onPaused != null)
-				onPaused.dispatch();
-		}
-
-		if (flags[3])
-		{
-			flags[3] = false;
-			if (onStopped != null)
-				onStopped.dispatch();
-		}
-
-		if (flags[4])
-		{
-			flags[4] = false;
-			if (onOpening != null)
-				onOpening.dispatch();
-		}
-
-		if (flags[5])
-		{
-			flags[5] = false;
-			if (onEncounteredError != null)
-				onEncounteredError.dispatch(cast(LibVLC.errmsg(), String));
-		}
-
-		if (flags[6])
-		{
-			flags[6] = false;
-			if (onForward != null)
-				onForward.dispatch();
-		}
-
-		if (flags[7])
-		{
-			flags[7] = false;
-			if (onBackward != null)
-				onBackward.dispatch();
+				switch (i)
+				{
+					case 0:
+						if (onOpening != null)
+							onOpening.dispatch();
+					case 1:
+						if (onPlaying != null)
+							onPlaying.dispatch(mrl);
+					case 2:
+						if (onPaused != null)
+							onPaused.dispatch();
+					case 3:
+						if (onStopped != null)
+							onStopped.dispatch();
+					case 4:
+						if (onOpening != null)
+							onOpening.dispatch();
+					case 5:
+						if (onEncounteredError != null)
+							onEncounteredError.dispatch(cast(LibVLC.errmsg(), String));
+					case 6:
+						if (onForward != null)
+							onForward.dispatch();
+					case 7:
+						if (onBackward != null)
+							onBackward.dispatch();
+				}
+			}
 		}
 	}
 
@@ -640,7 +620,7 @@ class VLCBitmap extends Bitmap
 	// Overrides
 	@:noCompletion private override function __enterFrame(deltaTime:Int):Void
 	{
-		checkFlags();
+		__checkFlags();
 
 		if (__bitmapData != null && __bitmapData.image != null && __bitmapData.image.version != __imageVersion)
 			__setRenderDirty();
