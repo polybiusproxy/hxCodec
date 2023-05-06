@@ -138,8 +138,9 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Variables
-	public var videoWidth(default, null):cpp.UInt32 = 0;
-	public var videoHeight(default, null):cpp.UInt32 = 0;
+	public var videoWidth(default, null):UInt = 0;
+	public var videoHeight(default, null):UInt = 0;
+	public var skipFrameLimit:Int = 0;
 
 	public var time(get, set):Int;
 	public var position(get, set):Float;
@@ -608,7 +609,7 @@ class VLCBitmap extends Bitmap
 	{
 		final currentTime:Int = Lib.getTimer();
 
-		if (Math.abs(currentTime - oldTime) >= (1000 / (fps * rate)))
+		if (Math.abs(currentTime - oldTime) >= (skipFrameLimit != 0 ? skipFrameLimit : (1000 / (fps * rate))))
 		{
 			oldTime = currentTime;
 
