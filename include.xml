@@ -1,30 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension>
 
-	<section if="windows">
-		<assets path="project/vlc/dll/Windows" rename="" />
-	</section>
-
-	<section if="mac">
-		<assets path="project/vlc/dll/Mac" rename="../MacOS" />
-	</section>
+	<assets path="project/vlc/dll/Mac" rename="../MacOS" if="mac" />
+	<assets path="project/vlc/dll/Windows" rename="" if="windows" />
 
 	<section if="ios">
-		<!--dependency name="MobileVLCKit.framework" path="project/vlc/frameworks" -->
+        	<!--dependency name="MobileVLCKit.framework" path="project/vlc/frameworks" -->
 
-		<dependency name="AVFoundation.framework" />
-		<dependency name="CFNetwork.framework" />
-		<dependency name="CoreFoundation.framework" />
-		<dependency name="CoreGraphics.framework" />
-		<dependency name="CoreMedia.framework" />
-		<dependency name="QuartzCore.framework" />
-		<dependency name="Security.framework" />
-		<dependency name="VideoToolbox.framework" />
+        	<dependency name="AVFoundation.framework" />
+        	<dependency name="CFNetwork.framework" />
+        	<dependency name="CoreFoundation.framework" />
+        	<dependency name="CoreGraphics.framework" />
+        	<dependency name="CoreMedia.framework" />
+        	<dependency name="QuartzCore.framework" />
+        	<dependency name="Security.framework" />
+        	<dependency name="VideoToolbox.framework" />
 
-		<dependency name="libbz2.tbd" />
-		<dependency name="libc++.tbd" />
-		<dependency name="libiconv.tbd" />
-		<dependency name="libxml2.tbd" />
+        	<dependency name="libbz2.tbd" />
+        	<dependency name="libc++.tbd" />
+        	<dependency name="libiconv.tbd" />
+        	<dependency name="libxml2.tbd" />
 	</section>
 
 	<section if="android">
