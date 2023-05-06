@@ -408,8 +408,8 @@ class VLCBitmap extends Bitmap
 						if (onStopped != null)
 							onStopped.dispatch();
 					case 4:
-						if (onOpening != null)
-							onOpening.dispatch();
+						if (onEndReached != null)
+							onEndReached.dispatch();
 					case 5:
 						if (onEncounteredError != null)
 							onEncounteredError.dispatch(cast(LibVLC.errmsg(), String));
