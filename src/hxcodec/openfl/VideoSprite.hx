@@ -240,7 +240,7 @@ class VideoSprite extends Sprite implements IVideoPlayer
 	 */
 	public function playVideo(Path:String, Loop:Bool = false):Int
 	{
-		// stage.addEventListener(Event.ENTER_FRAME, update);
+		stage.addEventListener(Event.ENTER_FRAME, update);
 
 		// in case if you want to use another dir then the application one.
 		// android can already do this, it can't use application's storage.
@@ -248,23 +248,6 @@ class VideoSprite extends Sprite implements IVideoPlayer
 			return videoBitmap.play(Sys.getCwd() + Path, Loop);
 		else
 			return videoBitmap.play(Path, Loop);
-	}
-
-	// Internal Methods
-	private function onVLCOpening():Void
-	{
-		#if HXC_DEBUG_TRACE
-		trace("the video is opening!");
-		#end
-
-		if (openingCallback != null)
-			openingCallback();
-	}
-
-	private function onVLCEncounteredError(msg:String):Void
-	{
-		Lib.application.window.alert(msg, "VLC Error!");
-		onVLCEndReached();
 	}
 
 	/**
@@ -299,14 +282,31 @@ class VideoSprite extends Sprite implements IVideoPlayer
 		videoBitmap.stop();
 	}
 
+	// Internal Methods
+	private function onVLCOpening():Void
+	{
+		#if HXC_DEBUG_TRACE
+		trace("the video is opening!");
+		#end
+
+		if (openingCallback != null)
+			openingCallback();
+	}
+
+	private function onVLCEncounteredError(msg:String):Void
+	{
+		Lib.application.window.alert(msg, "VLC Error!");
+		onVLCEndReached();
+	}
+
 	private function onVLCEndReached():Void
 	{
 		#if HXC_DEBUG_TRACE
 		trace("the video reached the end!");
 		#end
 
-		// if (stage.hasEventListener(Event.ENTER_FRAME))
-		// stage.removeEventListener(Event.ENTER_FRAME, update);
+		if (stage.hasEventListener(Event.ENTER_FRAME))
+			stage.removeEventListener(Event.ENTER_FRAME, update);
 
 		videoBitmap.dispose();
 
