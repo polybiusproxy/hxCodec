@@ -21,7 +21,5 @@ class VideoBitmap extends VLCBitmap
 	{
 		if (hasEventListener(Event.ADDED_TO_STAGE))
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-
-		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 }
