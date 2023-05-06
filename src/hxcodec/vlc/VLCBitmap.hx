@@ -327,9 +327,6 @@ class VLCBitmap extends Bitmap
 		if (isPlaying)
 			stop();
 
-		if (stage.hasEventListener(Event.ENTER_FRAME))
-			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
 
@@ -360,17 +357,8 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Internal Methods
-	private var currentTime:Float = 0;
 
-	private function onEnterFrame(?e:Event):Void
-	{
-		checkFlags();
-
-		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
-			renderVideo(Math.abs(Lib.getTimer() - currentTime), videoWidth * videoHeight * 4);
-	}
-
-	private function renderVideo(deltaTime:Float, elementsCount:UInt):Void
+	private function renderVideo(time:Float, elementsCount:UInt):Void
 	{
 		// Initialize the `texture` if necessary.
 		if (texture == null)
@@ -380,10 +368,8 @@ class VLCBitmap extends Bitmap
 		if (bitmapData == null && texture != null)
 			bitmapData = BitmapData.fromTexture(texture);
 
-		if (deltaTime > (1000 / (fps * rate)))
+		if (time > (1000 / (fps * rate)))
 		{
-			currentTime = deltaTime;
-
 			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), elementsCount);
 
 			if (texture != null && (buffer != null && buffer.length > 0))
@@ -408,49 +394,57 @@ class VLCBitmap extends Bitmap
 		if (flags[0])
 		{
 			flags[0] = false;
-			onOpening.dispatch();
+			if (onOpening != null)
+				onOpening.dispatch();
 		}
 
 		if (flags[1])
 		{
 			flags[1] = false;
-			onPlaying.dispatch(mrl);
+			if (onPlaying != null)
+				onPlaying.dispatch(mrl);
 		}
 
 		if (flags[2])
 		{
 			flags[2] = false;
-			onPaused.dispatch();
+			if (onPaused != null)
+				onPaused.dispatch();
 		}
 
 		if (flags[3])
 		{
 			flags[3] = false;
-			onStopped.dispatch();
+			if (onStopped != null)
+				onStopped.dispatch();
 		}
 
 		if (flags[4])
 		{
 			flags[4] = false;
-			onEndReached.dispatch();
+			if (onOpening != null)
+				onOpening.dispatch();
 		}
 
 		if (flags[5])
 		{
 			flags[5] = false;
-			onEncounteredError.dispatch(cast(LibVLC.errmsg(), String));
+			if (onEncounteredError != null)
+				onEncounteredError.dispatch(cast(LibVLC.errmsg(), String));
 		}
 
 		if (flags[6])
 		{
 			flags[6] = false;
-			onForward.dispatch();
+			if (onForward != null)
+				onForward.dispatch();
 		}
 
 		if (flags[7])
 		{
 			flags[7] = false;
-			onBackward.dispatch();
+			if (onBackward != null)
+				onBackward.dispatch();
 		}
 	}
 
@@ -645,6 +639,18 @@ class VLCBitmap extends Bitmap
 			LibVLC.media_player_set_rate(mediaPlayer, value);
 
 		return value;
+	}
+
+	// Overrides
+	@:noCompletion private override function __enterFrame(deltaTime:Int):Void
+	{
+		checkFlags();
+
+		if (__bitmapData != null && __bitmapData.image != null && __bitmapData.image.version != __imageVersion)
+			__setRenderDirty();
+
+		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+			renderVideo(Math.abs(deltaTime), videoWidth * videoHeight * 4);
 	}
 
 	@:noCompletion private override function set_height(value:Float):Float
