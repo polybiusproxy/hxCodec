@@ -8,7 +8,6 @@ import haxe.io.BytesData;
 import haxe.io.Path;
 import hxcodec.base.Callback;
 import hxcodec.vlc.LibVLC;
-import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.Texture;
@@ -138,7 +137,6 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Variables
-	public var skipFrameLimit:Int = 0;
 	public var videoWidth(default, null):UInt = 0;
 	public var videoHeight(default, null):UInt = 0;
 
@@ -206,7 +204,6 @@ class VLCBitmap extends Bitmap
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var buffer:BytesData = [];
 	private var texture:Texture;
-	private var oldTime:Int;
 
 	// LibVLC
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
@@ -568,7 +565,7 @@ class VLCBitmap extends Bitmap
 			if (bitmapData == null && texture != null)
 				bitmapData = BitmapData.fromTexture(texture);
 
-			__renderVideo();
+			__renderVideo(deltaTime);
 		}
 	}
 
@@ -605,30 +602,25 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Internal Methods
-	@:noCompletion private function __renderVideo():Void
+	@:noCompletion private function __renderVideo(deltaTime:Int):Void
 	{
-		final currentTime:Int = Lib.getTimer();
+		// TODO: Render with it's playbackRate and FPS, Std.int(1000 / (fps * rate))
 
-		if (Math.abs(currentTime - oldTime) >= (skipFrameLimit != 0 ? skipFrameLimit : ((1000 / (fps * rate)) / 2)))
+		cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
+
+		if (texture != null && (buffer != null && buffer.length > 0))
 		{
-			oldTime = currentTime;
-
-			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
-
-			if (texture != null && (buffer != null && buffer.length > 0))
+			var bytes:Bytes = Bytes.ofData(buffer);
+			if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
 			{
-				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
-				{
-					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
-					width++;
-					width--;
-				}
-				#if HXC_DEBUG_TRACE
-				else
-					trace("Too small frame, can't render :(");
-				#end
+				texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
+				width++;
+				width--;
 			}
+			#if HXC_DEBUG_TRACE
+			else
+				trace("Too small frame, can't render :(");
+			#end
 		}
 	}
 
