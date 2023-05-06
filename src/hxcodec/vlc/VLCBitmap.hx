@@ -6,13 +6,12 @@ package hxcodec.vlc;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
-import hxcodec.vlc.LibVLC;
 import hxcodec.base.Callback;
+import hxcodec.vlc.LibVLC;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.Texture;
-import openfl.events.Event;
 import openfl.utils.ByteArray;
 
 using StringTools;
@@ -206,6 +205,7 @@ class VLCBitmap extends Bitmap
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var buffer:BytesData = [];
 	private var texture:Texture;
+	private var oldTime:Int;
 
 	// LibVLC
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
@@ -358,24 +358,20 @@ class VLCBitmap extends Bitmap
 
 	// Internal Methods
 
-	private function renderVideo(time:Float, elementsCount:UInt):Void
+	private function __renderVideo():Void
 	{
-		// Initialize the `texture` if necessary.
-		if (texture == null)
-			texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+		var currentTime:Int = Lib.getTimer();
 
-		// Initialize the `bitmapData` if necessary.
-		if (bitmapData == null && texture != null)
-			bitmapData = BitmapData.fromTexture(texture);
-
-		if (time > (1000 / (fps * rate)))
+		if (Math.abs(currentTime - oldTime) > (1000 / (fps * rate)))
 		{
-			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), elementsCount);
+			oldTime = currentTime;
+
+			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
 
 			if (texture != null && (buffer != null && buffer.length > 0))
 			{
 				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= elementsCount)
+				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
 				{
 					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
 					width++;
@@ -650,7 +646,17 @@ class VLCBitmap extends Bitmap
 			__setRenderDirty();
 
 		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
-			renderVideo(Math.abs(deltaTime), videoWidth * videoHeight * 4);
+		{
+			// Initialize the `texture` if necessary.
+			if (texture == null)
+				texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+
+			// Initialize the `bitmapData` if necessary.
+			if (bitmapData == null && texture != null)
+				bitmapData = BitmapData.fromTexture(texture);
+
+			__renderVideo();
+		}
 	}
 
 	@:noCompletion private override function set_height(value:Float):Float
