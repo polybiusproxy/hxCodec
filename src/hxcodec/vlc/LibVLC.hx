@@ -214,7 +214,7 @@ typedef LibVLC_Video_Display_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.
 extern class VoidStarConstStar {}
 
 @:buildXml('<include name="${haxelib:hxvlc}/project/Build.xml" />')
-@:include("vlc.h")
+@:include("vlc/vlc.h")
 @:keep
 @:native("libvlc_log_t")
 extern class LibVLC_Log_T {}
