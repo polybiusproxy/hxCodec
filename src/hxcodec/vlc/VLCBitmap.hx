@@ -612,7 +612,7 @@ class VLCBitmap extends Bitmap
 	{
 		var currentTime:Int = Lib.getTimer();
 
-		if (Math.abs(time - oldTime) > Std.int(1000 / (fps * rate)))
+		if (Math.abs(currentTime - oldTime) > Std.int(1000 / (fps * rate)))
 		{
 			oldTime = currentTime;
 
