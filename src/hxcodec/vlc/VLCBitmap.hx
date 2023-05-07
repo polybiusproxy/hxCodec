@@ -24,7 +24,7 @@ using StringTools;
  */
 @:headerInclude('stdio.h')
 @:cppNamespaceCode('
-#ifndef vasprintf // https://gist.github.com/cmitu/b67a7ed67b19176f35f1ac06099d02af#file-sdlvlc-cxx-L26
+#ifndef vasprintf
 int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
 {
 	int count = vsnprintf(NULL, 0, fmt, ap); // Query the buffer size required.
@@ -206,7 +206,7 @@ class VLCBitmap extends Bitmap
 
 	// Declarations
 	private var flags:Array<Bool> = [];
-	private var oldTime:Float = 0;
+	private var oldTime:Int = 0;
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var buffer:BytesData = [];
 	private var texture:Texture;
@@ -238,8 +238,8 @@ class VLCBitmap extends Bitmap
 		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('this'));
 	}
 
-	// Playback Methods
-	public function play(?location:String = null, loop:Bool = false):Int
+	// Public Methods
+	public function play(?location:String = null, shouldLoop:Bool = false):Int
 	{
 		if (location.startsWith('https://') || location.startsWith('file://'))
 		{
@@ -263,7 +263,7 @@ class VLCBitmap extends Bitmap
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
 		LibVLC.media_parse(mediaItem);
-		LibVLC.media_add_option(mediaItem, loop ? "input-repeat=65535" : "input-repeat=0");
+		LibVLC.media_add_option(mediaItem, shouldLoop ? "input-repeat=65535" : "input-repeat=0");
 		LibVLC.media_release(mediaItem);
 
 		if (buffer != null && buffer.length > 0)
