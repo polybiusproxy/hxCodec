@@ -506,7 +506,7 @@ class VLCBitmap extends Bitmap
 
 		deltaTimeElapsed += deltaTime;
 
-		if (Math.abs(delta - oldTime) < 16)
+		if (Math.abs(deltaTimeElapsed - oldTime) < 16)
 			return;
 		else
 			oldTime = deltaTimeElapsed;
