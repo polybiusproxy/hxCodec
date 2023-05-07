@@ -62,18 +62,20 @@ extern class LibVLC
 	static function audio_set_mute(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_status:Bool):Int;
 
 	@:native("libvlc_event_attach")
-	static function event_attach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_E, f_callback:LibVLC_Callback_T,
+	static function event_attach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_Type, f_callback:LibVLC_Callback_T,
 		user_data:cpp.Pointer<cpp.Void>):Int;
 
 	@:native("libvlc_event_detach")
-	static function event_detach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_E, f_callback:LibVLC_Callback_T,
+	static function event_detach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_Type, f_callback:LibVLC_Callback_T,
 		user_data:cpp.Pointer<cpp.Void>):Void;
 
 	@:native('libvlc_log_get_context')
-	static function log_get_context(ctx:cpp.RawConstPointer<LibVLC_Log_T>, module:cpp.RawPointer<cpp.ConstCharStar>, file:cpp.RawPointer<cpp.ConstCharStar>, line:cpp.Pointer<cpp.UInt32>):Void;
+	static function log_get_context(ctx:cpp.RawConstPointer<LibVLC_Log_T>, module:cpp.RawPointer<cpp.ConstCharStar>, file:cpp.RawPointer<cpp.ConstCharStar>,
+		line:cpp.Pointer<cpp.UInt32>):Void;
 
 	@:native('libvlc_log_get_object')
-	static function log_get_object(ctx:cpp.RawConstPointer<LibVLC_Log_T>, name:cpp.RawPointer<cpp.ConstCharStar>, header:cpp.RawPointer<cpp.ConstCharStar>, id:cpp.Pointer<cpp.UInt32>):Void;
+	static function log_get_object(ctx:cpp.RawConstPointer<LibVLC_Log_T>, name:cpp.RawPointer<cpp.ConstCharStar>, header:cpp.RawPointer<cpp.ConstCharStar>,
+		id:cpp.Pointer<cpp.UInt32>):Void;
 
 	@:native('libvlc_log_unset')
 	static function log_unset(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
@@ -108,8 +110,14 @@ extern class LibVLC
 	@:native("libvlc_media_retain")
 	static function media_retain(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
 
-	@:native("libvlc_media_parse")
-	static function media_parse(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
+	@:native("libvlc_media_parse_with_options")
+	static function media_parse_with_options(p_md:cpp.RawPointer<LibVLC_Media_T>, parse_flag:LibVLC_Media_Parse_Flag, timeout:Int):Int;
+
+	@:native("libvlc_media_parse_stop")
+	static function media_parse_stop(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
+
+	@:native("libvlc_media_get_parsed_status")
+	static function media_get_parsed_status(p_md:cpp.RawPointer<LibVLC_Media_T>):LibVLC_Media_Parsed_Status;
 
 	@:native("libvlc_media_player_play")
 	static function media_player_play(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
@@ -169,8 +177,7 @@ extern class LibVLC
 	static function media_player_new_from_media(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.RawPointer<LibVLC_MediaPlayer_T>;
 
 	@:native("libvlc_video_set_format_callbacks")
-	static function video_set_format_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, setup:LibVLC_Video_Format_CB,
-		cleanup:LibVLC_Video_Cleanup_CB):Void;
+	static function video_set_format_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, setup:LibVLC_Video_Format_CB, cleanup:LibVLC_Video_Cleanup_CB):Void;
 
 	@:native("libvlc_video_set_callbacks")
 	static function video_set_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, lock:LibVLC_Video_Lock_CB, unlock:LibVLC_Video_Unlock_CB,
@@ -189,10 +196,7 @@ typedef LibVLC_Video_Format_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.RawPoin
 		height:cpp.RawPointer<cpp.UInt32>, pitches:cpp.RawPointer<cpp.UInt32>, lines:cpp.RawPointer<cpp.UInt32>) -> cpp.UInt32>;
 
 typedef LibVLC_Video_Cleanup_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>) -> Void>;
-
-typedef LibVLC_Video_Lock_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>,
-		p_pixels:cpp.RawPointer<cpp.RawPointer<cpp.Void>>) -> cpp.RawPointer<cpp.Void>>;
-
+typedef LibVLC_Video_Lock_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, p_pixels:cpp.RawPointer<cpp.RawPointer<cpp.Void>>) -> cpp.RawPointer<cpp.Void>>;
 typedef LibVLC_Video_Unlock_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, id:cpp.RawPointer<cpp.Void>, p_pixels:VoidStarConstStar) -> Void>;
 typedef LibVLC_Video_Display_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, picture:cpp.RawPointer<cpp.Void>) -> Void>;
 
@@ -204,6 +208,14 @@ extern class VoidStarConstStar {}
 @:keep
 @:native("libvlc_log_t")
 extern class LibVLC_Log_T {}
+
+enum abstract LibVLC_Log_Level(Int) from Int to Int
+{
+	final LIBVLC_DEBUG = 0; /* Debug message */
+	final LIBVLC_NOTICE = 2; /* Important informational message */
+	final LIBVLC_WARNING = 3; /* Warning (potential error) message */
+	final LIBVLC_ERROR = 4; /* Error message */
+}
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
@@ -235,18 +247,10 @@ extern class LibVLC_EventManager_T {}
 @:native("libvlc_event_t")
 extern class LibVLC_Event_T {}
 
-enum abstract LibVLC_Log_Level(Int) from Int to Int
-{
-	final LIBVLC_DEBUG = 0; /* Debug message */
-	final LIBVLC_NOTICE = 2; /* Important informational message */
-	final LIBVLC_WARNING = 3; /* Warning (potential error) message */
-	final LIBVLC_ERROR = 4; /* Error message */
-}
-
 /**
  * Event types
  */
-enum abstract LibVLC_Event_E(Int) from Int to Int
+enum abstract LibVLC_Event_Type(Int) from Int to Int
 {
 	/**
 	 * Append new event types at the end of a category.
@@ -327,4 +331,68 @@ enum abstract LibVLC_Event_E(Int) from Int to Int
 	final LibVLC_VlmMediaInstanceStatusPause = 1544;
 	final LibVLC_VlmMediaInstanceStatusEnd = 1545;
 	final LibVLC_VlmMediaInstanceStatusError = 1546;
+}
+
+/**
+ * Internal type for media parse flags.
+ */
+@:include('vlc/vlc.h')
+@:unreflective
+@:native('libvlc_media_parse_flag_t')
+extern class LibVLC_Media_Parse_Flag_T {}
+
+/**
+ * Parse flags used by libvlc_media_parse_request()
+ */
+abstract LibVLC_Media_Parse_Flag(Int) from Int to Int
+{
+	public inline function new(i:Int):Void
+		this = i;
+
+	/**
+	 * Convert the field to its internal native type.
+	 * @return A value of the internal type.
+	 */
+	@:to(LibVLC_Media_Parse_Flag_T)
+	@:unreflective
+	public inline function toNative():LibVLC_Media_Parse_Flag_T
+		return untyped __cpp__('((libvlc_media_parse_flag_t)({0}))', this);
+
+	/**
+	 * Conver the internal native type to an enum.
+	 * @param value A value of the native type.
+	 * @return A value of the enum value.
+	 */
+	@:from(LibVLC_Media_Parse_Flag_T)
+	@:unreflective
+	public static inline function fromNative(value:LibVLC_Media_Parse_Flag_T):LibVLC_Media_Parse_Flag
+		return new LibVLC_MediaParseFlag(untyped value);
+
+	/**
+	 * Parse media if it's a local file.
+	 */
+	public static var media_parse_local(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_parse_local'));
+
+	/**
+	 * Parse media even if it's a network file.
+	 */
+	public static var media_parse_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_parse_network'));
+
+	/**
+	 * Fetch meta and cover art using local resources.
+	 */
+	public static var media_fetch_local(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_fetch_local'));
+
+	/**
+	 * Fetch meta and cover art using network resources.
+	 */
+	public static var media_fetch_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_fetch_network'));
+}
+
+enum abstract LibVLC_Media_Parsed_Status(Int) from Int to Int
+{
+	final LibVLC_Media_Parsed_Status_Skipped = 1;
+	final LibVLC_Media_Parsed_Status_Failed = 2;
+	final LibVLC_Media_Parsed_Status_Timeout = 3;
+	final LibVLC_Media_Parsed_Status_Done = 4;
 }
