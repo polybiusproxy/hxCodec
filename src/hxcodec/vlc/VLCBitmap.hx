@@ -24,6 +24,35 @@ using StringTools;
  */
 @:headerInclude('stdio.h')
 @:cppNamespaceCode('
+#ifndef vasprintf // https://gist.github.com/cmitu/b67a7ed67b19176f35f1ac06099d02af#file-sdlvlc-cxx-L26
+int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
+{
+	int count = vsnprintf(NULL, 0, fmt, ap); // Query the buffer size required.
+
+	*sptr = NULL;
+
+	if (count >= 0)
+	{
+		char* p = static_cast<char*>(malloc(count + 1)); // Allocate memory for it.
+
+		if (p == NULL)
+			return -1;
+
+		if (vsnprintf(p, count + 1, fmt, ap) == count) // We should have used exactly what was required.
+		{
+			*sptr = p;
+		}
+		else // Otherwise something is wrong, likely a bug in vsnprintf. If so free the memory and report the error.
+		{
+			free(p);
+			return -1;
+		}
+	}
+
+	return count;
+}
+#endif // vasprintf
+
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*)(*data);
@@ -88,6 +117,26 @@ static void callbacks(const libvlc_event_t *event, void *data)
 @:keep
 class VLCBitmap extends Bitmap
 {
+	// LibVLC Static Functions
+	private static function logging(data:cpp.RawPointer<cpp.Void>, level:Int, ctx:cpp.RawConstPointer<LibVLC_Log_T>, fmt:cpp.ConstCharStar, args:cpp.VarList):Void
+	{
+		var msg:cpp.CharStar = "";
+		if (untyped __cpp__('vasprintf({0}, {1}, {2})', cpp.RawPointer.addressOf(msg), fmt, args) < 0)
+			msg = "Failed to format log message.";
+
+		switch (cast(level, LibVLC_Log_Level))
+		{
+			case LIBVLC_DEBUG: /* Debug message */
+				Sys.println("[ DEBUG ] " + cast(msg, String));
+			case LIBVLC_NOTICE: /* Important informational message */
+				Sys.println("[ INFO ] " + cast(msg, String));
+			case LIBVLC_WARNING: /* Warning (potential error) message */
+				Sys.println("[ WARING ] " + cast(msg, String));
+			case LIBVLC_ERROR: /* Error message */
+				Sys.println("[ ERROR ] " + cast(msg, String));
+		}
+	}
+
 	// Variables
 	public var videoWidth(default, null):UInt = 0;
 	public var videoHeight(default, null):UInt = 0;
