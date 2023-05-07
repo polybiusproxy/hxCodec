@@ -125,16 +125,16 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 	switch (level)
 	{
 		case LIBVLC_DEBUG:
-			printf("[ DEBUG ] %s\n", msg);
+			// printf("[ DEBUG ] %s", msg);
 			break;
 		case LIBVLC_NOTICE:
-			printf("[ INFO ] %s\n", msg);
+			// printf("[ INFO ] %s", msg);
 			break;
 		case LIBVLC_WARNING:
-			printf("[ WARNING ] %s\n", msg);
+			// printf("[ WARNING ] %s", msg);
 			break;
 		case LIBVLC_ERROR:
-			printf("[ ERROR ] %s\n", msg);
+			// printf("[ ERROR ] %s", msg);
 			break;
 	}
 }')
