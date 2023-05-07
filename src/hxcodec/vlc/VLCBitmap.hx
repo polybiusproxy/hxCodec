@@ -117,10 +117,10 @@ static void callbacks(const libvlc_event_t *event, void *data)
 
 static void logging(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
 {
-	char* msg = NULL;
+	char* msg = { 0 };
 
 	if (vasprintf(&msg, fmt, args) < 0)
-		msg = "Failed to format log message";
+		return;
 
 	switch (level)
 	{
