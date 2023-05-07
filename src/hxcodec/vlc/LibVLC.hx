@@ -1,11 +1,3 @@
-/**
- * ...
- * @author: Datee
- * @additional coding: M.A. Jigsaw
- *
- * This contains some LibVLC externs which you can use in Haxe by using cpp target.
- */
-
 package hxcodec.vlc;
 
 #if (!(desktop || android) && macro)
@@ -48,12 +40,6 @@ extern class LibVLC
 	@:native("libvlc_get_changeset")
 	static function get_changeset():cpp.ConstCharStar;
 
-	@:native("libvlc_audio_output_list_get")
-	static function audio_output_list_get(p_instance:cpp.RawPointer<LibVLC_Instance_T>):cpp.RawPointer<LibVLC_AudioOutput_T>;
-
-	@:native("libvlc_audio_output_list_release")
-	static function audio_output_list_release(p_list:cpp.RawPointer<LibVLC_AudioOutput_T>):Void;
-
 	@:native("libvlc_audio_output_set")
 	static function audio_output_set(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, deviceName:cpp.ConstCharStar):Void;
 
@@ -76,12 +62,27 @@ extern class LibVLC
 	static function audio_set_mute(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_status:Bool):Int;
 
 	@:native("libvlc_event_attach")
-	static function event_attach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_EventType, f_callback:LibVLC_Event_Callback,
+	static function event_attach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_E, f_callback:LibVLC_Callback_T,
 		user_data:cpp.Pointer<cpp.Void>):Int;
 
 	@:native("libvlc_event_detach")
-	static function event_detach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_EventType, f_callback:LibVLC_Event_Callback,
-		user_data:cpp.Pointer<cpp.Void>):Int;
+	static function event_detach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_E, f_callback:LibVLC_Callback_T,
+		user_data:cpp.Pointer<cpp.Void>):Void;
+
+	@:native('libvlc_log_get_context')
+	static function log_get_context(ctx:cpp.RawConstPointer<LibVLC_Log_T>, module:cpp.RawPointer<cpp.ConstCharStar>, file:cpp.RawPointer<cpp.ConstCharStar>, line:cpp.Pointer<cpp.UInt32>):Void;
+
+	@:native('libvlc_log_get_object')
+	static function log_get_object(ctx:cpp.RawConstPointer<LibVLC_Log_T>, name:cpp.RawPointer<cpp.ConstCharStar>, header:cpp.RawPointer<cpp.ConstCharStar>, id:cpp.Pointer<cpp.UInt32>):Void;
+
+	@:native('libvlc_log_unset')
+	static function log_unset(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
+
+	@:native('libvlc_log_set')
+	static function log_set(p_instance:cpp.RawPointer<LibVLC_Instance_T>, cb:LibVLC_Log_CB, data:cpp.Pointer<cpp.Void>):Void;
+
+	@:native('libvlc_log_set_file')
+	static function log_set_file(p_instance:cpp.RawPointer<LibVLC_Instance_T>, stream:cpp.FILE):Void;
 
 	@:native("libvlc_media_new_path")
 	static function media_new_path(p_instance:cpp.RawPointer<LibVLC_Instance_T>, path:cpp.ConstCharStar):cpp.RawPointer<LibVLC_Media_T>;
@@ -168,47 +169,32 @@ extern class LibVLC
 	static function media_player_new_from_media(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.RawPointer<LibVLC_MediaPlayer_T>;
 
 	@:native("libvlc_video_set_format_callbacks")
-	static function video_set_format_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, setup:LibVLC_Video_Setup_Callback,
-		cleanup:LibVLC_Video_Cleanup_Callback):Void;
+	static function video_set_format_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, setup:LibVLC_Video_Format_CB,
+		cleanup:LibVLC_Video_Cleanup_CB):Void;
 
 	@:native("libvlc_video_set_callbacks")
-	static function video_set_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, lock:LibVLC_Video_Lock_Callback, unlock:LibVLC_Video_Unlock_Callback,
-		display:LibVLC_Video_Display_Callback, opaque:cpp.Pointer<cpp.Void>):Void;
+	static function video_set_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, lock:LibVLC_Video_Lock_CB, unlock:LibVLC_Video_Unlock_CB,
+		display:LibVLC_Video_Display_CB, opaque:cpp.Pointer<cpp.Void>):Void;
 
 	@:native("libvlc_video_get_size")
 	static function video_get_size(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, num:UInt, width:cpp.Pointer<cpp.UInt32>, height:cpp.Pointer<cpp.UInt32>):Int;
-
-	@:native('libvlc_log_get_context')
-	static function log_get_context(ctx:cpp.RawConstPointer<LibVLC_Log_T>, module:cpp.RawPointer<cpp.ConstCharStar>, file:cpp.RawPointer<cpp.ConstCharStar>, line:cpp.Pointer<cpp.UInt32>):Void;
-
-	@:native('libvlc_log_get_object')
-	static function log_get_object(ctx:cpp.RawConstPointer<LibVLC_Log_T>, name:cpp.RawPointer<cpp.ConstCharStar>, header:cpp.RawPointer<cpp.ConstCharStar>, id:cpp.Pointer<cpp.UInt32>):Void;
-
-	@:native('libvlc_log_unset')
-	static function log_unset(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
-
-	@:native('libvlc_log_set')
-	static function log_set(p_instance:cpp.RawPointer<LibVLC_Instance_T>, cb:LibVLC_Log_CB, data:cpp.Pointer<cpp.Void>):Void;
-
-	@:native('libvlc_log_set_file')
-	static function log_set_file(p_instance:cpp.RawPointer<LibVLC_Instance_T>, stream:cpp.FILE):Void;
 }
+
+typedef LibVLC_Callback_T = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC_Event_T>, p_data:cpp.RawPointer<cpp.Void>) -> Void>;
 
 typedef LibVLC_Log_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, level:Int, ctx:cpp.RawConstPointer<LibVLC_Log_T>, fmt:cpp.ConstCharStar,
 		args:cpp.VarList) -> Void>;
 
-typedef LibVLC_Event_Callback = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC_Event_T>, p_data:cpp.RawPointer<cpp.Void>) -> Void>;
-
-typedef LibVLC_Video_Setup_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.CharStar, width:cpp.RawPointer<cpp.UInt32>,
+typedef LibVLC_Video_Format_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.CharStar, width:cpp.RawPointer<cpp.UInt32>,
 		height:cpp.RawPointer<cpp.UInt32>, pitches:cpp.RawPointer<cpp.UInt32>, lines:cpp.RawPointer<cpp.UInt32>) -> cpp.UInt32>;
 
-typedef LibVLC_Video_Cleanup_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>) -> Void>;
+typedef LibVLC_Video_Cleanup_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>) -> Void>;
 
-typedef LibVLC_Video_Lock_Callback = cpp.Callable<(data:cpp.RawPointer<cpp.Void>,
+typedef LibVLC_Video_Lock_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>,
 		p_pixels:cpp.RawPointer<cpp.RawPointer<cpp.Void>>) -> cpp.RawPointer<cpp.Void>>;
 
-typedef LibVLC_Video_Unlock_Callback = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, id:cpp.RawPointer<cpp.Void>, p_pixels:VoidStarConstStar) -> Void>;
-typedef LibVLC_Video_Display_Callback = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, picture:cpp.RawPointer<cpp.Void>) -> Void>;
+typedef LibVLC_Video_Unlock_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, id:cpp.RawPointer<cpp.Void>, p_pixels:VoidStarConstStar) -> Void>;
+typedef LibVLC_Video_Display_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, picture:cpp.RawPointer<cpp.Void>) -> Void>;
 
 @:native("void *const *")
 extern class VoidStarConstStar {}
@@ -224,12 +210,6 @@ extern class LibVLC_Log_T {}
 @:keep
 @:native("libvlc_instance_t")
 extern class LibVLC_Instance_T {}
-
-@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
-@:include("vlc/vlc.h")
-@:keep
-@:native("libvlc_audio_output_t")
-extern class LibVLC_AudioOutput_T {}
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
@@ -251,89 +231,9 @@ extern class LibVLC_EventManager_T {}
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
-@:structAccess
 @:keep
 @:native("libvlc_event_t")
-extern class LibVLC_Event_T
-{
-	var type:LibVLC_EventType;
-	var u:LibVLC_Event_U;
-}
-
-@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
-@:include("vlc/vlc.h")
-@:structAccess
-@:keep
-@:native("libvlc_event_t::u")
-extern class LibVLC_Event_U
-{
-	var media_player_position_changed:LibVLC_MediaPlayer_PositionChanged;
-	var media_player_time_changed:LibVLC_MediaPlayer_TimeChanged;
-	var media_player_length_changed:LibVLC_MediaPlayer_LengthChanged;
-	var media_player_buffering:LibVLC_MediaPlayer_Buffering;
-	var media_player_seekable_changed:LibVLC_MediaPlayer_SeekableChanged;
-	var media_player_pausable_changed:LibVLC_MediaPlayer_PausableChanged;
-}
-
-@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
-@:include("vlc/vlc.h")
-@:structAccess
-@:keep
-@:native("media_player_position_changed")
-extern class LibVLC_MediaPlayer_PositionChanged
-{
-	var new_position:Float;
-}
-
-@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
-@:include("vlc/vlc.h")
-@:structAccess
-@:keep
-@:native("media_player_time_changed")
-extern class LibVLC_MediaPlayer_TimeChanged
-{
-	var new_time:cpp.Int64;
-}
-
-@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
-@:include("vlc/vlc.h")
-@:structAccess
-@:keep
-@:native("media_player_length_changed")
-extern class LibVLC_MediaPlayer_LengthChanged
-{
-	var new_length:cpp.Int64;
-}
-
-@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
-@:include("vlc/vlc.h")
-@:structAccess
-@:keep
-@:native("media_player_buffering")
-extern class LibVLC_MediaPlayer_Buffering
-{
-	var new_cache:Float;
-}
-
-@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
-@:include("vlc/vlc.h")
-@:structAccess
-@:keep
-@:native("media_player_seekable_changed")
-extern class LibVLC_MediaPlayer_SeekableChanged
-{
-	var new_seekable:Bool;
-}
-
-@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
-@:include("vlc/vlc.h")
-@:structAccess
-@:keep
-@:native("media_player_pausable_changed")
-extern class LibVLC_MediaPlayer_PausableChanged
-{
-	var new_pausable:Bool;
-}
+extern class LibVLC_Event_T {}
 
 enum abstract LibVLC_Log_Level(Int) from Int to Int
 {
@@ -343,49 +243,88 @@ enum abstract LibVLC_Log_Level(Int) from Int to Int
 	final LIBVLC_ERROR = 4; /* Error message */
 }
 
-enum abstract LibVLC_EventType(Int) from Int to Int
+/**
+ * Event types
+ */
+enum abstract LibVLC_Event_E(Int) from Int to Int
 {
-	final MediaMetaChanged = 0;
-	final MediaSubItemAdded = 1;
-	final MediaDurationChanged = 2;
-	final MediaParsedChanged = 3;
-	final MediaFreed = 4;
-	final MediaStateChanged = 5;
-	final MediaSubItemTreeAdded = 6;
-	final MediaPlayerMediaChanged = 256;
-	final MediaPlayerNothingSpecial = 257;
-	final MediaPlayerOpening = 258;
-	final MediaPlayerBuffering = 259;
-	final MediaPlayerPlaying = 260;
-	final MediaPlayerPaused = 261;
-	final MediaPlayerStopped = 262;
-	final MediaPlayerForward = 263;
-	final MediaPlayerBackward = 264;
-	final MediaPlayerEndReached = 265;
-	final MediaPlayerEncounteredError = 266;
-	final MediaPlayerTimeChanged = 267;
-	final MediaPlayerPositionChanged = 268;
-	final MediaPlayerSeekableChanged = 269;
-	final MediaPlayerPausableChanged = 270;
-	final MediaPlayerTitleChanged = 271;
-	final MediaPlayerSnapshotTaken = 272;
-	final MediaPlayerLengthChanged = 273;
-	final MediaPlayerVout = 274;
-	final MediaPlayerScrambledChanged = 275;
-	final MediaPlayerCorked = 279;
-	final MediaPlayerUncorked = 280;
-	final MediaPlayerMuted = 281;
-	final MediaPlayerUnmuted = 282;
-	final MediaPlayerAudioVolume = 283;
-	final MediaListItemAdded = 512;
-	final MediaListWillAddItem = 513;
-	final MediaListItemDeleted = 514;
-	final MediaListWillDeleteItem = 515;
-	final MediaListViewItemAdded = 768;
-	final MediaListViewWillAddItem = 769;
-	final MediaListViewItemDeleted = 770;
-	final MediaListViewWillDeleteItem = 771;
-	final MediaListPlayerPlayed = 1024;
-	final MediaListPlayerNextItemSet = 1025;
-	final MediaListPlayerStopped = 1026;
+	/**
+	 * Append new event types at the end of a category.
+	 * Do not remove, insert or re-order any entry.
+	 * Keep this in sync with lib/event.c:libvlc_event_type_name().
+	 */
+	final LibVLC_MediaMetaChanged = 0;
+	final LibVLC_MediaSubItemAdded = 1;
+	final LibVLC_MediaDurationChanged = 2;
+	final LibVLC_MediaParsedChanged = 3;
+	final LibVLC_MediaFreed = 4;
+	final LibVLC_MediaStateChanged = 5;
+	final LibVLC_MediaSubItemTreeAdded = 6;
+
+	final LibVLC_MediaPlayerMediaChanged = 256;
+	final LibVLC_MediaPlayerNothingSpecial = 257;
+	final LibVLC_MediaPlayerOpening = 258;
+	final LibVLC_MediaPlayerBuffering = 259;
+	final LibVLC_MediaPlayerPlaying = 260;
+	final LibVLC_MediaPlayerPaused = 261;
+	final LibVLC_MediaPlayerStopped = 262;
+	final LibVLC_MediaPlayerForward = 263;
+	final LibVLC_MediaPlayerBackward = 264;
+	final LibVLC_MediaPlayerEndReached = 265;
+	final LibVLC_MediaPlayerEncounteredError = 266;
+	final LibVLC_MediaPlayerTimeChanged = 267;
+	final LibVLC_MediaPlayerPositionChanged = 268;
+	final LibVLC_MediaPlayerSeekableChanged = 269;
+	final LibVLC_MediaPlayerPausableChanged = 270;
+	final LibVLC_MediaPlayerTitleChanged = 271;
+	final LibVLC_MediaPlayerSnapshotTaken = 272;
+	final LibVLC_MediaPlayerLengthChanged = 273;
+	final LibVLC_MediaPlayerVout = 274;
+	final LibVLC_MediaPlayerScrambledChanged = 275;
+	final LibVLC_MediaPlayerESAdded = 276;
+	final LibVLC_MediaPlayerESDeleted = 277;
+	final LibVLC_MediaPlayerESSelected = 278;
+	final LibVLC_MediaPlayerCorked = 279;
+	final LibVLC_MediaPlayerUncorked = 280;
+	final LibVLC_MediaPlayerMuted = 281;
+	final LibVLC_MediaPlayerUnmuted = 282;
+	final LibVLC_MediaPlayerAudioVolume = 283;
+	final LibVLC_MediaPlayerAudioDevice = 284;
+	final LibVLC_MediaPlayerChapterChanged = 285;
+
+	final LibVLC_MediaListItemAdded = 512;
+	final LibVLC_MediaListWillAddItem = 513;
+	final LibVLC_MediaListItemDeleted = 514;
+	final LibVLC_MediaListWillDeleteItem = 515;
+	final LibVLC_MediaListEndReached = 516;
+
+	final LibVLC_MediaListViewItemAdded = 768;
+	final LibVLC_MediaListViewWillAddItem = 769;
+	final LibVLC_MediaListViewItemDeleted = 770;
+	final LibVLC_MediaListViewWillDeleteItem = 771;
+
+	final LibVLC_MediaListPlayerPlayed = 1024;
+	final LibVLC_MediaListPlayerNextItemSet = 1025;
+	final LibVLC_MediaListPlayerStopped = 1026;
+
+	/* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_start(). */
+	final LibVLC_MediaDiscovererStarted = 1280;
+
+	/* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_stop(). */
+	final LibVLC_MediaDiscovererEnded = 1281;
+
+	final LibVLC_RendererDiscovererItemAdded = 1282;
+	final LibVLC_RendererDiscovererItemDeleted = 1283;
+
+	final LibVLC_VlmMediaAdded = 1536;
+	final LibVLC_VlmMediaRemoved = 1537;
+	final LibVLC_VlmMediaChanged = 1538;
+	final LibVLC_VlmMediaInstanceStarted = 1539;
+	final LibVLC_VlmMediaInstanceStopped = 1540;
+	final LibVLC_VlmMediaInstanceStatusInit = 1541;
+	final LibVLC_VlmMediaInstanceStatusOpening = 1542;
+	final LibVLC_VlmMediaInstanceStatusPlaying = 1543;
+	final LibVLC_VlmMediaInstanceStatusPause = 1544;
+	final LibVLC_VlmMediaInstanceStatusEnd = 1545;
+	final LibVLC_VlmMediaInstanceStatusError = 1546;
 }
