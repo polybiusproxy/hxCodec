@@ -154,6 +154,7 @@ class VLCBitmap extends Bitmap
 	// Declarations
 	private var flags:Array<Bool> = [];
 	private var oldTime:Float = 0;
+	private var deltaTimeElapsed:Float;
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var buffer:BytesData = [];
 	private var texture:Texture;
@@ -497,44 +498,45 @@ class VLCBitmap extends Bitmap
 
 		return value;
 	}
-	var delta:Float;
+
 	// Overrides
 	@:noCompletion private override function __enterFrame(deltaTime:Int):Void
 	{
 		__checkFlags();
 
-		delta += deltaTime;
-		Math.abs(delta-oldTime) < 16 ? return : oldTime = delta;
+		deltaTimeElapsed += deltaTime;
+
+		if (Math.abs(delta - oldTime) < 16)
+			return;
+		else
+			oldTime = deltaTimeElapsed;
 
 		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
 			// Initialize the `texture` if necessary.
-			if (texture == null && bitmapData == null) {
-				texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+			if (texture == null)
+				texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
+
+			// Initialize the `bitmapData` if necessary.
+			if (bitmapData == null && texture != null)
+			{
 				bitmapData = BitmapData.fromTexture(texture);
 				width++;
 				width--;
-			}	
-			__renderVideo();
-		}
-	}
-
-	// Internal Methods
-	@:noCompletion inline function __renderVideo():Void
-	{
-		cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
-
-		if ((buffer != null && buffer.length > 0))
-		{
-			var bytes:Bytes = Bytes.ofData(buffer);
-			if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
-			{
-				texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
 			}
-			#if HXC_DEBUG_TRACE
-			else
-				trace("Too small frame, can't render :(");
-			#end
+
+			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
+
+			if (texture != null && (buffer != null && buffer.length > 0))
+			{
+				var bytes:Bytes = Bytes.ofData(buffer);
+				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
+					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
+				#if HXC_DEBUG_TRACE
+				else
+					trace("Too small frame, can't render :(");
+				#end
+			}
 		}
 	}
 
@@ -570,6 +572,7 @@ class VLCBitmap extends Bitmap
 		return __bitmapData;
 	}
 
+	// Internal Methods
 	@:noCompletion private function __checkFlags():Void
 	{
 		for (i in 0...7)
