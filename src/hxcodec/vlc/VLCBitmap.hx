@@ -120,7 +120,7 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 	char* msg = { 0 };
 
 	if (vasprintf(&msg, fmt, args) < 0)
-		msg = "Failed to format log message"
+		msg = "Failed to format log message";
 
 	switch (level)
 	{
