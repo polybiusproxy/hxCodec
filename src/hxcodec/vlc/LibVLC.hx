@@ -374,22 +374,22 @@ abstract LibVLC_Media_Parse_Flag(Int) from Int to Int
 	/**
 	 * Parse media if it's a local file.
 	 */
-	public static var media_parse_local(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_parse_local'));
+	public static var media_parse_local(default, null):Int = new LibVLC_Media_Parse_Flag(untyped __cpp__('libvlc_media_parse_local'));
 
 	/**
 	 * Parse media even if it's a network file.
 	 */
-	public static var media_parse_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_parse_network'));
+	public static var media_parse_network(default, null):Int = new LibVLC_Media_Parse_Flag(untyped __cpp__('libvlc_media_parse_network'));
 
 	/**
 	 * Fetch meta and cover art using local resources.
 	 */
-	public static var media_fetch_local(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_fetch_local'));
+	public static var media_fetch_local(default, null):Int = new LibVLC_Media_Parse_Flag(untyped __cpp__('libvlc_media_fetch_local'));
 
 	/**
 	 * Fetch meta and cover art using network resources.
 	 */
-	public static var media_fetch_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_fetch_network'));
+	public static var media_fetch_network(default, null):Int = new LibVLC_Media_Parse_Flag(untyped __cpp__('libvlc_media_fetch_network'));
 }
 
 enum abstract LibVLC_Media_Parsed_Status(Int) from Int to Int
