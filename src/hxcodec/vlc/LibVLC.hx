@@ -369,7 +369,7 @@ abstract LibVLC_Media_Parse_Flag(Int) from Int to Int
 	@:from(LibVLC_Media_Parse_Flag_T)
 	@:unreflective
 	public static inline function fromNative(value:LibVLC_Media_Parse_Flag_T):LibVLC_Media_Parse_Flag
-		return new LibVLC_MediaParseFlag(untyped value);
+		return new LibVLC_Media_Parse_Flag(untyped value);
 
 	/**
 	 * Parse media if it's a local file.
