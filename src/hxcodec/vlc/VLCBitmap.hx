@@ -24,35 +24,6 @@ using StringTools;
  */
 @:headerInclude('stdio.h')
 @:cppNamespaceCode('
-#ifndef vasprintf // https://gist.github.com/cmitu/b67a7ed67b19176f35f1ac06099d02af#file-sdlvlc-cxx-L26
-int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
-{
-	int count = vsnprintf(NULL, 0, fmt, ap); // Query the buffer size required.
-
-	*sptr = NULL;
-
-	if (count >= 0)
-	{
-		char* p = static_cast<char*>(malloc(count + 1)); // Allocate memory for it.
-
-		if (p == NULL)
-			return -1;
-
-		if (vsnprintf(p, count + 1, fmt, ap) == count) // We should have used exactly what was required.
-		{
-			*sptr = p;
-		}
-		else // Otherwise something is wrong, likely a bug in vsnprintf. If so free the memory and report the error.
-		{
-			free(p);
-			return -1;
-		}
-	}
-
-	return count;
-}
-#endif // vasprintf
-
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*)(*data);
@@ -117,26 +88,6 @@ static void callbacks(const libvlc_event_t *event, void *data)
 @:keep
 class VLCBitmap extends Bitmap
 {
-	// LibVLC Static Functions
-	private static function logging(data:cpp.RawPointer<cpp.Void>, level:Int, ctx:cpp.RawConstPointer<LibVLC_Log_T>, fmt:cpp.ConstCharStar, args:cpp.VarList):Void
-	{
-		var msg:cpp.CharStar = "";
-		if (untyped __cpp__('vasprintf({0}, {1}, {2})', cpp.RawPointer.addressOf(msg), fmt, args) < 0)
-			msg = "Failed to format log message.";
-
-		switch (cast(level, LibVLC_Log_Level))
-		{
-			case LIBVLC_DEBUG: /* Debug message */
-				Sys.println("[ DEBUG ] " + cast(msg, String));
-			case LIBVLC_NOTICE: /* Important informational message */
-				Sys.println("[ INFO ] " + cast(msg, String));
-			case LIBVLC_WARNING: /* Warning (potential error) message */
-				Sys.println("[ WARING ] " + cast(msg, String));
-			case LIBVLC_ERROR: /* Error message */
-				Sys.println("[ ERROR ] " + cast(msg, String));
-		}
-	}
-
 	// Variables
 	public var videoWidth(default, null):UInt = 0;
 	public var videoHeight(default, null):UInt = 0;
@@ -256,7 +207,7 @@ class VLCBitmap extends Bitmap
 
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
-		LibVLC.media_parse(mediaItem);
+		//LibVLC.media_parse(mediaItem);
 		LibVLC.media_add_option(mediaItem, loop ? "input-repeat=65535" : "input-repeat=0");
 		LibVLC.media_release(mediaItem);
 
@@ -280,14 +231,14 @@ class VLCBitmap extends Bitmap
 
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
 
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_EventType.MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 
 		return LibVLC.media_player_play(mediaPlayer);
 	}
@@ -546,26 +497,44 @@ class VLCBitmap extends Bitmap
 
 		return value;
 	}
-
+	var delta:Float;
 	// Overrides
 	@:noCompletion private override function __enterFrame(deltaTime:Int):Void
 	{
 		__checkFlags();
 
-		if (__bitmapData != null && __bitmapData.image != null && __bitmapData.image.version != __imageVersion)
-			__setRenderDirty();
+		delta += deltaTime;
+		Math.abs(delta-oldTime) < 16 ? return : oldTime = delta;
 
 		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
 			// Initialize the `texture` if necessary.
-			if (texture == null)
+			if (texture == null && bitmapData == null) {
 				texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
-
-			// Initialize the `bitmapData` if necessary.
-			if (bitmapData == null && texture != null)
 				bitmapData = BitmapData.fromTexture(texture);
-
+				width++;
+				width--;
+			}	
 			__renderVideo();
+		}
+	}
+
+	// Internal Methods
+	@:noCompletion inline function __renderVideo():Void
+	{
+		cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
+
+		if ((buffer != null && buffer.length > 0))
+		{
+			var bytes:Bytes = Bytes.ofData(buffer);
+			if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
+			{
+				texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
+			}
+			#if HXC_DEBUG_TRACE
+			else
+				trace("Too small frame, can't render :(");
+			#end
 		}
 	}
 
@@ -599,34 +568,6 @@ class VLCBitmap extends Bitmap
 		__setRenderDirty();
 		__imageVersion = -1;
 		return __bitmapData;
-	}
-
-	// Internal Methods
-	@:noCompletion private function __renderVideo():Void
-	{
-		var currentTime:Int = Lib.getTimer();
-
-		if (Math.abs(time - oldTime) > Std.int(1000 / (fps * rate)))
-		{
-			oldTime = currentTime;
-
-			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
-
-			if (texture != null && (buffer != null && buffer.length > 0))
-			{
-				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
-				{
-					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
-					width++;
-					width--;
-				}
-				#if HXC_DEBUG_TRACE
-				else
-					trace("Too small frame, can't render :(");
-				#end
-			}
-		}
 	}
 
 	@:noCompletion private function __checkFlags():Void
