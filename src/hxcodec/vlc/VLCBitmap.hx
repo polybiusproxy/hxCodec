@@ -131,7 +131,7 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 			printf("[ INFO ] %s\n", msg);
 			break;
 		case LIBVLC_WARNING:
-			printf("[ WARING ] %s\n", msg);
+			printf("[ WARNING ] %s\n", msg);
 			break;
 		case LIBVLC_ERROR:
 			printf("[ ERROR ] %s\n", msg);
