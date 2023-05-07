@@ -103,6 +103,9 @@ extern class LibVLC
 	@:native("libvlc_media_add_option_flag")
 	static function media_add_option_flag(p_md:cpp.RawPointer<LibVLC_Media_T>, psz_options:cpp.ConstCharStar, i_flags:cpp.UInt32):Void;
 
+	@:native("libvlc_media_event_manager")
+	static function media_event_manager(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.RawPointer<LibVLC_EventManager_T>;
+
 	@:native("libvlc_media_get_duration")
 	static function media_get_duration(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.Int64;
 
