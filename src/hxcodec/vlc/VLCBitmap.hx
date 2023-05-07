@@ -113,30 +113,34 @@ static void callbacks(const libvlc_event_t *event, void *data)
 			self->flags[7] = true;
 			break;
 	}
+}
+
+static void logging(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
+{
+	char* msg = { 0 };
+
+	if (vasprintf(&msg, fmt, args) < 0)
+		msg = "Failed to format log message"
+
+	switch (level)
+	{
+		case LIBVLC_DEBUG:
+			printf("[ DEBUG ] %s\n", msg);
+			break;
+		case LIBVLC_NOTICE:
+			printf("[ INFO ] %s\n", msg);
+			break;
+		case LIBVLC_WARNING:
+			printf("[ WARING ] %s\n", msg);
+			break;
+		case LIBVLC_ERROR:
+			printf("[ ERROR ] %s\n", msg);
+			break;
+	}
 }')
 @:keep
 class VLCBitmap extends Bitmap
 {
-	// LibVLC Static Functions
-	private static function logging(data:cpp.RawPointer<cpp.Void>, level:Int, ctx:cpp.RawConstPointer<LibVLC_Log_T>, fmt:cpp.ConstCharStar, args:cpp.VarList):Void
-	{
-		var msg:cpp.CharStar = "";
-		if (untyped __cpp__('vasprintf({0}, {1}, {2})', cpp.RawPointer.addressOf(msg), fmt, args) < 0)
-			msg = "Failed to format log message.";
-
-		switch (cast(level, LibVLC_Log_Level))
-		{
-			case LIBVLC_DEBUG: /* Debug message */
-				Sys.println("[ DEBUG ] " + cast(msg, String));
-			case LIBVLC_NOTICE: /* Important informational message */
-				Sys.println("[ INFO ] " + cast(msg, String));
-			case LIBVLC_WARNING: /* Warning (potential error) message */
-				Sys.println("[ WARING ] " + cast(msg, String));
-			case LIBVLC_ERROR: /* Error message */
-				Sys.println("[ ERROR ] " + cast(msg, String));
-		}
-	}
-
 	// Variables
 	public var videoWidth(default, null):UInt = 0;
 	public var videoHeight(default, null):UInt = 0;
@@ -230,6 +234,8 @@ class VLCBitmap extends Bitmap
 		onBackward = new CallbackVoid();
 
 		instance = LibVLC.create(0, null);
+
+		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('this'));
 	}
 
 	// Playback Methods
