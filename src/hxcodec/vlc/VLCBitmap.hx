@@ -142,9 +142,6 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 class VLCBitmap extends Bitmap
 {
 	// Variables
-	public var videoWidth(default, null):UInt = 0;
-	public var videoHeight(default, null):UInt = 0;
-
 	public var time(get, set):Int;
 	public var position(get, set):Float;
 	public var length(get, never):Int;
@@ -159,49 +156,17 @@ class VLCBitmap extends Bitmap
 	public var canPause(get, never):Bool;
 	public var playbackRate(get, set):Float;
 	public var muteAudio(get, set):Bool;
+	public var videoWidth(default, null):UInt = 0;
+	public var videoHeight(default, null):UInt = 0;
 
 	// Callbacks
-
-	/**
-	 * Callback for when the media player is opening.
-	 */
 	public var onOpening(default, null):CallbackVoid;
-
-	/**
-	 * Callback for when the media player begins playing.
-	 * @param path The path of the current media.
-	 */
 	public var onPlaying(default, null):Callback<String>;
-
-	/**
-	 * Callback for when the media player is paused.
-	 */
 	public var onPaused(default, null):CallbackVoid;
-
-	/**
-	 * Callback for when the media player is stopped.
-	 */
 	public var onStopped(default, null):CallbackVoid;
-
-	/**
-	 * Callback for when the media player reaches the end.
-	 */
 	public var onEndReached(default, null):CallbackVoid;
-
-	/**
-	 * Callback for when the media player encounters an error.
-	 * @param error The encountered error.
-	 */
 	public var onEncounteredError(default, null):Callback<String>;
-
-	/**
-	 * Callback for when the media player is skipped forward.
-	 */
 	public var onForward(default, null):CallbackVoid;
-
-	/**
-	 * Callback for when the media player is skipped backward.
-	 */
 	public var onBackward(default, null):CallbackVoid;
 
 	// Declarations
@@ -238,7 +203,7 @@ class VLCBitmap extends Bitmap
 		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('this'));
 	}
 
-	// Public Methods
+	// Methods
 	public function play(?location:String = null, shouldLoop:Bool = false):Int
 	{
 		if (location.startsWith('https://') || location.startsWith('file://'))
@@ -289,6 +254,12 @@ class VLCBitmap extends Bitmap
 		return LibVLC.media_player_play(mediaPlayer);
 	}
 
+	public function stop():Void
+	{
+		if (mediaPlayer != null)
+			LibVLC.media_player_stop(mediaPlayer);
+	}
+
 	public function pause():Void
 	{
 		if (mediaPlayer != null)
@@ -314,7 +285,7 @@ class VLCBitmap extends Bitmap
 		#end
 
 		if (isPlaying)
-			LibVLC.media_player_stop(mediaPlayer);
+			stop();
 
 		__detachEvents();
 
