@@ -110,6 +110,9 @@ extern class LibVLC
 	@:native("libvlc_media_retain")
 	static function media_retain(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
 
+	@:native("libvlc_media_parse")
+	static function media_parse(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
+
 	@:native("libvlc_media_parse_with_options")
 	static function media_parse_with_options(p_md:cpp.RawPointer<LibVLC_Media_T>, parse_flag:LibVLC_Media_Parse_Flag, timeout:Int):Int;
 
