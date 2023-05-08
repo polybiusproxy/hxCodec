@@ -313,16 +313,9 @@ class VLCBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 
-		cpp.Native.nativeFree(cast eventManager);
 		eventManager = null;
-
-		cpp.Native.nativeFree(cast mediaPlayer);
 		mediaPlayer = null;
-
-		cpp.Native.nativeFree(cast mediaItem);
 		mediaItem = null;
-
-		cpp.Native.nativeFree(cast instance);
 		instance = null;
 
 		#if HXC_DEBUG_TRACE
