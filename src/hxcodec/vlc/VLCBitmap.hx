@@ -535,7 +535,7 @@ class VLCBitmap extends Bitmap
 		{
 			// Initialize the `texture` if necessary.
 			if (texture == null)
-				texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+				texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true, 1);
 
 			// Initialize the `bitmapData` if necessary.
 			if (bitmapData == null && texture != null)
@@ -593,7 +593,7 @@ class VLCBitmap extends Bitmap
 				var bytes:Bytes = Bytes.ofData(buffer);
 				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
 				{
-					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
+					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0, 1);
 					width++;
 					width--;
 				}
