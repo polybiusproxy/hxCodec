@@ -6,6 +6,7 @@ package hxcodec.vlc;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
+import cpp.StdVector.StdVectorChar;
 import hxcodec.base.Callback;
 import hxcodec.vlc.LibVLC;
 import openfl.Lib;
@@ -24,7 +25,7 @@ using StringTools;
  */
 @:headerInclude('stdio.h')
 @:cppNamespaceCode('
-#ifndef vasprintf
+#ifndef vasprintf // https://gist.github.com/cmitu/b67a7ed67b19176f35f1ac06099d02af#file-sdlvlc-cxx-L26
 int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
 {
 	int count = vsnprintf(NULL, 0, fmt, ap); // Query the buffer size required.
@@ -51,7 +52,7 @@ int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
 
 	return count;
 }
-#endif // vasprintf
+#endif
 
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
@@ -141,6 +142,26 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 @:keep
 class VLCBitmap extends Bitmap
 {
+	// LibVLC Static Functions
+	private static function logging(data:cpp.RawPointer<cpp.Void>, level:Int, ctx:cpp.RawConstPointer<LibVLC_Log_T>, fmt:cpp.ConstCharStar, args:cpp.VarList):Void
+	{
+		// var msg:cpp.CharStar = "";
+		// if (untyped __cpp__('vasprintf({0}, {1}, {2})', cpp.RawPointer.addressOf(msg), fmt, args) < 0)
+		// 	msg = "Failed to format log message.";
+		// 
+		// switch (cast(level, LibVLC_Log_Level))
+		// {
+		// 	case LIBVLC_DEBUG: /* Debug message */
+		// 		Sys.println("[ DEBUG ] " + cast(fmt, String));
+		// 	case LIBVLC_NOTICE: /* Important informational message */
+		// 		Sys.println("[ INFO ] " + cast(fmt, String));
+		// 	case LIBVLC_WARNING: /* Warning (potential error) message */
+		// 		Sys.println("[ WARING ] " + cast(fmt, String));
+		// 	case LIBVLC_ERROR: /* Error message */
+		// 		Sys.println("[ ERROR ] " + cast(fmt, String));
+		// }
+	}
+
 	// Variables
 	public var time(get, set):Int;
 	public var position(get, set):Float;
@@ -181,6 +202,7 @@ class VLCBitmap extends Bitmap
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
 	private var eventManager:cpp.RawPointer<LibVLC_EventManager_T>;
+	private var messages:StdVectorChar;
 
 	public function new():Void
 	{

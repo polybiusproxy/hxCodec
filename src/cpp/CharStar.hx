@@ -1,6 +1,8 @@
 package cpp;
 
-extern abstract CharStar(cpp.RawPointer<cpp.Char>) to (cpp.RawPointer<cpp.Char>)
+typedef CharStar_T = cpp.RawPointer<cpp.Char>;
+
+extern abstract CharStar(CharStar_T) to CharStar_T
 {
 	inline function new(s:String):Void
 		this = untyped s.__s;
@@ -15,3 +17,9 @@ extern abstract CharStar(cpp.RawPointer<cpp.Char>) to (cpp.RawPointer<cpp.Char>)
 	@:to extern public inline function toPointer():cpp.RawPointer<cpp.Char>
 		return this;
 }
+
+typedef CharStarStar = cpp.Pointer<CharStar>;
+
+// typedef ConstCharStar = cpp.ConstPointer<cpp.Char>;
+
+typedef ConstCharStarStar = cpp.Pointer<ConstCharStar>;
