@@ -517,7 +517,7 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Overrides
-	@:noCompletion private override function enterFrame(deltaTime:Int):Void
+	@:noCompletion private override function __enterFrame(deltaTime:Int):Void
 	{
 		if (__bitmapData != null && __bitmapData.image != null && __bitmapData.image.version != __imageVersion)
 			__setRenderDirty();
