@@ -519,8 +519,8 @@ class VLCBitmap extends Bitmap
 	// Overrides
 	@:noCompletion private override function enterFrame(deltaTime:Int):Void
 	{
-		if (bitmapData != null && bitmapData.image != null && bitmapData.image.version != imageVersion)
-			setRenderDirty();
+		if (__bitmapData != null && __bitmapData.image != null && __bitmapData.image.version != __imageVersion)
+			__setRenderDirty();
 
 		checkFlags();
 
@@ -564,10 +564,10 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private override function set_bitmapData(value:BitmapData):BitmapData
 	{
-		bitmapData = value;
-		setRenderDirty();
-		imageVersion = -1;
-		return bitmapData;
+		__bitmapData = value;
+		__setRenderDirty();
+		__imageVersion = -1;
+		return __bitmapData;
 	}
 
 	// Internal Methods
