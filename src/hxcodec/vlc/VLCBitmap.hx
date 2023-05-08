@@ -313,8 +313,8 @@ class VLCBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 
-		LibVLC.media_player_release(mediaPlayer);
-		LibVLC.release(instance);
+		// LibVLC.media_player_release(mediaPlayer);
+		// LibVLC.release(instance);
 
 		#if HXC_DEBUG_TRACE
 		trace('disposing done!');
