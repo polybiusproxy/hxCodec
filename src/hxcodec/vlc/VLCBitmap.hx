@@ -533,8 +533,8 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private override function set_height(value:Float):Float
 	{
-		if (__bitmapData != null)
-			scaleY = value / __bitmapData.height;
+		if (bitmapData != null)
+			scaleY = value / bitmapData.height;
 		else if (videoHeight != 0)
 			scaleY = value / videoHeight;
 		else
@@ -545,8 +545,8 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private override function set_width(value:Float):Float
 	{
-		if (__bitmapData != null)
-			scaleX = value / __bitmapData.width;
+		if (bitmapData != null)
+			scaleX = value / bitmapData.width;
 		else if (videoWidth != 0)
 			scaleX = value / videoWidth;
 		else
