@@ -287,6 +287,8 @@ class VLCBitmap extends Bitmap
 
 		__detachEvents();
 
+		LibVLC.log_unset(__instance);
+
 		if (__buffer != null && __buffer.length > 0)
 			__buffer = [];
 
@@ -310,6 +312,11 @@ class VLCBitmap extends Bitmap
 		onEncounteredError = null;
 		onForward = null;
 		onBackward = null;
+
+		__instance = null;
+		__mediaPlayer = null;
+		__mediaItem = null;
+		__eventManager = null;
 
 		#if HXC_DEBUG_TRACE
 		trace('disposing done!');
