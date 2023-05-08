@@ -142,6 +142,9 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 class VLCBitmap extends Bitmap
 {
 	// Variables
+	public var videoWidth(default, null):UInt = 0;
+	public var videoHeight(default, null):UInt = 0;
+	public var texture(default, null):Texture;
 	public var time(get, set):Int;
 	public var position(get, set):Float;
 	public var length(get, never):Int;
@@ -156,9 +159,6 @@ class VLCBitmap extends Bitmap
 	public var canPause(get, never):Bool;
 	public var playbackRate(get, set):Float;
 	public var muteAudio(get, set):Bool;
-	public var texture(default, null):Texture;
-	public var videoWidth(default, null):UInt = 0;
-	public var videoHeight(default, null):UInt = 0;
 
 	// Callbacks
 	public var onOpening(default, null):CallbackVoid;
@@ -572,7 +572,7 @@ class VLCBitmap extends Bitmap
 		{
 			__oldTime = currentTime;
 
-			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(__pixels), Std.int(videoWidth * videoHeight * 4));
+			cpp.NativeArray.setUnmanagedData(__buffer, cpp.ConstPointer.fromRaw(__pixels), Std.int(videoWidth * videoHeight * 4));
 
 			if (texture != null && (__buffer != null && __buffer.length > 0))
 			{
