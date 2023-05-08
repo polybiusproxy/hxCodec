@@ -68,17 +68,17 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = _w;
 	self->videoHeight = _h;
 
-	if (self->pixels != nullptr)
-		free(self->pixels);
+	if (self->__pixels != nullptr)
+		free(self->__pixels);
 
-	self->pixels = new unsigned char[_w *_h * 4];
+	self->__pixels = new unsigned char[_w *_h * 4];
 	return 1;
 }
 
 static void *lock(void *data, void **p_pixels)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
-	*p_pixels = self->pixels;
+	*p_pixels = self->__pixels;
 	return nullptr; // picture identifier, not needed here
 }
 
@@ -89,28 +89,28 @@ static void callbacks(const libvlc_event_t *event, void *data)
 	switch (event->type)
 	{
 		case libvlc_MediaPlayerOpening:
-			self->flags[0] = true;
+			self->__flags[0] = true;
 			break;
 		case libvlc_MediaPlayerPlaying:
-			self->flags[1] = true;
+			self->__flags[1] = true;
 			break;
 		case libvlc_MediaPlayerPaused:
-			self->flags[2] = true;
+			self->__flags[2] = true;
 			break;
 		case libvlc_MediaPlayerStopped:
-			self->flags[3] = true;
+			self->__flags[3] = true;
 			break;
 		case libvlc_MediaPlayerEndReached:
-			self->flags[4] = true;
+			self->__flags[4] = true;
 			break;
 		case libvlc_MediaPlayerEncounteredError:
-			self->flags[5] = true;
+			self->__flags[5] = true;
 			break;
 		case libvlc_MediaPlayerForward:
-			self->flags[6] = true;
+			self->__flags[6] = true;
 			break;
 		case libvlc_MediaPlayerBackward:
-			self->flags[7] = true;
+			self->__flags[7] = true;
 			break;
 	}
 }
@@ -156,6 +156,7 @@ class VLCBitmap extends Bitmap
 	public var canPause(get, never):Bool;
 	public var playbackRate(get, set):Float;
 	public var muteAudio(get, set):Bool;
+	public var texture(default, null):Texture;
 	public var videoWidth(default, null):UInt = 0;
 	public var videoHeight(default, null):UInt = 0;
 
@@ -170,24 +171,21 @@ class VLCBitmap extends Bitmap
 	public var onBackward(default, null):CallbackVoid;
 
 	// Declarations
-	private var flags:Array<Bool> = [];
-	private var oldTime:Int = 0;
-	private var pixels:cpp.RawPointer<cpp.UInt8>;
-	private var buffer:BytesData = [];
-	private var texture:Texture;
-
-	// LibVLC
-	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
-	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
-	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
-	private var eventManager:cpp.RawPointer<LibVLC_EventManager_T>;
+	private var __oldTime:Int = 0;
+	private var __flags:Array<Bool> = [];
+	private var __buffer:BytesData = [];
+	private var __pixels:cpp.RawPointer<cpp.UInt8>;
+	private var __instance:cpp.RawPointer<LibVLC_Instance_T>;
+	private var __mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
+	private var __mediaItem:cpp.RawPointer<LibVLC_Media_T>;
+	private var __eventManager:cpp.RawPointer<LibVLC_EventManager_T>;
 
 	public function new():Void
 	{
 		super(bitmapData, AUTO, true);
 
 		for (event in 0...7)
-			flags[event] = false;
+			__flags[event] = false;
 
 		onOpening = new CallbackVoid();
 		onPlaying = new Callback<String>();
@@ -198,9 +196,9 @@ class VLCBitmap extends Bitmap
 		onForward = new CallbackVoid();
 		onBackward = new CallbackVoid();
 
-		instance = LibVLC.create(0, null);
+		__instance = LibVLC.create(0, null);
 
-		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('this'));
+		LibVLC.log_set(__instance, untyped __cpp__('logging'), untyped __cpp__('this'));
 	}
 
 	// Methods
@@ -212,7 +210,7 @@ class VLCBitmap extends Bitmap
 			trace("setting location to: " + location);
 			#end
 
-			mediaItem = LibVLC.media_new_location(instance, location);
+			__mediaItem = LibVLC.media_new_location(__instance, location);
 		}
 		else
 		{
@@ -222,17 +220,17 @@ class VLCBitmap extends Bitmap
 			trace("setting path to: " + path);
 			#end
 
-			mediaItem = LibVLC.media_new_path(instance, path);
+			__mediaItem = LibVLC.media_new_path(__instance, path);
 		}
 
-		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
+		__mediaPlayer = LibVLC.media_player_new_from_media(__mediaItem);
 
-		LibVLC.media_parse(mediaItem);
-		LibVLC.media_add_option(mediaItem, shouldLoop ? "input-repeat=65535" : "input-repeat=0");
-		LibVLC.media_release(mediaItem);
+		LibVLC.media_parse(__mediaItem);
+		LibVLC.media_add_option(__mediaItem, shouldLoop ? "input-repeat=65535" : "input-repeat=0");
+		LibVLC.media_release(__mediaItem);
 
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
+		if (__buffer != null && __buffer.length > 0)
+			__buffer = [];
 
 		if (bitmapData != null)
 		{
@@ -246,36 +244,36 @@ class VLCBitmap extends Bitmap
 			texture = null;
 		}
 
-		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), null);
-		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
+		LibVLC.video_set_format_callbacks(__mediaPlayer, untyped __cpp__('format_setup'), null);
+		LibVLC.video_set_callbacks(__mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
 
 		__attachEvents();
 
-		return LibVLC.media_player_play(mediaPlayer);
+		return LibVLC.media_player_play(__mediaPlayer);
 	}
 
 	public function stop():Void
 	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_stop(mediaPlayer);
+		if (__mediaPlayer != null)
+			LibVLC.media_player_stop(__mediaPlayer);
 	}
 
 	public function pause():Void
 	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_set_pause(mediaPlayer, 1);
+		if (__mediaPlayer != null)
+			LibVLC.media_player_set_pause(__mediaPlayer, 1);
 	}
 
 	public function resume():Void
 	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_set_pause(mediaPlayer, 0);
+		if (__mediaPlayer != null)
+			LibVLC.media_player_set_pause(__mediaPlayer, 0);
 	}
 
 	public function togglePaused():Void
 	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_pause(mediaPlayer);
+		if (__mediaPlayer != null)
+			LibVLC.media_player_pause(__mediaPlayer);
 	}
 
 	public function dispose():Void
@@ -289,8 +287,8 @@ class VLCBitmap extends Bitmap
 
 		__detachEvents();
 
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
+		if (__buffer != null && __buffer.length > 0)
+			__buffer = [];
 
 		if (bitmapData != null)
 		{
@@ -313,9 +311,6 @@ class VLCBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 
-		// LibVLC.media_player_release(mediaPlayer);
-		// LibVLC.release(instance);
-
 		#if HXC_DEBUG_TRACE
 		trace('disposing done!');
 		#end
@@ -324,12 +319,12 @@ class VLCBitmap extends Bitmap
 	// Get & Set Methods
 	@:noCompletion private function get_time():Int
 	{
-		if (mediaPlayer != null)
+		if (__mediaPlayer != null)
 		{
 			#if (haxe >= "4.3.0")
-			return LibVLC.media_player_get_time(mediaPlayer).toInt();
+			return LibVLC.media_player_get_time(__mediaPlayer).toInt();
 			#else
-			return LibVLC.media_player_get_time(mediaPlayer);
+			return LibVLC.media_player_get_time(__mediaPlayer);
 			#end
 		}
 
@@ -338,36 +333,36 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private function set_time(value:Int):Int
 	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_set_time(mediaPlayer, value);
+		if (__mediaPlayer != null)
+			LibVLC.media_player_set_time(__mediaPlayer, value);
 
 		return value;
 	}
 
 	@:noCompletion private function get_position():Float
 	{
-		if (mediaPlayer != null)
-			return LibVLC.media_player_get_position(mediaPlayer);
+		if (__mediaPlayer != null)
+			return LibVLC.media_player_get_position(__mediaPlayer);
 
 		return 0;
 	}
 
 	@:noCompletion private function set_position(value:Float):Float
 	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_set_position(mediaPlayer, value);
+		if (__mediaPlayer != null)
+			LibVLC.media_player_set_position(__mediaPlayer, value);
 
 		return value;
 	}
 
 	@:noCompletion private function get_length():Int
 	{
-		if (mediaPlayer != null)
+		if (__mediaPlayer != null)
 		{
 			#if (haxe >= "4.3.0")
-			return LibVLC.media_player_get_length(mediaPlayer).toInt();
+			return LibVLC.media_player_get_length(__mediaPlayer).toInt();
 			#else
-			return LibVLC.media_player_get_length(mediaPlayer);
+			return LibVLC.media_player_get_length(__mediaPlayer);
 			#end
 		}
 
@@ -376,12 +371,12 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private function get_duration():Int
 	{
-		if (mediaItem != null)
+		if (__mediaItem != null)
 		{
 			#if (haxe >= "4.3.0")
-			return LibVLC.media_get_duration(mediaItem).toInt();
+			return LibVLC.media_get_duration(__mediaItem).toInt();
 			#else
-			return LibVLC.media_get_duration(mediaItem);
+			return LibVLC.media_get_duration(__mediaItem);
 			#end
 		}
 
@@ -390,36 +385,36 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private function get_mrl():String
 	{
-		if (mediaItem != null)
-			return cast(LibVLC.media_get_mrl(mediaItem), String);
+		if (__mediaItem != null)
+			return cast(LibVLC.media_get_mrl(__mediaItem), String);
 
 		return null;
 	}
 
 	@:noCompletion private function get_volume():Int
 	{
-		if (mediaPlayer != null)
-			return LibVLC.audio_get_volume(mediaPlayer);
+		if (__mediaPlayer != null)
+			return LibVLC.audio_get_volume(__mediaPlayer);
 
 		return 0;
 	}
 
 	@:noCompletion private function set_volume(value:Int):Int
 	{
-		if (mediaPlayer != null)
-			LibVLC.audio_set_volume(mediaPlayer, value);
+		if (__mediaPlayer != null)
+			LibVLC.audio_set_volume(__mediaPlayer, value);
 
 		return value;
 	}
 
 	@:noCompletion private function get_delay():Int
 	{
-		if (mediaPlayer != null)
+		if (__mediaPlayer != null)
 		{
 			#if (haxe >= "4.3.0")
-			return LibVLC.audio_get_delay(mediaPlayer).toInt();
+			return LibVLC.audio_get_delay(__mediaPlayer).toInt();
 			#else
-			return LibVLC.audio_get_delay(mediaPlayer);
+			return LibVLC.audio_get_delay(__mediaPlayer);
 			#end
 		}
 
@@ -428,88 +423,88 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private function set_delay(value:Int):Int
 	{
-		if (mediaPlayer != null)
-			LibVLC.audio_set_delay(mediaPlayer, value);
+		if (__mediaPlayer != null)
+			LibVLC.audio_set_delay(__mediaPlayer, value);
 
 		return value;
 	}
 
 	@:noCompletion private function get_rate():Float
 	{
-		if (mediaPlayer != null)
-			return LibVLC.media_player_get_rate(mediaPlayer);
+		if (__mediaPlayer != null)
+			return LibVLC.media_player_get_rate(__mediaPlayer);
 
 		return 0;
 	}
 
 	@:noCompletion private function set_rate(value:Float):Float
 	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_set_rate(mediaPlayer, value);
+		if (__mediaPlayer != null)
+			LibVLC.media_player_set_rate(__mediaPlayer, value);
 
 		return value;
 	}
 
 	@:noCompletion private function get_fps():Float
 	{
-		if (mediaPlayer != null)
-			return LibVLC.media_player_get_fps(mediaPlayer);
+		if (__mediaPlayer != null)
+			return LibVLC.media_player_get_fps(__mediaPlayer);
 
 		return 0;
 	}
 
 	@:noCompletion private function get_isPlaying():Bool
 	{
-		if (mediaPlayer != null)
-			return LibVLC.media_player_is_playing(mediaPlayer);
+		if (__mediaPlayer != null)
+			return LibVLC.media_player_is_playing(__mediaPlayer);
 
 		return false;
 	}
 
 	@:noCompletion private function get_isSeekable():Bool
 	{
-		if (mediaPlayer != null)
-			return LibVLC.media_player_is_seekable(mediaPlayer);
+		if (__mediaPlayer != null)
+			return LibVLC.media_player_is_seekable(__mediaPlayer);
 
 		return false;
 	}
 
 	@:noCompletion private function get_canPause():Bool
 	{
-		if (mediaPlayer != null)
-			return LibVLC.media_player_can_pause(mediaPlayer);
+		if (__mediaPlayer != null)
+			return LibVLC.media_player_can_pause(__mediaPlayer);
 
 		return false;
 	}
 
 	@:noCompletion function get_muteAudio():Bool
 	{
-		if (mediaPlayer != null)
-			return LibVLC.audio_get_mute(mediaPlayer) > 0;
+		if (__mediaPlayer != null)
+			return LibVLC.audio_get_mute(__mediaPlayer) > 0;
 
 		return false;
 	}
 
 	@:noCompletion function set_muteAudio(value:Bool):Bool
 	{
-		if (mediaPlayer != null)
-			LibVLC.audio_set_mute(mediaPlayer, value);
+		if (__mediaPlayer != null)
+			LibVLC.audio_set_mute(__mediaPlayer, value);
 
 		return value;
 	}
 
 	@:noCompletion function get_playbackRate():Float
 	{
-		if (mediaPlayer != null)
-			return LibVLC.media_player_get_rate(mediaPlayer);
+		if (__mediaPlayer != null)
+			return LibVLC.media_player_get_rate(__mediaPlayer);
 
 		return 0;
 	}
 
 	@:noCompletion function set_playbackRate(value:Float):Float
 	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_set_rate(mediaPlayer, value);
+		if (__mediaPlayer != null)
+			LibVLC.media_player_set_rate(__mediaPlayer, value);
 
 		return value;
 	}
@@ -522,7 +517,7 @@ class VLCBitmap extends Bitmap
 
 		__checkFlags();
 
-		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && __pixels != null)
 		{
 			// Initialize the `texture` if necessary.
 			if (texture == null)
@@ -573,15 +568,15 @@ class VLCBitmap extends Bitmap
 	{
 		var currentTime:Int = Lib.getTimer();
 
-		if (Math.abs(currentTime - oldTime) > Std.int(1000 / (fps * rate)))
+		if (Math.abs(currentTime - __oldTime) > Std.int(1000 / (fps * rate)))
 		{
-			oldTime = currentTime;
+			__oldTime = currentTime;
 
-			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
+			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(__pixels), Std.int(videoWidth * videoHeight * 4));
 
-			if (texture != null && (buffer != null && buffer.length > 0))
+			if (texture != null && (__buffer != null && __buffer.length > 0))
 			{
-				var bytes:Bytes = Bytes.ofData(buffer);
+				var bytes:Bytes = Bytes.ofData(__buffer);
 				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
 				{
 					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
@@ -600,9 +595,9 @@ class VLCBitmap extends Bitmap
 	{
 		for (i in 0...7)
 		{
-			if (flags[i])
+			if (__flags[i])
 			{
-				flags[i] = false;
+				__flags[i] = false;
 
 				switch (i)
 				{
@@ -637,27 +632,27 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private function __attachEvents():Void
 	{
-		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
+		__eventManager = LibVLC.media_player_event_manager(__mediaPlayer);
 
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(__eventManager, LibVLC_MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(__eventManager, LibVLC_MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(__eventManager, LibVLC_MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(__eventManager, LibVLC_MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(__eventManager, LibVLC_MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(__eventManager, LibVLC_MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(__eventManager, LibVLC_MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(__eventManager, LibVLC_MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 	}
 
 	@:noCompletion private function __detachEvents():Void
 	{
-		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(__eventManager, LibVLC_MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(__eventManager, LibVLC_MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(__eventManager, LibVLC_MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(__eventManager, LibVLC_MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(__eventManager, LibVLC_MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(__eventManager, LibVLC_MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(__eventManager, LibVLC_MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(__eventManager, LibVLC_MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 	}
 }
