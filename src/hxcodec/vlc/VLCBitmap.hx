@@ -127,25 +127,25 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 	if (vasprintf(&msg, fmt, args) < 0)
 		msg = "Failed to format log message.";
 
-	std::string log = "[";
+	std::string log = "[ ";
 
 	switch (level)
 	{
 		case LIBVLC_DEBUG:
-			log.append(" DEBUG ");
+			log.append("DEBUG");
 			break;
 		case LIBVLC_NOTICE:
-			log.append(" INFO ");
+			log.append("INFO");
 			break;
 		case LIBVLC_WARNING:
-			log.append(" WARN ");
+			log.append("WARNING");
 			break;
 		case LIBVLC_ERROR:
-			log.append(" ERROR ");
+			log.append("ERROR");
 			break;
 	}
 
-	log.append("] ");
+	log.append(" ] ");
 	log.append(std::string(msg));
 
 	self->messages.push_back(const_cast<char *>(log.c_str()));
