@@ -3,10 +3,9 @@ package hxcodec.vlc;
 #if (!(desktop || android) && macro)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us."
 #end
+
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
-@:unreflective
-@:keep
 extern class LibVLC
 {
 	@:native("libvlc_new")
@@ -222,7 +221,6 @@ typedef LibVLC_Media_Close_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>) -
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
-@:keep
 @:native("libvlc_log_t")
 extern class LibVLC_Log_T {}
 
@@ -236,31 +234,26 @@ enum abstract LibVLC_Log_Level(Int) from Int to Int
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
-@:keep
 @:native("libvlc_instance_t")
 extern class LibVLC_Instance_T {}
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
-@:keep
 @:native("libvlc_media_t")
 extern class LibVLC_Media_T {}
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
-@:keep
 @:native("libvlc_media_player_t")
 extern class LibVLC_MediaPlayer_T {}
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
-@:keep
 @:native("libvlc_event_manager_t")
 extern class LibVLC_EventManager_T {}
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
-@:keep
 @:native("libvlc_event_t")
 extern class LibVLC_Event_T {}
 
@@ -324,10 +317,13 @@ enum abstract LibVLC_Event_Type(Int) from Int to Int
 	final LibVLC_MediaListPlayerPlayed = 1024;
 	final LibVLC_MediaListPlayerNextItemSet = 1025;
 	final LibVLC_MediaListPlayerStopped = 1026;
+
 	/* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_start(). */
 	final LibVLC_MediaDiscovererStarted = 1280;
+
 	/* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_stop(). */
 	final LibVLC_MediaDiscovererEnded = 1281;
+
 	final LibVLC_RendererDiscovererItemAdded = 1282;
 	final LibVLC_RendererDiscovererItemDeleted = 1283;
 	final LibVLC_VlmMediaAdded = 1536;
@@ -346,8 +342,8 @@ enum abstract LibVLC_Event_Type(Int) from Int to Int
 /**
  * Internal type for media parse flags.
  */
+@:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include('vlc/vlc.h')
-@:unreflective
 @:native('libvlc_media_parse_flag_t')
 extern class LibVLC_Media_Parse_Flag_T {}
 
