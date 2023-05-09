@@ -670,7 +670,7 @@ class VLCBitmap extends Bitmap
 			// Pop the last message in the vector.
 			var msg:cpp.CharStar = messages.back();
 
-			messagesOut.insert(0, manualLogCleanup(cast(msg, String));
+			messagesOut.insert(0, manualLogCleanup(cast(msg, String)));
 
 			// Free the messages.
 			messages.pop_back();
