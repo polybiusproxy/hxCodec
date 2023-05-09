@@ -6,10 +6,10 @@ package cpp;
 @:keep
 @:structAccess
 @:include('vector')
-@:native('std::vector<char*>')
+@:native('std::vector<char *>')
 extern class StdVectorChar
 {
-	@:native('std::vector<char*>')
+	@:native('std::vector<char *>')
 	static function create():StdVectorChar;
 
 	function at(index:Int):cpp.CharStar;
@@ -27,10 +27,10 @@ extern class StdVectorChar
 @:keep
 @:structAccess
 @:include('vector')
-@:native('std::vector<const char*>')
+@:native('std::vector<const char *>')
 extern class StdVectorConstChar
 {
-	@:native('std::vector<const char*>')
+	@:native('std::vector<const char *>')
 	static function create():StdVectorConstChar;
 
 	function at(index:Int):cpp.ConstCharStar;
