@@ -15,7 +15,7 @@ extern class StdVectorChar
 
 	function at(index:Int):cpp.CharStar;
 	function back():cpp.CharStar;
-	function data():cpp.CharStar.CharStarStar;
+	function data():cpp.RawPointer<cpp.CharStar>;
 	function front():cpp.CharStar;
 	function pop_back():Void;
 	function push_back(value:cpp.CharStar):Void;
@@ -37,7 +37,7 @@ extern class StdVectorConstChar
 
 	function at(index:Int):cpp.ConstCharStar;
 	function back():cpp.ConstCharStar;
-	function data():cpp.Pointer<cpp.ConstCharStar>;
+	function data():cpp.RawPointer<cpp.ConstCharStar>;
 	function front():cpp.ConstCharStar;
 	function pop_back():Void;
 	function push_back(value:cpp.ConstCharStar):Void;
