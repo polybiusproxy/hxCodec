@@ -150,7 +150,6 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 
 	self->messages.push_back(const_cast<char *>(log.c_str()));
 }')
-@:keep
 class VLCBitmap extends Bitmap
 {
 	// Variables
