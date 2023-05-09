@@ -37,6 +37,12 @@ Add this code in the Project.xml file:
 <haxedef name="HXC_DEBUG_TRACE" if="debug" />
 ```
 
+**OPTIONAL: If you want LibVLC to send logs on your console when compiling in debug mode, add this:**
+```xml
+<!-- LibVLC Logging for hxCodec -->
+<haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
+```
+
 --------------------------
 
 ## Playing videos
