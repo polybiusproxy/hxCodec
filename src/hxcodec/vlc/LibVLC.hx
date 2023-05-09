@@ -6,6 +6,7 @@ package hxcodec.vlc;
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
+@:unreflective
 extern class LibVLC
 {
 	@:native("libvlc_new")
