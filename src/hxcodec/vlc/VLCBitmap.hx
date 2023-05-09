@@ -127,28 +127,28 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 	if (vasprintf(&msg, fmt, args) < 0)
 		msg = "Failed to format log message.";
 
-	std::string msgFull = "[";
+	std::string log = "[";
 
 	switch (level)
 	{
 		case LIBVLC_DEBUG:
-			msgFull.append("DEBUG");
+			log.append(" DEBUG ");
 			break;
 		case LIBVLC_NOTICE:
-			msgFull.append("INFO");
+			log.append(" INFO ");
 			break;
 		case LIBVLC_WARNING:
-			msgFull.append("WARNING");
+			log.append(" WARN ");
 			break;
 		case LIBVLC_ERROR:
-			msgFull.append("ERROR");
+			log.append(" ERROR ");
 			break;
 	}
 
-	msgFull.append("] ");
-	msgFull.append(std::string(msg));
+	log.append("] ");
+	log.append(std::string(msg));
 
-	self->messages.push_back(const_cast<char *>(msgFull.c_str()));
+	self->messages.push_back(const_cast<char *>(log.c_str()));
 }')
 @:keep
 class VLCBitmap extends Bitmap
@@ -188,11 +188,11 @@ class VLCBitmap extends Bitmap
 	private var flags:Array<Bool> = [];
 	private var buffer:BytesData = [];
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
+	private var messages:cpp.StdVector.StdVectorChar;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
 	private var eventManager:cpp.RawPointer<LibVLC_EventManager_T>;
-	private var messages:cpp.StdVector.StdVectorChar;
 
 	public function new():Void
 	{
@@ -200,6 +200,8 @@ class VLCBitmap extends Bitmap
 
 		for (event in 0...7)
 			flags[event] = false;
+
+		messages = StdVectorChar.create();
 
 		onOpening = new CallbackVoid();
 		onPlaying = new Callback<String>();
@@ -212,8 +214,6 @@ class VLCBitmap extends Bitmap
 		onLogMessage = new Callback<String>();
 
 		instance = LibVLC.create(0, null);
-
-		messages = StdVectorChar.create();
 
 		#if HXC_LIBVLC_LOGGING
 		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('this'));
@@ -306,7 +306,9 @@ class VLCBitmap extends Bitmap
 
 		detachEvents();
 
+		#if HXC_LIBVLC_LOGGING
 		LibVLC.log_unset(instance);
+		#end
 
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
