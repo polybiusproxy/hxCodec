@@ -1,6 +1,6 @@
 package cpp;
 
-extern abstract CharStar(cpp.Pointer<cpp.Char>)
+extern abstract CharStar(cpp.RawPointer<cpp.Char>)
 {
   inline function new(s:String)
   {
@@ -58,8 +58,8 @@ extern abstract CharStar(cpp.Pointer<cpp.Char>)
   }
 }
 
-typedef CharStarStar = cpp.Pointer<CharStar>;
+typedef CharStarStar = cpp.RawPointer<CharStar>;
 
 // typedef ConstCharStar = cpp.ConstPointer<cpp.Char>;
 
-typedef ConstCharStarStar = cpp.Pointer<ConstCharStar>;
+typedef ConstCharStarStar = cpp.RawPointer<ConstCharStar>;

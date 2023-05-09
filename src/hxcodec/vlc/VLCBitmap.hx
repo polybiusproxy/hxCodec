@@ -707,8 +707,8 @@ class VLCBitmap extends Bitmap
 	  while (messages.size() > 0)
 	  {
 		// Pop the last message in the vector.
-		var msg = messages.back();
-		var msgStr:String = cpp.NativeString.fromPointer(msg);
+		var msg:cpp.CharStar = messages.back();
+		var msgStr:String = cpp.NativeString.fromPointer(msg.toPointer());
 	
 		messagesOut.insert(0, manualLogCleanup(msgStr));
 	
