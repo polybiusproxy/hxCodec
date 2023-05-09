@@ -34,6 +34,8 @@
 	<source path="source" />
 	<assets path="assets" />
 
+	<haxeflag name="-w" value="-WDeprecated" />
+
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />

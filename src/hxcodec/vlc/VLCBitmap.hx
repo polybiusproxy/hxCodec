@@ -1,5 +1,7 @@
 package hxcodec.vlc;
 
+import cpp.ConstCharStar;
+import cpp.ConstPointer;
 #if (!(desktop || android) && macro)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us."
 #end
@@ -23,8 +25,11 @@ using StringTools;
  *
  * This class lets you to use LibVLC externs as a bitmap that you can displaylist along other items.
  */
+@:cppInclude('string')
 @:headerInclude('stdio.h')
 @:cppNamespaceCode('
+#include <stdlib.h>
+#include <stdarg.h>
 #ifndef vasprintf // https://gist.github.com/cmitu/b67a7ed67b19176f35f1ac06099d02af#file-sdlvlc-cxx-L26
 int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
 {
@@ -81,6 +86,58 @@ static void *lock(void *data, void **p_pixels)
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 	*p_pixels = self->pixels;
 	return nullptr; // picture identifier, not needed here
+}
+
+static void logCallback(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
+{
+  VLCBitmap_obj* self = static_cast<VLCBitmap_obj*>(data);
+
+  char* msg = NULL; // set it to null otherwise it will be some random ass bytes, it is not null by default.
+  if (vasprintf(&msg,fmt,args) < 0) {
+    msg = "Failed to format log message.";
+  }
+
+  // Get full logging context.
+  const char* ctx_module;
+  const char* ctx_file;
+  unsigned int ctx_line;
+  libvlc_log_get_context(ctx, &ctx_module, &ctx_file, &ctx_line);
+
+  std::string msgFull = "[";
+  
+  switch(level) {
+    case LIBVLC_DEBUG:
+      msgFull.append("DEBUG");
+      break;
+    case LIBVLC_NOTICE:
+      msgFull.append("INFO ");
+      break;
+    case LIBVLC_WARNING:
+      msgFull.append("WARN ");
+      break;
+    case LIBVLC_ERROR:
+      msgFull.append("ERROR");
+      break;
+  }
+  msgFull.append("] (");
+  msgFull.append(ctx_module);
+  msgFull.append(":");
+  msgFull.append(ctx_file);
+  msgFull.append("#");
+  msgFull.append(std::to_string(ctx_line));
+  msgFull.append(") ");
+  msgFull.append(std::string(msg));
+
+  size_t len = msgFull.length();
+
+  // Copy the string to a char array.
+  char* msgFullArr = new char[len + 1];
+  memcpy(msgFullArr, msgFull.c_str(), len);
+  msgFullArr[len] = \'\\0\';
+
+  self->messages.push_back(msgFullArr);
+
+  return;
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
@@ -142,26 +199,6 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 @:keep
 class VLCBitmap extends Bitmap
 {
-	// LibVLC Static Functions
-	private static function logging(data:cpp.RawPointer<cpp.Void>, level:Int, ctx:cpp.RawConstPointer<LibVLC_Log_T>, fmt:cpp.ConstCharStar, args:cpp.VarList):Void
-	{
-		// var msg:cpp.CharStar = "";
-		// if (untyped __cpp__('vasprintf({0}, {1}, {2})', cpp.RawPointer.addressOf(msg), fmt, args) < 0)
-		// 	msg = "Failed to format log message.";
-		// 
-		// switch (cast(level, LibVLC_Log_Level))
-		// {
-		// 	case LIBVLC_DEBUG: /* Debug message */
-		// 		Sys.println("[ DEBUG ] " + cast(fmt, String));
-		// 	case LIBVLC_NOTICE: /* Important informational message */
-		// 		Sys.println("[ INFO ] " + cast(fmt, String));
-		// 	case LIBVLC_WARNING: /* Warning (potential error) message */
-		// 		Sys.println("[ WARING ] " + cast(fmt, String));
-		// 	case LIBVLC_ERROR: /* Error message */
-		// 		Sys.println("[ ERROR ] " + cast(fmt, String));
-		// }
-	}
-
 	// Variables
 	public var videoWidth(default, null):UInt = 0;
 	public var videoHeight(default, null):UInt = 0;
@@ -190,6 +227,7 @@ class VLCBitmap extends Bitmap
 	public var onEncounteredError(default, null):Callback<String>;
 	public var onForward(default, null):CallbackVoid;
 	public var onBackward(default, null):CallbackVoid;
+	public var onLogMessage(default, null):Callback<String>;
 
 	// Declarations
 	private var oldTime:Int = 0;
@@ -200,6 +238,7 @@ class VLCBitmap extends Bitmap
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
 	private var eventManager:cpp.RawPointer<LibVLC_EventManager_T>;
+	private var messages:StdVectorChar;
 
 	public function new():Void
 	{
@@ -216,10 +255,13 @@ class VLCBitmap extends Bitmap
 		onEncounteredError = new Callback<String>();
 		onForward = new CallbackVoid();
 		onBackward = new CallbackVoid();
+		onLogMessage = new Callback<String>();
 
 		instance = LibVLC.create(0, null);
 
-		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('this'));
+		messages = StdVectorChar.create();
+
+		LibVLC.log_set(instance, untyped __cpp__('logCallback'), untyped __cpp__('this'));
 	}
 
 	// Methods
@@ -656,6 +698,33 @@ class VLCBitmap extends Bitmap
 				}
 			}
 		}
+	}
+
+	public function updateLogging():Void
+	{
+	  var messagesOut:Array<String> = [];
+
+	  while (messages.size() > 0)
+	  {
+		// Pop the last message in the vector.
+		var msg = messages.back();
+		var msgStr:String = cpp.NativeString.fromPointer(msg);
+	
+		messagesOut.insert(0, manualLogCleanup(msgStr));
+	
+		// Free the message.
+		messages.pop_back();
+	  }
+	
+	  for (msg in messagesOut)
+	  {
+		onLogMessage.dispatch(msg);
+	  }
+	}
+
+	inline function manualLogCleanup(str:String):String {
+		return str
+			.replace('/home/jenkins/workspace/vlc-release/windows/vlc-release-win32-x64/extras/package/win32/../../..', '');
 	}
 
 	@:noCompletion private function attachEvents():Void

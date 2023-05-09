@@ -69,6 +69,7 @@ class FlxVideoHandler extends VideoBitmap
 
 		onOpening.add(onVLCOpening);
 		onEndReached.add(onVLCEndReached);
+		onLogMessage.add(onVLCLogMessage);
 		onEncounteredError.add(onVLCEncounteredError);
 
 		FlxG.addChildBelowMouse(this, IndexModifier);
@@ -90,6 +91,11 @@ class FlxVideoHandler extends VideoBitmap
 	{
 		Lib.application.window.alert(msg, "VLC Error!");
 		onEndReached.dispatch();
+	}
+
+	private function onVLCLogMessage(msg:String):Void
+	{
+		trace(msg);
 	}
 
 	private function onVLCEndReached():Void
@@ -156,6 +162,8 @@ class FlxVideoHandler extends VideoBitmap
 
 	private function update(?E:Event):Void
 	{
+		super.updateLogging();
+
 		#if FLX_KEYBOARD
 		if (canSkip && FlxG.keys.anyJustPressed(skipKeys) && isPlaying)
 			onEndReached.dispatch();
