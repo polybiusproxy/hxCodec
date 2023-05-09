@@ -261,7 +261,9 @@ class VLCBitmap extends Bitmap
 
 		messages = StdVectorChar.create();
 
+		#if HXC_LIBVLC_LOGGING
 		LibVLC.log_set(instance, untyped __cpp__('logCallback'), untyped __cpp__('this'));
+		#end
 	}
 
 	// Methods
@@ -586,6 +588,9 @@ class VLCBitmap extends Bitmap
 			__setRenderDirty();
 
 		checkFlags();
+		#if HXC_LIBVLC_LOGGING
+		updateLogging();
+		#end
 
 		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
@@ -703,9 +708,6 @@ class VLCBitmap extends Bitmap
 	public function updateLogging():Void
 	{
 		var messagesOut:Array<String> = [];
-
-		if (messages.size() > 1)
-			trace('MULTIPLE LOG MESSAGES PER FRAME');
 
 		while (messages.size() > 0)
 		{

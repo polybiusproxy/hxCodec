@@ -165,8 +165,6 @@ class FlxVideoHandler extends VideoBitmap
 
 	private function update(?E:Event):Void
 	{
-		super.updateLogging();
-
 		#if FLX_KEYBOARD
 		if (canSkip && FlxG.keys.anyJustPressed(skipKeys) && isPlaying)
 			onEndReached.dispatch();
