@@ -1,14 +1,12 @@
 package hxcodec.vlc;
 
-import cpp.ConstCharStar;
-import cpp.ConstPointer;
 #if (!(desktop || android) && macro)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us."
 #end
+import cpp.StdVector.StdVectorChar;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
-import cpp.StdVector.StdVectorChar;
 import hxcodec.base.Callback;
 import hxcodec.vlc.LibVLC;
 import openfl.Lib;
@@ -27,9 +25,9 @@ using StringTools;
  */
 @:cppInclude('string')
 @:headerInclude('stdio.h')
+@:headerInclude('stdlib.h')
+@:headerInclude('stdarg.h')
 @:cppNamespaceCode('
-#include <stdlib.h>
-#include <stdarg.h>
 #ifndef vasprintf // https://gist.github.com/cmitu/b67a7ed67b19176f35f1ac06099d02af#file-sdlvlc-cxx-L26
 int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
 {
@@ -119,6 +117,7 @@ static void logCallback(void *data, int level, const libvlc_log_t *ctx, const ch
       msgFull.append("ERROR");
       break;
   }
+
   msgFull.append("] (");
   msgFull.append(ctx_module);
   msgFull.append(":");
@@ -705,7 +704,7 @@ class VLCBitmap extends Bitmap
 		}
 	}
 
-	public function updateLogging():Void
+	@:noCompletion private function updateLogging():Void
 	{
 		var messagesOut:Array<String> = [];
 
@@ -713,21 +712,18 @@ class VLCBitmap extends Bitmap
 		{
 			// Pop the last message in the vector.
 			var msg:cpp.CharStar = messages.back();
-			var msgStr:String = cpp.NativeString.fromPointer(msg.toPointer());
 
-			messagesOut.insert(0, manualLogCleanup(msgStr));
+			messagesOut.insert(0, manualLogCleanup(cast(msg, String));
 
-			// Free the message.
+			// Free the messages.
 			messages.pop_back();
 		}
 
 		for (msg in messagesOut)
-		{
 			onLogMessage.dispatch(msg);
-		}
 	}
 
-	inline function manualLogCleanup(str:String):String
+	@:noCompletion private inline function manualLogCleanup(str:String):String
 	{
 		return str.replace('/home/jenkins/workspace/vlc-release/windows/vlc-release-win32-x64/extras/package/win32/../../..', '');
 	}
