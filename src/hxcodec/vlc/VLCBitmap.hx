@@ -3,7 +3,6 @@ package hxcodec.vlc;
 #if (!(desktop || android) && macro)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us."
 #end
-import cpp.StdVector.StdVectorChar;
 import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
@@ -193,7 +192,7 @@ class VLCBitmap extends Bitmap
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
 	private var eventManager:cpp.RawPointer<LibVLC_EventManager_T>;
-	private var messages:StdVectorChar;
+	private var messages:cpp.StdVector.StdVectorChar;
 
 	public function new():Void
 	{
