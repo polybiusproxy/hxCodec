@@ -38,10 +38,10 @@ extern abstract CharStar(cpp.RawPointer<cpp.Char>)
 
 	/**
 	 * Add implicit casting to pointer.
-	 * @return The resulting `cpp.Pointer<cpp.Char>`.
+	 * @return The resulting `char *`.
 	 */
 	@:to
-	public inline function toPointer():cpp.Pointer<cpp.Char>
+	public inline function toPointer():cpp.RawPointer<cpp.Char>
 	{
 		return untyped this;
 	}
@@ -57,9 +57,3 @@ extern abstract CharStar(cpp.RawPointer<cpp.Char>)
 		return new CharStar(s);
 	}
 }
-
-typedef CharStarStar = cpp.RawPointer<CharStar>;
-
-// typedef ConstCharStar = cpp.ConstPointer<cpp.Char>;
-
-typedef ConstCharStarStar = cpp.RawPointer<ConstCharStar>;
