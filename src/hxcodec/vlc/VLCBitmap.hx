@@ -376,10 +376,10 @@ class VLCBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 
-		instance = null;
+		eventManager = null;
 		mediaPlayer = null;
 		mediaItem = null;
-		eventManager = null;
+		instance = null;
 
 		#if HXC_DEBUG_TRACE
 		trace('disposing done!');
