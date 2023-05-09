@@ -36,7 +36,7 @@ int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
 
 	if (count >= 0)
 	{
-		char* p = static_cast<char*>(malloc(count + 1)); // Allocate memory for it.
+		char* p = static_cast<char *>(malloc(count + 1)); // Allocate memory for it.
 
 		if (p == NULL)
 			return -1;
@@ -125,7 +125,7 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 	char* msg = { 0 };
 
 	if (vasprintf(&msg, fmt, args) < 0)
-		msg = "Failed to format log message.";
+		return;
 
 	std::string log = "[ ";
 
