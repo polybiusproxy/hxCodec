@@ -1,7 +1,7 @@
 package cpp;
 
 /**
- * A `std::vector<char*>` instance.
+ * A `std::vector<char *>` instance.
  */
 @:keep
 @:structAccess
@@ -22,7 +22,7 @@ extern class StdVectorChar
 }
 
 /**
- * A `std::vector<const char*>` instance.
+ * A `std::vector<const char *>` instance.
  */
 @:keep
 @:structAccess
