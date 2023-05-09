@@ -9,7 +9,8 @@ class PlayState extends FlxState
 {
 	var hasPlayed:Bool;
 
-	public function new(hasPlayed:Bool = false) {
+	public function new(hasPlayed:Bool = false)
+	{
 		super();
 
 		this.hasPlayed = hasPlayed;
@@ -22,11 +23,14 @@ class PlayState extends FlxState
 		var text:FlxText = new FlxText(0, 0, FlxG.width, "");
 		text.setFormat(null, 16, 0xFFFFFFFF, "center");
 
-		if (!hasPlayed) {
+		if (!hasPlayed)
+		{
 			text.text += "hxCodec Flixel Cutscene Sample";
 			text.text += "\nPress SPACE to play cutscene";
 			text.text += "\n";
-		} else {
+		}
+		else
+		{
 			text.text += "Cutscene complete!";
 			text.text += "\nPress SPACE to play again";
 			text.text += "\n";

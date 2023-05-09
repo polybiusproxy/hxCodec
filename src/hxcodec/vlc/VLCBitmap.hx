@@ -702,29 +702,32 @@ class VLCBitmap extends Bitmap
 
 	public function updateLogging():Void
 	{
-	  var messagesOut:Array<String> = [];
+		var messagesOut:Array<String> = [];
 
-	  while (messages.size() > 0)
-	  {
-		// Pop the last message in the vector.
-		var msg:cpp.CharStar = messages.back();
-		var msgStr:String = cpp.NativeString.fromPointer(msg.toPointer());
-	
-		messagesOut.insert(0, manualLogCleanup(msgStr));
-	
-		// Free the message.
-		messages.pop_back();
-	  }
-	
-	  for (msg in messagesOut)
-	  {
-		onLogMessage.dispatch(msg);
-	  }
+		if (messages.size() > 1)
+			trace('MULTIPLE LOG MESSAGES PER FRAME');
+
+		while (messages.size() > 0)
+		{
+			// Pop the last message in the vector.
+			var msg:cpp.CharStar = messages.back();
+			var msgStr:String = cpp.NativeString.fromPointer(msg.toPointer());
+
+			messagesOut.insert(0, manualLogCleanup(msgStr));
+
+			// Free the message.
+			messages.pop_back();
+		}
+
+		for (msg in messagesOut)
+		{
+			onLogMessage.dispatch(msg);
+		}
 	}
 
-	inline function manualLogCleanup(str:String):String {
-		return str
-			.replace('/home/jenkins/workspace/vlc-release/windows/vlc-release-win32-x64/extras/package/win32/../../..', '');
+	inline function manualLogCleanup(str:String):String
+	{
+		return str.replace('/home/jenkins/workspace/vlc-release/windows/vlc-release-win32-x64/extras/package/win32/../../..', '');
 	}
 
 	@:noCompletion private function attachEvents():Void

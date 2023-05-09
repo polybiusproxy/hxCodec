@@ -5,10 +5,12 @@ import flixel.text.FlxText;
 import flixel.FlxState;
 import hxcodec.flixel.FlxVideoHandler;
 
-class PlayState extends FlxState {
+class PlayState extends FlxState
+{
 	var video:FlxVideoHandler;
 
-	override public function create():Void {
+	override public function create():Void
+	{
 		this.bgColor = 0xFFFF00FF;
 
 		var text:FlxText = new FlxText(0, 0, FlxG.width, "");
@@ -21,47 +23,58 @@ class PlayState extends FlxState {
 		super.create();
 	}
 
-	public override function update(elapsed:Float) {
+	public override function update(elapsed:Float)
+	{
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.Q) {
+		if (FlxG.keys.justPressed.Q)
+		{
 			video = new FlxVideoHandler();
-			video.playVideo('assets/video.mp4');	
+			video.playVideo('assets/video.mp4');
 		}
 
-		if (FlxG.keys.justPressed.A) {
+		if (FlxG.keys.justPressed.A)
+		{
 			video.pause();
 		}
 
-		if (FlxG.keys.justPressed.S) {
+		if (FlxG.keys.justPressed.S)
+		{
 			video.resume();
 		}
 
-		if (FlxG.keys.justPressed.D) {
+		if (FlxG.keys.justPressed.D)
+		{
 			video.stop();
 		}
 
-		if (FlxG.keys.justPressed.F) {
+		if (FlxG.keys.justPressed.F)
+		{
 			video.time -= 5000;
 		}
 
-		if (FlxG.keys.justPressed.G) {
+		if (FlxG.keys.justPressed.G)
+		{
 			video.time += 5000;
 		}
 
-		if (FlxG.keys.justPressed.H) {
+		if (FlxG.keys.justPressed.H)
+		{
 			video.position = 0.0;
 		}
 
-		if (FlxG.keys.justPressed.J) {
+		if (FlxG.keys.justPressed.J)
+		{
 			video.playbackRate = 0.5;
 		}
 
-		if (FlxG.keys.justPressed.K) {
+		if (FlxG.keys.justPressed.K)
+		{
 			video.playbackRate = 1.0;
 		}
 
-		if (FlxG.keys.justPressed.L) {
+		if (FlxG.keys.justPressed.L)
+		{
 			video.playbackRate = 2.0;
 		}
 	}

@@ -9,46 +9,46 @@ import hxcodec.openfl.VideoSprite;
  */
 class Main extends Sprite
 {
-  var video:VideoSprite;
+	var video:VideoSprite;
 
-  public function new()
-  {
-    super();
+	public function new()
+	{
+		super();
 
-    video = new VideoSprite();
-    video.autoResize = true;
-    addChild(video);
+		video = new VideoSprite();
+		video.autoResize = true;
+		addChild(video);
 
-    stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-  }
+		stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+	}
 
-  function onKeyDown(event:KeyboardEvent):Void
-  {
-    trace(event);
+	function onKeyDown(event:KeyboardEvent):Void
+	{
+		trace(event);
 
-    switch (event.keyCode)
-    {
-      case 81: // Q
-        video.playVideo('assets/video.mp4');
+		switch (event.keyCode)
+		{
+			case 81: // Q
+				video.playVideo('assets/video.mp4');
 
-      case 65: // A
-        video.pause();
-      case 83: // S
-        video.resume();
-      case 68: // D
-        video.stop();
-      case 70: // F
-        video.time -= 5000;
-      case 71: // G
-        video.time += 5000;
-      case 72: // H
-        video.position = 0.0;
-      case 74: // J
-        video.playbackRate = 0.5;
-      case 75: // K
-        video.playbackRate = 1.0;
-      case 76: // L
-        video.playbackRate = 2.0;
-    }
-  }
+			case 65: // A
+				video.pause();
+			case 83: // S
+				video.resume();
+			case 68: // D
+				video.stop();
+			case 70: // F
+				video.time -= 5000;
+			case 71: // G
+				video.time += 5000;
+			case 72: // H
+				video.position = 0.0;
+			case 74: // J
+				video.playbackRate = 0.5;
+			case 75: // K
+				video.playbackRate = 1.0;
+			case 76: // L
+				video.playbackRate = 2.0;
+		}
+	}
 }

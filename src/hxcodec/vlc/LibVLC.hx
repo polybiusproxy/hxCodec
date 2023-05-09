@@ -3,7 +3,6 @@ package hxcodec.vlc;
 #if (!(desktop || android) && macro)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us."
 #end
-
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
 @:unreflective
@@ -94,7 +93,8 @@ extern class LibVLC
 
 	#if !windows
 	@:native("libvlc_media_new_callbacks")
-	static function media_new_callbacks(p_instance:cpp.RawPointer<LibVLC_Instance_T>, open_cb:LibVLC_Media_Open_CB, read_cb:LibVLC_Media_Read_CB, seek_cb:LibVLC_Media_Seek_CB, close_cb:LibVLC_Media_Close_CB, opaque:cpp.Pointer<cpp.Void>):cpp.RawPointer<LibVLC_Media_T>;
+	static function media_new_callbacks(p_instance:cpp.RawPointer<LibVLC_Instance_T>, open_cb:LibVLC_Media_Open_CB, read_cb:LibVLC_Media_Read_CB,
+		seek_cb:LibVLC_Media_Seek_CB, close_cb:LibVLC_Media_Close_CB, opaque:cpp.Pointer<cpp.Void>):cpp.RawPointer<LibVLC_Media_T>;
 	#end
 
 	@:native("libvlc_media_add_option")
@@ -212,7 +212,9 @@ typedef LibVLC_Video_Unlock_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, id
 typedef LibVLC_Video_Display_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, picture:cpp.RawPointer<cpp.Void>) -> Void>;
 
 #if !windows
-typedef LibVLC_Media_Open_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, datap:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, sizep:cpp.RawPointer<cpp.UInt64>) -> Int>;
+typedef LibVLC_Media_Open_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, datap:cpp.RawPointer<cpp.RawPointer<cpp.Void>>,
+		sizep:cpp.RawPointer<cpp.UInt64>) -> Int>;
+
 typedef LibVLC_Media_Read_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, buf:cpp.RawPointer<cpp.UInt8>, len:cpp.SizeT) -> cpp.SSizeT>;
 typedef LibVLC_Media_Seek_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, offset:cpp.UInt64) -> Int>;
 typedef LibVLC_Media_Close_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>) -> Void>;
@@ -273,13 +275,13 @@ enum abstract LibVLC_Event_Type(Int) from Int to Int
 	 * Keep this in sync with lib/event.c:libvlc_event_type_name().
 	 */
 	final LibVLC_MediaMetaChanged = 0;
+
 	final LibVLC_MediaSubItemAdded = 1;
 	final LibVLC_MediaDurationChanged = 2;
 	final LibVLC_MediaParsedChanged = 3;
 	final LibVLC_MediaFreed = 4;
 	final LibVLC_MediaStateChanged = 5;
 	final LibVLC_MediaSubItemTreeAdded = 6;
-
 	final LibVLC_MediaPlayerMediaChanged = 256;
 	final LibVLC_MediaPlayerNothingSpecial = 257;
 	final LibVLC_MediaPlayerOpening = 258;
@@ -310,31 +312,24 @@ enum abstract LibVLC_Event_Type(Int) from Int to Int
 	final LibVLC_MediaPlayerAudioVolume = 283;
 	final LibVLC_MediaPlayerAudioDevice = 284;
 	final LibVLC_MediaPlayerChapterChanged = 285;
-
 	final LibVLC_MediaListItemAdded = 512;
 	final LibVLC_MediaListWillAddItem = 513;
 	final LibVLC_MediaListItemDeleted = 514;
 	final LibVLC_MediaListWillDeleteItem = 515;
 	final LibVLC_MediaListEndReached = 516;
-
 	final LibVLC_MediaListViewItemAdded = 768;
 	final LibVLC_MediaListViewWillAddItem = 769;
 	final LibVLC_MediaListViewItemDeleted = 770;
 	final LibVLC_MediaListViewWillDeleteItem = 771;
-
 	final LibVLC_MediaListPlayerPlayed = 1024;
 	final LibVLC_MediaListPlayerNextItemSet = 1025;
 	final LibVLC_MediaListPlayerStopped = 1026;
-
 	/* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_start(). */
 	final LibVLC_MediaDiscovererStarted = 1280;
-
 	/* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_stop(). */
 	final LibVLC_MediaDiscovererEnded = 1281;
-
 	final LibVLC_RendererDiscovererItemAdded = 1282;
 	final LibVLC_RendererDiscovererItemDeleted = 1283;
-
 	final LibVLC_VlmMediaAdded = 1536;
 	final LibVLC_VlmMediaRemoved = 1537;
 	final LibVLC_VlmMediaChanged = 1538;

@@ -37,11 +37,13 @@ class FlxVideoHandler extends VideoBitmap
 	@:deprecated("Use videoHandler.onOpening.add() instead.")
 	public var openingCallback(get, set):Void->Void;
 
-	function get_openingCallback():Void->Void {
+	function get_openingCallback():Void->Void
+	{
 		return () -> this.onOpening.dispatch();
 	}
 
-	function set_openingCallback(input:Void->Void):Void->Void {
+	function set_openingCallback(input:Void->Void):Void->Void
+	{
 		this.onOpening.add(input);
 		return input;
 	}
@@ -49,15 +51,16 @@ class FlxVideoHandler extends VideoBitmap
 	@:deprecated("Use videoHandler.onEndReached.add() instead.")
 	public var finishCallback(get, set):Void->Void;
 
-	function get_finishCallback():Void->Void {
+	function get_finishCallback():Void->Void
+	{
 		return () -> this.onEndReached.dispatch();
 	}
 
-	function set_finishCallback(input:Void->Void):Void->Void {
+	function set_finishCallback(input:Void->Void):Void->Void
+	{
 		this.onEndReached.add(input);
 		return input;
 	}
-
 
 	#if FLX_SOUND_SYSTEM
 	private var __pauseMusic:Bool = false;
