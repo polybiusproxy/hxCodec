@@ -86,59 +86,6 @@ static void *lock(void *data, void **p_pixels)
 	return nullptr; // picture identifier, not needed here
 }
 
-static void logCallback(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
-{
-  VLCBitmap_obj* self = static_cast<VLCBitmap_obj*>(data);
-
-  char* msg = NULL; // set it to null otherwise it will be some random ass bytes, it is not null by default.
-  if (vasprintf(&msg,fmt,args) < 0) {
-    msg = "Failed to format log message.";
-  }
-
-  // Get full logging context.
-  const char* ctx_module;
-  const char* ctx_file;
-  unsigned int ctx_line;
-  libvlc_log_get_context(ctx, &ctx_module, &ctx_file, &ctx_line);
-
-  std::string msgFull = "[";
-  
-  switch(level) {
-    case LIBVLC_DEBUG:
-      msgFull.append("DEBUG");
-      break;
-    case LIBVLC_NOTICE:
-      msgFull.append("INFO ");
-      break;
-    case LIBVLC_WARNING:
-      msgFull.append("WARN ");
-      break;
-    case LIBVLC_ERROR:
-      msgFull.append("ERROR");
-      break;
-  }
-
-  msgFull.append("] (");
-  msgFull.append(ctx_module);
-  msgFull.append(":");
-  msgFull.append(ctx_file);
-  msgFull.append("#");
-  msgFull.append(std::to_string(ctx_line));
-  msgFull.append(") ");
-  msgFull.append(std::string(msg));
-
-  size_t len = msgFull.length();
-
-  // Copy the string to a char array.
-  char* msgFullArr = new char[len + 1];
-  memcpy(msgFullArr, msgFull.c_str(), len);
-  msgFullArr[len] = \'\\0\';
-
-  self->messages.push_back(msgFullArr);
-
-  return;
-}
-
 static void callbacks(const libvlc_event_t *event, void *data)
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
@@ -174,26 +121,35 @@ static void callbacks(const libvlc_event_t *event, void *data)
 
 static void logging(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
 {
+	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
+
 	char* msg = { 0 };
 
 	if (vasprintf(&msg, fmt, args) < 0)
-		return;
+		msg = "Failed to format log message.";
+
+	std::string msgFull = "[";
 
 	switch (level)
 	{
 		case LIBVLC_DEBUG:
-			// printf("[ DEBUG ] %s", msg);
+			msgFull.append("DEBUG");
 			break;
 		case LIBVLC_NOTICE:
-			// printf("[ INFO ] %s", msg);
+			msgFull.append("INFO");
 			break;
 		case LIBVLC_WARNING:
-			// printf("[ WARNING ] %s", msg);
+			msgFull.append("WARNING");
 			break;
 		case LIBVLC_ERROR:
-			// printf("[ ERROR ] %s", msg);
+			msgFull.append("ERROR");
 			break;
 	}
+
+	msgFull.append("] ");
+	msgFull.append(std::string(msg));
+
+	self->messages.push_back(const_cast<char *>(msgFull.c_str()));
 }')
 @:keep
 class VLCBitmap extends Bitmap
@@ -261,7 +217,7 @@ class VLCBitmap extends Bitmap
 		messages = StdVectorChar.create();
 
 		#if HXC_LIBVLC_LOGGING
-		LibVLC.log_set(instance, untyped __cpp__('logCallback'), untyped __cpp__('this'));
+		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('this'));
 		#end
 	}
 
