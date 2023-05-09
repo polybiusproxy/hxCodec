@@ -4,7 +4,6 @@ package cpp;
  * A `std::vector<char*>` instance.
  */
 @:keep
-@:unreflective
 @:structAccess
 @:include('vector')
 @:native('std::vector<char*>')
@@ -26,7 +25,6 @@ extern class StdVectorChar
  * A `std::vector<const char*>` instance.
  */
 @:keep
-@:unreflective
 @:structAccess
 @:include('vector')
 @:native('std::vector<const char*>')
