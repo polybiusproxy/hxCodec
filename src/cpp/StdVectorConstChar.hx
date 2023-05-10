@@ -1,6 +1,7 @@
 package cpp;
 
 @:include('vector')
+@:unreflective
 @:structAccess
 @:native('std::vector<const char *>')
 extern class StdVectorConstChar
