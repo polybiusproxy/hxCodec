@@ -22,10 +22,10 @@ using StringTools;
  *
  * This class lets you to use LibVLC externs as a bitmap that you can displaylist along other items.
  */
-@:cppInclude('string')
 @:headerInclude('stdio.h')
 @:headerInclude('stdlib.h')
 @:headerInclude('stdarg.h')
+@:cppInclude('string')
 @:cppNamespaceCode('
 #ifndef vasprintf // https://gist.github.com/cmitu/b67a7ed67b19176f35f1ac06099d02af#file-sdlvlc-cxx-L26
 int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
@@ -305,10 +305,6 @@ class VLCBitmap extends Bitmap
 
 		detachEvents();
 
-		#if HXC_LIBVLC_LOGGING
-		LibVLC.log_unset(instance);
-		#end
-
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
 
@@ -333,6 +329,12 @@ class VLCBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 
+		#if HXC_LIBVLC_LOGGING
+		LibVLC.log_unset(instance);
+		#end
+
+		// The release functions from libvlc crashes
+		// for some reason
 		eventManager = null;
 		mediaPlayer = null;
 		mediaItem = null;
@@ -542,10 +544,10 @@ class VLCBitmap extends Bitmap
 		if (__bitmapData != null && __bitmapData.image != null && __bitmapData.image.version != __imageVersion)
 			__setRenderDirty();
 
-		checkFlags();
 		#if HXC_LIBVLC_LOGGING
 		updateLogging();
 		#end
+		checkFlags();
 
 		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
@@ -621,6 +623,25 @@ class VLCBitmap extends Bitmap
 		}
 	}
 
+	#if HXC_LIBVLC_LOGGING
+	@:noCompletion private function updateLogging():Void
+	{
+		var messagesOut:Array<String> = [];
+
+		while (messages.size() > 0)
+		{
+			// Pop the last message in the vector.
+			messagesOut.insert(0, manualLogCleanup(cast(messages.back(), String)));
+
+			// Free the messages.
+			messages.pop_back();
+		}
+
+		for (msg in messagesOut)
+			onLogMessage.dispatch(msg);
+	}
+	#end
+
 	@:noCompletion private function checkFlags():Void
 	{
 		for (i in 0...7)
@@ -658,25 +679,6 @@ class VLCBitmap extends Bitmap
 				}
 			}
 		}
-	}
-
-	@:noCompletion private function updateLogging():Void
-	{
-		var messagesOut:Array<String> = [];
-
-		while (messages.size() > 0)
-		{
-			// Pop the last message in the vector.
-			var msg:cpp.CharStar = messages.back();
-
-			messagesOut.insert(0, manualLogCleanup(cast(msg, String)));
-
-			// Free the messages.
-			messages.pop_back();
-		}
-
-		for (msg in messagesOut)
-			onLogMessage.dispatch(msg);
 	}
 
 	@:noCompletion private inline function manualLogCleanup(str:String):String
