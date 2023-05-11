@@ -122,7 +122,7 @@ extern class LibVLC
 	static function media_parse(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
 
 	@:native("libvlc_media_parse_with_options")
-	static function media_parse_with_options(p_md:cpp.RawPointer<LibVLC_Media_T>, parse_flag:LibVLC_MediaParseFlag, timeout:Int):Int;
+	static function media_parse_with_options(p_md:cpp.RawPointer<LibVLC_Media_T>, parse_flag:LibVLC_Media_Parse_Flag, timeout:Int):Int;
 
 	@:native("libvlc_media_parse_stop")
 	static function media_parse_stop(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
@@ -345,12 +345,12 @@ enum abstract LibVLC_Event_Type(Int) from Int to Int
 @:include('vlc/vlc.h')
 @:unreflective
 @:native('libvlc_media_parse_flag_t')
-extern class LibVLC_MediaParseFlag_T {}
+extern class LibVLC_Media_Parse_Flag_T {}
 
 /**
  * Parse flags used by libvlc_media_parse_request()
  */
-abstract LibVLC_MediaParseFlag(Int) from Int to Int
+abstract LibVLC_Media_Parse_Flag(Int) from Int to Int
 {
   public inline function new(i:Int)
   {
@@ -361,9 +361,9 @@ abstract LibVLC_MediaParseFlag(Int) from Int to Int
    * Convert the field to its internal native type.
    * @return A value of the internal type.
    */
-  @:to(LibVLC_MediaParseFlag_T)
+  @:to(LibVLC_Media_Parse_Flag_T)
   @:unreflective
-  public inline function toNative():LibVLC_MediaParseFlag_T
+  public inline function toNative():LibVLC_Media_Parse_Flag_T
   {
     return untyped __cpp__('((libvlc_media_parse_flag_t)({0}))', this);
   }
@@ -373,38 +373,38 @@ abstract LibVLC_MediaParseFlag(Int) from Int to Int
    * @param value A value of the native type.
    * @return A value of the enum value.
    */
-  @:from(LibVLC_MediaParseFlag_T)
+  @:from(LibVLC_Media_Parse_Flag_T)
   @:unreflective
-  public static inline function fromNative(value:LibVLC_MediaParseFlag_T):LibVLC_MediaParseFlag
+  public static inline function fromNative(value:LibVLC_Media_Parse_Flag_T):LibVLC_Media_Parse_Flag
   {
-    return new LibVLC_MediaParseFlag(untyped value);
+    return new LibVLC_Media_Parse_Flag(untyped value);
   }
 
   /**
    * Parse media if it's a local file. 
    */
-  public static var media_parse_local(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_parse_local'));
+  public static var media_parse_local(default, null):Int = new LibVLC_Media_Parse_Flag(untyped __cpp__('libvlc_media_parse_local'));
 
   /**
    * Parse media even if it's a network file. 
    */
-  public static var media_parse_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_parse_network'));
+  public static var media_parse_network(default, null):Int = new LibVLC_Media_Parse_Flag(untyped __cpp__('libvlc_media_parse_network'));
 
   /**
    * Fetch meta and cover art using local resources. 
    */
-  public static var media_fetch_local(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_fetch_local'));
+  public static var media_fetch_local(default, null):Int = new LibVLC_Media_Parse_Flag(untyped __cpp__('libvlc_media_fetch_local'));
 
   /**
    * Fetch meta and cover art using network resources. 
    */
-  public static var media_fetch_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_fetch_network'));
+  public static var media_fetch_network(default, null):Int = new LibVLC_Media_Parse_Flag(untyped __cpp__('libvlc_media_fetch_network'));
 
   /**
    * Interact with the user (via libvlc_dialog_cbs) when preparsing this item (and not its sub items).
    * Set this flag in order to receive a callback when the input is asking for credentials. 
    */
-  public static var media_do_interact(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_do_interact'));
+  public static var media_do_interact(default, null):Int = new LibVLC_Media_Parse_Flag(untyped __cpp__('libvlc_media_do_interact'));
 }
 
 
