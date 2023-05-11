@@ -9,11 +9,11 @@ extern class StdVectorChar
 	@:native('std::vector<char *>')
 	static function create():StdVectorChar;
 
-	function at(index:Int):cpp.CharStar;
-	function back():cpp.CharStar;
-	function data():cpp.RawPointer<cpp.CharStar>;
-	function front():cpp.CharStar;
+	function at(index:Int):CharStar;
+	function back():CharStar;
+	function data():RawPointer<CharStar>;
+	function front():CharStar;
 	function pop_back():Void;
-	function push_back(value:cpp.CharStar):Void;
+	function push_back(value:CharStar):Void;
 	function size():Int;
 }

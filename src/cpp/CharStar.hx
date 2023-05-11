@@ -1,6 +1,6 @@
 package cpp;
 
-extern abstract CharStar(cpp.RawPointer<cpp.Char>) to (cpp.RawPointer<cpp.Char>)
+extern abstract CharStar(RawPointer<Char>) to (RawPointer<Char>)
 {
 	inline function new(s:String):Void
 		this = untyped s.__s;
@@ -12,6 +12,6 @@ extern abstract CharStar(cpp.RawPointer<cpp.Char>) to (cpp.RawPointer<cpp.Char>)
 	@:to extern public inline function toString():String
 		return new String(untyped this);
 
-	@:to extern public inline function toPointer():cpp.RawPointer<cpp.Char>
+	@:to extern public inline function toPointer():RawPointer<Char>
 		return this;
 }
