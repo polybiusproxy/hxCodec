@@ -388,28 +388,23 @@ abstract LibVLC_MediaParseFlag(Int) from Int to Int
   /**
    * Parse media even if it's a network file. 
    */
-  public static var media_parse_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('media_parse_network'));
+  public static var media_parse_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_parse_network'));
 
   /**
    * Fetch meta and cover art using local resources. 
    */
-  public static var media_fetch_local(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('media_fetch_local'));
+  public static var media_fetch_local(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_fetch_local'));
 
   /**
    * Fetch meta and cover art using network resources. 
    */
-  public static var media_fetch_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('media_fetch_network'));
+  public static var media_fetch_network(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_fetch_network'));
 
   /**
    * Interact with the user (via libvlc_dialog_cbs) when preparsing this item (and not its sub items).
    * Set this flag in order to receive a callback when the input is asking for credentials. 
    */
-  public static var media_do_interact(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('media_do_interact'));
-
-  /**
-   * Force parsing the media even if it would be skipped. 
-   */
-  public static var media_no_skip(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('media_no_skip'));
+  public static var media_do_interact(default, null):Int = new LibVLC_MediaParseFlag(untyped __cpp__('libvlc_media_do_interact'));
 }
 
 
