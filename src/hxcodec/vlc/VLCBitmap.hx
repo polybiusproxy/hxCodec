@@ -27,27 +27,34 @@ using StringTools;
 @:headerInclude('stdarg.h')
 @:cppInclude('string')
 @:cppNamespaceCode('
-// thanks StackOverflow
-int vasprintf(char **strp, const char *fmt, va_list ap) {
-    // _vscprintf tells you how big the buffer needs to be
-    int len = _vscprintf(fmt, ap);
-    if (len == -1) {
-        return -1;
-    }
-    size_t size = (size_t)len + 1;
-    char *str = (char*) malloc(size);
-    if (!str) {
-        return -1;
-    }
-    // _vsprintf_s is the "secure" version of vsprintf
-    int r = vsprintf_s(str, len + 1, fmt, ap);
-    if (r == -1) {
-        free(str);
-        return -1;
-    }
-    *strp = str;
-    return r;
+#ifndef vasprintf
+int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
+{
+	int count = vsnprintf(NULL, 0, fmt, ap); // Query the buffer size required.
+
+	*sptr = NULL;
+
+	if (count >= 0)
+	{
+		char* p = static_cast<char *>(malloc(count + 1)); // Allocate memory for it.
+
+		if (p == NULL)
+			return -1;
+
+		if (vsnprintf(p, count + 1, fmt, ap) == count) // We should have used exactly what was required.
+		{
+			*sptr = p;
+		}
+		else // Otherwise something is wrong, likely a bug in vsnprintf. If so free the memory and report the error.
+		{
+			free(p);
+			return -1;
+		}
+	}
+
+	return count;
 }
+#endif
 
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
@@ -117,7 +124,7 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 
 	char* msg = NULL;
 	if (vasprintf(&msg, fmt, args) < 0)
-		msg = "Failed to format log message";
+		return;
 
 	std::string log = "[ ";
 
@@ -140,14 +147,14 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 	log.append(" ] ");
 	log.append(std::string(msg));
 
-	// self->messages.push_back(const_cast<char *>(log.c_str()));
+	size_t len = log.length();
 
 	// Copy the log to a char array.
-	size_t len = log.length();
-  char* msgFullArr = new char[len + 1];
-  memcpy(msgFullArr, log.c_str(), len);
-  msgFullArr[len] = \'\\0\';
-	self->messages.push_back(msgFullArr);
+    char* logMsg = new char[len + 1];
+	memcpy(logMsg, log.c_str(), len);
+	logMsg[len] = \'\\0\';
+
+	self->messages.push_back(logMsg);
 }')
 class VLCBitmap extends Bitmap
 {
