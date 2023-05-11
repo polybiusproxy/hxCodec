@@ -228,6 +228,21 @@ class VLCBitmap extends Bitmap
 	// Methods
 	public function play(?location:String = null, shouldLoop:Bool = false):Int
 	{
+		if (buffer != null && buffer.length > 0)
+			buffer = [];
+
+		if (bitmapData != null)
+		{
+			bitmapData.dispose();
+			bitmapData = null;
+		}
+
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
+
 		if (location.startsWith('https://') || location.startsWith('file://'))
 		{
 			#if HXC_DEBUG_TRACE
@@ -249,32 +264,18 @@ class VLCBitmap extends Bitmap
 
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
-		LibVLC.media_parse(mediaItem);
-		LibVLC.media_add_option(mediaItem, shouldLoop ? "input-repeat=65535" : "input-repeat=0");
-		LibVLC.media_release(mediaItem);
-
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
-
-		if (bitmapData != null)
-		{
-			bitmapData.dispose();
-			bitmapData = null;
-		}
-
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
-
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), null);
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
 
 		attachEvents();
 
+		LibVLC.media_add_option(mediaItem, shouldLoop ? "input-repeat=65535" : "input-repeat=0");
+
+		LibVLC.media_release(mediaItem);
+
 		return LibVLC.media_player_play(mediaPlayer);
 	}
+
 
 	public function stop():Void
 	{
