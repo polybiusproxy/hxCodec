@@ -276,7 +276,6 @@ class VLCBitmap extends Bitmap
 		return LibVLC.media_player_play(mediaPlayer);
 	}
 
-
 	public function stop():Void
 	{
 		if (mediaPlayer != null)
@@ -307,8 +306,7 @@ class VLCBitmap extends Bitmap
 		trace('disposing...');
 		#end
 
-		if (isPlaying)
-			stop();
+		stop();
 
 		detachEvents();
 
