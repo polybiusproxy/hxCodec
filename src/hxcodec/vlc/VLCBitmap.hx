@@ -174,7 +174,6 @@ class VLCBitmap extends Bitmap
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 	public var canPause(get, never):Bool;
-	public var rate(get, set):Float;
 	public var muteAudio(get, set):Bool;
 
 	// Callbacks
