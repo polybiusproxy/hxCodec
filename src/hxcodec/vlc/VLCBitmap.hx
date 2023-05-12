@@ -524,22 +524,6 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion function get_rate():Float
-	{
-		if (mediaPlayer != null)
-			return LibVLC.media_player_get_rate(mediaPlayer);
-
-		return 0;
-	}
-
-	@:noCompletion function set_rate(value:Float):Float
-	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_set_rate(mediaPlayer, value);
-
-		return value;
-	}
-
 	// Overrides
 	@:noCompletion private override function __enterFrame(deltaTime:Int):Void
 	{
