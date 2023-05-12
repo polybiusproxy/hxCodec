@@ -80,16 +80,16 @@ class FlxVideoSprite extends FlxSprite implements IVideoPlayer
 	/**
 	 * Current playback speed.
 	 */
-	public var playbackRate(get, set):Float;
+	public var rate(get, set):Float;
 
-	function get_playbackRate():Float
+	function get_rate():Float
 	{
-		return videoBitmap.playbackRate;
+		return videoBitmap.rate;
 	}
 
-	function set_playbackRate(value:Float):Float
+	function set_rate(value:Float):Float
 	{
-		return videoBitmap.playbackRate = value;
+		return videoBitmap.rate = value;
 	}
 
 	/**

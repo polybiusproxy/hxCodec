@@ -82,16 +82,16 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	/**
 	 * Current playback speed.
 	 */
-	public var playbackRate(get, set):Float;
+	public var rate(get, set):Float;
 
-	function get_playbackRate():Float
+	function get_rate():Float
 	{
-		return video.playbackRate;
+		return video.rate;
 	}
 
-	function set_playbackRate(value:Float):Float
+	function set_rate(value:Float):Float
 	{
-		return video.playbackRate = value;
+		return video.rate = value;
 	}
 
 	/**

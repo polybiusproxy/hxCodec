@@ -87,16 +87,16 @@ class VideoSprite extends Sprite implements IVideoPlayer
 	/**
 	 * Current playback speed.
 	 */
-	public var playbackRate(get, set):Float;
+	public var rate(get, set):Float;
 
-	function get_playbackRate():Float
+	function get_rate():Float
 	{
-		return videoBitmap.playbackRate;
+		return videoBitmap.rate;
 	}
 
-	function set_playbackRate(value:Float):Float
+	function set_rate(value:Float):Float
 	{
-		videoBitmap.playbackRate = value;
+		videoBitmap.rate = value;
 		return value;
 	}
 

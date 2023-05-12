@@ -38,7 +38,7 @@ interface IVideoPlayer
 	/**
 	 * Current playback speed.
 	 */
-	public var playbackRate(get, set):Float;
+	public var rate(get, set):Float;
 
 	/**
 	 * Current volume.

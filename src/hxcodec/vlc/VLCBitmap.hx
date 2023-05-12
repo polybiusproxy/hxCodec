@@ -174,7 +174,7 @@ class VLCBitmap extends Bitmap
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 	public var canPause(get, never):Bool;
-	public var playbackRate(get, set):Float;
+	public var rate(get, set):Float;
 	public var muteAudio(get, set):Bool;
 
 	// Callbacks
@@ -341,6 +341,10 @@ class VLCBitmap extends Bitmap
 		mediaPlayer = null;
 		mediaItem = null;
 		instance = null;
+
+		#if HXC_DEBUG_TRACE
+		trace('disposing done!');
+		#end
 	}
 
 	// Get & Set Methods
@@ -520,7 +524,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion function get_playbackRate():Float
+	@:noCompletion function get_rate():Float
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_rate(mediaPlayer);
@@ -528,7 +532,7 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion function set_playbackRate(value:Float):Float
+	@:noCompletion function set_rate(value:Float):Float
 	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_rate(mediaPlayer, value);
