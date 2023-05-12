@@ -13,9 +13,6 @@ import sys.FileSystem;
  */
 class VideoSprite extends Sprite implements IVideoPlayer
 {
-	public var openingCallback:Void->Void = null;
-	public var finishCallback:Void->Void = null;
-
 	/**
 	 * The current position of the video, in milliseconds.
 	 */
@@ -240,8 +237,6 @@ class VideoSprite extends Sprite implements IVideoPlayer
 	 */
 	public function playVideo(Path:String, Loop:Bool = false):Int
 	{
-		stage.addEventListener(Event.ENTER_FRAME, update);
-
 		// in case if you want to use another dir then the application one.
 		// android can already do this, it can't use application's storage.
 		if (FileSystem.exists(Sys.getCwd() + Path))
@@ -283,42 +278,36 @@ class VideoSprite extends Sprite implements IVideoPlayer
 	}
 
 	// Internal Methods
-	private function onVLCOpening():Void
+	@:noCompletion private function onVLCOpening():Void
 	{
 		#if HXC_DEBUG_TRACE
 		trace("the video is opening!");
 		#end
-
-		if (openingCallback != null)
-			openingCallback();
 	}
 
-	private function onVLCEncounteredError(msg:String):Void
+	@:noCompletion private function onVLCEncounteredError(msg:String):Void
 	{
 		Lib.application.window.alert(msg, "VLC Error!");
 		onVLCEndReached();
 	}
 
-	private function onVLCEndReached():Void
+	@:noCompletion private function onVLCEndReached():Void
 	{
 		#if HXC_DEBUG_TRACE
 		trace("the video reached the end!");
 		#end
 
-		if (stage.hasEventListener(Event.ENTER_FRAME))
-			stage.removeEventListener(Event.ENTER_FRAME, update);
-
 		videoBitmap.dispose();
 
 		removeChild(this);
-
-		if (finishCallback != null)
-			finishCallback();
 	}
 
-	private function update(e:Event):Void
+	@:noCompletion private override function __enterFrame(deltaTime:Int):Void
 	{
-		if (autoResize)
+		for (child in __children)
+			child.__enterFrame(deltaTime);
+
+		if (autoResize && contains(videoBitmap))
 		{
 			if (!maintainAspectRatio && (videoBitmap.videoWidth > 0 && videoBitmap.videoHeight > 0))
 			{
