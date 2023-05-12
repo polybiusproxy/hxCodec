@@ -242,7 +242,7 @@ class VLCBitmap extends Bitmap
 			texture = null;
 		}
 
-		if (location.startsWith('http://') || location.startsWith('https://') || location.startsWith('file://'))
+		if ((location.startsWith('http') || location.startsWith('file')) && location.contains(':'))
 		{
 			#if HXC_DEBUG_TRACE
 			trace("setting location to: " + location);
