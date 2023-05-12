@@ -302,13 +302,7 @@ class VLCBitmap extends Bitmap
 
 	public function dispose():Void
 	{
-		#if HXC_DEBUG_TRACE
-		trace('disposing...');
-		#end
-
 		stop();
-
-		detachEvents();
 
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
@@ -325,6 +319,12 @@ class VLCBitmap extends Bitmap
 			texture = null;
 		}
 
+		detachEvents();
+
+		#if HXC_LIBVLC_LOGGING
+		LibVLC.log_unset(instance);
+		#end
+
 		onOpening = null;
 		onPlaying = null;
 		onStopped = null;
@@ -333,10 +333,7 @@ class VLCBitmap extends Bitmap
 		onEncounteredError = null;
 		onForward = null;
 		onBackward = null;
-
-		#if HXC_LIBVLC_LOGGING
-		LibVLC.log_unset(instance);
-		#end
+		onLogMessage = null;
 
 		// The release functions from libvlc crashes
 		// for some reason
@@ -344,10 +341,6 @@ class VLCBitmap extends Bitmap
 		mediaPlayer = null;
 		mediaItem = null;
 		instance = null;
-
-		#if HXC_DEBUG_TRACE
-		trace('disposing done!');
-		#end
 	}
 
 	// Get & Set Methods
@@ -631,19 +624,15 @@ class VLCBitmap extends Bitmap
 	#if HXC_LIBVLC_LOGGING
 	@:noCompletion private function updateLogging():Void
 	{
-		var messagesOut:Array<String> = [];
-
 		while (messages.size() > 0)
 		{
 			// Pop the last message in the vector.
-			messagesOut.insert(0, manualLogCleanup(cast(messages.back(), String)));
+			if (onLogMessage != null)
+				onLogMessage.dispatch(cleanupLogMsg(cast(messages.back(), String)));
 
 			// Free the messages.
 			messages.pop_back();
 		}
-
-		for (msg in messagesOut)
-			onLogMessage.dispatch(msg);
 	}
 	#end
 
@@ -686,9 +675,13 @@ class VLCBitmap extends Bitmap
 		}
 	}
 
-	@:noCompletion private inline function manualLogCleanup(str:String):String
+	@:noCompletion private function cleanupLogMsg(str:String):String
 	{
+		#if windows
 		return str.replace('/home/jenkins/workspace/vlc-release/windows/vlc-release-win32-x64/extras/package/win32/../../..', '');
+		#else // TODO
+		return str;
+		#end
 	}
 
 	@:noCompletion private function attachEvents():Void
