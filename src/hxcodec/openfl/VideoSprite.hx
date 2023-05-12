@@ -318,8 +318,6 @@ class VideoSprite extends Sprite implements IVideoPlayer
 
 	private function update(e:Event):Void
 	{
-		videoBitmap.update(e);
-
 		if (autoResize)
 		{
 			if (!maintainAspectRatio && (videoBitmap.videoWidth > 0 && videoBitmap.videoHeight > 0))
