@@ -36,7 +36,7 @@ int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
 
 	if (count >= 0)
 	{
-		char* p = static_cast<char *>(malloc(count + 1)); // Allocate memory for it.
+		char *p = static_cast<char *>(malloc(count + 1)); // Allocate memory for it.
 
 		if (p == NULL)
 			return -1;
@@ -122,7 +122,7 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 {
 	VLCBitmap_obj *self = (VLCBitmap_obj*) data;
 
-	char* msg = NULL;
+	char *msg = NULL;
 	if (vasprintf(&msg, fmt, args) < 0)
 		return;
 
@@ -150,7 +150,7 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 	size_t len = log.length();
 
 	// Copy the log to a char array.
-    char* logMsg = new char[len + 1];
+	char *logMsg = new char[len + 1];
 	memcpy(logMsg, log.c_str(), len);
 	logMsg[len] = \'\\0\';
 
