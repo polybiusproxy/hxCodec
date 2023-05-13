@@ -334,7 +334,7 @@ class VLCBitmap extends Bitmap
 		eventManager = null;
 		mediaPlayer = null;
 		mediaItem = null;
-		instance = null
+		instance = null;
 
 		#if HXC_DEBUG_TRACE
 		trace('disposing done!');
