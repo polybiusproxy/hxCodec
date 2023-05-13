@@ -227,21 +227,6 @@ class VLCBitmap extends Bitmap
 	// Methods
 	public function play(?location:String = null, shouldLoop:Bool = false):Int
 	{
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
-
-		if (bitmapData != null)
-		{
-			bitmapData.dispose();
-			bitmapData = null;
-		}
-
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
-
 		if ((location.startsWith('http') || location.startsWith('file')) && location.contains(':'))
 		{
 			#if HXC_DEBUG_TRACE
@@ -263,6 +248,21 @@ class VLCBitmap extends Bitmap
 
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
+		if (buffer != null && buffer.length > 0)
+			buffer = [];
+
+		if (bitmapData != null)
+		{
+			bitmapData.dispose();
+			bitmapData = null;
+		}
+
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
+
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), null);
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
 
@@ -273,12 +273,6 @@ class VLCBitmap extends Bitmap
 		LibVLC.media_release(mediaItem);
 
 		return LibVLC.media_player_play(mediaPlayer);
-	}
-
-	public function stop():Void
-	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_stop(mediaPlayer);
 	}
 
 	public function pause():Void
@@ -301,7 +295,9 @@ class VLCBitmap extends Bitmap
 
 	public function dispose():Void
 	{
-		stop();
+		detachEvents();
+
+		LibVLC.media_player_stop(mediaPlayer);
 
 		if (buffer != null && buffer.length > 0)
 			buffer = [];
@@ -318,7 +314,7 @@ class VLCBitmap extends Bitmap
 			texture = null;
 		}
 
-		detachEvents();
+		LibVLC.media_player_release(mediaPlayer);
 
 		onOpening = null;
 		onPlaying = null;
@@ -329,8 +325,6 @@ class VLCBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 		onLogMessage = null;
-
-		LibVLC.media_player_release(mediaPlayer);
 
 		#if HXC_LIBVLC_LOGGING
 		LibVLC.log_unset(instance);
