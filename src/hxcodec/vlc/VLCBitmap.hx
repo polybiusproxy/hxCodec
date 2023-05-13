@@ -331,6 +331,11 @@ class VLCBitmap extends Bitmap
 		#end
 		LibVLC.release(instance);
 
+		eventManager = null;
+		mediaPlayer = null;
+		mediaItem = null;
+		instance = null
+
 		#if HXC_DEBUG_TRACE
 		trace('disposing done!');
 		#end
