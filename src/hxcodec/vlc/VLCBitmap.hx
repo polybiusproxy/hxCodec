@@ -320,10 +320,6 @@ class VLCBitmap extends Bitmap
 
 		detachEvents();
 
-		#if HXC_LIBVLC_LOGGING
-		LibVLC.log_unset(instance);
-		#end
-
 		onOpening = null;
 		onPlaying = null;
 		onStopped = null;
@@ -334,12 +330,12 @@ class VLCBitmap extends Bitmap
 		onBackward = null;
 		onLogMessage = null;
 
-		// The release functions from libvlc crashes
-		// for some reason
-		eventManager = null;
-		mediaPlayer = null;
-		mediaItem = null;
-		instance = null;
+		LibVLC.media_player_release(mediaPlayer);
+
+		#if HXC_LIBVLC_LOGGING
+		LibVLC.log_unset(instance);
+		#end
+		LibVLC.release(instance);
 
 		#if HXC_DEBUG_TRACE
 		trace('disposing done!');
