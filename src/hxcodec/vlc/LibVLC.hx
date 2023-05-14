@@ -296,7 +296,7 @@ enum abstract LibVLC_Event_Type(Int) from Int to Int
 /**
  * Audio channels.
  */
-enum abstract LibVLC_Media_Player_Role(Int) from Int to Int
+enum abstract LibVLC_Audio_Output_Channel(Int) from Int to Int
 {
 	final LibVLC_AudioChannel_Error = -1;
 	final LibVLC_AudioChannel_Stereo = 1;
