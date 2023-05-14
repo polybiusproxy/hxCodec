@@ -58,7 +58,7 @@ int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
 
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
-	VLCBitmap_obj *self = (VLCBitmap_obj *)(*data);
+	VLCBitmap_obj *self = reinterpret_cast<VLCBitmap_obj *>(*data);
 
 	unsigned _w = (*width);
 	unsigned _h = (*height);
@@ -80,14 +80,14 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 
 static void *lock(void *data, void **p_pixels)
 {
-	VLCBitmap_obj *self = (VLCBitmap_obj *) data;
+	VLCBitmap_obj *self = reinterpret_cast<VLCBitmap_obj *>(data);
 	*p_pixels = self->pixels;
 	return nullptr; // picture identifier, not needed here
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
 {
-	VLCBitmap_obj *self = (VLCBitmap_obj *) data;
+	VLCBitmap_obj *self = reinterpret_cast<VLCBitmap_obj *>(data);
 
 	switch (event->type)
 	{
@@ -120,7 +120,7 @@ static void callbacks(const libvlc_event_t *event, void *data)
 
 static void logging(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
 {
-	VLCBitmap_obj *self = (VLCBitmap_obj *) data;
+	VLCBitmap_obj *self = reinterpret_cast<VLCBitmap_obj *>(data);
 
 	char *msg = NULL;
 	if (vasprintf(&msg, fmt, args) < 0)
