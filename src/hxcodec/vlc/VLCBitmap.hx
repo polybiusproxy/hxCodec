@@ -170,7 +170,6 @@ class VLCBitmap extends Bitmap
 	public var volume(get, set):Int;
 	public var delay(get, set):Int;
 	public var rate(get, set):Float;
-	public var fps(get, never):Float;
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 	public var canPause(get, never):Bool;
@@ -470,14 +469,6 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_fps():Float
-	{
-		if (mediaPlayer != null)
-			return LibVLC.media_player_get_fps(mediaPlayer);
-
-		return 0;
-	}
-
 	@:noCompletion private function get_isPlaying():Bool
 	{
 		if (mediaPlayer != null)
@@ -580,7 +571,7 @@ class VLCBitmap extends Bitmap
 	{
 		var currentTime:Int = Lib.getTimer();
 
-		if (Math.abs(currentTime - oldTime) > Std.int(1000 / (fps * rate)))
+		if (Math.abs(currentTime - oldTime) > 8.3) // Not the best way but works ig
 		{
 			oldTime = currentTime;
 
