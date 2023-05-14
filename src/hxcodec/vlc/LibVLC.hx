@@ -116,12 +116,6 @@ extern class LibVLC
 	@:native("libvlc_media_player_event_manager")
 	static function media_player_event_manager(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.RawPointer<LibVLC_EventManager_T>;
 
-	@:native("libvlc_media_player_get_chapter")
-	static function media_player_get_chapter(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
-
-	@:native("libvlc_media_player_set_chapter")
-	static function media_player_set_chapter(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_chapter:Int):Void;
-
 	@:native("libvlc_media_player_get_time")
 	static function media_player_get_time(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.Int64;
 
