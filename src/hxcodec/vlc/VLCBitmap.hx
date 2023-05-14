@@ -168,12 +168,14 @@ class VLCBitmap extends Bitmap
 	public var duration(get, never):Int;
 	public var mrl(get, never):String;
 	public var volume(get, set):Int;
+	public var channel(get, set):Int;
 	public var delay(get, set):Int;
 	public var rate(get, set):Single;
+	public var role(get, set):Int;
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 	public var canPause(get, never):Bool;
-	public var muteAudio(get, set):Bool;
+	public var mute(get, set):Bool;
 
 	// Callbacks
 	public var onOpening(default, null):CallbackVoid;
@@ -431,6 +433,22 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
+	@:noCompletion private function get_channel():Int
+	{
+		if (mediaPlayer != null)
+			return LibVLC.audio_get_channel(mediaPlayer);
+
+		return 0;
+	}
+
+	@:noCompletion private function set_channel(value:Int):Int
+	{
+		if (mediaPlayer != null)
+			LibVLC.audio_set_channel(mediaPlayer, value);
+
+		return value;
+	}
+
 	@:noCompletion private function get_delay():Int
 	{
 		if (mediaPlayer != null)
@@ -469,6 +487,22 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
+	@:noCompletion private function get_role():Int
+	{
+		if (mediaPlayer != null)
+			return LibVLC.media_player_get_role(mediaPlayer);
+
+		return 0;
+	}
+
+	@:noCompletion private function set_role(value:Int):Int
+	{
+		if (mediaPlayer != null)
+			LibVLC.media_player_set_role(mediaPlayer, value);
+
+		return value;
+	}
+
 	@:noCompletion private function get_isPlaying():Bool
 	{
 		if (mediaPlayer != null)
@@ -493,7 +527,7 @@ class VLCBitmap extends Bitmap
 		return false;
 	}
 
-	@:noCompletion function get_muteAudio():Bool
+	@:noCompletion function get_mute():Bool
 	{
 		if (mediaPlayer != null)
 			return LibVLC.audio_get_mute(mediaPlayer) > 0;
@@ -501,7 +535,7 @@ class VLCBitmap extends Bitmap
 		return false;
 	}
 
-	@:noCompletion function set_muteAudio(value:Bool):Bool
+	@:noCompletion function set_mute(value:Bool):Bool
 	{
 		if (mediaPlayer != null)
 			LibVLC.audio_set_mute(mediaPlayer, value);
@@ -636,7 +670,7 @@ class VLCBitmap extends Bitmap
 							onEndReached.dispatch();
 					case 5:
 						if (onEncounteredError != null)
-							onEncounteredError.dispatch(cast(LibVLC.errmsg(), String));
+							onEncounteredError.dispatch("error cannot be specified");
 					case 6:
 						if (onForward != null)
 							onForward.dispatch();

@@ -15,29 +15,11 @@ extern class LibVLC
 	@:native("libvlc_release")
 	static function release(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
 
-	@:native("libvlc_retain")
-	static function retain(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
-
-	@:native("libvlc_free")
-	static function free(ptr:cpp.Pointer<cpp.Void>):Void;
-
-	@:native("libvlc_errmsg")
-	static function errmsg():cpp.ConstCharStar;
-
-	@:native("libvlc_clearerr")
-	static function clearerr():Void;
-
-	@:native("libvlc_printerr")
-	static function printerr(fmt:cpp.ConstCharStar):cpp.ConstCharStar;
-
 	@:native("libvlc_get_version")
 	static function get_version():cpp.ConstCharStar;
 
 	@:native("libvlc_get_compiler")
 	static function get_compiler():cpp.ConstCharStar;
-
-	@:native("libvlc_get_changeset")
-	static function get_changeset():cpp.ConstCharStar;
 
 	@:native("libvlc_audio_output_set")
 	static function audio_output_set(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, deviceName:cpp.ConstCharStar):Void;
@@ -60,6 +42,12 @@ extern class LibVLC
 	@:native("libvlc_audio_set_mute")
 	static function audio_set_mute(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_status:Bool):Int;
 
+	@:native("libvlc_audio_get_channel")
+	static function audio_get_channel(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
+
+	@:native("libvlc_audio_set_channel")
+	static function audio_set_channel(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, channel:Int):Int;
+
 	@:native("libvlc_event_attach")
 	static function event_attach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_Type, f_callback:LibVLC_Callback_T,
 		user_data:cpp.Pointer<cpp.Void>):Int;
@@ -68,22 +56,11 @@ extern class LibVLC
 	static function event_detach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_Type, f_callback:LibVLC_Callback_T,
 		user_data:cpp.Pointer<cpp.Void>):Void;
 
-	@:native('libvlc_log_get_context')
-	static function log_get_context(ctx:cpp.RawConstPointer<LibVLC_Log_T>, module:cpp.RawPointer<cpp.ConstCharStar>, file:cpp.RawPointer<cpp.ConstCharStar>,
-		line:cpp.Pointer<cpp.UInt32>):Void;
-
-	@:native('libvlc_log_get_object')
-	static function log_get_object(ctx:cpp.RawConstPointer<LibVLC_Log_T>, name:cpp.RawPointer<cpp.ConstCharStar>, header:cpp.RawPointer<cpp.ConstCharStar>,
-		id:cpp.Pointer<cpp.UInt32>):Void;
-
 	@:native('libvlc_log_unset')
 	static function log_unset(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
 
 	@:native('libvlc_log_set')
 	static function log_set(p_instance:cpp.RawPointer<LibVLC_Instance_T>, cb:LibVLC_Log_CB, data:cpp.Pointer<cpp.Void>):Void;
-
-	@:native('libvlc_log_set_file')
-	static function log_set_file(p_instance:cpp.RawPointer<LibVLC_Instance_T>, stream:cpp.FILE):Void;
 
 	@:native("libvlc_media_new_path")
 	static function media_new_path(p_instance:cpp.RawPointer<LibVLC_Instance_T>, path:cpp.ConstCharStar):cpp.RawPointer<LibVLC_Media_T>;
@@ -91,17 +68,11 @@ extern class LibVLC
 	@:native("libvlc_media_new_location")
 	static function media_new_location(p_instance:cpp.RawPointer<LibVLC_Instance_T>, psz_mrl:cpp.ConstCharStar):cpp.RawPointer<LibVLC_Media_T>;
 
-	#if !windows
-	@:native("libvlc_media_new_callbacks")
-	static function media_new_callbacks(p_instance:cpp.RawPointer<LibVLC_Instance_T>, open_cb:LibVLC_Media_Open_CB, read_cb:LibVLC_Media_Read_CB,
-		seek_cb:LibVLC_Media_Seek_CB, close_cb:LibVLC_Media_Close_CB, opaque:cpp.Pointer<cpp.Void>):cpp.RawPointer<LibVLC_Media_T>;
-	#end
-
 	@:native("libvlc_media_add_option")
 	static function media_add_option(p_md:cpp.RawPointer<LibVLC_Media_T>, psz_options:cpp.ConstCharStar):Void;
 
 	@:native("libvlc_media_add_option_flag")
-	static function media_add_option_flag(p_md:cpp.RawPointer<LibVLC_Media_T>, psz_options:cpp.ConstCharStar, i_flags:cpp.UInt32):Void;
+	static function media_add_option_flag(p_md:cpp.RawPointer<LibVLC_Media_T>, psz_options:cpp.ConstCharStar, i_flags:UInt):Void;
 
 	@:native("libvlc_media_event_manager")
 	static function media_event_manager(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.RawPointer<LibVLC_EventManager_T>;
@@ -114,9 +85,6 @@ extern class LibVLC
 
 	@:native("libvlc_media_release")
 	static function media_release(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
-
-	@:native("libvlc_media_retain")
-	static function media_retain(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
 
 	@:native("libvlc_media_player_play")
 	static function media_player_play(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
@@ -148,6 +116,12 @@ extern class LibVLC
 	@:native("libvlc_media_player_event_manager")
 	static function media_player_event_manager(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.RawPointer<LibVLC_EventManager_T>;
 
+	@:native("libvlc_media_player_get_chapter")
+	static function media_player_get_chapter(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
+
+	@:native("libvlc_media_player_set_chapter")
+	static function media_player_set_chapter(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_chapter:Int):Void;
+
 	@:native("libvlc_media_player_get_time")
 	static function media_player_get_time(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.Int64;
 
@@ -166,8 +140,11 @@ extern class LibVLC
 	@:native("libvlc_media_player_set_rate")
 	static function media_player_set_rate(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, rate:Single):Int;
 
-	@:native("libvlc_media_player_get_fps")
-	static function media_player_get_fps(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Single;
+	@:native("libvlc_media_player_get_role")
+	static function media_player_get_role(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
+
+	@:native("libvlc_media_player_set_role")
+	static function media_player_set_role(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, role:UInt):Int;
 
 	@:native("libvlc_media_player_get_length")
 	static function media_player_get_length(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.Int64;
@@ -181,9 +158,6 @@ extern class LibVLC
 	@:native("libvlc_video_set_callbacks")
 	static function video_set_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, lock:LibVLC_Video_Lock_CB, unlock:LibVLC_Video_Unlock_CB,
 		display:LibVLC_Video_Display_CB, opaque:cpp.Pointer<cpp.Void>):Void;
-
-	@:native("libvlc_video_get_size")
-	static function video_get_size(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, num:UInt, width:cpp.Pointer<cpp.UInt32>, height:cpp.Pointer<cpp.UInt32>):Int;
 }
 
 typedef LibVLC_Callback_T = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC_Event_T>, p_data:cpp.RawPointer<cpp.Void>) -> Void>;
@@ -191,22 +165,13 @@ typedef LibVLC_Callback_T = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC_Eve
 typedef LibVLC_Log_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, level:Int, ctx:cpp.RawConstPointer<LibVLC_Log_T>, fmt:cpp.ConstCharStar,
 		args:cpp.VarList) -> Void>;
 
-typedef LibVLC_Video_Format_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.CharStar, width:cpp.RawPointer<cpp.UInt32>,
-		height:cpp.RawPointer<cpp.UInt32>, pitches:cpp.RawPointer<cpp.UInt32>, lines:cpp.RawPointer<cpp.UInt32>) -> cpp.UInt32>;
+typedef LibVLC_Video_Format_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.CharStar, width:cpp.RawPointer<UInt>,
+		height:cpp.RawPointer<UInt>, pitches:cpp.RawPointer<UInt>, lines:cpp.RawPointer<UInt>) -> UInt>;
 
 typedef LibVLC_Video_Cleanup_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>) -> Void>;
 typedef LibVLC_Video_Lock_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, p_pixels:cpp.RawPointer<cpp.RawPointer<cpp.Void>>) -> cpp.RawPointer<cpp.Void>>;
 typedef LibVLC_Video_Unlock_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, id:cpp.RawPointer<cpp.Void>, p_pixels:cpp.VoidStarConstStar) -> Void>;
 typedef LibVLC_Video_Display_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, picture:cpp.RawPointer<cpp.Void>) -> Void>;
-
-#if !windows
-typedef LibVLC_Media_Open_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, datap:cpp.RawPointer<cpp.RawPointer<cpp.Void>>,
-		sizep:cpp.RawPointer<cpp.UInt64>) -> Int>;
-
-typedef LibVLC_Media_Read_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, buf:cpp.RawPointer<cpp.UInt8>, len:cpp.SizeT) -> cpp.SSizeT>;
-typedef LibVLC_Media_Seek_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>, offset:cpp.UInt64) -> Int>;
-typedef LibVLC_Media_Close_CB = cpp.Callable<(opaque:cpp.RawPointer<cpp.Void>) -> Void>;
-#end
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
 @:include("vlc/vlc.h")
@@ -247,7 +212,7 @@ extern class LibVLC_EventManager_T {}
 extern class LibVLC_Event_T {}
 
 /**
- * Event types
+ * Event types.
  */
 enum abstract LibVLC_Event_Type(Int) from Int to Int
 {
@@ -326,4 +291,34 @@ enum abstract LibVLC_Event_Type(Int) from Int to Int
 	final LibVLC_VlmMediaInstanceStatusPause = 1544;
 	final LibVLC_VlmMediaInstanceStatusEnd = 1545;
 	final LibVLC_VlmMediaInstanceStatusError = 1546;
+}
+
+/**
+ * Audio channels.
+ */
+enum abstract LibVLC_Media_Player_Role(Int) from Int to Int
+{
+	final LibVLC_AudioChannel_Error = -1;
+	final LibVLC_AudioChannel_Stereo = 1;
+	final LibVLC_AudioChannel_RStereo = 2;
+	final LibVLC_AudioChannel_Left = 3;
+	final LibVLC_AudioChannel_Right = 4;
+	final LibVLC_AudioChannel_Dolbys = 5;
+}
+
+/**
+ * Media player roles.
+ */
+enum abstract LibVLC_Media_Player_Role(Int) from Int to Int
+{
+	final LibVLC_Role_None = 0; /* Don't use a media player role */
+	final LibVLC_Role_Music = 1; /* Music (or radio) playback */
+	final LibVLC_Role_Video = 2; /* Video playback */
+	final LibVLC_Role_Communication = 3; /* Speech, real-time communication */
+	final LibVLC_Role_Game = 4; /* Video game */
+	final LibVLC_Role_Notification = 5; /* User interaction feedback */
+	final LibVLC_Role_Animation = 6; /* Embedded animation (e.g. in web page) */
+	final LibVLC_Role_Production = 7; /* Audio editting/production */
+	final LibVLC_Role_Accessibility = 8; /* Accessibility */
+	final LibVLC_Role_Test = 9; /* Testing */
 }
