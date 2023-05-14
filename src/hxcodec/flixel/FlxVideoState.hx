@@ -67,16 +67,16 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	/**
 	 * Whether or not the audio is currently muted.
 	 */
-	public var muteAudio(get, set):Bool;
+	public var mute(get, set):Bool;
 
-	function get_muteAudio():Bool
+	function get_mute():Bool
 	{
-		return video.muteAudio;
+		return video.mute;
 	}
 
-	function set_muteAudio(value:Bool):Bool
+	function set_mute(value:Bool):Bool
 	{
-		return video.muteAudio = value;
+		return video.mute = value;
 	}
 
 	/**

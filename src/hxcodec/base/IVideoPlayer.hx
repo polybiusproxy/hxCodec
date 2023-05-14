@@ -33,7 +33,7 @@ interface IVideoPlayer
 	/**
 	 * Whether or not the audio is currently muted.
 	 */
-	public var muteAudio(get, set):Bool;
+	public var mute(get, set):Bool;
 
 	/**
 	 * Current playback speed.

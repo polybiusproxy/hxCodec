@@ -65,16 +65,16 @@ class FlxVideoSprite extends FlxSprite implements IVideoPlayer
 	/**
 	 * Whether or not the audio is currently muted.
 	 */
-	public var muteAudio(get, set):Bool;
+	public var mute(get, set):Bool;
 
-	function get_muteAudio():Bool
+	function get_mute():Bool
 	{
-		return videoBitmap.muteAudio;
+		return videoBitmap.mute;
 	}
 
-	function set_muteAudio(value:Bool):Bool
+	function set_mute(value:Bool):Bool
 	{
-		return videoBitmap.muteAudio = value;
+		return videoBitmap.mute = value;
 	}
 
 	/**
