@@ -8,6 +8,7 @@ import haxe.io.BytesData;
 import haxe.io.Path;
 import hxcodec.base.Callback;
 import hxcodec.vlc.LibVLC;
+import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.Texture;
