@@ -163,13 +163,13 @@ class VLCBitmap extends Bitmap
 	public var videoHeight(default, null):UInt = 0;
 	public var texture(default, null):Texture;
 	public var time(get, set):Int;
-	public var position(get, set):Float;
+	public var position(get, set):Single;
 	public var length(get, never):Int;
 	public var duration(get, never):Int;
 	public var mrl(get, never):String;
 	public var volume(get, set):Int;
 	public var delay(get, set):Int;
-	public var rate(get, set):Float;
+	public var rate(get, set):Single;
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 	public var canPause(get, never):Bool;
@@ -363,7 +363,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_position():Float
+	@:noCompletion private function get_position():Single
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_position(mediaPlayer);
@@ -371,7 +371,7 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function set_position(value:Float):Float
+	@:noCompletion private function set_position(value:Single):Single
 	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_position(mediaPlayer, value);
@@ -453,7 +453,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_rate():Float
+	@:noCompletion private function get_rate():Single
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_rate(mediaPlayer);
@@ -461,7 +461,7 @@ class VLCBitmap extends Bitmap
 		return 0;
 	}
 
-	@:noCompletion private function set_rate(value:Float):Float
+	@:noCompletion private function set_rate(value:Single):Single
 	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_rate(mediaPlayer, value);

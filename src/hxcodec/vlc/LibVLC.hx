@@ -155,19 +155,19 @@ extern class LibVLC
 	static function media_player_set_time(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_time:cpp.Int64):Int;
 
 	@:native("libvlc_media_player_get_position")
-	static function media_player_get_position(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Float;
+	static function media_player_get_position(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Single;
 
 	@:native("libvlc_media_player_set_position")
-	static function media_player_set_position(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, f_pos:Float):Int;
+	static function media_player_set_position(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, f_pos:Single):Int;
 
 	@:native("libvlc_media_player_get_rate")
-	static function media_player_get_rate(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Float;
+	static function media_player_get_rate(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Single;
 
 	@:native("libvlc_media_player_set_rate")
-	static function media_player_set_rate(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, rate:Float):Int;
+	static function media_player_set_rate(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, rate:Single):Int;
 
 	@:native("libvlc_media_player_get_fps")
-	static function media_player_get_fps(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Float;
+	static function media_player_get_fps(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Single;
 
 	@:native("libvlc_media_player_get_length")
 	static function media_player_get_length(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.Int64;

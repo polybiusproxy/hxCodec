@@ -18,12 +18,12 @@ interface IVideoPlayer
 	 * The current position of the video, as a percentage between 0.0 and 1.0.
 	 * Set this value to seek to a specific position in the video.
 	 */
-	public var position(get, set):Float;
+	public var position(get, set):Single;
 
 	/**
 	 * The duration of the video, in seconds.
 	 */
-	public var duration(get, null):Float;
+	public var duration(get, null):Single;
 
 	/**
 	 * Whether or not the video is playing.
@@ -38,7 +38,7 @@ interface IVideoPlayer
 	/**
 	 * Current playback speed.
 	 */
-	public var rate(get, set):Float;
+	public var rate(get, set):Single;
 
 	/**
 	 * Current volume.

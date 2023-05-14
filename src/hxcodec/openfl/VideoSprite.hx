@@ -32,14 +32,14 @@ class VideoSprite extends Sprite implements IVideoPlayer
 	/**
 	 * The current position of the video, as a percentage between 0.0 and 1.0.
 	 */
-	public var position(get, set):Float;
+	public var position(get, set):Single;
 
-	function get_position():Float
+	function get_position():Single
 	{
 		return videoBitmap.position;
 	}
 
-	function set_position(value:Float):Float
+	function set_position(value:Single):Single
 	{
 		videoBitmap.position = value;
 		return value;
@@ -48,9 +48,9 @@ class VideoSprite extends Sprite implements IVideoPlayer
 	/**
 	 * The duration of the video, in seconds.
 	 */
-	public var duration(get, null):Float;
+	public var duration(get, null):Single;
 
-	function get_duration():Float
+	function get_duration():Single
 	{
 		return videoBitmap.duration;
 	}
@@ -84,14 +84,14 @@ class VideoSprite extends Sprite implements IVideoPlayer
 	/**
 	 * Current playback speed.
 	 */
-	public var rate(get, set):Float;
+	public var rate(get, set):Single;
 
-	function get_rate():Float
+	function get_rate():Single
 	{
 		return videoBitmap.rate;
 	}
 
-	function set_rate(value:Float):Float
+	function set_rate(value:Single):Single
 	{
 		videoBitmap.rate = value;
 		return value;

@@ -32,14 +32,14 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	 * The current position of the video, as a percentage between 0.0 and 1.0.
 	 * Set this value to seek to a specific position in the video.
 	 */
-	public var position(get, set):Float;
+	public var position(get, set):Single;
 
-	function get_position():Float
+	function get_position():Single
 	{
 		return video.position;
 	}
 
-	function set_position(value:Float):Float
+	function set_position(value:Single):Single
 	{
 		return video.position = value;
 	}
@@ -47,9 +47,9 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	/**
 	 * The duration of the video, in seconds.
 	 */
-	public var duration(get, null):Float;
+	public var duration(get, null):Single;
 
-	function get_duration():Float
+	function get_duration():Single
 	{
 		return video.duration;
 	}
@@ -82,14 +82,14 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	/**
 	 * Current playback speed.
 	 */
-	public var rate(get, set):Float;
+	public var rate(get, set):Single;
 
-	function get_rate():Float
+	function get_rate():Single
 	{
 		return video.rate;
 	}
 
-	function set_rate(value:Float):Float
+	function set_rate(value:Single):Single
 	{
 		return video.rate = value;
 	}
