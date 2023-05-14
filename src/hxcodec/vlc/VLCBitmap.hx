@@ -571,7 +571,7 @@ class VLCBitmap extends Bitmap
 	{
 		var currentTime:Int = Lib.getTimer();
 
-		if (Math.abs(currentTime - oldTime) > 8.3) // Not the best way but works ig
+		if (Math.abs(currentTime - oldTime) > 16) // Not the best way but works ig
 		{
 			oldTime = currentTime;
 
