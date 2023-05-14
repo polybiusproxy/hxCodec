@@ -23,7 +23,7 @@ interface IVideoPlayer
 	/**
 	 * The duration of the video, in seconds.
 	 */
-	public var duration(get, null):Single;
+	public var duration(get, null):Int;
 
 	/**
 	 * Whether or not the video is playing.

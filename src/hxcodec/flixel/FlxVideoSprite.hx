@@ -45,9 +45,9 @@ class FlxVideoSprite extends FlxSprite implements IVideoPlayer
 	/**
 	 * The duration of the video, in seconds.
 	 */
-	public var duration(get, null):Single;
+	public var duration(get, null):Int;
 
-	function get_duration():Single
+	function get_duration():Int
 	{
 		return videoBitmap.duration;
 	}
