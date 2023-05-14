@@ -11,10 +11,6 @@
 	</files>
 
 	<target id="haxe">
-		<compilerflag value="-I${haxelib:hxCodec}/project/utils" />
-
-		<file name="${haxelib:hxCodec}/project/utils/Dynamic2.cpp" />
-
 		<section if="windows">
 			<section if="HXCPP_M64">
 				<libpath name="${haxelib:hxCodec}/project/vlc/lib/Windows" />
