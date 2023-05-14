@@ -552,40 +552,44 @@ class VLCBitmap extends Bitmap
 		#if HXC_LIBVLC_LOGGING
 		updateLogging();
 		#end
+
 		checkFlags();
 
-		deltaTimeElapsed += deltaTime;
-
-		if (Math.abs(deltaTimeElapsed - oldTime) > 16.6) // 16.(6) means 60 fps in milliseconds...
-			oldTime = deltaTimeElapsed;
-		else
-			return;
-
-		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
+		if (isPlaying)
 		{
-			// Initialize the `texture` if necessary.
-			if (texture == null)
-				texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+			deltaTimeElapsed += deltaTime;
 
-			// Initialize the `bitmapData` if necessary.
-			if (bitmapData == null && texture != null)
-				bitmapData = BitmapData.fromTexture(texture);
+			if (Math.abs(deltaTimeElapsed - oldTime) > 16.6) // 16.(6) means 60 fps in milliseconds...
+				oldTime = deltaTimeElapsed;
+			else
+				return;
 
-			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
-
-			if (texture != null && (buffer != null && buffer.length > 0))
+			if ((videoWidth > 0 && videoHeight > 0) && pixels != null)
 			{
-				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
+				// Initialize the `texture` if necessary.
+				if (texture == null)
+					texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+
+				// Initialize the `bitmapData` if necessary.
+				if (bitmapData == null && texture != null)
+					bitmapData = BitmapData.fromTexture(texture);
+
+				cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
+
+				if (texture != null && (buffer != null && buffer.length > 0))
 				{
-					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
-					width++;
-					width--;
+					var bytes:Bytes = Bytes.ofData(buffer);
+					if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
+					{
+						texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
+						width++;
+						width--;
+					}
+					#if HXC_DEBUG_TRACE
+					else
+						trace("Too small frame, can't render :(");
+					#end
 				}
-				#if HXC_DEBUG_TRACE
-				else
-					trace("Too small frame, can't render :(");
-				#end
 			}
 		}
 	}
