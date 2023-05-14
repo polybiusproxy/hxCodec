@@ -8,7 +8,6 @@ import haxe.io.BytesData;
 import haxe.io.Path;
 import hxcodec.base.Callback;
 import hxcodec.vlc.LibVLC;
-import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.Texture;
@@ -189,8 +188,9 @@ class VLCBitmap extends Bitmap
 	public var onLogMessage(default, null):Callback<String>;
 
 	// Declarations
-	private var oldTime:Int = 0;
 	private var flags:Array<Bool> = [];
+	private var oldTime:Float = 0;
+	private var deltaTimeElapsed:Float = 0;
 	private var buffer:BytesData = [];
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var messages:cpp.StdVectorChar;
@@ -554,6 +554,13 @@ class VLCBitmap extends Bitmap
 		#end
 		checkFlags();
 
+		deltaTimeElapsed += deltaTime;
+
+		if (Math.abs(deltaTimeElapsed - oldTime) > 16.6) // 16.(6) means 60 fps in milliseconds...
+			oldTime = deltaTimeElapsed;
+		else
+			return;
+
 		if (isPlaying && (videoWidth > 0 && videoHeight > 0) && pixels != null)
 		{
 			// Initialize the `texture` if necessary.
@@ -564,7 +571,22 @@ class VLCBitmap extends Bitmap
 			if (bitmapData == null && texture != null)
 				bitmapData = BitmapData.fromTexture(texture);
 
-			renderVideo();
+			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
+
+			if (texture != null && (buffer != null && buffer.length > 0))
+			{
+				var bytes:Bytes = Bytes.ofData(buffer);
+				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
+				{
+					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
+					width++;
+					width--;
+				}
+				#if HXC_DEBUG_TRACE
+				else
+					trace("Too small frame, can't render :(");
+				#end
+			}
 		}
 	}
 
@@ -601,33 +623,6 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Internal Methods
-	@:noCompletion private function renderVideo():Void
-	{
-		var currentTime:Int = Lib.getTimer();
-
-		if (Math.abs(currentTime - oldTime) > 16.6) // Not the best way but works ig
-		{
-			oldTime = currentTime;
-
-			cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
-
-			if (texture != null && (buffer != null && buffer.length > 0))
-			{
-				var bytes:Bytes = Bytes.ofData(buffer);
-				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
-				{
-					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
-					width++;
-					width--;
-				}
-				#if HXC_DEBUG_TRACE
-				else
-					trace("Too small frame, can't render :(");
-				#end
-			}
-		}
-	}
-
 	#if HXC_LIBVLC_LOGGING
 	@:noCompletion private function updateLogging():Void
 	{
