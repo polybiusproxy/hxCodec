@@ -4,7 +4,7 @@ import flixel.FlxG;
 #if FLX_KEYBOARD
 import flixel.input.keyboard.FlxKey;
 #end
-import hxcodec.base.Callback;
+import lime.app.Event;
 import hxcodec.openfl.VideoBitmap;
 import openfl.Lib;
 import openfl.events.Event;

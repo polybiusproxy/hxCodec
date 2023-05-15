@@ -4,7 +4,7 @@ import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import hxcodec.openfl.VideoBitmap;
-import hxcodec.base.Callback;
+import lime.app.Event;
 import hxcodec.base.IVideoPlayer;
 import sys.FileSystem;
 

@@ -3,8 +3,8 @@ package hxcodec.flixel;
 import hxcodec.base.IVideoPlayer;
 import flixel.FlxState;
 import hxcodec.flixel.FlxVideoSprite;
-import hxcodec.base.Callback;
-import hxcodec.base.Callback.Event<Void->Void>;
+import lime.app.Event;
+import lime.app.Event;
 
 /**
  * An FlxState which displays a video.

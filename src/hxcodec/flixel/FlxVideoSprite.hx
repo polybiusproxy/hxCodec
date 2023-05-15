@@ -5,7 +5,7 @@ import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.util.FlxColor;
 import hxcodec.flixel.FlxVideoHandler;
-import hxcodec.base.Callback;
+import lime.app.Event;
 import hxcodec.base.IVideoPlayer;
 
 class FlxVideoSprite extends FlxSprite implements IVideoPlayer
