@@ -71,7 +71,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = _w;
 	self->videoHeight = _h;
 
-    // calling format_setup into haxe aswell
+	// calling format_setup into haxe aswell
 	self->flags[8] = true;
 
 	if (self->pixels != nullptr)
@@ -650,7 +650,7 @@ class VLCBitmap extends Bitmap
 							onBackward.dispatch();
 					case 8:
 						if (buffer != null && buffer.length > 0)
-								buffer = [];
+							buffer = [];
 
 						if (texture != null)
 							texture.dispose();
