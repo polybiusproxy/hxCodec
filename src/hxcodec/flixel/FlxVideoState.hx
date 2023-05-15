@@ -4,7 +4,7 @@ import hxcodec.base.IVideoPlayer;
 import flixel.FlxState;
 import hxcodec.flixel.FlxVideoSprite;
 import hxcodec.base.Callback;
-import hxcodec.base.Callback.CallbackVoid;
+import hxcodec.base.Callback.Event<Void->Void>;
 
 /**
  * An FlxState which displays a video.
@@ -113,9 +113,9 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	 * Callback for when the media player is opening.
 	 * - This callback has no parameters.
 	 */
-	public var onOpening(get, null):CallbackVoid;
+	public var onOpening(get, null):Event<Void->Void>;
 
-	function get_onOpening():CallbackVoid
+	function get_onOpening():Event<Void->Void>
 	{
 		return video.onOpening;
 	}
@@ -124,9 +124,9 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	 * Callback for when the media player begins playing.
 	 * @param path The path of the current media.
 	 */
-	public var onPlaying(get, null):Callback<String>;
+	public var onPlaying(get, null):Event<String->Void>;
 
-	function get_onPlaying():Callback<String>
+	function get_onPlaying():Event<String->Void>
 	{
 		return video.onPlaying;
 	}
@@ -135,9 +135,9 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	 * Callback for when the media player is paused.
 	 * - This callback has no parameters.
 	 */
-	public var onPaused(get, null):CallbackVoid;
+	public var onPaused(get, null):Event<Void->Void>;
 
-	function get_onPaused():CallbackVoid
+	function get_onPaused():Event<Void->Void>
 	{
 		return video.onPaused;
 	}
@@ -146,9 +146,9 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	 * Callback for when the media player is stopped.
 	 * - This callback has no parameters.
 	 */
-	public var onStopped(get, null):CallbackVoid;
+	public var onStopped(get, null):Event<Void->Void>;
 
-	function get_onStopped():CallbackVoid
+	function get_onStopped():Event<Void->Void>
 	{
 		return video.onStopped;
 	}
@@ -157,9 +157,9 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	 * Callback for when the media player is buffering.
 	 * - This callback has no parameters.
 	 */
-	public var onEndReached(get, null):CallbackVoid;
+	public var onEndReached(get, null):Event<Void->Void>;
 
-	function get_onEndReached():CallbackVoid
+	function get_onEndReached():Event<Void->Void>
 	{
 		return video.onEndReached;
 	}
@@ -168,9 +168,9 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	 * Callback for when the media player encounters an error.
 	 * @param error The error message.
 	 */
-	public var onEncounteredError(get, null):Callback<String>;
+	public var onEncounteredError(get, null):Event<String->Void>;
 
-	function get_onEncounteredError():Callback<String>
+	function get_onEncounteredError():Event<String->Void>
 	{
 		return video.onEncounteredError;
 	}
@@ -178,9 +178,9 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	/**
 	 * Callback for when the media player is skipped forward.
 	 */
-	public var onForward(get, null):CallbackVoid;
+	public var onForward(get, null):Event<Void->Void>;
 
-	function get_onForward():CallbackVoid
+	function get_onForward():Event<Void->Void>
 	{
 		return video.onForward;
 	}
@@ -188,9 +188,9 @@ class FlxVideoState extends FlxState implements IVideoPlayer
 	/**
 	 * Callback for when the media player is skipped backward.
 	 */
-	public var onBackward(get, null):CallbackVoid;
+	public var onBackward(get, null):Event<Void->Void>;
 
-	function get_onBackward():CallbackVoid
+	function get_onBackward():Event<Void->Void>
 	{
 		return video.onBackward;
 	}

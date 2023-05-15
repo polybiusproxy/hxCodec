@@ -1,6 +1,6 @@
 package hxcodec.base;
 
-import hxcodec.base.Callback.CallbackVoid;
+import hxcodec.base.Callback.Event<Void->Void>;
 
 /**
  * Lists all the functions that a video playback component must implement.
@@ -51,47 +51,47 @@ interface IVideoPlayer
 	 * Callback for when the media player is opening.
 	 * - This callback has no parameters.
 	 */
-	public var onOpening(get, null):CallbackVoid;
+	public var onOpening(get, null):Event<Void->Void>;
 
 	/**
 	 * Callback for when the media player begins playing.
 	 * @param path The path of the current media.
 	 */
-	public var onPlaying(get, null):Callback<String>;
+	public var onPlaying(get, null):Event<String->Void>;
 
 	/**
 	 * Callback for when the media player is paused.
 	 * - This callback has no parameters.
 	 */
-	public var onPaused(get, null):CallbackVoid;
+	public var onPaused(get, null):Event<Void->Void>;
 
 	/**
 	 * Callback for when the media player is stopped.
 	 * - This callback has no parameters.
 	 */
-	public var onStopped(get, null):CallbackVoid;
+	public var onStopped(get, null):Event<Void->Void>;
 
 	/**
 	 * Callback for when the media player is buffering.
 	 * - This callback has no parameters.
 	 */
-	public var onEndReached(get, null):CallbackVoid;
+	public var onEndReached(get, null):Event<Void->Void>;
 
 	/**
 	 * Callback for when the media player encounters an error.
 	 * @param error The error message.
 	 */
-	public var onEncounteredError(get, null):Callback<String>;
+	public var onEncounteredError(get, null):Event<String->Void>;
 
 	/**
 	 * Callback for when the media player is skipped forward.
 	 */
-	public var onForward(get, null):CallbackVoid;
+	public var onForward(get, null):Event<Void->Void>;
 
 	/**
 	 * Callback for when the media player is skipped backward.
 	 */
-	public var onBackward(get, null):CallbackVoid;
+	public var onBackward(get, null):Event<Void->Void>;
 
 	/**
 	 * Prepare and play a video from a local file path.

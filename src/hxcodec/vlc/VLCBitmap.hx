@@ -178,15 +178,15 @@ class VLCBitmap extends Bitmap
 	public var mute(get, set):Bool;
 
 	// Callbacks
-	public var onOpening(default, null):CallbackVoid;
-	public var onPlaying(default, null):Callback<String>;
-	public var onPaused(default, null):CallbackVoid;
-	public var onStopped(default, null):CallbackVoid;
-	public var onEndReached(default, null):CallbackVoid;
-	public var onEncounteredError(default, null):Callback<String>;
-	public var onForward(default, null):CallbackVoid;
-	public var onBackward(default, null):CallbackVoid;
-	public var onLogMessage(default, null):Callback<String>;
+	public var onOpening(default, null):Event<Void->Void>;
+	public var onPlaying(default, null):Event<String->Void>;
+	public var onPaused(default, null):Event<Void->Void>;
+	public var onStopped(default, null):Event<Void->Void>;
+	public var onEndReached(default, null):Event<Void->Void>;
+	public var onEncounteredError(default, null):Event<String->Void>;
+	public var onForward(default, null):Event<Void->Void>;
+	public var onBackward(default, null):Event<Void->Void>;
+	public var onLogMessage(default, null):Event<String->Void>;
 
 	// Declarations
 	private var flags:Array<Bool> = [];
@@ -209,15 +209,15 @@ class VLCBitmap extends Bitmap
 
 		messages = cpp.StdVectorChar.create();
 
-		onOpening = new CallbackVoid();
-		onPlaying = new Callback<String>();
-		onStopped = new CallbackVoid();
-		onPaused = new CallbackVoid();
-		onEndReached = new CallbackVoid();
-		onEncounteredError = new Callback<String>();
-		onForward = new CallbackVoid();
-		onBackward = new CallbackVoid();
-		onLogMessage = new Callback<String>();
+		onOpening = new Event<Void->Void>();
+		onPlaying = new Event<String->Void>();
+		onStopped = new Event<Void->Void>();
+		onPaused = new Event<Void->Void>();
+		onEndReached = new Event<Void->Void>();
+		onEncounteredError = new Event<String->Void>();
+		onForward = new Event<Void->Void>();
+		onBackward = new Event<Void->Void>();
+		onLogMessage = new Event<String->Void>();
 
 		instance = LibVLC.create(0, null);
 
