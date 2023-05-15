@@ -202,7 +202,7 @@ class VLCBitmap extends Bitmap
 
 	public function new():Void
 	{
-		super(bitmapData, AUTO, true);
+		super(bitmapData, AUTO, false);
 
 		for (event in 0...7)
 			flags[event] = false;
@@ -547,7 +547,7 @@ class VLCBitmap extends Bitmap
 	// Overrides
 	@:noCompletion private override function __enterFrame(deltaTime:Int):Void
 	{
-		if (__bitmapData != null && __bitmapData.image != null && __bitmapData.image.version != __imageVersion)
+		if (__renderable && __bitmapData != null)
 			__setRenderDirty();
 
 		#if HXC_LIBVLC_LOGGING
@@ -581,11 +581,7 @@ class VLCBitmap extends Bitmap
 				{
 					var bytes:Bytes = Bytes.ofData(buffer);
 					if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
-					{
 						texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
-						width++;
-						width--;
-					}
 					#if HXC_DEBUG_TRACE
 					else
 						trace("Too small frame, can't render :(");
@@ -617,14 +613,6 @@ class VLCBitmap extends Bitmap
 			scaleX = 1;
 
 		return value;
-	}
-
-	@:noCompletion private override function set_bitmapData(value:BitmapData):BitmapData
-	{
-		__bitmapData = value;
-		__setRenderDirty();
-		__imageVersion = -1;
-		return __bitmapData;
 	}
 
 	// Internal Methods
