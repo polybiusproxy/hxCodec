@@ -617,7 +617,7 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private function checkFlags():Void
 	{
-		for (i in 0...7)
+		for (i in 0...8)
 		{
 			if (flags[i])
 			{
