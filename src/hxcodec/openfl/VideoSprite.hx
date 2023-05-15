@@ -309,12 +309,12 @@ class VideoSprite extends Sprite implements IVideoPlayer
 
 		if (autoResize && contains(videoBitmap))
 		{
-			if (!maintainAspectRatio && (videoBitmap.videoWidth > 0 && videoBitmap.videoHeight > 0))
+			if (!maintainAspectRatio && videoBitmap.texture != null)
 			{
 				width = Lib.current.stage.stageWidth;
 				height = Lib.current.stage.stageHeight;
 			}
-			else if (videoBitmap.videoWidth > 0 && videoBitmap.videoHeight > 0)
+			else if videoBitmap.texture != null
 			{
 				var aspectRatio:Float = videoBitmap.videoWidth / videoBitmap.videoHeight;
 
