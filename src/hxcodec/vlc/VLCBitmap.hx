@@ -8,6 +8,7 @@ import haxe.io.BytesData;
 import haxe.io.Path;
 import hxcodec.base.Callback;
 import hxcodec.vlc.LibVLC;
+import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.Texture;
@@ -565,7 +566,7 @@ class VLCBitmap extends Bitmap
 			{
 				// Initialize the `texture` if necessary.
 				if (texture == null)
-					texture = stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+					texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
 
 				// Initialize the `bitmapData` if necessary.
 				if (bitmapData == null && texture != null)
