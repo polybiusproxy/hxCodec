@@ -4,7 +4,6 @@ import hxcodec.base.IVideoPlayer;
 import flixel.FlxState;
 import hxcodec.flixel.FlxVideoSprite;
 import lime.app.Event;
-import lime.app.Event;
 
 /**
  * An FlxState which displays a video.
