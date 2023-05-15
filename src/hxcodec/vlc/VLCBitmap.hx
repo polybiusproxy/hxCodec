@@ -75,10 +75,6 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 		free(self->pixels);
 
 	self->pixels = new unsigned char[_w *_h * 4];
-
-	// calling format_setup into haxe aswell
-	self->flags[8] = true;
-
 	return 1;
 }
 
@@ -194,9 +190,9 @@ class VLCBitmap extends Bitmap
 
 	// Declarations
 	private var flags:Array<Bool> = [];
+	private var buffer:BytesData = [];
 	private var oldTime:Float = 0;
 	private var deltaTimeElapsed:Float = 0;
-	private var buffer:BytesData = [];
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var messages:cpp.StdVectorChar;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
@@ -208,7 +204,7 @@ class VLCBitmap extends Bitmap
 	{
 		super(bitmapData, AUTO, false);
 
-		for (event in 0...8)
+		for (event in 0...7)
 			flags[event] = false;
 
 		messages = cpp.StdVectorChar.create();
@@ -256,6 +252,21 @@ class VLCBitmap extends Bitmap
 		}
 
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
+
+		if (buffer != null && buffer.length > 0)
+			buffer = [];
+
+		if (bitmapData != null)
+		{
+			bitmapData.dispose();
+			bitmapData = null;
+		}
+
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), null);
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
@@ -547,6 +558,14 @@ class VLCBitmap extends Bitmap
 
 		if (__renderable && isPlaying)
 		{
+			// Initialize the `texture` if necessary.
+			if (texture == null && (videoWidth > 0 && videoHeight > 0))
+				texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+
+			// Initialize the `bitmapData` if necessary.
+			if (bitmapData == null && texture != null)
+				bitmapData = BitmapData.fromTexture(texture);
+
 			deltaTimeElapsed += deltaTime;
 
 			if (Math.abs(deltaTimeElapsed - oldTime) > 16.6) // 16.(6) means 60 fps in milliseconds...
@@ -617,7 +636,7 @@ class VLCBitmap extends Bitmap
 
 	@:noCompletion private function checkFlags():Void
 	{
-		for (i in 0...8)
+		for (i in 0...flags.length)
 		{
 			if (flags[i])
 			{
@@ -649,19 +668,6 @@ class VLCBitmap extends Bitmap
 					case 7:
 						if (onBackward != null)
 							onBackward.dispatch();
-					case 8:
-						if (buffer != null && buffer.length > 0)
-							buffer = [];
-
-						if (texture != null)
-							texture.dispose();
-
-						texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
-
-						if (bitmapData != null)
-							bitmapData.dispose();
-
-						bitmapData = BitmapData.fromTexture(texture);
 				}
 			}
 		}
