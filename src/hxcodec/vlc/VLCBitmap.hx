@@ -8,7 +8,6 @@ import haxe.io.BytesData;
 import haxe.io.Path;
 import hxcodec.base.Callback;
 import hxcodec.vlc.LibVLC;
-import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.Texture;
@@ -547,16 +546,13 @@ class VLCBitmap extends Bitmap
 	// Overrides
 	@:noCompletion private override function __enterFrame(deltaTime:Int):Void
 	{
-		if (__renderable && __bitmapData != null)
-			__setRenderDirty();
-
 		#if HXC_LIBVLC_LOGGING
 		updateLogging();
 		#end
 
 		checkFlags();
 
-		if (isPlaying)
+		if (isPlaying && __renderable)
 		{
 			deltaTimeElapsed += deltaTime;
 
@@ -569,7 +565,7 @@ class VLCBitmap extends Bitmap
 			{
 				// Initialize the `texture` if necessary.
 				if (texture == null)
-					texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+					texture = stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
 
 				// Initialize the `bitmapData` if necessary.
 				if (bitmapData == null && texture != null)
@@ -581,7 +577,10 @@ class VLCBitmap extends Bitmap
 				{
 					var bytes:Bytes = Bytes.ofData(buffer);
 					if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
+					{
 						texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
+						__setRenderDirty();
+					}
 					#if HXC_DEBUG_TRACE
 					else
 						trace("Too small frame, can't render :(");
