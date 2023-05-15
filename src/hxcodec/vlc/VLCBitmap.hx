@@ -227,8 +227,11 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Methods
-	public function play(?location:String = null, shouldLoop:Bool = false):Int
+	public function play(?location:String, shouldLoop:Bool = false):Int
 	{
+		if (location == null)
+			return;
+
 		if ((location.startsWith('http') || location.startsWith('file')) && location.contains(':'))
 		{
 			#if HXC_DEBUG_TRACE
@@ -553,7 +556,7 @@ class VLCBitmap extends Bitmap
 
 		checkFlags();
 
-		if (isPlaying && __renderable)
+		if (__renderable && isPlaying)
 		{
 			deltaTimeElapsed += deltaTime;
 
