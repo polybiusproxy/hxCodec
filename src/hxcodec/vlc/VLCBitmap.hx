@@ -71,13 +71,14 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = _w;
 	self->videoHeight = _h;
 
-	// calling format_setup into haxe aswell
-	self->flags[8] = true;
-
 	if (self->pixels != nullptr)
 		free(self->pixels);
 
 	self->pixels = new unsigned char[_w *_h * 4];
+
+	// calling format_setup into haxe aswell
+	self->flags[8] = true;
+
 	return 1;
 }
 
@@ -233,7 +234,7 @@ class VLCBitmap extends Bitmap
 	public function play(?location:String, shouldLoop:Bool = false):Int
 	{
 		if (location == null)
-			return;
+			return -1;
 
 		if ((location.startsWith('http') || location.startsWith('file')) && location.contains(':'))
 		{
@@ -553,11 +554,11 @@ class VLCBitmap extends Bitmap
 			else
 				return;
 
-			if ((videoWidth > 0 && videoHeight > 0) && pixels != null)
+			if (texture != null && pixels != null)
 			{
 				cpp.NativeArray.setUnmanagedData(buffer, cast pixels, Std.int(videoWidth * videoHeight * 4));
 
-				if (texture != null && (buffer != null && buffer.length > 0))
+				if (buffer != null && buffer.length > 0)
 				{
 					var bytes:Bytes = Bytes.ofData(buffer);
 					if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
