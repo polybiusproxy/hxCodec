@@ -208,7 +208,7 @@ class VLCBitmap extends Bitmap
 	{
 		super(bitmapData, AUTO, false);
 
-		for (event in 0...7)
+		for (event in 0...8)
 			flags[event] = false;
 
 		messages = cpp.StdVectorChar.create();
