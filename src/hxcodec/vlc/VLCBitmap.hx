@@ -575,7 +575,7 @@ class VLCBitmap extends Bitmap
 				if (bitmapData == null && texture != null)
 					bitmapData = BitmapData.fromTexture(texture);
 
-				cpp.NativeArray.setUnmanagedData(buffer, cpp.ConstPointer.fromRaw(pixels), Std.int(videoWidth * videoHeight * 4));
+				cpp.NativeArray.setUnmanagedData(buffer, cast pixels, Std.int(videoWidth * videoHeight * 4));
 
 				if (texture != null && (buffer != null && buffer.length > 0))
 				{
