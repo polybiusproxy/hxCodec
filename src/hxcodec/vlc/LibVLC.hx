@@ -21,33 +21,6 @@ extern class LibVLC
 	@:native("libvlc_get_compiler")
 	static function get_compiler():cpp.ConstCharStar;
 
-	@:native("libvlc_audio_output_set")
-	static function audio_output_set(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, deviceName:cpp.ConstCharStar):Void;
-
-	@:native("libvlc_audio_get_delay")
-	static function audio_get_delay(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.Int64;
-
-	@:native("libvlc_audio_set_delay")
-	static function audio_set_delay(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_delay:cpp.Int64):Int;
-
-	@:native("libvlc_audio_get_volume")
-	static function audio_get_volume(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
-
-	@:native("libvlc_audio_set_volume")
-	static function audio_set_volume(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_volume:Int):Int;
-
-	@:native("libvlc_audio_get_mute")
-	static function audio_get_mute(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
-
-	@:native("libvlc_audio_set_mute")
-	static function audio_set_mute(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_status:Bool):Int;
-
-	@:native("libvlc_audio_get_channel")
-	static function audio_get_channel(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
-
-	@:native("libvlc_audio_set_channel")
-	static function audio_set_channel(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, channel:Int):Int;
-
 	@:native("libvlc_event_attach")
 	static function event_attach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_Type, f_callback:LibVLC_Callback_T,
 		user_data:cpp.Pointer<cpp.Void>):Int;
@@ -74,6 +47,9 @@ extern class LibVLC
 	@:native("libvlc_media_add_option_flag")
 	static function media_add_option_flag(p_md:cpp.RawPointer<LibVLC_Media_T>, psz_options:cpp.ConstCharStar, i_flags:UInt):Void;
 
+	@:native("libvlc_media_release")
+	static function media_release(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
+
 	@:native("libvlc_media_event_manager")
 	static function media_event_manager(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.RawPointer<LibVLC_EventManager_T>;
 
@@ -82,9 +58,6 @@ extern class LibVLC
 
 	@:native("libvlc_media_get_mrl")
 	static function media_get_mrl(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.ConstCharStar;
-
-	@:native("libvlc_media_release")
-	static function media_release(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
 
 	@:native("libvlc_media_player_play")
 	static function media_player_play(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
@@ -109,9 +82,6 @@ extern class LibVLC
 
 	@:native("libvlc_media_player_release")
 	static function media_player_release(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Void;
-
-	@:native("libvlc_media_player_retain")
-	static function media_player_retain(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Void;
 
 	@:native("libvlc_media_player_event_manager")
 	static function media_player_event_manager(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.RawPointer<LibVLC_EventManager_T>;
@@ -145,6 +115,30 @@ extern class LibVLC
 
 	@:native("libvlc_media_player_new_from_media")
 	static function media_player_new_from_media(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.RawPointer<LibVLC_MediaPlayer_T>;
+
+	@:native("libvlc_audio_get_delay")
+	static function audio_get_delay(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.Int64;
+
+	@:native("libvlc_audio_set_delay")
+	static function audio_set_delay(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_delay:cpp.Int64):Int;
+
+	@:native("libvlc_audio_get_volume")
+	static function audio_get_volume(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
+
+	@:native("libvlc_audio_set_volume")
+	static function audio_set_volume(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_volume:Int):Int;
+
+	@:native("libvlc_audio_get_mute")
+	static function audio_get_mute(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
+
+	@:native("libvlc_audio_set_mute")
+	static function audio_set_mute(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, i_status:Bool):Int;
+
+	@:native("libvlc_audio_get_channel")
+	static function audio_get_channel(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
+
+	@:native("libvlc_audio_set_channel")
+	static function audio_set_channel(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, channel:Int):Int;
 
 	@:native("libvlc_video_set_format_callbacks")
 	static function video_set_format_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, setup:LibVLC_Video_Format_CB, cleanup:LibVLC_Video_Cleanup_CB):Void;
