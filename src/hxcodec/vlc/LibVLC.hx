@@ -57,7 +57,7 @@ extern class LibVLC
 	static function media_get_duration(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.Int64;
 
 	@:native("libvlc_media_get_mrl")
-	static function media_get_mrl(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.ConstCharStar;
+	static function media_get_mrl(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.CharStar;
 
 	@:native("libvlc_media_player_play")
 	static function media_player_play(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;

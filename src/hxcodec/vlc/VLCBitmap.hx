@@ -71,6 +71,9 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = _w;
 	self->videoHeight = _h;
 
+    // calling format_setup into haxe aswell
+	self->flags[8] = true;
+
 	if (self->pixels != nullptr)
 		free(self->pixels);
 
@@ -168,10 +171,10 @@ class VLCBitmap extends Bitmap
 	public var duration(get, never):Int;
 	public var mrl(get, never):String;
 	public var volume(get, set):Int;
-	public var channel(get, set):Int;
+	public var channel(get, set):LibVLC_Audio_Output_Channel;
 	public var delay(get, set):Int;
 	public var rate(get, set):Single;
-	public var role(get, set):Int;
+	public var role(get, set):LibVLC_Media_Player_Role;
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 	public var canPause(get, never):Bool;
@@ -252,21 +255,6 @@ class VLCBitmap extends Bitmap
 		}
 
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
-
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
-
-		if (bitmapData != null)
-		{
-			bitmapData.dispose();
-			bitmapData = null;
-		}
-
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), null);
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
@@ -358,7 +346,7 @@ class VLCBitmap extends Bitmap
 			#end
 		}
 
-		return 0;
+		return -1;
 	}
 
 	@:noCompletion private function set_time(value:Int):Int
@@ -374,7 +362,7 @@ class VLCBitmap extends Bitmap
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_position(mediaPlayer);
 
-		return 0;
+		return -1;
 	}
 
 	@:noCompletion private function set_position(value:Single):Single
@@ -396,7 +384,7 @@ class VLCBitmap extends Bitmap
 			#end
 		}
 
-		return 0;
+		return -1;
 	}
 
 	@:noCompletion private function get_duration():Int
@@ -410,7 +398,7 @@ class VLCBitmap extends Bitmap
 			#end
 		}
 
-		return 0;
+		return -1;
 	}
 
 	@:noCompletion private function get_mrl():String
@@ -426,7 +414,7 @@ class VLCBitmap extends Bitmap
 		if (mediaPlayer != null)
 			return LibVLC.audio_get_volume(mediaPlayer);
 
-		return 0;
+		return -1;
 	}
 
 	@:noCompletion private function set_volume(value:Int):Int
@@ -437,15 +425,15 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_channel():Int
+	@:noCompletion private function get_channel():LibVLC_Audio_Output_Channel
 	{
 		if (mediaPlayer != null)
 			return LibVLC.audio_get_channel(mediaPlayer);
 
-		return 0;
+		return -1;
 	}
 
-	@:noCompletion private function set_channel(value:Int):Int
+	@:noCompletion private function set_channel(value:LibVLC_Audio_Output_Channel):LibVLC_Audio_Output_Channel
 	{
 		if (mediaPlayer != null)
 			LibVLC.audio_set_channel(mediaPlayer, value);
@@ -464,7 +452,7 @@ class VLCBitmap extends Bitmap
 			#end
 		}
 
-		return 0;
+		return -1;
 	}
 
 	@:noCompletion private function set_delay(value:Int):Int
@@ -480,7 +468,7 @@ class VLCBitmap extends Bitmap
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_rate(mediaPlayer);
 
-		return 0;
+		return -1;
 	}
 
 	@:noCompletion private function set_rate(value:Single):Single
@@ -491,15 +479,15 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_role():Int
+	@:noCompletion private function get_role():LibVLC_Media_Player_Role
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_role(mediaPlayer);
 
-		return 0;
+		return -1;
 	}
 
-	@:noCompletion private function set_role(value:Int):Int
+	@:noCompletion private function set_role(value:LibVLC_Media_Player_Role):LibVLC_Media_Player_Role
 	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_role(mediaPlayer, value);
@@ -567,14 +555,6 @@ class VLCBitmap extends Bitmap
 
 			if ((videoWidth > 0 && videoHeight > 0) && pixels != null)
 			{
-				// Initialize the `texture` if necessary.
-				if (texture == null)
-					texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
-
-				// Initialize the `bitmapData` if necessary.
-				if (bitmapData == null && texture != null)
-					bitmapData = BitmapData.fromTexture(texture);
-
 				cpp.NativeArray.setUnmanagedData(buffer, cast pixels, Std.int(videoWidth * videoHeight * 4));
 
 				if (texture != null && (buffer != null && buffer.length > 0))
@@ -668,6 +648,19 @@ class VLCBitmap extends Bitmap
 					case 7:
 						if (onBackward != null)
 							onBackward.dispatch();
+					case 8:
+						if (buffer != null && buffer.length > 0)
+								buffer = [];
+
+						if (texture != null)
+							texture.dispose();
+
+						texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+
+						if (bitmapData != null)
+							bitmapData.dispose();
+
+						bitmapData = BitmapData.fromTexture(texture);
 				}
 			}
 		}
