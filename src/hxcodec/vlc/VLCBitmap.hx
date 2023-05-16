@@ -568,7 +568,7 @@ class VLCBitmap extends Bitmap
 
 			deltaTimeElapsed += deltaTime;
 
-			if (Math.abs(deltaTimeElapsed - oldTime) > 16.6) // 16.(6) means 60 fps in milliseconds...
+			if (Math.abs(deltaTimeElapsed - oldTime) > 8.3) // 13.(3) means 60 fps in milliseconds...
 				oldTime = deltaTimeElapsed;
 			else
 				return;
