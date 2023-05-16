@@ -219,7 +219,14 @@ class VLCBitmap extends Bitmap
 		onBackward = new Event<Void->Void>();
 		onLogMessage = new Event<String->Void>();
 
-		instance = LibVLC.create(0, null);
+		final argv:Array<cpp.ConstCharStar> = [
+			#if HXC_LIBVLC_VERBOSE
+			"--verbose=2",
+			#end
+			"--reset-plugins-cache"
+		];
+
+		instance = LibVLC.create(argv.length, cast cpp.NativeArray.address(argv, 0).raw);
 
 		#if HXC_LIBVLC_LOGGING
 		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('this'));
