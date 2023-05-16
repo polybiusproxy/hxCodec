@@ -183,7 +183,7 @@ class FlxVideoHandler extends VideoBitmap
 				width = FlxG.stage.stageWidth;
 				height = FlxG.stage.stageHeight;
 			}
-			else if texture != null
+			else if (texture != null)
 			{
 				var aspectRatio:Float = useScaleBy == GAME ? (FlxG.width / FlxG.height) : (videoWidth / videoHeight);
 
