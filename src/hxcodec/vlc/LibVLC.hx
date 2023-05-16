@@ -23,17 +23,17 @@ extern class LibVLC
 
 	@:native("libvlc_event_attach")
 	static function event_attach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_Type, f_callback:LibVLC_Callback_T,
-		user_data:cpp.Pointer<cpp.Void>):Int;
+		user_data:cpp.RawPointer<cpp.Void>):Int;
 
 	@:native("libvlc_event_detach")
 	static function event_detach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_Type, f_callback:LibVLC_Callback_T,
-		user_data:cpp.Pointer<cpp.Void>):Void;
+		user_data:cpp.RawPointer<cpp.Void>):Void;
 
 	@:native('libvlc_log_unset')
 	static function log_unset(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
 
 	@:native('libvlc_log_set')
-	static function log_set(p_instance:cpp.RawPointer<LibVLC_Instance_T>, cb:LibVLC_Log_CB, data:cpp.Pointer<cpp.Void>):Void;
+	static function log_set(p_instance:cpp.RawPointer<LibVLC_Instance_T>, cb:LibVLC_Log_CB, data:cpp.RawPointer<cpp.Void>):Void;
 
 	@:native("libvlc_media_new_path")
 	static function media_new_path(p_instance:cpp.RawPointer<LibVLC_Instance_T>, path:cpp.ConstCharStar):cpp.RawPointer<LibVLC_Media_T>;
@@ -145,7 +145,7 @@ extern class LibVLC
 
 	@:native("libvlc_video_set_callbacks")
 	static function video_set_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, lock:LibVLC_Video_Lock_CB, unlock:LibVLC_Video_Unlock_CB,
-		display:LibVLC_Video_Display_CB, opaque:cpp.Pointer<cpp.Void>):Void;
+		display:LibVLC_Video_Display_CB, opaque:cpp.RawPointer<cpp.Void>):Void;
 }
 
 typedef LibVLC_Callback_T = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC_Event_T>, p_data:cpp.RawPointer<cpp.Void>) -> Void>;
