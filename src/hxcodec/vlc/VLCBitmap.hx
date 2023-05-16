@@ -192,9 +192,9 @@ class VLCBitmap extends Bitmap
 	private var flags:Array<Bool> = [];
 	private var buffer:BytesData = [];
 	private var oldTime:Float = 0;
-	private var deltaTimeElapsed:Float = 0;
-	private var pixels:cpp.RawPointer<cpp.UInt8>;
+	private var deltaTime:Float = 0;
 	private var messages:cpp.StdVectorChar;
+	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
@@ -548,7 +548,7 @@ class VLCBitmap extends Bitmap
 	}
 
 	// Overrides
-	@:noCompletion private override function __enterFrame(deltaTime:Int):Void
+	@:noCompletion private override function __enterFrame(elapsed:Int):Void
 	{
 		#if HXC_LIBVLC_LOGGING
 		updateLogging();
@@ -566,10 +566,10 @@ class VLCBitmap extends Bitmap
 			if (bitmapData == null && texture != null)
 				bitmapData = BitmapData.fromTexture(texture);
 
-			deltaTimeElapsed += deltaTime;
+			deltaTime += elapsed;
 
-			if (Math.abs(deltaTimeElapsed - oldTime) > 8.3) // 8.(3) means 120 fps in milliseconds...
-				oldTime = deltaTimeElapsed;
+			if (Math.abs(deltaTime - oldTime) > 8.3) // 8.(3) means 120 fps in milliseconds...
+				oldTime = deltaTime;
 			else
 				return;
 
