@@ -168,10 +168,10 @@ class VLCBitmap extends Bitmap
 	public var duration(get, never):Int;
 	public var mrl(get, never):String;
 	public var volume(get, set):Int;
-	public var channel(get, set):LibVLC_Audio_Output_Channel;
+	public var channel(get, set):Int;
 	public var delay(get, set):Int;
 	public var rate(get, set):Single;
-	public var role(get, set):LibVLC_Media_Player_Role;
+	public var role(get, set):Int;
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 	public var canPause(get, never):Bool;
@@ -437,7 +437,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_channel():LibVLC_Audio_Output_Channel
+	@:noCompletion private function get_channel():Int
 	{
 		if (mediaPlayer != null)
 			return LibVLC.audio_get_channel(mediaPlayer);
@@ -445,7 +445,7 @@ class VLCBitmap extends Bitmap
 		return -1;
 	}
 
-	@:noCompletion private function set_channel(value:LibVLC_Audio_Output_Channel):LibVLC_Audio_Output_Channel
+	@:noCompletion private function set_channel(value:Int):Int
 	{
 		if (mediaPlayer != null)
 			LibVLC.audio_set_channel(mediaPlayer, value);
@@ -491,7 +491,7 @@ class VLCBitmap extends Bitmap
 		return value;
 	}
 
-	@:noCompletion private function get_role():LibVLC_Media_Player_Role
+	@:noCompletion private function get_role():Int
 	{
 		if (mediaPlayer != null)
 			return LibVLC.media_player_get_role(mediaPlayer);
@@ -499,7 +499,7 @@ class VLCBitmap extends Bitmap
 		return -1;
 	}
 
-	@:noCompletion private function set_role(value:LibVLC_Media_Player_Role):LibVLC_Media_Player_Role
+	@:noCompletion private function set_role(value:Int):Int
 	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_role(mediaPlayer, value);
