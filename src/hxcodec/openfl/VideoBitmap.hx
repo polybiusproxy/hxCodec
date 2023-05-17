@@ -148,7 +148,7 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 	logMsg.append(" ] ");
 	logMsg.append(std::string(msg));
 
-	self->messages.push_back(log.c_str());
+	self->messages.push_back(logMsg.c_str());
 }')
 class VideoBitmap extends Bitmap
 {
