@@ -219,8 +219,7 @@ class VLCBitmap extends Bitmap
 		onBackward = new Event<Void->Void>();
 		onLogMessage = new Event<String->Void>();
 
-		// TODO: Add this --reset-plugins-cache to fix random crashes
-		instance = LibVLC.create(0, null);
+		instance = LibVLC.create(1, untyped __cpp__('reinterpret_cast<const char *>({ "--reset-plugins-cache" })'));
 
 		#if HXC_LIBVLC_LOGGING
 		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('this'));
