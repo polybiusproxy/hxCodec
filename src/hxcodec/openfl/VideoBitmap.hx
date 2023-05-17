@@ -220,9 +220,13 @@ class VideoBitmap extends Bitmap
 		onBackward = new Event<Void->Void>();
 		onLogMessage = new Event<String->Void>();
 
+		#if windows
 		untyped __cpp__('char const *argv[] = { "--reset-plugins-cache" }');
 
 		instance = LibVLC.create(1, untyped __cpp__('argv'));
+		#else
+		instance = LibVLC.create(0, null);
+		#end
 
 		#if HXC_LIBVLC_LOGGING
 		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('this'));
