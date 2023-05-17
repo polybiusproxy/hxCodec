@@ -191,7 +191,6 @@ class VideoBitmap extends Bitmap
 
 	// Declarations
 	private var flags:Array<Bool> = [];
-	private var buffer:BytesData = [];
 	private var oldTime:Float = 0;
 	private var deltaTime:Float = 0;
 	private var messages:cpp.StdVectorChar;
@@ -260,9 +259,6 @@ class VideoBitmap extends Bitmap
 
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
-
 		if (bitmapData != null)
 		{
 			bitmapData.dispose();
@@ -310,9 +306,6 @@ class VideoBitmap extends Bitmap
 		detachEvents();
 
 		LibVLC.media_player_stop(mediaPlayer);
-
-		if (buffer != null && buffer.length > 0)
-			buffer = [];
 
 		if (bitmapData != null)
 		{
@@ -582,14 +575,9 @@ class VideoBitmap extends Bitmap
 
 			if (texture != null && pixels != null)
 			{
-				cpp.NativeArray.setUnmanagedData(buffer, cast pixels, Std.int(videoWidth * videoHeight * 4));
-
-				if (buffer != null && buffer.length > 0)
-				{
-					var bytes:Bytes = Bytes.ofData(buffer);
-					if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
-						texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
-				}
+				var bytes:Bytes = Bytes.ofData(cpp.Pointer.fromRaw(pixels).toUnmanagedArray(Std.int(videoWidth * videoHeight * 4)));
+				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
+					texture.uploadFromByteArray(ByteArray.fromBytes(bytes), 0);
 
 				__setRenderDirty();
 			}
