@@ -7,6 +7,7 @@ import haxe.io.Bytes;
 import haxe.io.BytesData;
 import haxe.io.Path;
 import hxcodec.vlc.LibVLC;
+import hxcodec.vlc.Types;
 import lime.app.Event;
 import openfl.Lib;
 import openfl.display.Bitmap;
