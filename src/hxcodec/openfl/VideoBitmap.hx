@@ -127,35 +127,28 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 	if (vasprintf(&msg, fmt, args) < 0)
 		return;
 
-	std::string log = "[ ";
+	std::string logMsg = "[ ";
 
 	switch (level)
 	{
 		case LIBVLC_DEBUG:
-			log.append("DEBUG");
+			logMsg.append("DEBUG");
 			break;
 		case LIBVLC_NOTICE:
-			log.append("INFO");
+			logMsg.append("INFO");
 			break;
 		case LIBVLC_WARNING:
-			log.append("WARNING");
+			logMsg.append("WARNING");
 			break;
 		case LIBVLC_ERROR:
-			log.append("ERROR");
+			logMsg.append("ERROR");
 			break;
 	}
 
-	log.append(" ] ");
-	log.append(std::string(msg));
+	logMsg.append(" ] ");
+	logMsg.append(std::string(msg));
 
-	size_t len = log.length();
-
-	// Copy the log to a char array.
-	char *logMsg = new char[len + 1];
-	memcpy(logMsg, log.c_str(), len);
-	logMsg[len] = \'\\0\';
-
-	self->messages.push_back(logMsg);
+	self->messages.push_back(log.c_str());
 }')
 class VideoBitmap extends Bitmap
 {
@@ -193,7 +186,7 @@ class VideoBitmap extends Bitmap
 	private var flags:Array<Bool> = [];
 	private var oldTime:Float = 0;
 	private var deltaTime:Float = 0;
-	private var messages:cpp.StdVectorChar;
+	private var messages:cpp.StdVectorConstChar;
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
@@ -207,7 +200,7 @@ class VideoBitmap extends Bitmap
 		for (event in 0...7)
 			flags[event] = false;
 
-		messages = cpp.StdVectorChar.create();
+		messages = cpp.StdVectorConstChar.create();
 
 		onOpening = new Event<Void->Void>();
 		onPlaying = new Event<String->Void>();
@@ -235,7 +228,7 @@ class VideoBitmap extends Bitmap
 	// Methods
 	public function play(?location:String, shouldLoop:Bool = false):Int
 	{
-		if (location == null)
+		if (location == null || (location != null && !location.contains('.')))
 			return -1;
 
 		if ((location.startsWith('http') || location.startsWith('file')) && location.contains(':'))
@@ -283,6 +276,12 @@ class VideoBitmap extends Bitmap
 		return LibVLC.media_player_play(mediaPlayer);
 	}
 
+	public function stop():Void
+	{
+		if (mediaPlayer != null)
+			LibVLC.media_player_stop(mediaPlayer);
+	}
+
 	public function pause():Void
 	{
 		if (mediaPlayer != null)
@@ -303,6 +302,9 @@ class VideoBitmap extends Bitmap
 
 	public function dispose():Void
 	{
+		if (mediaPlayer == null)
+			return;
+
 		detachEvents();
 
 		LibVLC.media_player_stop(mediaPlayer);
@@ -330,6 +332,9 @@ class VideoBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 		onLogMessage = null;
+
+		videoWidth = 0;
+		videoHeight = 0;
 
 		#if HXC_LIBVLC_LOGGING
 		LibVLC.log_unset(instance);
@@ -674,6 +679,9 @@ class VideoBitmap extends Bitmap
 
 	@:noCompletion private function attachEvents():Void
 	{
+		if (mediaPlayer == null)
+			return;
+
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
 
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
@@ -688,6 +696,9 @@ class VideoBitmap extends Bitmap
 
 	@:noCompletion private function detachEvents():Void
 	{
+		if (eventManager == null)
+			return;
+
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
