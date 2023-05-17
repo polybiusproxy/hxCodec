@@ -302,7 +302,7 @@ class VideoBitmap extends Bitmap
 
 	public function dispose():Void
 	{
-		if (mediaPlayer == null)
+		if (mediaPlayer == null || instance == null)
 			return;
 
 		detachEvents();
