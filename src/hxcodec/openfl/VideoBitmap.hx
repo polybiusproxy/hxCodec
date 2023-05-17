@@ -186,7 +186,7 @@ class VideoBitmap extends Bitmap
 	private var flags:Array<Bool> = [];
 	private var oldTime:Float = 0;
 	private var deltaTime:Float = 0;
-	private var messages:cpp.StdVectorConstChar;
+	private var messages:cpp.StdVectorConstCharStar;
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
@@ -200,7 +200,7 @@ class VideoBitmap extends Bitmap
 		for (event in 0...7)
 			flags[event] = false;
 
-		messages = cpp.StdVectorConstChar.create();
+		messages = cpp.StdVectorConstCharStar.create();
 
 		onOpening = new Event<Void->Void>();
 		onPlaying = new Event<String->Void>();
