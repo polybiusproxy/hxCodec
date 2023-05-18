@@ -18,6 +18,10 @@ using StringTools;
  *
  * This class lets you to use LibVLC externs on a separated window which can display a video.
  */
+#if windows
+@:headerInclude('windows.h')
+@:headerInclude('winuser.h')
+#end
 @:headerInclude('stdio.h')
 @:headerInclude('stdlib.h')
 @:headerInclude('stdarg.h')
@@ -215,6 +219,10 @@ class VideoPlayer
 		LibVLC.media_add_option(mediaItem, shouldLoop ? "input-repeat=65535" : "input-repeat=0");
 
 		LibVLC.media_release(mediaItem);
+
+		#if windows
+		LibVLC.media_player_set_hwnd(mediaPlayer, untyped __cpp__('GetActiveWindow()'));
+		#end
 
 		return LibVLC.media_player_play(mediaPlayer);
 	}
