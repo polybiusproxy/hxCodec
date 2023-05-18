@@ -561,7 +561,7 @@ class VideoBitmap extends Bitmap
 
 		checkFlags();
 
-		if (__renderable && isPlaying)
+		if (isPlaying)
 		{
 			// Initialize the `texture` if necessary.
 			if (texture == null && (videoWidth > 0 && videoHeight > 0))
