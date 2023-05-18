@@ -65,17 +65,17 @@ class PlayState extends FlxState
 
 		if (FlxG.keys.justPressed.J)
 		{
-			video.playbackRate = 0.5;
+			video.rate = 0.5;
 		}
 
 		if (FlxG.keys.justPressed.K)
 		{
-			video.playbackRate = 1.0;
+			video.rate = 1.0;
 		}
 
 		if (FlxG.keys.justPressed.L)
 		{
-			video.playbackRate = 2.0;
+			video.rate = 2.0;
 		}
 	}
 }

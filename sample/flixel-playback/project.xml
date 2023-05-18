@@ -5,7 +5,7 @@
 
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="hxCodec Sample (Basic)" file="Test" main="Main" version="0.0.1"
+	<app title="hxCodec Sample (Flixel Playback)" file="Test" main="Main" version="0.0.1"
 		company="PolybiusProxy" />
 
 	<!--The

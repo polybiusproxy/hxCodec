@@ -44,11 +44,11 @@ class Main extends Sprite
 			case 72: // H
 				video.position = 0.0;
 			case 74: // J
-				video.playbackRate = 0.5;
+				video.rate = 0.5;
 			case 75: // K
-				video.playbackRate = 1.0;
+				video.rate = 1.0;
 			case 76: // L
-				video.playbackRate = 2.0;
+				video.rate = 2.0;
 		}
 	}
 }
