@@ -117,6 +117,31 @@ extern class LibVLC
 	@:native("libvlc_media_player_new_from_media")
 	static function media_player_new_from_media(p_md:cpp.RawPointer<LibVLC_Media_T>):cpp.RawPointer<LibVLC_MediaPlayer_T>;
 
+	@:native("libvlc_video_set_format_callbacks")
+	static function video_set_format_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, setup:LibVLC_Video_Format_CB, cleanup:LibVLC_Video_Cleanup_CB):Void;
+
+	@:native("libvlc_video_set_callbacks")
+	static function video_set_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, lock:LibVLC_Video_Lock_CB, unlock:LibVLC_Video_Unlock_CB,
+		display:LibVLC_Video_Display_CB, opaque:cpp.RawPointer<cpp.Void>):Void;
+
+	@:native('libvlc_media_player_set_nsobject')
+	static function media_player_set_nsobject(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, drawable:cpp.RawPointer<cpp.Void>):Void;
+
+	@:native('libvlc_media_player_get_nsobject')
+	static function media_player_get_nsobject(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.RawPointer<cpp.Void>;
+
+	@:native('libvlc_media_player_set_hwnd')
+	static function media_player_set_hwnd(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, drawable:cpp.RawPointer<cpp.Void>):Void;
+
+	@:native('libvlc_media_player_get_hwnd')
+	static function media_player_get_hwnd(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.RawPointer<cpp.Void>;
+
+	@:native('libvlc_media_player_set_android_context')
+	static function media_player_set_android_context(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, p_awindow_handler:cpp.RawPointer<cpp.Void>):Void;
+
+	@:native('libvlc_media_player_set_evas_object')
+	static function media_player_set_evas_object(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, p_evas_object:cpp.RawPointer<cpp.Void>):Int;
+
 	@:native("libvlc_audio_get_delay")
 	static function audio_get_delay(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.Int64;
 
@@ -140,11 +165,4 @@ extern class LibVLC
 
 	@:native("libvlc_audio_set_channel")
 	static function audio_set_channel(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, channel:Int):Int;
-
-	@:native("libvlc_video_set_format_callbacks")
-	static function video_set_format_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, setup:LibVLC_Video_Format_CB, cleanup:LibVLC_Video_Cleanup_CB):Void;
-
-	@:native("libvlc_video_set_callbacks")
-	static function video_set_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, lock:LibVLC_Video_Lock_CB, unlock:LibVLC_Video_Unlock_CB,
-		display:LibVLC_Video_Display_CB, opaque:cpp.RawPointer<cpp.Void>):Void;
 }
