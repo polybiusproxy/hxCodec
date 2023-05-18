@@ -250,6 +250,15 @@ class VideoPlayer
 			LibVLC.media_player_pause(mediaPlayer);
 	}
 
+	public function update():Void
+	{
+		#if HXC_LIBVLC_LOGGING
+		updateLogging();
+		#end
+
+		checkFlags();
+	}
+
 	public function dispose():Void
 	{
 		if (mediaPlayer == null || instance == null)
@@ -484,16 +493,6 @@ class VideoPlayer
 			LibVLC.audio_set_mute(mediaPlayer, value);
 
 		return value;
-	}
-
-	// Overrides
-	@:noCompletion private function __enterFrame(elapsed:Int):Void
-	{
-		#if HXC_LIBVLC_LOGGING
-		updateLogging();
-		#end
-
-		checkFlags();
 	}
 
 	// Internal Methods
