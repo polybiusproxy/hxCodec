@@ -35,12 +35,12 @@ jobs:
 
       - name: Building Windows
         if: matrix.os == 'windows-latest'
-        run: cd sample && haxelib run lime build windows -debug
+        run: cd sample/basic && haxelib run lime build windows -debug
 
       - name: Building Mac
         if: matrix.os == 'macos-latest'
-        run: cd sample && haxelib run lime build mac -debug
+        run: cd sample/basic && haxelib run lime build mac -debug
 
       - name: Building Linux
         if: matrix.os == 'ubuntu-latest'
-        run: cd sample && haxelib run lime build linux -debug
+        run: cd sample/basic && haxelib run lime build linux -debug
