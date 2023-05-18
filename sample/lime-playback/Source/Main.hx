@@ -12,7 +12,7 @@ class Main extends Application
 
 		player = new VideoPlayer();
 		player.onEndReached.add(player.dispose);
-		player.play(Sys.getCwd() + 'assets/video.mp4')
+		player.play(Sys.getCwd() + 'assets/video.mp4');
 
 		onUpdate.add(function(elapsed:Int)
 		{
