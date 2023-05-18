@@ -31,14 +31,11 @@ Add this code in the Project.xml file:
 <haxelib name="hxCodec" if="desktop || android" />
 ```
 
-**OPTIONAL: If you want debug traces in your console when compiling in debug mode, add this:**
+**OPTIONAL: Some defines you can add to your project**
 ```xml
 <!-- Show debug traces for hxCodec -->
 <haxedef name="HXC_DEBUG_TRACE" if="debug" />
-```
 
-**OPTIONAL: If you want LibVLC to send logs on your console when compiling in debug mode, add this:**
-```xml
 <!-- LibVLC Logging for hxCodec -->
 <haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
 ```
