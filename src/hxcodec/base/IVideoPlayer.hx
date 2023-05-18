@@ -1,6 +1,6 @@
 package hxcodec.base;
 
-import hxcodec.base.Callback.Event<Void->Void>;
+import lime.app.Event;
 
 /**
  * Lists all the functions that a video playback component must implement.
