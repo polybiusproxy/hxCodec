@@ -30,6 +30,7 @@ class PlayState extends FlxState
 		if (FlxG.keys.justPressed.Q)
 		{
 			video = new FlxVideoHandler();
+			video.canUseAutoResize = false;
 			video.playVideo('assets/video.mp4');
 		}
 

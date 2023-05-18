@@ -3,7 +3,6 @@ package hxcodec.vlc;
 #if (!cpp && macro)
 #error "LibVLC supports only C++ target platforms."
 #end
-
 class Types {}
 
 @:buildXml('<include name="${haxelib:hxCodec}/project/Build.xml" />')
@@ -96,13 +95,10 @@ enum abstract LibVLC_Event_Type(Int) from Int to Int
 	final LibVLC_MediaListPlayerPlayed = 1024;
 	final LibVLC_MediaListPlayerNextItemSet = 1025;
 	final LibVLC_MediaListPlayerStopped = 1026;
-
 	/* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_start(). */
 	final LibVLC_MediaDiscovererStarted = 1280;
-
 	/* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_stop(). */
 	final LibVLC_MediaDiscovererEnded = 1281;
-
 	final LibVLC_RendererDiscovererItemAdded = 1282;
 	final LibVLC_RendererDiscovererItemDeleted = 1283;
 	final LibVLC_VlmMediaAdded = 1536;
