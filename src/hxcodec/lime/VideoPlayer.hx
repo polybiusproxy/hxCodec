@@ -19,6 +19,7 @@ using StringTools;
  * This class lets you to use LibVLC externs on a separated window which can display a video.
  */
 #if windows
+@:headerInclude('windows.h')
 @:headerInclude('winuser.h')
 #end
 @:headerInclude('stdio.h')

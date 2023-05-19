@@ -1,5 +1,6 @@
 package;
 
+import lime.app.Application;
 import hxcodec.lime.VideoPlayer;
 
 class Main extends Application
@@ -16,7 +17,7 @@ class Main extends Application
 
 		onUpdate.add(function(elapsed:Int)
 		{
-			hxcodec.update();
+			player.update();
 		});
 	}
 }
