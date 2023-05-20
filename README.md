@@ -42,13 +42,9 @@ Add this code in the Project.xml file:
 
 --------------------------
 
-## Playing videos
+### Usage Example
 
-You can play videos in just 2 lines of code:
-```hx
-var video:hxcodec.flixel.VideoHandler = new hxcodec.flixel.VideoHandler();
-video.playVideo('assets/video.mp4');
-```
+Check out the [Samples Folder](samples/) for examples on how to use this library.
 
 --------------------------
 
