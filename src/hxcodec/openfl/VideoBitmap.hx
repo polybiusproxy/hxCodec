@@ -71,13 +71,8 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 
 	self->videoWidth = _w;
 	self->videoHeight = _h;
-
-	self->flags[8] = true;
-
-	if (self->pixels != nullptr)
-		free(self->pixels);
-
 	self->pixels = new unsigned char[_w *_h * 4];
+
 	return 1;
 }
 
@@ -183,7 +178,6 @@ class VideoBitmap extends Bitmap
 	public var onForward(default, null):Event<Void->Void>;
 	public var onBackward(default, null):Event<Void->Void>;
 	public var onLogMessage(default, null):Event<String->Void>;
-	public var onTextureSetup(default, null):Event<Void->Void>;
 
 	// Declarations
 	private var flags:Array<Bool> = [];
@@ -198,9 +192,9 @@ class VideoBitmap extends Bitmap
 
 	public function new():Void
 	{
-		super(bitmapData, AUTO, false);
+		super(bitmapData, AUTO, true);
 
-		for (event in 0...8)
+		for (event in 0...7)
 			flags[event] = false;
 
 		messages = cpp.StdVectorConstCharStar.create();
@@ -214,7 +208,6 @@ class VideoBitmap extends Bitmap
 		onForward = new Event<Void->Void>();
 		onBackward = new Event<Void->Void>();
 		onLogMessage = new Event<String->Void>();
-		onTextureSetup = new Event<Void->Void>();
 
 		#if windows
 		untyped __cpp__('char const *argv[] = { "--reset-plugins-cache" }');
@@ -261,13 +254,24 @@ class VideoBitmap extends Bitmap
 
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
+		if (bitmapData != null)
+		{
+			bitmapData.dispose();
+			bitmapData = null;
+		}
+
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
+
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), null);
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
 
 		attachEvents();
 
 		LibVLC.media_add_option(mediaItem, shouldLoop ? "input-repeat=65535" : "input-repeat=0");
-
 		LibVLC.media_release(mediaItem);
 
 		return LibVLC.media_player_play(mediaPlayer);
@@ -307,7 +311,7 @@ class VideoBitmap extends Bitmap
 		LibVLC.media_player_stop(mediaPlayer);
 
 		if (bitmapData != null)
-		{
+		{#
 			bitmapData.dispose();
 			bitmapData = null;
 		}
@@ -329,10 +333,10 @@ class VideoBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 		onLogMessage = null;
-		onTextureSetup = null;
 
 		videoWidth = 0;
 		videoHeight = 0;
+		pixels = null;
 
 		#if HXC_LIBVLC_LOGGING
 		LibVLC.log_unset(instance);
@@ -561,6 +565,18 @@ class VideoBitmap extends Bitmap
 
 		if (isPlaying)
 		{
+			// Initialize the `texture` if necessary.
+			if (texture == null && (videoWidth > 0 && videoHeight > 0))
+				texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+
+			// Initialize the `bitmapData` if necessary.
+			if (bitmapData == null && texture != null)
+				bitmapData = BitmapData.fromTexture(texture);
+
+			// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
+			if (!smoothing)
+				smoothing = true;
+
 			deltaTime += elapsed;
 
 			if (Math.abs(deltaTime - oldTime) > 8.3) // 8.(3) means 120 fps in milliseconds...
@@ -653,19 +669,6 @@ class VideoBitmap extends Bitmap
 					case 7:
 						if (onBackward != null)
 							onBackward.dispatch();
-					case 8:
-						if (texture != null)
-							texture.dispose();
-
-						texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
-
-						if (bitmapData != null)
-							bitmapData.dispose();
-
-						bitmapData = BitmapData.fromTexture(texture);
-
-						if (onTextureSetup != null)
-							onTextureSetup.dispatch();
 				}
 			}
 		}
