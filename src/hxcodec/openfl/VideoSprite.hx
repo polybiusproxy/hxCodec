@@ -5,13 +5,12 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import hxcodec.openfl.VideoBitmap;
 import lime.app.Event;
-import hxcodec.base.IVideoPlayer;
 import sys.FileSystem;
 
 /**
  * This class allows you to play videos using sprites (Sprite).
  */
-class VideoSprite extends Sprite implements IVideoPlayer
+class VideoSprite extends Sprite
 {
 	/**
 	 * The current position of the video, in milliseconds.

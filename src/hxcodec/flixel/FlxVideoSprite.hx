@@ -6,9 +6,8 @@ import flixel.graphics.FlxGraphic;
 import flixel.util.FlxColor;
 import hxcodec.flixel.FlxVideoHandler;
 import lime.app.Event;
-import hxcodec.base.IVideoPlayer;
 
-class FlxVideoSprite extends FlxSprite implements IVideoPlayer
+class FlxVideoSprite extends FlxSprite
 {
 	/**
 	 * The current position of the video, in milliseconds.

@@ -1,6 +1,5 @@
 package hxcodec.flixel;
 
-import hxcodec.base.IVideoPlayer;
 import flixel.FlxState;
 import hxcodec.flixel.FlxVideoSprite;
 import lime.app.Event;
@@ -9,7 +8,7 @@ import lime.app.Event;
  * An FlxState which displays a video.
  * Includes playback controls functions.
  */
-class FlxVideoState extends FlxState implements IVideoPlayer
+class FlxVideoState extends FlxState
 {
 	/**
 	 * The current position of the video, in milliseconds.
