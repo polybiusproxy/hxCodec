@@ -1,7 +1,7 @@
 package hxcodec.openfl;
 
-#if (!(desktop || android) && macro)
-#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us."
+#if (!(windows || linux || android) && macro)
+#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Linux/Android and getting this message, please contact us."
 #end
 import haxe.io.Bytes;
 import haxe.io.BytesData;

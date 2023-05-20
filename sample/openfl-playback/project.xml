@@ -37,7 +37,7 @@
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="openfl" />
-	<haxelib name="hxCodec" if="desktop || android" />
+	<haxelib name="hxCodec" if="windows || linux || android" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

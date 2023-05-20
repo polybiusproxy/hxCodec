@@ -28,7 +28,7 @@ haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
 ### 2. Modify Project.xml
 Add this code in the Project.xml file:
 ```xml
-<haxelib name="hxCodec" if="desktop || android" />
+<haxelib name="hxCodec" if="windows || linux || android" />
 ```
 
 **OPTIONAL: Some defines you can add to your project**
@@ -50,10 +50,10 @@ Check out the [Samples Folder](samples/) for examples on how to use this library
 
 ## Building
 
-### Windows and MacOS
+### Windows
 
-You don't need any special instructions in order to build for Windows or MacOS.
-Just run the `lime build windows` / `lime build mac` command and the library will be building with your game.
+You don't need any special instructions in order to build for Windows.
+Just run the `lime build windows` command and the library will be building with your application.
 
 ### Linux
 
@@ -66,7 +66,7 @@ sudo apt-get install libvlc-dev libvlccore-dev
 
 ### Android
 
-**Currently `hxCodec` can load videos only from internal / external storage (not from the application storage).**
+**Currently `hxCodec` can load videos only from internal / external storage (not from the application's storage).**
 In order for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
 
 To install it, enter the following in a terminal:
@@ -105,5 +105,4 @@ You will also have to put the location manually in the paths and to copy that vi
 - [Jigsaw](https://github.com/MAJigsaw77) - Programmer, Android & Linux support.
 - [MasterEric](https://github.com/MasterEric) - Programmer.
 - [RapperGF](https://github.com/RapperGF) - Rendering Overhaul & Testing
-- [BushTrain](https://github.com/BushTrain460615) - macOS support.
 - The contributors.
