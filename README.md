@@ -101,7 +101,7 @@ You will also have to put the location manually in the paths and to copy that vi
 ## Credits
 
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
-- [datee](https://github.com/datee) - Creator of HaxeVLC.
+- [Datee](https://github.com/datee) - Creator of HaxeVLC.
 - [Jigsaw](https://github.com/MAJigsaw77) - Programmer, Android & Linux support.
 - [MasterEric](https://github.com/MasterEric) - Programmer.
 - [RapperGF](https://github.com/RapperGF) - Rendering Overhaul & Testing
