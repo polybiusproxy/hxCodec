@@ -233,7 +233,12 @@ class VideoBitmap extends Bitmap
 	public function play(?location:String, shouldLoop:Bool = false):Int
 	{
 		if (location == null || (location != null && !location.contains('.')))
+		{
+			if (mediaPlayer != null)
+				return LibVLC.media_player_play(mediaPlayer);
+
 			return -1;
+		}
 
 		if ((location.startsWith('http') || location.startsWith('file')) && location.contains(':'))
 		{
