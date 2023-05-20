@@ -298,7 +298,7 @@ class VideoSprite extends Sprite
 
 		videoBitmap.dispose();
 
-		removeChild(this);
+		removeChild(videoBitmap);
 	}
 
 	@:noCompletion private override function __enterFrame(deltaTime:Int):Void
