@@ -6,7 +6,7 @@ A Haxe library which adds native video playback on [HaxeFlixel](https://haxeflix
 
 --------------------------
 
-Using [libVLC](https://www.videolan.org/vlc/libvlc.html), hxCodec allows to play hundreds of video codecs.
+Using [libVLC](https://www.videolan.org/vlc/libvlc.html), `hxCodec` allows to play hundreds of video codecs.
           
 **[Click here to check the roadmap](https://github.com/polybiusproxy/hxCodec/projects/1)**
 
@@ -66,7 +66,7 @@ sudo apt-get install libvlc-dev libvlccore-dev
 
 ### Android
 
-**Currently, hxCodec can load videos only from internal / external storage (not from the application storage).**
+**Currently `hxCodec` can load videos only from internal / external storage (not from the application storage).**
 In order for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
 
 To install it, enter the following in a terminal:
