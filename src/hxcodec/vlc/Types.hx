@@ -40,13 +40,7 @@ extern class LibVLC_Log_T {}
  */
 enum abstract LibVLC_Event_Type(Int) from Int to Int
 {
-	/**
-	 * Append new event types at the end of a category.
-	 * Do not remove, insert or re-order any entry.
-	 * Keep this in sync with lib/event.c:libvlc_event_type_name().
-	 */
 	final LibVLC_MediaMetaChanged = 0;
-
 	final LibVLC_MediaSubItemAdded = 1;
 	final LibVLC_MediaDurationChanged = 2;
 	final LibVLC_MediaParsedChanged = 3;
@@ -95,10 +89,8 @@ enum abstract LibVLC_Event_Type(Int) from Int to Int
 	final LibVLC_MediaListPlayerPlayed = 1024;
 	final LibVLC_MediaListPlayerNextItemSet = 1025;
 	final LibVLC_MediaListPlayerStopped = 1026;
-	/* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_start(). */
-	final LibVLC_MediaDiscovererStarted = 1280;
-	/* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_stop(). */
-	final LibVLC_MediaDiscovererEnded = 1281;
+	final LibVLC_MediaDiscovererStarted = 1280; /* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_start(). */
+	final LibVLC_MediaDiscovererEnded = 1281; /* @deprecated Useless event, it will be triggered only when calling libvlc_media_discoverer_stop(). */
 	final LibVLC_RendererDiscovererItemAdded = 1282;
 	final LibVLC_RendererDiscovererItemDeleted = 1283;
 	final LibVLC_VlmMediaAdded = 1536;
