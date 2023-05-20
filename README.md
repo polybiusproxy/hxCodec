@@ -42,7 +42,7 @@ Add this code in the Project.xml file:
 
 --------------------------
 
-### Usage Example
+## Usage Example
 
 Check out the [Samples Folder](samples/) for examples on how to use this library.
 
