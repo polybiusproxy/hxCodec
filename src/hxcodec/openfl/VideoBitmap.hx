@@ -311,7 +311,7 @@ class VideoBitmap extends Bitmap
 		LibVLC.media_player_stop(mediaPlayer);
 
 		if (bitmapData != null)
-		{#
+		{
 			bitmapData.dispose();
 			bitmapData = null;
 		}
