@@ -183,7 +183,7 @@ class VideoBitmap extends Bitmap
 	public var onForward(default, null):Event<Void->Void>;
 	public var onBackward(default, null):Event<Void->Void>;
 	public var onLogMessage(default, null):Event<String->Void>;
-	public var onFormatSetup(default, null):Event<Void->Void>;
+	public var onTextureSetup(default, null):Event<Void->Void>;
 
 	// Declarations
 	private var flags:Array<Bool> = [];
@@ -214,7 +214,7 @@ class VideoBitmap extends Bitmap
 		onForward = new Event<Void->Void>();
 		onBackward = new Event<Void->Void>();
 		onLogMessage = new Event<String->Void>();
-		onFormatSetup = new Event<Void->Void>();
+		onTextureSetup = new Event<Void->Void>();
 
 		#if windows
 		untyped __cpp__('char const *argv[] = { "--reset-plugins-cache" }');
@@ -324,7 +324,7 @@ class VideoBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 		onLogMessage = null;
-		onFormatSetup = null;
+		onTextureSetup = null;
 
 		videoWidth = 0;
 		videoHeight = 0;
@@ -659,8 +659,8 @@ class VideoBitmap extends Bitmap
 
 						bitmapData = BitmapData.fromTexture(texture);
 
-						if (onFormatSetup != null)
-							onFormatSetup.dispatch();
+						if (onTextureSetup != null)
+							onTextureSetup.dispatch();
 				}
 			}
 		}
