@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/github/repo-size/polybiusproxy/hxCodec) ![](https://badgen.net/github/open-issues/polybiusproxy/hxCodec) ![](https://badgen.net/badge/license/MPL2.0/green)
 
-A Haxe library which adds native video support on [HaxeFlixel](https://haxeflixel.com) and [OpenFL](https://www.openfl.org).
+A Haxe library which adds native video playback on [HaxeFlixel](https://haxeflixel.com) and [OpenFL](https://www.openfl.org).
 
 --------------------------
 
