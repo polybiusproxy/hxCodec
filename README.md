@@ -15,7 +15,7 @@ Using [libVLC](https://www.videolan.org/vlc/libvlc.html), `hxCodec` allows to pl
 ## Instructions
 
 ### 1. Install the library
-Install the latest stable version of hxCodec by running the following Haxelib command:
+Install the latest stable version of `hxCodec` by running the following Haxelib command:
 ```
 haxelib install hxCodec
 ```
