@@ -527,7 +527,7 @@ class VideoPlayer
 							onOpening.dispatch();
 					case 1:
 						if (onPlaying != null)
-							onPlaying.dispatch(mrl);
+							onPlaying.dispatch();
 					case 2:
 						if (onPaused != null)
 							onPaused.dispatch();
@@ -539,7 +539,7 @@ class VideoPlayer
 							onEndReached.dispatch();
 					case 5:
 						if (onEncounteredError != null)
-							onEncounteredError.dispatch("error cannot be specified");
+							onEncounteredError.dispatch();
 					case 6:
 						if (onForward != null)
 							onForward.dispatch();
