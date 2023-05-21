@@ -140,11 +140,11 @@ class VideoPlayer
 
 	// Callbacks
 	public var onOpening(default, null):Event<Void->Void>;
-	public var onPlaying(default, null):Event<String->Void>;
+	public var onPlaying(default, null):Event<Void->Void>;
 	public var onPaused(default, null):Event<Void->Void>;
 	public var onStopped(default, null):Event<Void->Void>;
 	public var onEndReached(default, null):Event<Void->Void>;
-	public var onEncounteredError(default, null):Event<String->Void>;
+	public var onEncounteredError(default, null):Event<Void->Void>;
 	public var onForward(default, null):Event<Void->Void>;
 	public var onBackward(default, null):Event<Void->Void>;
 	public var onLogMessage(default, null):Event<String->Void>;
@@ -165,11 +165,11 @@ class VideoPlayer
 		messages = cpp.StdVectorConstCharStar.create();
 
 		onOpening = new Event<Void->Void>();
-		onPlaying = new Event<String->Void>();
+		onPlaying = new Event<Void->Void>();
 		onStopped = new Event<Void->Void>();
 		onPaused = new Event<Void->Void>();
 		onEndReached = new Event<Void->Void>();
-		onEncounteredError = new Event<String->Void>();
+		onEncounteredError = new Event<Void->Void>();
 		onForward = new Event<Void->Void>();
 		onBackward = new Event<Void->Void>();
 		onLogMessage = new Event<String->Void>();

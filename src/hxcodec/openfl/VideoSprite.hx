@@ -144,9 +144,9 @@ class VideoSprite extends Sprite
 	 * Callback for when the media player begins playing.
 	 * @param path The path of the current media.
 	 */
-	public var onPlaying(get, null):Event<String->Void>;
+	public var onPlaying(get, null):Event<Void->Void>;
 
-	function get_onPlaying():Event<String->Void>
+	function get_onPlaying():Event<Void->Void>
 	{
 		return videoBitmap.onPlaying;
 	}
@@ -188,9 +188,9 @@ class VideoSprite extends Sprite
 	 * Callback for when the media player encounters an error.
 	 * @param error The error message.
 	 */
-	public var onEncounteredError(get, null):Event<String->Void>;
+	public var onEncounteredError(get, null):Event<Void->Void>;
 
-	function get_onEncounteredError():Event<String->Void>
+	function get_onEncounteredError():Event<Void->Void>
 	{
 		return videoBitmap.onEncounteredError;
 	}

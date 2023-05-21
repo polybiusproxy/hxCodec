@@ -206,14 +206,14 @@ class VideoBitmap extends Bitmap
 		messages = cpp.StdVectorConstCharStar.create();
 
 		onOpening = new Event<Void->Void>();
-		onPlaying = new Event<String->Void>();
+		onPlaying = new Event<Void->Void>();
 		onStopped = new Event<Void->Void>();
 		onPaused = new Event<Void->Void>();
 		onEndReached = new Event<Void->Void>();
-		onEncounteredError = new Event<String->Void>();
+		onEncounteredError = new Event<Void->Void>();
 		onForward = new Event<Void->Void>();
 		onBackward = new Event<Void->Void>();
-		onLogMessage = new Event<String->Void>();
+		onLogMessage = new Event<Void->Void>();
 		onTextureSetup = new Event<Void->Void>();
 
 		#if windows

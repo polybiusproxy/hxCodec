@@ -90,9 +90,9 @@ class FlxVideoHandler extends VideoBitmap
 		#end
 	}
 
-	private function onVLCEncounteredError(msg:String):Void
+	private function onVLCEncounteredError():Void
 	{
-		Lib.application.window.alert(msg, "VLC Error!");
+		Lib.application.window.alert("error cannot be specified.", "VLC Error!");
 		onEndReached.dispatch();
 	}
 
