@@ -622,7 +622,7 @@ class VideoBitmap extends Bitmap
 
 	@:noCompletion private function checkEvents():Void
 	{
-	 	// `for` taked much time then using stuff like this
+	 	// `for` takes much time comparing this.
 		if (events[0])
 		{
 			events[0] = false;
