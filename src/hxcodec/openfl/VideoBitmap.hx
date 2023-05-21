@@ -213,7 +213,7 @@ class VideoBitmap extends Bitmap
 		onEncounteredError = new Event<Void->Void>();
 		onForward = new Event<Void->Void>();
 		onBackward = new Event<Void->Void>();
-		onLogMessage = new Event<Void->Void>();
+		onLogMessage = new Event<String->Void>();
 		onTextureSetup = new Event<Void->Void>();
 
 		#if windows
