@@ -284,10 +284,9 @@ class VideoSprite extends Sprite
 		#end
 	}
 
-	@:noCompletion private function onVLCEncounteredError(msg:String):Void
+	@:noCompletion private function onVLCEncounteredError():Void
 	{
-		Lib.application.window.alert(msg, "VLC Error!");
-		onVLCEndReached();
+		Lib.application.window.alert("error cannot be specified.", "VLC Error!");
 	}
 
 	@:noCompletion private function onVLCEndReached():Void
