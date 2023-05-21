@@ -1,7 +1,7 @@
 package hxcodec.openfl;
 
-#if (!(windows || linux || android) && macro)
-#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Linux/Android and getting this message, please contact us."
+#if (!(desktop || android) && macro)
+#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us."
 #end
 import haxe.io.Bytes;
 import haxe.io.BytesData;
@@ -71,8 +71,13 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 
 	self->videoWidth = _w;
 	self->videoHeight = _h;
-	self->pixels = new unsigned char[_w *_h * 4];
 
+	self->events[8] = true;
+
+	if (self->pixels != nullptr)
+		free(self->pixels);
+
+	self->pixels = new unsigned char[_w *_h * 4];
 	return 1;
 }
 
@@ -90,28 +95,28 @@ static void callbacks(const libvlc_event_t *event, void *data)
 	switch (event->type)
 	{
 		case libvlc_MediaPlayerOpening:
-			self->flags[0] = true;
+			self->events[0] = true;
 			break;
 		case libvlc_MediaPlayerPlaying:
-			self->flags[1] = true;
-			break;
-		case libvlc_MediaPlayerPaused:
-			self->flags[2] = true;
+			self->events[1] = true;
 			break;
 		case libvlc_MediaPlayerStopped:
-			self->flags[3] = true;
+			self->events[2] = true;
+			break;
+		case libvlc_MediaPlayerPaused:
+			self->events[3] = true;
 			break;
 		case libvlc_MediaPlayerEndReached:
-			self->flags[4] = true;
+			self->events[4] = true;
 			break;
 		case libvlc_MediaPlayerEncounteredError:
-			self->flags[5] = true;
+			self->events[5] = true;
 			break;
 		case libvlc_MediaPlayerForward:
-			self->flags[6] = true;
+			self->events[6] = true;
 			break;
 		case libvlc_MediaPlayerBackward:
-			self->flags[7] = true;
+			self->events[7] = true;
 			break;
 	}
 }
@@ -170,17 +175,18 @@ class VideoBitmap extends Bitmap
 
 	// Callbacks
 	public var onOpening(default, null):Event<Void->Void>;
-	public var onPlaying(default, null):Event<String->Void>;
+	public var onPlaying(default, null):Event<Void->Void>;
 	public var onPaused(default, null):Event<Void->Void>;
 	public var onStopped(default, null):Event<Void->Void>;
 	public var onEndReached(default, null):Event<Void->Void>;
-	public var onEncounteredError(default, null):Event<String->Void>;
+	public var onEncounteredError(default, null):Event<Void->Void>;
 	public var onForward(default, null):Event<Void->Void>;
 	public var onBackward(default, null):Event<Void->Void>;
 	public var onLogMessage(default, null):Event<String->Void>;
+	public var onTextureSetup(default, null):Event<Void->Void>;
 
 	// Declarations
-	private var flags:Array<Bool> = [];
+	private var events:Array<Bool> = [];
 	private var oldTime:Float = 0;
 	private var deltaTime:Float = 0;
 	private var messages:cpp.StdVectorConstCharStar;
@@ -194,8 +200,8 @@ class VideoBitmap extends Bitmap
 	{
 		super(bitmapData, AUTO, true);
 
-		for (event in 0...7)
-			flags[event] = false;
+		for (i in 0...8)
+			events[i] = false;
 
 		messages = cpp.StdVectorConstCharStar.create();
 
@@ -208,6 +214,7 @@ class VideoBitmap extends Bitmap
 		onForward = new Event<Void->Void>();
 		onBackward = new Event<Void->Void>();
 		onLogMessage = new Event<String->Void>();
+		onTextureSetup = new Event<Void->Void>();
 
 		#if windows
 		untyped __cpp__('char const *argv[] = { "--reset-plugins-cache" }');
@@ -253,18 +260,6 @@ class VideoBitmap extends Bitmap
 		}
 
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
-
-		if (bitmapData != null)
-		{
-			bitmapData.dispose();
-			bitmapData = null;
-		}
-
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), null);
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
@@ -333,6 +328,7 @@ class VideoBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 		onLogMessage = null;
+		onTextureSetup = null;
 
 		videoWidth = 0;
 		videoHeight = 0;
@@ -561,22 +557,11 @@ class VideoBitmap extends Bitmap
 		updateLogging();
 		#end
 
-		checkFlags();
+		if (events.contains(true))
+			checkEvents();
 
 		if (isPlaying)
 		{
-			// Initialize the `texture` if necessary.
-			if (texture == null && (videoWidth > 0 && videoHeight > 0))
-				texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
-
-			// Initialize the `bitmapData` if necessary.
-			if (bitmapData == null && texture != null)
-				bitmapData = BitmapData.fromTexture(texture);
-
-			// When you set a `bitmapData`, `smoothing` goes `false` for some reason.
-			if (!smoothing)
-				smoothing = true;
-
 			deltaTime += elapsed;
 
 			if (Math.abs(deltaTime - oldTime) > 8.3) // 8.(3) means 120 fps in milliseconds...
@@ -635,42 +620,81 @@ class VideoBitmap extends Bitmap
 	}
 	#end
 
-	@:noCompletion private function checkFlags():Void
+	@:noCompletion private function checkEvents():Void
 	{
-		for (i in 0...flags.length)
+	 	// `for` taked much time then using stuff like this
+		if (events[0])
 		{
-			if (flags[i])
-			{
-				flags[i] = false;
+			events[0] = false;
+			if (onOpening != null)
+				onOpening.dispatch();
+		}
 
-				switch (i)
-				{
-					case 0:
-						if (onOpening != null)
-							onOpening.dispatch();
-					case 1:
-						if (onPlaying != null)
-							onPlaying.dispatch(mrl);
-					case 2:
-						if (onPaused != null)
-							onPaused.dispatch();
-					case 3:
-						if (onStopped != null)
-							onStopped.dispatch();
-					case 4:
-						if (onEndReached != null)
-							onEndReached.dispatch();
-					case 5:
-						if (onEncounteredError != null)
-							onEncounteredError.dispatch("error cannot be specified");
-					case 6:
-						if (onForward != null)
-							onForward.dispatch();
-					case 7:
-						if (onBackward != null)
-							onBackward.dispatch();
-				}
-			}
+		if (events[1])
+		{
+			events[1] = false;
+			if (onPlaying != null)
+				onPlaying.dispatch();
+		}
+
+		if (events[2])
+		{
+			events[2] = false;
+			if (onStopped != null)
+				onStopped.dispatch();
+		}
+
+		if (events[3])
+		{
+			events[3] = false;
+			if (onPaused != null)
+				onPaused.dispatch();
+		}
+
+		if (events[4])
+		{
+			events[4] = false;
+			if (onEndReached != null)
+				onEndReached.dispatch();
+		}
+
+		if (events[5])
+		{
+			events[5] = false;
+			if (onEncounteredError != null)
+				onEncounteredError.dispatch();
+		}
+
+		if (events[6])
+		{
+			events[6] = false;
+			if (onForward != null)
+				onForward.dispatch();
+		}
+
+		if (events[7])
+		{
+			events[7] = false;
+			if (onBackward != null)
+				onBackward.dispatch();
+		}
+
+		if (events[8])
+		{
+			events[8] = false;
+
+			if (bitmapData != null)
+				bitmapData.dispose();
+
+			if (texture != null)
+				texture.dispose();
+
+			texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+			bitmapData = BitmapData.fromTexture(texture);
+			smoothing = true;
+
+			if (onTextureSetup != null)
+				onTextureSetup.dispatch();
 		}
 	}
 
@@ -692,8 +716,8 @@ class VideoBitmap extends Bitmap
 
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
@@ -707,8 +731,8 @@ class VideoBitmap extends Bitmap
 
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerPlaying, untyped __cpp__('callbacks'), untyped __cpp__('this'));
-		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerStopped, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerPaused, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerEndReached, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
