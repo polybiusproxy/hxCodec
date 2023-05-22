@@ -49,8 +49,6 @@ class VideoSprite extends Sprite
 		super();
 
 		bitmap = new VideoBitmap();
-		bitmap.onEndReached.add(onVLCEndReached);
-		bitmap.onEncounteredError.add(onVLCEncounteredError);
 		addChild(bitmap);
 	}
 
@@ -83,6 +81,13 @@ class VideoSprite extends Sprite
 	public function togglePaused():Void
 	{
 		bitmap.togglePaused();
+	}
+
+	public function dispose():Void
+	{
+		bitmap.dispose();
+
+		removeChild(bitmap);
 	}
 
 	// Get & Set Methods
@@ -277,18 +282,5 @@ class VideoSprite extends Sprite
 				}
 			}
 		}
-	}
-
-	// Internal Methods
-	@:noCompletion private function onVLCEncounteredError():Void
-	{
-		Lib.application.window.alert("error cannot be specified.", "VLC Error!");
-	}
-
-	@:noCompletion private function onVLCEndReached():Void
-	{
-		bitmap.dispose();
-
-		removeChild(bitmap);
 	}
 }
