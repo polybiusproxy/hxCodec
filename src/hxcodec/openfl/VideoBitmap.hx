@@ -584,7 +584,7 @@ class VideoBitmap extends Bitmap
 	{
 		if (bitmapData != null)
 			scaleY = value / bitmapData.height;
-		else if (videoHeight != 0)
+		else if (videoHeight > 0)
 			scaleY = value / videoHeight;
 		else
 			scaleY = 1;
@@ -596,7 +596,7 @@ class VideoBitmap extends Bitmap
 	{
 		if (bitmapData != null)
 			scaleX = value / bitmapData.width;
-		else if (videoWidth != 0)
+		else if (videoWidth > 0)
 			scaleX = value / videoWidth;
 		else
 			scaleX = 1;
