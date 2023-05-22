@@ -142,8 +142,8 @@ class VideoPlayer
 	// Callbacks
 	public var onOpening(default, null):Event<Void->Void>;
 	public var onPlaying(default, null):Event<Void->Void>;
-	public var onPaused(default, null):Event<Void->Void>;
 	public var onStopped(default, null):Event<Void->Void>;
+	public var onPaused(default, null):Event<Void->Void>;
 	public var onEndReached(default, null):Event<Void->Void>;
 	public var onEncounteredError(default, null):Event<Void->Void>;
 	public var onForward(default, null):Event<Void->Void>;
@@ -248,7 +248,8 @@ class VideoPlayer
 		updateLogging();
 		#end
 
-		checkEvents();
+		if (events.contains(true))
+			checkEvents();
 	}
 
 	public function dispose():Void
