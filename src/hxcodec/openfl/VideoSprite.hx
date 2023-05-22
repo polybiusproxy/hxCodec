@@ -43,7 +43,7 @@ class VideoSprite extends Sprite
 	public var onTextureSetup(get, null):Event<Void->Void>;
 
 	// Declarations
-	private var bitmap:bitmap;
+	private var bitmap:VideoBitmap;
 
 	public function new():Void
 	{
