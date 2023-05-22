@@ -29,7 +29,7 @@ class Main extends Sprite
 		switch (event.keyCode)
 		{
 			case 81: // Q
-				video.playVideo('assets/video.mp4');
+				video.play('assets/video.mp4');
 
 			case 65: // A
 				video.pause();

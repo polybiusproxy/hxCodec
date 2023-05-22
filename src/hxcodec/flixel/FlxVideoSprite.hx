@@ -355,8 +355,8 @@ class FlxVideoSprite extends FlxSprite
 	 *
 	 * @return 0 if playback started (and was already started), or -1 on error.
 	 */
-	public function playVideo(Path:String, Loop:Bool = false):Int
+	public function play(Path:String, Loop:Bool = false):Int
 	{
-		return videoBitmap.playVideo(Path, Loop);
+		return videoBitmap.play(Path, Loop);
 	}
 }

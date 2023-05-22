@@ -223,7 +223,7 @@ class FlxVideoState extends FlxState
 		// Play the next video if there is one.
 		if (nextVideo != null)
 		{
-			playVideo(nextVideo, nextVideoLoop);
+			play(nextVideo, nextVideoLoop);
 		}
 
 		nextVideo = null;
@@ -235,9 +235,9 @@ class FlxVideoState extends FlxState
 	 * @param path The path to the video file.
 	 * @param loop Whether or not the video should loop.
 	 */
-	public function playVideo(path:String, loop:Bool = false):Int
+	public function play(path:String, loop:Bool = false):Int
 	{
-		return video.playVideo(path, loop);
+		return video.play(path, loop);
 	}
 
 	/**

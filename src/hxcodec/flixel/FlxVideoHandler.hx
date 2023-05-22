@@ -130,7 +130,7 @@ class FlxVideoHandler extends VideoBitmap
 	 *
 	 * @return 0 if playback started (and was already started), or -1 on error.
 	 */
-	public function playVideo(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Int
+	public function play(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Int
 	{
 		#if FLX_SOUND_SYSTEM
 		__pauseMusic = PauseMusic;
