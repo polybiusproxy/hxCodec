@@ -80,10 +80,6 @@ class FlxVideoHandler extends VideoBitmap
 
 	private function onVLCOpening():Void
 	{
-		#if HXC_DEBUG_TRACE
-		trace("the video is opening!");
-		#end
-
 		#if FLX_SOUND_SYSTEM
 		// The Media Player isn't `null at this point...
 		volume = Std.int(((FlxG.sound.muted || !canUseSound) ? 0 : 1) * (FlxG.sound.volume * 100));
@@ -103,10 +99,6 @@ class FlxVideoHandler extends VideoBitmap
 
 	private function onVLCEndReached():Void
 	{
-		#if HXC_DEBUG_TRACE
-		trace("the video reached the end!");
-		#end
-
 		#if FLX_SOUND_SYSTEM
 		if (FlxG.sound.music != null && __pauseMusic)
 			FlxG.sound.music.resume();

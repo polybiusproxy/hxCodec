@@ -33,9 +33,6 @@ Add this code in the Project.xml file:
 
 **OPTIONAL: Some defines you can add to your project**
 ```xml
-<!-- Show debug traces for hxCodec -->
-<haxedef name="HXC_DEBUG_TRACE" if="debug" />
-
 <!-- LibVLC Logging for hxCodec -->
 <haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
 ```

@@ -291,16 +291,7 @@ class FlxVideoSprite extends FlxSprite
 
 		if ((videoBitmap != null && (videoBitmap.isPlaying && videoBitmap.bitmapData != null)) && !oneTime)
 		{
-			var graphic:FlxGraphic = FlxG.bitmap.add(videoBitmap.bitmapData, false, videoBitmap.mrl); // mrl usually starts with file:/// but is fine ig
-			if (graphic.imageFrame.frame == null)
-			{
-				#if HXC_DEBUG_TRACE
-				trace('the frame of the image is null?');
-				#end
-				return;
-			}
-
-			loadGraphic(graphic);
+			loadGraphic(videoBitmap);
 
 			if (canvasWidth != null && canvasHeight != null)
 			{

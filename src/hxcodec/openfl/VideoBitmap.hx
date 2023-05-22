@@ -241,20 +241,10 @@ class VideoBitmap extends Bitmap
 		}
 
 		if ((location.startsWith('http') || location.startsWith('file')) && location.contains(':'))
-		{
-			#if HXC_DEBUG_TRACE
-			trace("setting location to: " + location);
-			#end
-
 			mediaItem = LibVLC.media_new_location(instance, location);
-		}
 		else
 		{
 			final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
-
-			#if HXC_DEBUG_TRACE
-			trace("setting path to: " + path);
-			#end
 
 			mediaItem = LibVLC.media_new_path(instance, path);
 		}
@@ -343,10 +333,6 @@ class VideoBitmap extends Bitmap
 		mediaPlayer = null;
 		mediaItem = null;
 		instance = null;
-
-		#if HXC_DEBUG_TRACE
-		trace('disposing done!');
-		#end
 	}
 
 	// Get & Set Methods
