@@ -254,12 +254,12 @@ class VideoSprite extends Sprite
 
 		if (autoResize && contains(bitmap))
 		{
-			if (!maintainAspectRatio && bitmap.texture != null)
+			if (!maintainAspectRatio && bitmap.bitmapData != null)
 			{
 				bitmap.width = Lib.current.stage.stageWidth;
 				bitmap.height = Lib.current.stage.stageHeight;
 			}
-			else if (bitmap.texture != null)
+			else if (bitmap.bitmapData != null)
 			{
 				var aspectRatio:Float = bitmap.videoWidth / bitmap.videoHeight;
 
