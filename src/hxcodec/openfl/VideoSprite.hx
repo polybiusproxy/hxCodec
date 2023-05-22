@@ -2,7 +2,6 @@ package hxcodec.openfl;
 
 import openfl.Lib;
 import openfl.display.Sprite;
-import openfl.events.Event;
 import hxcodec.openfl.VideoBitmap;
 import lime.app.Event;
 import sys.FileSystem;
