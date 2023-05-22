@@ -157,7 +157,6 @@ class VideoBitmap extends Bitmap
 	// Variables
 	public var videoWidth(default, null):UInt = 0;
 	public var videoHeight(default, null):UInt = 0;
-	public var texture(default, null):Texture;
 	public var time(get, set):Int;
 	public var position(get, set):Single;
 	public var length(get, never):Int;
@@ -176,8 +175,8 @@ class VideoBitmap extends Bitmap
 	// Callbacks
 	public var onOpening(default, null):Event<Void->Void>;
 	public var onPlaying(default, null):Event<Void->Void>;
-	public var onPaused(default, null):Event<Void->Void>;
 	public var onStopped(default, null):Event<Void->Void>;
+	public var onPaused(default, null):Event<Void->Void>;
 	public var onEndReached(default, null):Event<Void->Void>;
 	public var onEncounteredError(default, null):Event<Void->Void>;
 	public var onForward(default, null):Event<Void->Void>;
@@ -186,11 +185,12 @@ class VideoBitmap extends Bitmap
 	public var onTextureSetup(default, null):Event<Void->Void>;
 
 	// Declarations
-	private var events:Array<Bool> = [];
 	private var oldTime:Float = 0;
 	private var deltaTime:Float = 0;
-	private var messages:cpp.StdVectorConstCharStar;
+	private var texture:Texture;
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
+	private var events:Array<Bool> = [];
+	private var messages:cpp.StdVectorConstCharStar;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
@@ -622,7 +622,7 @@ class VideoBitmap extends Bitmap
 
 	@:noCompletion private function checkEvents():Void
 	{
-	 	// `for` takes much time comparing this.
+	 	// `for` takes much more time comparing to this.
 		if (events[0])
 		{
 			events[0] = false;
