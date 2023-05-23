@@ -12,7 +12,7 @@ import sys.FileSystem;
 class VideoSprite extends Sprite
 {
 	// Variables
-	public var autoResize:Bool = false;
+	public var autoResize:Bool = true;
 	public var maintainAspectRatio:Bool = true;
 	public var time(get, set):Int;
 	public var position(get, set):Single;
