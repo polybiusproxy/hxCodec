@@ -13,6 +13,7 @@ import hxcodec.flixel.FlxVideoSprite;
 class FlxCutsceneSprite extends FlxVideoSprite
 {
 	// Variables
+	public var skippable:Bool = true;
 	#if FLX_KEYBOARD
 	public var skipKeys:Array<FlxKey> = [SPACE, ENTER, ESCAPE];
 	#end
@@ -69,7 +70,7 @@ class FlxCutsceneSprite extends FlxVideoSprite
 		super.update(elapsed);
 
 		#if FLX_KEYBOARD
-		if (FlxG.keys.anyJustPressed(skipKeys) && isPlaying)
+		if (skippable && FlxG.keys.anyJustPressed(skipKeys) && isPlaying)
 		{
 			skipTimer += elapsed;
 			if (skipTimer > 1.0)
@@ -82,7 +83,7 @@ class FlxCutsceneSprite extends FlxVideoSprite
 		#if FLX_TOUCH
 		for (touch in FlxG.touches.list)
 		{
-			if (touch.justPressed && isPlaying)
+			if (skippable && touch.justPressed && isPlaying)
 			{
 				skipTimer += elapsed;
 				if (skipTimer > 1.0)
