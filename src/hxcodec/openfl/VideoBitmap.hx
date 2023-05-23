@@ -317,6 +317,7 @@ class VideoBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 		onLogMessage = null;
+		onTextureSetup = null;
 
 		videoWidth = 0;
 		videoHeight = 0;
