@@ -35,7 +35,6 @@ class FlxCutsceneSprite extends FlxVideoSprite
 			volume = Std.int((FlxG.sound.muted ? 0 : 1) * (FlxG.sound.volume * 100));
 			#end
 		});
-		onEndReached.add(dispose);
 	}
 
 	// Overrides
