@@ -28,7 +28,7 @@ class FlxVideoSprite extends FlxSprite
 	public function play(?Path:String, Loop:Bool = false):Int
 	{
 		if (bitmap == null)
-			return;
+			return -1;
 
 		if (FlxG.autoPause)
 		{
