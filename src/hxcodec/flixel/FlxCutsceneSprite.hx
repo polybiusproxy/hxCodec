@@ -95,12 +95,12 @@ class FlxCutsceneSprite extends FlxVideoSprite
 
 		if (autoResize)
 		{
-			if (!maintainAspectRatio && bitmapData != null && frames != null)
+			if (!maintainAspectRatio && bitmap.bitmapData != null && frames != null)
 			{
 				width = FlxG.stage.stageWidth;
 				height = FlxG.stage.stageHeight;
 			}
-			else if (bitmapData != null && frames != null)
+			else if (bitmap.bitmapData != null && frames != null)
 			{
 				var aspectRatio:Float = scaleBy == GAME ? (FlxG.width / FlxG.height) : (videoWidth / videoHeight);
 
