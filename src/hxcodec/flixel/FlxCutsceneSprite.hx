@@ -28,7 +28,7 @@ class FlxCutsceneSprite extends FlxVideoSprite
 	{
 		super(X, Y);
 
-		onOpening.add(function()
+		bitmap.onOpening.add(function()
 		{
 			#if FLX_SOUND_SYSTEM
 			volume = Std.int((FlxG.sound.muted ? 0 : 1) * (FlxG.sound.volume * 100));
@@ -92,7 +92,7 @@ class FlxCutsceneSprite extends FlxVideoSprite
 		}
 		#end
 
-		if (autoResize)
+		if (autoResize && bitmap.bitmapData != null && frames != null)
 		{
 			var aspectRatio:Float = resizeBy == GAME ? (FlxG.width / FlxG.height) : (videoWidth / videoHeight);
 
