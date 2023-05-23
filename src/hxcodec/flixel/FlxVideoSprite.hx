@@ -2,268 +2,46 @@ package hxcodec.flixel;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.graphics.FlxGraphic;
 import flixel.util.FlxColor;
-import hxcodec.flixel.FlxVideoHandler;
+import hxcodec.openfl.VideoBitmap;
 import lime.app.Event;
+import sys.FileSystem;
 
+/**
+ * This class allows you to play videos using sprites (FlxSprite).
+ */
 class FlxVideoSprite extends FlxSprite
 {
-	/**
-	 * The current position of the video, in milliseconds.
-	 * Set this value to seek to a specific position in the video.
-	 */
+	// Variables
 	public var time(get, set):Int;
-
-	function get_time():Int
-	{
-		return videoBitmap.time;
-	}
-
-	function set_time(value:Int):Int
-	{
-		return videoBitmap.time = value;
-	}
-
-	/**
-	 * The current position of the video, as a percentage between 0.0 and 1.0.
-	 * Set this value to seek to a specific position in the video.
-	 */
 	public var position(get, set):Single;
-
-	function get_position():Single
-	{
-		return videoBitmap.position;
-	}
-
-	function set_position(value:Single):Single
-	{
-		return videoBitmap.position = value;
-	}
-
-	/**
-	 * The duration of the video, in seconds.
-	 */
-	public var duration(get, null):Int;
-
-	function get_duration():Int
-	{
-		return videoBitmap.duration;
-	}
-
-	/**
-	 * Whether or not the video is playing.
-	 */
-	public var isPlaying(get, null):Bool;
-
-	function get_isPlaying():Bool
-	{
-		return videoBitmap.isPlaying;
-	}
-
-	/**
-	 * Whether or not the audio is currently muted.
-	 */
+	public var length(get, never):Int;
+	public var duration(get, never):Int;
+	public var mrl(get, never):String;
+	public var volume(get, set):Int;
+	public var channel(get, set):Int;
+	public var delay(get, set):Int;
+	public var rate(get, set):Single;
+	public var role(get, set):Int;
+	public var isPlaying(get, never):Bool;
+	public var isSeekable(get, never):Bool;
+	public var canPause(get, never):Bool;
 	public var mute(get, set):Bool;
 
-	function get_mute():Bool
-	{
-		return videoBitmap.mute;
-	}
-
-	function set_mute(value:Bool):Bool
-	{
-		return videoBitmap.mute = value;
-	}
-
-	/**
-	 * Current playback speed.
-	 */
-	public var rate(get, set):Single;
-
-	function get_rate():Single
-	{
-		return videoBitmap.rate;
-	}
-
-	function set_rate(value:Single):Single
-	{
-		return videoBitmap.rate = value;
-	}
-
-	/**
-	 * Current volume.
-	 */
-	public var volume(get, set):Int;
-
-	function get_volume():Int
-	{
-		return videoBitmap.volume;
-	}
-
-	function set_volume(value:Int):Int
-	{
-		return videoBitmap.volume = value;
-	}
-
-	#if FLX_KEYBOARD
-	public var canSkip(get, set):Bool;
-
-	function get_canSkip():Bool
-	{
-		return videoBitmap.canSkip;
-	}
-
-	function set_canSkip(value:Bool):Bool
-	{
-		return videoBitmap.canSkip = value;
-	}
-	#end
-
-	/**
-	 * Set this value to enforce a specific canvas width for the video.
-	 */
-	public var canvasWidth(default, set):Null<Int> = null;
-
-	function set_canvasWidth(value:Int):Int
-	{
-		this.canvasWidth = value;
-		if (canvasWidth != null && canvasHeight != null)
-		{
-			setGraphicSize(canvasWidth, canvasHeight);
-			updateHitbox();
-		}
-		return this.canvasWidth;
-	}
-
-	/**
-	 * Set this value to enforce a specific canvas height for the video.
-	 */
-	public var canvasHeight(default, set):Null<Int> = null;
-
-	function set_canvasHeight(value:Int):Int
-	{
-		this.canvasHeight = value;
-		if (canvasWidth != null && canvasHeight != null)
-		{
-			setGraphicSize(canvasWidth, canvasHeight);
-			updateHitbox();
-		}
-		return this.canvasHeight;
-	}
-
-	var videoBitmap:FlxVideoHandler;
-
-	@:deprecated("Use videoHandler.onOpening.add() instead.")
-	public var openingCallback(get, set):Void->Void;
-
-	function get_openingCallback():Void->Void
-	{
-		return () -> this.onOpening.dispatch();
-	}
-
-	function set_openingCallback(input:Void->Void):Void->Void
-	{
-		this.onOpening.add(input);
-		return input;
-	}
-
-	@:deprecated("Use videoHandler.onEndReached.add() instead.")
-	public var finishCallback(get, set):Void->Void;
-
-	function get_finishCallback():Void->Void
-	{
-		return () -> this.onEndReached.dispatch();
-	}
-
-	function set_finishCallback(input:Void->Void):Void->Void
-	{
-		this.onEndReached.add(input);
-		return input;
-	}
-
-	/**
-	 * Callback for when the media player is opening.
-	 */
+	// Callbacks
 	public var onOpening(get, null):Event<Void->Void>;
-
-	function get_onOpening():Event<Void->Void>
-	{
-		return videoBitmap.onOpening;
-	}
-
-	/**
-	 * Callback for when the media player begins playing.
-	 * @param path The path of the current media.
-	 */
 	public var onPlaying(get, null):Event<Void->Void>;
-
-	function get_onPlaying():Event<Void->Void>
-	{
-		return videoBitmap.onPlaying;
-	}
-
-	/**
-	 * Callback for when the media player is paused.
-	 */
-	public var onPaused(get, null):Event<Void->Void>;
-
-	function get_onPaused():Event<Void->Void>
-	{
-		return videoBitmap.onPaused;
-	}
-
-	/**
-	 * Callback for when the media player is stopped.
-	 */
 	public var onStopped(get, null):Event<Void->Void>;
-
-	function get_onStopped():Event<Void->Void>
-	{
-		return videoBitmap.onStopped;
-	}
-
-	/**
-	 * Callback for when the media player reaches the end.
-	 */
+	public var onPaused(get, null):Event<Void->Void>;
 	public var onEndReached(get, null):Event<Void->Void>;
-
-	function get_onEndReached():Event<Void->Void>
-	{
-		return videoBitmap.onEndReached;
-	}
-
-	/**
-	 * Callback for when the media player encounters an error.
-	 */
 	public var onEncounteredError(get, null):Event<Void->Void>;
-
-	function get_onEncounteredError():Event<Void->Void>
-	{
-		return videoBitmap.onEncounteredError;
-	}
-
-	/**
-	 * Callback for when the media player is skipped forward.
-	 */
 	public var onForward(get, null):Event<Void->Void>;
-
-	function get_onForward():Event<Void->Void>
-	{
-		return videoBitmap.onForward;
-	}
-
-	/**
-	 * Callback for when the media player is skipped backward.
-	 */
 	public var onBackward(get, null):Event<Void->Void>;
+	public var onLogMessage(get, null):Event<String->Void>;
+	public var onTextureSetup(get, null):Event<Void->Void>;
 
-	function get_onBackward():Event<Void->Void>
-	{
-		return videoBitmap.onBackward;
-	}
-
-	public var graphicLoadedCallback:Event<Void->Void> = null;
+	// Declarations
+	private var bitmap:VideoBitmap;
 
 	public function new(X:Float = 0, Y:Float = 0):Void
 	{
@@ -271,92 +49,238 @@ class FlxVideoSprite extends FlxSprite
 
 		makeGraphic(1, 1, FlxColor.TRANSPARENT);
 
-		videoBitmap = new FlxVideoHandler();
-		videoBitmap.canUseAutoResize = false;
-		videoBitmap.visible = false;
-
-		videoBitmap.onEndReached.add(function()
-		{
-			oneTime = false;
-
-			kill();
-		});
+		bitmap = new VideoBitmap();
+		bitmap.visible = false;
+		bitmap.onTextureSetup.add(() -> loadGraphic(bitmap.bitmapData));
+		FlxG.game.addChild(bitmap);
 	}
 
-	private var oneTime:Bool = false;
-
-	override function update(elapsed:Float):Void
+	// Methods
+	public function play(?Path:String, Loop:Bool = false):Int
 	{
-		super.update(elapsed);
-
-		if ((videoBitmap != null && (videoBitmap.isPlaying && videoBitmap.bitmapData != null)) && !oneTime)
+		if (FlxG.autoPause)
 		{
-			loadGraphic(videoBitmap);
+			if (!FlxG.signals.focusGained.has(resume))
+				FlxG.signals.focusGained.add(resume);
 
-			if (canvasWidth != null && canvasHeight != null)
-			{
-				setGraphicSize(canvasWidth, canvasHeight);
-				updateHitbox();
-			}
-
-			if (graphicLoadedCallback != null)
-				graphicLoadedCallback.dispatch();
-
-			oneTime = true;
+			if (!FlxG.signals.focusLost.has(pause))
+				FlxG.signals.focusLost.add(pause);
 		}
+
+		// in case if you want to use another dir then the application one.
+		// android can already do this, it can't use application's storage.
+		if (FileSystem.exists(Sys.getCwd() + Path))
+			return bitmap.play(Sys.getCwd() + Path, Loop);
+		else
+			return bitmap.play(Path, Loop);
 	}
 
-	/**
-	 * Stop the video.
-	 * This will reset the video to the beginning and stop playback.
-	 */
 	public function stop():Void
 	{
-		videoBitmap.stop();
+		bitmap.stop();
 	}
 
-	/**
-	 * Pause the video.
-	 */
 	public function pause():Void
 	{
-		videoBitmap.pause();
+		bitmap.pause();
 	}
 
-	/**
-	 * Resume the video, if it is paused.
-	 */
 	public function resume():Void
 	{
-		videoBitmap.resume();
+		bitmap.resume();
 	}
 
-	/**
-	 * If the video is playing, it will be paused.
-	 * If the video is paused, it will be resumed.
-	 */
 	public function togglePaused():Void
 	{
-		videoBitmap.togglePaused();
+		bitmap.togglePaused();
 	}
 
-	override function destroy():Void
+	public function dispose():Void
 	{
-		if (videoBitmap != null && videoBitmap.onEndReached != null)
-			videoBitmap.onEndReached.dispatch();
+		bitmap.dispose();
+
+		if (FlxG.game.contains(bitmap))
+			FlxG.game.removeChild(bitmap);
+	}
+
+	// Get & Set Methods
+	@:noCompletion private function get_time():Int
+	{
+		return bitmap.time;
+	}
+
+	@:noCompletion private function set_time(value:Int):Int
+	{
+		return bitmap.time = value;
+	}
+
+	@:noCompletion private function get_position():Single
+	{
+		return bitmap.position;
+	}
+
+	@:noCompletion private function set_position(value:Single):Single
+	{
+		return bitmap.position = value;
+	}
+
+	@:noCompletion private function get_length():Int
+	{
+		return bitmap.length;
+	}
+
+	@:noCompletion private function get_duration():Int
+	{
+		return bitmap.duration;
+	}
+
+	@:noCompletion private function get_mrl():String
+	{
+		return bitmap.mrl;
+	}
+
+	@:noCompletion private function get_volume():Int
+	{
+		return bitmap.volume;
+	}
+
+	@:noCompletion private function set_volume(value:Int):Int
+	{
+		return bitmap.volume = value;
+	}
+
+	@:noCompletion private function get_channel():Int
+	{
+	    return bitmap.channel;
+	}
+
+	@:noCompletion private function set_channel(value:Int):Int
+	{
+		return bitmap.channel = value;
+	}
+
+	@:noCompletion private function get_delay():Int
+	{
+	    return bitmap.delay;
+	}
+
+	@:noCompletion private function set_delay(value:Int):Int
+	{
+		return bitmap.delay = value;
+	}
+
+	@:noCompletion private function get_rate():Single
+	{
+	    return bitmap.rate;
+	}
+
+	@:noCompletion private function set_rate(value:Single):Single
+	{
+		return bitmap.rate = value;
+	}
+
+	@:noCompletion private function get_role():Int
+	{
+	    return bitmap.role;
+	}
+
+	@:noCompletion private function set_role(value:Int):Int
+	{
+		return bitmap.role = value;
+	}
+
+	@:noCompletion private function get_isPlaying():Bool
+	{
+	    return bitmap.isPlaying;
+	}
+
+	@:noCompletion private function get_isSeekable():Bool
+	{
+	    return bitmap.isSeekable;
+	}
+
+	@:noCompletion private function get_canPause():Bool
+	{
+	    return bitmap.canPause;
+	}
+
+	@:noCompletion private function get_mute():Bool
+	{
+	    return bitmap.mute;
+	}
+
+	@:noCompletion private function set_mute(value:Bool):Bool
+	{
+		return bitmap.mute = value;
+	}
+
+	@:noCompletion private function get_onOpening():Event<Void->Void>
+	{
+		return bitmap.onOpening;
+	}
+
+	@:noCompletion private function get_onPlaying():Event<Void->Void>
+	{
+		return bitmap.onPlaying;
+	}
+
+	@:noCompletion private function get_onStopped():Event<Void->Void>
+	{
+		return bitmap.onStopped;
+	}
+
+	@:noCompletion private function get_onPaused():Event<Void->Void>
+	{
+		return bitmap.onPaused;
+	}
+
+	@:noCompletion private function get_onEndReached():Event<Void->Void>
+	{
+		return bitmap.onEndReached;
+	}
+
+	@:noCompletion private function get_onEncounteredError():Event<Void->Void>
+	{
+		return bitmap.onEncounteredError;
+	}
+
+	@:noCompletion private function get_onForward():Event<Void->Void>
+	{
+		return bitmap.onForward;
+	}
+
+	@:noCompletion private function get_onBackward():Event<Void->Void>
+	{
+		return bitmap.onBackward;
+	}
+
+	@:noCompletion private function get_onLogMessage():Event<String->Void>
+	{
+		return bitmap.onLogMessage;
+	}
+
+	@:noCompletion private function get_onTextureSetup():Event<Void->Void>
+	{
+		return bitmap.onTextureSetup;
+	}
+
+	// Overrides
+	@:noCompletion private override function destroy():Void
+	{
+		if (onEndReached != null) // is this really needed?
+			onEndReached.dispatch();
+
+		dispose();
+
+		if (FlxG.autoPause)
+		{
+			if (FlxG.signals.focusGained.has(resume))
+				FlxG.signals.focusGained.remove(resume);
+
+			if (FlxG.signals.focusLost.has(pause))
+				FlxG.signals.focusLost.remove(pause);
+		}
 
 		super.destroy();
-	}
-
-	/**
-	 * Native video support for Flixel & OpenFL
-	 * @param Path Example: `your/video/here.mp4`
-	 * @param Loop Loop the video.
-	 *
-	 * @return 0 if playback started (and was already started), or -1 on error.
-	 */
-	public function play(Path:String, Loop:Bool = false):Int
-	{
-		return videoBitmap.play(Path, Loop);
 	}
 }

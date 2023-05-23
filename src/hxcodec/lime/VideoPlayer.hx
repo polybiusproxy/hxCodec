@@ -254,13 +254,13 @@ class VideoPlayer
 
 	public function dispose():Void
 	{
-		if (mediaPlayer == null || instance == null)
-			return;
-
 		detachEvents();
 
-		LibVLC.media_player_stop(mediaPlayer);
-		LibVLC.media_player_release(mediaPlayer);
+		if (mediaPlayer != null)
+		{
+			LibVLC.media_player_stop(mediaPlayer);
+			LibVLC.media_player_release(mediaPlayer);
+		}
 
 		onOpening = null;
 		onPlaying = null;
@@ -272,10 +272,13 @@ class VideoPlayer
 		onBackward = null;
 		onLogMessage = null;
 
-		#if HXC_LIBVLC_LOGGING
-		LibVLC.log_unset(instance);
-		#end
-		LibVLC.release(instance);
+		if (instance != null)
+		{
+			#if HXC_LIBVLC_LOGGING
+			LibVLC.log_unset(instance);
+			#end
+			LibVLC.release(instance);
+		}
 
 		eventManager = null;
 		mediaPlayer = null;

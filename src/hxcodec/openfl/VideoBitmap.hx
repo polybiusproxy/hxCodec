@@ -288,12 +288,13 @@ class VideoBitmap extends Bitmap
 
 	public function dispose():Void
 	{
-		if (mediaPlayer == null || instance == null)
-			return;
-
 		detachEvents();
 
-		LibVLC.media_player_stop(mediaPlayer);
+		if (mediaPlayer != null)
+		{
+			LibVLC.media_player_stop(mediaPlayer);
+			LibVLC.media_player_release(mediaPlayer);
+		}
 
 		if (bitmapData != null)
 		{
@@ -307,8 +308,6 @@ class VideoBitmap extends Bitmap
 			texture = null;
 		}
 
-		LibVLC.media_player_release(mediaPlayer);
-
 		onOpening = null;
 		onPlaying = null;
 		onStopped = null;
@@ -318,16 +317,18 @@ class VideoBitmap extends Bitmap
 		onForward = null;
 		onBackward = null;
 		onLogMessage = null;
-		onTextureSetup = null;
 
 		videoWidth = 0;
 		videoHeight = 0;
 		pixels = null;
 
-		#if HXC_LIBVLC_LOGGING
-		LibVLC.log_unset(instance);
-		#end
-		LibVLC.release(instance);
+		if (instance != null)
+		{
+			#if HXC_LIBVLC_LOGGING
+			LibVLC.log_unset(instance);
+			#end
+			LibVLC.release(instance);
+		}
 
 		eventManager = null;
 		mediaPlayer = null;

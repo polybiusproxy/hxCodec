@@ -87,7 +87,8 @@ class VideoSprite extends Sprite
 	{
 		bitmap.dispose();
 
-		removeChild(bitmap);
+		if (contains(bitmap))
+			removeChild(bitmap);
 	}
 
 	// Get & Set Methods
