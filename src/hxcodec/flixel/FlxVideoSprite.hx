@@ -12,7 +12,7 @@ import sys.FileSystem;
 class FlxVideoSprite extends FlxSprite
 {
 	// Variables
-	private var bitmap(default, null):VideoBitmap;
+	public var bitmap(default, null):VideoBitmap;
 
 	public function new(X:Float = 0, Y:Float = 0):Void
 	{
