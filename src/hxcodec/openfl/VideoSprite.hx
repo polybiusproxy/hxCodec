@@ -28,7 +28,7 @@ class VideoSprite extends Sprite
 	public function play(?Path:String, Loop:Bool = false):Int
 	{
 		if (bitmap == null)
-			return;
+			return -1;
 
 		// in case if you want to use another dir then the application one.
 		// android can already do this, it can't use application's storage.
