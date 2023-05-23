@@ -2,7 +2,6 @@ package hxcodec.flixel;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.util.FlxColor;
 import hxcodec.openfl.VideoBitmap;
 import lime.app.Event;
 import sys.FileSystem;
@@ -46,8 +45,6 @@ class FlxVideoSprite extends FlxSprite
 	public function new(X:Float = 0, Y:Float = 0):Void
 	{
 		super(X, Y);
-
-		makeGraphic(1, 1, FlxColor.TRANSPARENT);
 
 		bitmap = new VideoBitmap();
 		bitmap.visible = false;
@@ -97,181 +94,6 @@ class FlxVideoSprite extends FlxSprite
 
 	public function dispose():Void
 	{
-		bitmap.dispose();
-
-		if (FlxG.game.contains(bitmap))
-			FlxG.game.removeChild(bitmap);
-	}
-
-	// Get & Set Methods
-	@:noCompletion private function get_time():Int
-	{
-		return bitmap.time;
-	}
-
-	@:noCompletion private function set_time(value:Int):Int
-	{
-		return bitmap.time = value;
-	}
-
-	@:noCompletion private function get_position():Single
-	{
-		return bitmap.position;
-	}
-
-	@:noCompletion private function set_position(value:Single):Single
-	{
-		return bitmap.position = value;
-	}
-
-	@:noCompletion private function get_length():Int
-	{
-		return bitmap.length;
-	}
-
-	@:noCompletion private function get_duration():Int
-	{
-		return bitmap.duration;
-	}
-
-	@:noCompletion private function get_mrl():String
-	{
-		return bitmap.mrl;
-	}
-
-	@:noCompletion private function get_volume():Int
-	{
-		return bitmap.volume;
-	}
-
-	@:noCompletion private function set_volume(value:Int):Int
-	{
-		return bitmap.volume = value;
-	}
-
-	@:noCompletion private function get_channel():Int
-	{
-	    return bitmap.channel;
-	}
-
-	@:noCompletion private function set_channel(value:Int):Int
-	{
-		return bitmap.channel = value;
-	}
-
-	@:noCompletion private function get_delay():Int
-	{
-	    return bitmap.delay;
-	}
-
-	@:noCompletion private function set_delay(value:Int):Int
-	{
-		return bitmap.delay = value;
-	}
-
-	@:noCompletion private function get_rate():Single
-	{
-	    return bitmap.rate;
-	}
-
-	@:noCompletion private function set_rate(value:Single):Single
-	{
-		return bitmap.rate = value;
-	}
-
-	@:noCompletion private function get_role():Int
-	{
-	    return bitmap.role;
-	}
-
-	@:noCompletion private function set_role(value:Int):Int
-	{
-		return bitmap.role = value;
-	}
-
-	@:noCompletion private function get_isPlaying():Bool
-	{
-	    return bitmap.isPlaying;
-	}
-
-	@:noCompletion private function get_isSeekable():Bool
-	{
-	    return bitmap.isSeekable;
-	}
-
-	@:noCompletion private function get_canPause():Bool
-	{
-	    return bitmap.canPause;
-	}
-
-	@:noCompletion private function get_mute():Bool
-	{
-	    return bitmap.mute;
-	}
-
-	@:noCompletion private function set_mute(value:Bool):Bool
-	{
-		return bitmap.mute = value;
-	}
-
-	@:noCompletion private function get_onOpening():Event<Void->Void>
-	{
-		return bitmap.onOpening;
-	}
-
-	@:noCompletion private function get_onPlaying():Event<Void->Void>
-	{
-		return bitmap.onPlaying;
-	}
-
-	@:noCompletion private function get_onStopped():Event<Void->Void>
-	{
-		return bitmap.onStopped;
-	}
-
-	@:noCompletion private function get_onPaused():Event<Void->Void>
-	{
-		return bitmap.onPaused;
-	}
-
-	@:noCompletion private function get_onEndReached():Event<Void->Void>
-	{
-		return bitmap.onEndReached;
-	}
-
-	@:noCompletion private function get_onEncounteredError():Event<Void->Void>
-	{
-		return bitmap.onEncounteredError;
-	}
-
-	@:noCompletion private function get_onForward():Event<Void->Void>
-	{
-		return bitmap.onForward;
-	}
-
-	@:noCompletion private function get_onBackward():Event<Void->Void>
-	{
-		return bitmap.onBackward;
-	}
-
-	@:noCompletion private function get_onLogMessage():Event<String->Void>
-	{
-		return bitmap.onLogMessage;
-	}
-
-	@:noCompletion private function get_onTextureSetup():Event<Void->Void>
-	{
-		return bitmap.onTextureSetup;
-	}
-
-	// Overrides
-	@:noCompletion private override function destroy():Void
-	{
-		if (onEndReached != null) // is this really needed?
-			onEndReached.dispatch();
-
-		dispose();
-
 		if (FlxG.autoPause)
 		{
 			if (FlxG.signals.focusGained.has(resume))
@@ -280,6 +102,181 @@ class FlxVideoSprite extends FlxSprite
 			if (FlxG.signals.focusLost.has(pause))
 				FlxG.signals.focusLost.remove(pause);
 		}
+
+		bitmap.dispose();
+
+		if (FlxG.game.contains(bitmap))
+			FlxG.game.removeChild(bitmap);
+	}
+
+	// Get & Set Methods
+	private function get_time():Int
+	{
+		return bitmap.time;
+	}
+
+	private function set_time(value:Int):Int
+	{
+		return bitmap.time = value;
+	}
+
+	private function get_position():Single
+	{
+		return bitmap.position;
+	}
+
+	private function set_position(value:Single):Single
+	{
+		return bitmap.position = value;
+	}
+
+	private function get_length():Int
+	{
+		return bitmap.length;
+	}
+
+	private function get_duration():Int
+	{
+		return bitmap.duration;
+	}
+
+	private function get_mrl():String
+	{
+		return bitmap.mrl;
+	}
+
+	private function get_volume():Int
+	{
+		return bitmap.volume;
+	}
+
+	private function set_volume(value:Int):Int
+	{
+		return bitmap.volume = value;
+	}
+
+	private function get_channel():Int
+	{
+	    return bitmap.channel;
+	}
+
+	private function set_channel(value:Int):Int
+	{
+		return bitmap.channel = value;
+	}
+
+	private function get_delay():Int
+	{
+	    return bitmap.delay;
+	}
+
+	private function set_delay(value:Int):Int
+	{
+		return bitmap.delay = value;
+	}
+
+	private function get_rate():Single
+	{
+	    return bitmap.rate;
+	}
+
+	private function set_rate(value:Single):Single
+	{
+		return bitmap.rate = value;
+	}
+
+	private function get_role():Int
+	{
+	    return bitmap.role;
+	}
+
+	private function set_role(value:Int):Int
+	{
+		return bitmap.role = value;
+	}
+
+	private function get_isPlaying():Bool
+	{
+	    return bitmap.isPlaying;
+	}
+
+	private function get_isSeekable():Bool
+	{
+	    return bitmap.isSeekable;
+	}
+
+	private function get_canPause():Bool
+	{
+	    return bitmap.canPause;
+	}
+
+	private function get_mute():Bool
+	{
+	    return bitmap.mute;
+	}
+
+	private function set_mute(value:Bool):Bool
+	{
+		return bitmap.mute = value;
+	}
+
+	private function get_onOpening():Event<Void->Void>
+	{
+		return bitmap.onOpening;
+	}
+
+	private function get_onPlaying():Event<Void->Void>
+	{
+		return bitmap.onPlaying;
+	}
+
+	private function get_onStopped():Event<Void->Void>
+	{
+		return bitmap.onStopped;
+	}
+
+	private function get_onPaused():Event<Void->Void>
+	{
+		return bitmap.onPaused;
+	}
+
+	private function get_onEndReached():Event<Void->Void>
+	{
+		return bitmap.onEndReached;
+	}
+
+	private function get_onEncounteredError():Event<Void->Void>
+	{
+		return bitmap.onEncounteredError;
+	}
+
+	private function get_onForward():Event<Void->Void>
+	{
+		return bitmap.onForward;
+	}
+
+	private function get_onBackward():Event<Void->Void>
+	{
+		return bitmap.onBackward;
+	}
+
+	private function get_onLogMessage():Event<String->Void>
+	{
+		return bitmap.onLogMessage;
+	}
+
+	private function get_onTextureSetup():Event<Void->Void>
+	{
+		return bitmap.onTextureSetup;
+	}
+
+	// Overrides
+	override public function destroy():Void
+	{
+		if (onEndReached != null) // is this really needed?
+			onEndReached.dispatch();
+
+		dispose();
 
 		super.destroy();
 	}
