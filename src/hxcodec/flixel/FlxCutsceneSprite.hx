@@ -68,7 +68,7 @@ class FlxCutsceneSprite extends FlxVideoSprite
 		super.update(elapsed);
 
 		#if FLX_KEYBOARD
-		if (skippable && FlxG.keys.anyJustPressed(skipKeys) && bitmap.isPlaying)
+		if (skippable && FlxG.keys.anyPressed(skipKeys) && bitmap.isPlaying)
 		{
 			skipTimer += elapsed;
 			if (skipTimer > 1.0)
@@ -81,7 +81,7 @@ class FlxCutsceneSprite extends FlxVideoSprite
 		#if FLX_TOUCH
 		for (touch in FlxG.touches.list)
 		{
-			if (skippable && touch.justPressed && bitmap.isPlaying)
+			if (skippable && touch.pressed && bitmap.isPlaying)
 			{
 				skipTimer += elapsed;
 				if (skipTimer > 1.0)
