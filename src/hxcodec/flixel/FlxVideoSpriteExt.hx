@@ -10,7 +10,7 @@ import hxcodec.flixel.FlxVideoSprite;
  * This class is a addon to the `FlxVideoSprite` class.
  * Mostly adds the ability to skip the video, makes `flixel` to manage the volume and to autoResize it.
  */
-class FlxCutsceneSprite extends FlxVideoSprite
+class FlxVideoSpriteExt extends FlxVideoSprite
 {
 	// Variables
 	public var skippable:Bool = true;
