@@ -94,8 +94,8 @@ class FlxVideoSprite extends FlxSprite
 	// Overrides
 	override public function destroy():Void
 	{
-		if (onEndReached != null) // is this really needed?
-			onEndReached.dispatch();
+		if (bitmap.onEndReached != null) // is this really needed?
+			bitmap.onEndReached.dispatch();
 
 		dispose();
 
