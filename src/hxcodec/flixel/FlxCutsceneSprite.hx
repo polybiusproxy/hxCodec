@@ -17,8 +17,6 @@ class FlxCutsceneSprite extends FlxVideoSprite
 	#if FLX_KEYBOARD
 	public var skipKeys:Array<FlxKey> = [SPACE, ENTER, ESCAPE];
 	#end
-	public var autoResize:Bool = true;
-	public var resizeBy:ScaleType = GAME;
 
 	// Declarations
 	private var pauseMusic:Bool = false;
@@ -28,10 +26,10 @@ class FlxCutsceneSprite extends FlxVideoSprite
 	{
 		super(X, Y);
 
-		onOpening.add(function()
+		bitmap.onOpening.add(function()
 		{
 			#if FLX_SOUND_SYSTEM
-			volume = Std.int((FlxG.sound.muted ? 0 : 1) * (FlxG.sound.volume * 100));
+			bitmap.volume = Std.int((FlxG.sound.muted ? 0 : 1) * (FlxG.sound.volume * 100));
 			#end
 		});
 	}
@@ -68,11 +66,11 @@ class FlxCutsceneSprite extends FlxVideoSprite
 		super.update(elapsed);
 
 		#if FLX_KEYBOARD
-		if (skippable && FlxG.keys.anyJustPressed(skipKeys) && bitmap.isPlaying)
+		if (skippable && FlxG.keys.anyPressed(skipKeys) && bitmap.isPlaying)
 		{
 			skipTimer += elapsed;
 			if (skipTimer > 1.0)
-				onEndReached.dispatch();
+				bitmap.onEndReached.dispatch();
 		}
 		else
 			skipTimer = 0;
@@ -81,43 +79,19 @@ class FlxCutsceneSprite extends FlxVideoSprite
 		#if FLX_TOUCH
 		for (touch in FlxG.touches.list)
 		{
-			if (skippable && touch.justPressed && bitmap.isPlaying)
+			if (skippable && touch.pressed && bitmap.isPlaying)
 			{
 				skipTimer += elapsed;
 				if (skipTimer > 1.0)
-					onEndReached.dispatch();
+				    bitmap.onEndReached.dispatch();
 			}
 			else
 				skipTimer = 0;
 		}
 		#end
 
-		if (autoResize)
-		{
-			var aspectRatio:Float = resizeBy == GAME ? (FlxG.width / FlxG.height) : (videoWidth / videoHeight);
-
-			if (FlxG.stage.stageWidth / FlxG.stage.stageHeight > aspectRatio)
-			{
-				// stage is wider than video
-				width = FlxG.stage.stageHeight * aspectRatio;
-				height = FlxG.stage.stageHeight;
-			}
-			else
-			{
-				// stage is taller than video
-				width = FlxG.stage.stageWidth;
-				height = FlxG.stage.stageWidth * (1 / aspectRatio);
-			}
-		}
-
 		#if FLX_SOUND_SYSTEM
-		volume = Std.int((FlxG.sound.muted ? 0 : 1) * (FlxG.sound.volume * 100));
+		bitmap.volume = Std.int((FlxG.sound.muted ? 0 : 1) * (FlxG.sound.volume * 100));
 		#end
 	}
-}
-
-enum ScaleType
-{
-	GAME;
-	VIDEO;
 }
