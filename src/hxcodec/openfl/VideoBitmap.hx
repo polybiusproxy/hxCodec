@@ -553,7 +553,7 @@ class VideoBitmap extends Bitmap
 	}
 
 	// Overrides
-	@:noCompletion private override function __enterFrame(elapsed:Int):Void
+	@:noCompletion public override function __enterFrame(elapsed:Int):Void
 	{
 		#if HXC_LIBVLC_LOGGING
 		updateLogging();
