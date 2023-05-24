@@ -40,7 +40,7 @@ class FlxVideoSpriteExt extends FlxVideoSprite
 			FlxG.sound.music.pause();
 		#end
 
-		super.play(Path, Loop);
+		super.play(path, loop);
 	}
 
 	override public function dispose():Void

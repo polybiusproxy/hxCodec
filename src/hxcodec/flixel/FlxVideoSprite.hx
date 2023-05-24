@@ -14,9 +14,9 @@ class FlxVideoSprite extends FlxSprite
 	// Variables
 	public var bitmap(default, null):VideoBitmap;
 
-	public function new(X:Float = 0, Y:Float = 0):Void
+	public function new(x:Float = 0, y:Float = 0):Void
 	{
-		super(X, Y);
+		super(x, y);
 
 		bitmap = new VideoBitmap();
 		bitmap.visible = false;
@@ -25,7 +25,7 @@ class FlxVideoSprite extends FlxSprite
 	}
 
 	// Methods
-	public function play(?Path:String, Loop:Bool = false):Int
+	public function play(?path:String, loop:Bool = false):Int
 	{
 		if (bitmap == null)
 			return -1;
@@ -41,10 +41,10 @@ class FlxVideoSprite extends FlxSprite
 
 		// in case if you want to use another dir then the application one.
 		// android can already do this, it can't use application's storage.
-		if (FileSystem.exists(Sys.getCwd() + Path))
-			return bitmap.play(Sys.getCwd() + Path, Loop);
+		if (FileSystem.exists(Sys.getCwd() + path))
+			return bitmap.play(Sys.getCwd() + path, loop);
 		else
-			return bitmap.play(Path, Loop);
+			return bitmap.play(path, loop);
 	}
 
 	public function stop():Void
