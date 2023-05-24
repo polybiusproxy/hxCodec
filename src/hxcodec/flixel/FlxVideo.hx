@@ -31,7 +31,7 @@ class FlxVideo extends VideoBitmap
 		FlxG.addChildBelowMouse(this);
 	}
 
-	override public function play(?path:String, loop:Bool = false):Int
+	override public function play(location:String, shouldLoop:Bool = false):Int
 	{
 		#if FLX_SOUND_SYSTEM
 		if (FlxG.sound.music != null && pauseMusic)
@@ -48,10 +48,10 @@ class FlxVideo extends VideoBitmap
 
 		// in case if you want to use another dir then the application one.
 		// android can already do this, it can't use application's storage.
-		if (FileSystem.exists(Sys.getCwd() + path))
-			return super.play(Sys.getCwd() + path, loop);
+		if (FileSystem.exists(Sys.getCwd() + location))
+			return super.play(Sys.getCwd() + location, shouldLoop);
 		else
-			return super.play(path, loop);
+			return super.play(location, shouldLoop);
 	}
 
 	override public function dispose():Void

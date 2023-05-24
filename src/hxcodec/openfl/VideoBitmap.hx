@@ -229,7 +229,7 @@ class VideoBitmap extends Bitmap
 	}
 
 	// Methods
-	public function play(?location:String, shouldLoop:Bool = false):Int
+	public function play(location:String, shouldLoop:Bool = false):Int
 	{
 		if (location == null || (location != null && !location.contains('.')))
 		{
