@@ -33,14 +33,14 @@ class FlxVideoSpriteExt extends FlxVideoSprite
 	}
 
 	// Overrides
-	override public function play(?path:String, loop:Bool = false):Void
+	override public function play(?path:String, loop:Bool = false):Int
 	{
 		#if FLX_SOUND_SYSTEM
 		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.pause();
 		#end
 
-		super.play(path, loop);
+		return super.play(path, loop);
 	}
 
 	override public function dispose():Void
