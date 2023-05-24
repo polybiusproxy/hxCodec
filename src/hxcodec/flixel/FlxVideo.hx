@@ -31,7 +31,7 @@ class FlxVideo extends VideoBitmap
 		FlxG.addChildBelowMouse(this);
 	}
 
-	override public function play(path:String, loop:Bool = false):Int
+	override public function play(?path:String, loop:Bool = false):Int
 	{
 		#if FLX_SOUND_SYSTEM
 		if (FlxG.sound.music != null && pauseMusic)
