@@ -2,6 +2,7 @@ package hxcodec.flixel;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.util.FlxColor;
 import hxcodec.openfl.VideoBitmap;
 import lime.app.Event;
 import sys.FileSystem;
@@ -17,6 +18,8 @@ class FlxVideoSprite extends FlxSprite
 	public function new(x:Float = 0, y:Float = 0):Void
 	{
 		super(x, y);
+
+		makeGraphic(1, 1, FlxColor.TRANSPARENT);
 
 		bitmap = new VideoBitmap();
 		bitmap.visible = false;
