@@ -7,6 +7,7 @@
 	<source path="Source" />
 	
 	<haxelib name="lime" />
+	<haxelib name="hxCodec" if="windows || linux || android" />
 	
 	<assets path="Assets" rename="assets" />
 	

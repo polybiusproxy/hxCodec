@@ -3,11 +3,11 @@ package;
 import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.FlxState;
-import hxcodec.flixel.FlxVideoHandler;
+import hxcodec.flixel.FlxVideo;
 
 class PlayState extends FlxState
 {
-	var video:FlxVideoHandler;
+	var video:FlxVideo;
 
 	override public function create():Void
 	{
@@ -29,9 +29,9 @@ class PlayState extends FlxState
 
 		if (FlxG.keys.justPressed.Q)
 		{
-			video = new FlxVideoHandler();
-			video.canUseAutoResize = false;
-			video.playVideo('assets/video.mp4');
+			video = new FlxVideo();
+			video.autoResize = false;
+			video.play('assets/video.mp4');
 		}
 
 		if (FlxG.keys.justPressed.A)

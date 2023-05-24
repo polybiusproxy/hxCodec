@@ -43,7 +43,7 @@
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
-	<haxelib name="hxCodec" if="desktop || android" />
+	<haxelib name="hxCodec" if="windows || linux || android" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -62,7 +62,6 @@
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
 	<!-- Show debug traces for hxCodec -->
-	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
 	<haxedef name="HXC_LIBVLC_LOGGING" if="desktop" />
 
 </project>

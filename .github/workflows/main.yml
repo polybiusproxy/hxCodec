@@ -1,7 +1,7 @@
 name: Testing
 on:
   push:
-    branches: [ main ]
+    branches: [main, develop]
   workflow_dispatch:
 jobs:
   Job:
@@ -9,14 +9,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
-        sample: [
-          sample/basic,
-          sample/flixel-cutscene,
-          sample/flixel-playback,
-          sample/lime-playback,
-          sample/openfl-playback
-        ]
+        os: [windows-latest, ubuntu-latest]
+        sample: [flixel-cutscene, flixel-playback, lime-playback, openfl-playback]
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -42,12 +36,8 @@ jobs:
 
       - name: Building Windows
         if: matrix.os == 'windows-latest'
-        run: cd ${{matrix.sample}} && haxelib run lime build windows -debug
-
-      - name: Building Mac
-        if: matrix.os == 'macos-latest'
-        run: cd ${{matrix.sample}} && haxelib run lime build mac -debug
+        run: cd sample/${{matrix.sample}} && haxelib run lime build windows -debug
 
       - name: Building Linux
         if: matrix.os == 'ubuntu-latest'
-        run: cd ${{matrix.sample}} && haxelib run lime build linux -debug
+        run: cd sample/${{matrix.sample}} && haxelib run lime build linux -debug

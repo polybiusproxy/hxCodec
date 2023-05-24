@@ -130,6 +130,12 @@ extern class LibVLC
 	@:native('libvlc_media_player_get_nsobject')
 	static function media_player_get_nsobject(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.RawPointer<cpp.Void>;
 
+	@:native('libvlc_media_player_set_xwindow')
+	static function media_player_set_xwindow(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, drawable:cpp.UInt32):Void;
+
+	@:native('libvlc_media_player_get_xwindow')
+	static function media_player_get_xwindow(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.UInt32;
+
 	@:native('libvlc_media_player_set_hwnd')
 	static function media_player_set_hwnd(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, drawable:cpp.RawPointer<cpp.Void>):Void;
 
