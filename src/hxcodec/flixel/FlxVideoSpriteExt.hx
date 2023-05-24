@@ -61,7 +61,7 @@ class FlxVideoSpriteExt extends FlxVideoSprite
 		if (skippable && FlxG.keys.anyPressed(skipKeys) && bitmap.isPlaying)
 		{
 			skipTimer += elapsed;
-			if (skipTimer > 1.0)
+			if (skipTimer > 10.0)
 				bitmap.onEndReached.dispatch();
 		}
 		else
@@ -74,7 +74,7 @@ class FlxVideoSpriteExt extends FlxVideoSprite
 			if (skippable && touch.pressed && bitmap.isPlaying)
 			{
 				skipTimer += elapsed;
-				if (skipTimer > 1.0)
+				if (skipTimer > 10.0)
 				    bitmap.onEndReached.dispatch();
 			}
 			else

@@ -84,7 +84,7 @@ class FlxVideo extends VideoBitmap
 		if (skippable && FlxG.keys.anyPressed(skipKeys) && isPlaying)
 		{
 			skipTimer++;
-			if (skipTimer > 1.0)
+			if (skipTimer > 10.0)
 				onEndReached.dispatch();
 		}
 		else
@@ -97,7 +97,7 @@ class FlxVideo extends VideoBitmap
 			if (skippable && touch.pressed && isPlaying)
 			{
 				skipTimer++;
-				if (skipTimer > 1.0)
+				if (skipTimer > 10.0)
 					onEndReached.dispatch();
 			}
 			else
