@@ -13,18 +13,16 @@ import hxcodec.flixel.FlxVideoSprite;
 class FlxVideoSpriteExt extends FlxVideoSprite
 {
 	// Variables
+	public var pauseMusic:Bool = false;
 	public var skippable:Bool = true;
-	#if FLX_KEYBOARD
 	public var skipKeys:Array<FlxKey> = [SPACE, ENTER, ESCAPE];
-	#end
 
 	// Declarations
-	private var pauseMusic:Bool = false;
 	private var skipTimer:Float = 0;
 
-	public function new(X:Float = 0, Y:Float = 0):Void
+	public function new(x:Float = 0, y:Float = 0):Void
 	{
-		super(X, Y);
+		super(x, y);
 
 		bitmap.onOpening.add(function()
 		{
@@ -35,15 +33,9 @@ class FlxVideoSpriteExt extends FlxVideoSprite
 	}
 
 	// Overrides
-	#if FLX_SOUND_SYSTEM
-	override public function play(Path:String, Loop:Bool = false, PauseMusic:Bool = false):Void
-	#else
-	override public function play(Path:String, Loop:Bool = false):Void
-	#end
+	override public function play(path:String, loop:Bool = false):Void
 	{
 		#if FLX_SOUND_SYSTEM
-		pauseMusic = PauseMusic;
-
 		if (FlxG.sound.music != null && pauseMusic)
 			FlxG.sound.music.pause();
 		#end
