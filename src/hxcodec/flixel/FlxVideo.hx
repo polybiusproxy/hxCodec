@@ -46,8 +46,6 @@ class FlxVideo extends VideoBitmap
 			FlxG.signals.focusLost.add(pause);
 		}
 
-		// in case if you want to use another dir then the application one.
-		// android can already do this, it can't use application's storage.
 		if (FileSystem.exists(Sys.getCwd() + location))
 			return super.play(Sys.getCwd() + location, shouldLoop);
 		else
