@@ -1,9 +1,7 @@
 package hxcodec.flixel;
 
 import flixel.FlxG;
-#if FLX_KEYBOARD
 import flixel.input.keyboard.FlxKey;
-#end
 import hxcodec.flixel.FlxVideoSprite;
 
 /**
