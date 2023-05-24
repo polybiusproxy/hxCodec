@@ -31,7 +31,7 @@ class FlxVideo extends VideoBitmap
 		FlxG.addChildBelowMouse(this);
 	}
 
-	override public function play(path:String, loop:Bool = false):Void
+	override public function play(path:String, loop:Bool = false):Int
 	{
 		#if FLX_SOUND_SYSTEM
 		if (FlxG.sound.music != null && pauseMusic)
@@ -83,7 +83,7 @@ class FlxVideo extends VideoBitmap
 		#if FLX_KEYBOARD
 		if (skippable && FlxG.keys.anyPressed(skipKeys) && isPlaying)
 		{
-			skipTimer += elapsed;
+			skipTimer++;
 			if (skipTimer > 1.0)
 				onEndReached.dispatch();
 		}
@@ -96,7 +96,7 @@ class FlxVideo extends VideoBitmap
 		{
 			if (skippable && touch.pressed && isPlaying)
 			{
-				skipTimer += elapsed;
+				skipTimer++;
 				if (skipTimer > 1.0)
 					onEndReached.dispatch();
 			}
