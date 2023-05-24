@@ -28,7 +28,7 @@ class FlxCutsceneSprite extends FlxVideoSprite
 	{
 		super(X, Y);
 
-		bitmap.onOpening.add(function()
+		onOpening.add(function()
 		{
 			#if FLX_SOUND_SYSTEM
 			volume = Std.int((FlxG.sound.muted ? 0 : 1) * (FlxG.sound.volume * 100));
@@ -68,7 +68,7 @@ class FlxCutsceneSprite extends FlxVideoSprite
 		super.update(elapsed);
 
 		#if FLX_KEYBOARD
-		if (skippable && FlxG.keys.anyPressed(skipKeys) && bitmap.isPlaying)
+		if (skippable && FlxG.keys.anyJustPressed(skipKeys) && bitmap.isPlaying)
 		{
 			skipTimer += elapsed;
 			if (skipTimer > 1.0)
@@ -81,7 +81,7 @@ class FlxCutsceneSprite extends FlxVideoSprite
 		#if FLX_TOUCH
 		for (touch in FlxG.touches.list)
 		{
-			if (skippable && touch.pressed && bitmap.isPlaying)
+			if (skippable && touch.justPressed && bitmap.isPlaying)
 			{
 				skipTimer += elapsed;
 				if (skipTimer > 1.0)
@@ -92,7 +92,7 @@ class FlxCutsceneSprite extends FlxVideoSprite
 		}
 		#end
 
-		if (autoResize && bitmap.bitmapData != null && frames != null)
+		if (autoResize)
 		{
 			var aspectRatio:Float = resizeBy == GAME ? (FlxG.width / FlxG.height) : (videoWidth / videoHeight);
 
