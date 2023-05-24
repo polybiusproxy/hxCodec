@@ -166,7 +166,6 @@ class VideoBitmap extends Bitmap
 	public var channel(get, set):Int;
 	public var delay(get, set):Int;
 	public var rate(get, set):Single;
-	public var role(get, set):Int;
 	public var isPlaying(get, never):Bool;
 	public var isSeekable(get, never):Bool;
 	public var canPause(get, never):Bool;
@@ -478,22 +477,6 @@ class VideoBitmap extends Bitmap
 	{
 		if (mediaPlayer != null)
 			LibVLC.media_player_set_rate(mediaPlayer, value);
-
-		return value;
-	}
-
-	@:noCompletion private function get_role():Int
-	{
-		if (mediaPlayer != null)
-			return LibVLC.media_player_get_role(mediaPlayer);
-
-		return -1;
-	}
-
-	@:noCompletion private function set_role(value:Int):Int
-	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_set_role(mediaPlayer, value);
 
 		return value;
 	}

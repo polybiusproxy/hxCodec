@@ -105,12 +105,6 @@ extern class LibVLC
 	@:native("libvlc_media_player_set_rate")
 	static function media_player_set_rate(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, rate:Single):Int;
 
-	@:native("libvlc_media_player_get_role")
-	static function media_player_get_role(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):Int;
-
-	@:native("libvlc_media_player_set_role")
-	static function media_player_set_role(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, role:UInt):Int;
-
 	@:native("libvlc_media_player_get_length")
 	static function media_player_get_length(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.Int64;
 

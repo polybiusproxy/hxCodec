@@ -119,23 +119,6 @@ enum abstract LibVLC_Audio_Output_Channel(Int) from Int to Int
 	final LibVLC_AudioChannel_Dolbys = 5;
 }
 
-/**
- * Media player roles.
- */
-enum abstract LibVLC_Media_Player_Role(Int) from Int to Int
-{
-	final LibVLC_Role_None = 0; /* Don't use a media player role */
-	final LibVLC_Role_Music = 1; /* Music (or radio) playback */
-	final LibVLC_Role_Video = 2; /* Video playback */
-	final LibVLC_Role_Communication = 3; /* Speech, real-time communication */
-	final LibVLC_Role_Game = 4; /* Video game */
-	final LibVLC_Role_Notification = 5; /* User interaction feedback */
-	final LibVLC_Role_Animation = 6; /* Embedded animation (e.g. in web page) */
-	final LibVLC_Role_Production = 7; /* Audio editting/production */
-	final LibVLC_Role_Accessibility = 8; /* Accessibility */
-	final LibVLC_Role_Test = 9; /* Testing */
-}
-
 typedef LibVLC_Callback_T = cpp.Callable<(p_event:cpp.RawConstPointer<LibVLC_Event_T>, p_data:cpp.RawPointer<cpp.Void>) -> Void>;
 
 typedef LibVLC_Log_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, level:Int, ctx:cpp.RawConstPointer<LibVLC_Log_T>, fmt:cpp.ConstCharStar,
