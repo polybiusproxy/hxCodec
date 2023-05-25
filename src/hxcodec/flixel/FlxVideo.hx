@@ -103,7 +103,7 @@ class FlxVideo extends VideoBitmap
 		}
 		#end
 
-		if (autoResize && texture != null)
+		if (autoResize)
 		{
 			var aspectRatio:Float = FlxG.width / FlxG.height;
 
