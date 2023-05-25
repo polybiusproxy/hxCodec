@@ -58,7 +58,7 @@ int vasprintf(char **sptr, const char *__restrict fmt, va_list ap)
 
 static void callbacks(const libvlc_event_t *event, void *data)
 {
-	VideoPlayer_obj *self = reinterpret_cast<VideoPlayer_obj *>(data);
+	MediaPlayer_obj *self = reinterpret_cast<MediaPlayer_obj *>(data);
 
 	switch (event->type)
 	{
@@ -92,7 +92,7 @@ static void callbacks(const libvlc_event_t *event, void *data)
 
 static void logging(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
 {
-	VideoPlayer_obj *self = reinterpret_cast<VideoPlayer_obj *>(data);
+	MediaPlayer_obj *self = reinterpret_cast<MediaPlayer_obj *>(data);
 
 	char *msg = NULL;
 	if (vasprintf(&msg, fmt, args) < 0)
@@ -128,7 +128,7 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 
 	self->messages.push_back(logMsg);
 }')
-class VideoPlayer
+class MediaPlayer
 {
 	// Variables
 	public var time(get, set):Int;
