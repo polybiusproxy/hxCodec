@@ -36,7 +36,7 @@ class Main extends Sprite
 			case 83: // S
 				video.resume();
 			case 68: // D
-				video.stop();
+				video.dispose();
 			case 70: // F
 				video.bitmap.time -= 5000;
 			case 71: // G
