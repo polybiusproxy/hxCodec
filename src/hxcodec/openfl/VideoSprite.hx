@@ -25,21 +25,15 @@ class VideoSprite extends Sprite
 	}
 
 	// Methods
-	public function play(location:String, shouldLoop:Bool = false):Int
+	public function playMedia(location:String, shouldLoop:Bool = false):Int
 	{
 		if (bitmap == null)
 			return -1;
 
 		if (FileSystem.exists(Sys.getCwd() + location))
-			return bitmap.play(Sys.getCwd() + location, shouldLoop);
+			return bitmap.playMedia(Sys.getCwd() + location, shouldLoop);
 		else
-			return bitmap.play(location, shouldLoop);
-	}
-
-	public function stop():Void
-	{
-		if (bitmap != null)
-			bitmap.stop();
+			return bitmap.playMedia(location, shouldLoop);
 	}
 
 	public function pause():Void

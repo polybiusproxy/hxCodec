@@ -217,12 +217,6 @@ class VideoPlayer
 		return LibVLC.media_player_play(mediaPlayer);
 	}
 
-	public function stop():Void
-	{
-		if (mediaPlayer != null)
-			LibVLC.media_player_stop(mediaPlayer);
-	}
-
 	public function pause():Void
 	{
 		if (mediaPlayer != null)
