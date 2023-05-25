@@ -98,28 +98,35 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 	if (vasprintf(&msg, fmt, args) < 0)
 		return;
 
-	std::string logMsg = "[ ";
+	std::string log = "[ ";
 
 	switch (level)
 	{
 		case LIBVLC_DEBUG:
-			logMsg.append("DEBUG");
+			log.append("DEBUG");
 			break;
 		case LIBVLC_NOTICE:
-			logMsg.append("INFO");
+			log.append("INFO");
 			break;
 		case LIBVLC_WARNING:
-			logMsg.append("WARNING");
+			log.append("WARNING");
 			break;
 		case LIBVLC_ERROR:
-			logMsg.append("ERROR");
+			log.append("ERROR");
 			break;
 	}
 
-	logMsg.append(" ] ");
-	logMsg.append(std::string(msg));
+	log.append(" ] ");
+	log.append(std::string(msg));
 
-	self->messages.push_back(logMsg.c_str());
+	size_t len = log.length();
+
+	// Copy the log to a char array.
+	char *logMsg = new char[len + 1];
+	memcpy(logMsg, log.c_str(), len);
+	logMsg[len] = \'\\0\';
+
+	self->messages.push_back(logMsg);
 }')
 class VideoPlayer
 {
@@ -151,7 +158,7 @@ class VideoPlayer
 
 	// Declarations
 	private var events:Array<Bool> = [];
-	private var messages:cpp.StdVectorConstCharStar;
+	private var messages:cpp.VectorCharStar;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
@@ -162,7 +169,7 @@ class VideoPlayer
 		for (i in 0...7)
 			events[i] = false;
 
-		messages = cpp.StdVectorConstCharStar.create();
+		messages = cpp.VectorCharStar.create();
 
 		onOpening = new Event<Void->Void>();
 		onPlaying = new Event<Void->Void>();
