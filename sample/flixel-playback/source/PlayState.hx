@@ -46,7 +46,7 @@ class PlayState extends FlxState
 
 		if (FlxG.keys.justPressed.D)
 		{
-			video.stop();
+			video.dispose();
 		}
 
 		if (FlxG.keys.justPressed.F)
