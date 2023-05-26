@@ -196,18 +196,16 @@ class MediaPlayer
 
 	// Methods
 	public function play(location:String, shouldLoop:Bool = false):Int
-	{
-		if (location == null || (location != null && !location.contains('.')))
-			return -1;
-
-		if ((location.startsWith('http') || location.startsWith('file')) && location.contains(':'))
+	{		if ((location != null && location.contains('://'))
 			mediaItem = LibVLC.media_new_location(instance, location);
-		else
+		else if (location != null)
 		{
 			final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
 
 			mediaItem = LibVLC.media_new_path(instance, path);
 		}
+		else
+			return -1;
 
 		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
 
