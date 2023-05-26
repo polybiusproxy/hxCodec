@@ -39,12 +39,14 @@ Check out the [Samples Folder](samples/) for examples on how to use this library
 
 <details>
     <summary>Windows</summary>
+	
 You don't need any special instructions in order to build for Windows.
 Just run the `lime build windows` command and the library will be building with your application.
 </details>
 
 <details>
     <summary>Linux</summary>
+	
 In order to build a application with the library, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
 ```bash
 sudo apt-get install libvlc-dev libvlccore-dev 
@@ -53,6 +55,7 @@ sudo apt-get install libvlc-dev libvlccore-dev
 
 <details>
     <summary>Android</summary>
+	
 **Currently `hxCodec` can load videos only from internal / external storage (not from the application's storage).**
 In order for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/MAJigsaw77/extension-androidtools).
 
