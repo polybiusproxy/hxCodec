@@ -11,6 +11,8 @@
 
 	<assets path="Assets" rename="assets" />
 
+	<haxeflag name="-w" value="-WDeprecated" />
+
 	<haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
 
 </project>
