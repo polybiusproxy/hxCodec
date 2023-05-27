@@ -95,5 +95,6 @@ You will also have to put the location manually in the paths and to copy that vi
 - [Datee](https://github.com/datee) - Creator of HaxeVLC.
 - [MAJigsaw](https://github.com/MAJigsaw77) - Programmer, Android & Linux support.
 - [MasterEric](https://github.com/MasterEric) - Programmer.
-- [RapperGF](https://github.com/RapperGF) - Rendering Overhaul & Testing
+- [RapperGF](https://github.com/RapperGF) - Rendering Overhaul & Testing 
+- [Jonnycat] (https://github.com/JonnycatMeow) - MacOS Support 
 - The contributors.
