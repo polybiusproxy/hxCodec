@@ -11,18 +11,13 @@
 	</files>
 
 	<target id="haxe">
-		<compilerflag value="-I${haxelib:hxCodec}/project/utils" />
-
-		<file name="${haxelib:hxCodec}/project/utils/Dynamic2.cpp" />
-
 		<section if="windows">
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlc.lib" if="HXCPP_M64" />
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlccore.lib" if="HXCPP_M64" />
-		</section>
+			<section if="HXCPP_M64">
+				<libpath name="${haxelib:hxCodec}/project/vlc/lib/Windows" />
 
-		<section if="macos">
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Mac/libvlc.5.dylib" if="HXCPP_M64" />
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Mac/libvlccore.7.dylib" if="HXCPP_M64" />
+				<lib name="libvlc.lib" />
+				<lib name="libvlccore.lib" />
+			</section>
 		</section>
 
 		<section if="linux">
@@ -35,6 +30,8 @@
 			<lib name="${haxelib:hxCodec}/project/vlc/lib/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
 			<lib name="${haxelib:hxCodec}/project/vlc/lib/Android/libvlc-x86.so" if="HXCPP_X86" />
 			<lib name="${haxelib:hxCodec}/project/vlc/lib/Android/libvlc-x86_64.so" if="HXCPP_X86_64" />
+
+			<lib name="-llog" />
 		</section>
 	</target>
 </xml>
