@@ -22,7 +22,7 @@ class FlxVideoSprite extends FlxSprite
 		makeGraphic(1, 1, FlxColor.TRANSPARENT);
 
 		bitmap = new VideoBitmap();
-		bitmap.visible = false;
+		bitmap.alpha = 0;
 		bitmap.onOpening.add(function()
 		{
 			#if FLX_SOUND_SYSTEM

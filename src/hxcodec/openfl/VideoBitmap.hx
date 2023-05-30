@@ -476,7 +476,7 @@ class VideoBitmap extends Bitmap
 		if (events.contains(true))
 			checkEvents();
 
-		if (isPlaying)
+		if (__renderable && isPlaying)
 		{
 			deltaTime += elapsed;
 
