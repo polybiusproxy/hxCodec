@@ -43,8 +43,10 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 
 	self->videoWidth = formatWidth;
 	self->videoHeight = formatHeight;
+	self->pixels = new unsigned char[formatWidth * formatHeight * 4];
 
 	self->events[8] = true;
+
 	return 1;
 }
 
@@ -588,8 +590,6 @@ class VideoBitmap extends Bitmap
 			@:privateAccess
 			if (bitmapData != null && texture != null && texture.__width == videoWidth && texture.__height == videoHeight)
 				return;
-
-			pixels = untyped __cpp__('new unsigned char[videoWidth * videoHeight * 4]');
 
 			if (bitmapData != null)
 				bitmapData.dispose();
