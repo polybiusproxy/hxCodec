@@ -45,7 +45,6 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoHeight = formatHeight;
 
 	self->events[8] = true;
-
 	return 1;
 }
 
@@ -146,7 +145,7 @@ class VideoBitmap extends Bitmap
 	// Declarations
 	private var oldTime:Float = 0;
 	private var deltaTime:Float = 0;
-	private var events:Array<Bool>;
+	private var events:Array<Bool> = [];
 	private var texture:Texture;
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
@@ -158,7 +157,6 @@ class VideoBitmap extends Bitmap
 	{
 		super(bitmapData, AUTO, true);
 
-		events = [];
 		for (i in 0...8)
 			events[i] = false;
 
@@ -259,8 +257,6 @@ class VideoBitmap extends Bitmap
 			texture.dispose();
 			texture = null;
 		}
-
-		events = null;
 
 		onOpening = null;
 		onPlaying = null;
