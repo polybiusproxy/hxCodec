@@ -112,7 +112,7 @@ class MediaPlayer
 	public var onBackward(default, null):Event<Void->Void>;
 
 	// Declarations
-	private var events:Array<Bool> = [];
+	private var events:Array<Bool>;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
@@ -120,6 +120,7 @@ class MediaPlayer
 
 	public function new():Void
 	{
+		events = [];
 		for (i in 0...7)
 			events[i] = false;
 
@@ -152,9 +153,11 @@ class MediaPlayer
 			mediaItem = LibVLC.media_new_location(instance, location);
 		else if (location != null)
 		{
-			final path:String = #if windows Path.normalize(location).split("/").join("\\") #else Path.normalize(location) #end;
-
-			mediaItem = LibVLC.media_new_path(instance, path);
+			#if windows
+			mediaItem = LibVLC.media_new_path(instance, Path.normalize(location).split("/").join("\\"));
+			#else
+			mediaItem = LibVLC.media_new_path(instance, Path.normalize(location));
+			#end
 		}
 		else
 			return -1;
@@ -175,6 +178,12 @@ class MediaPlayer
 		#end
 
 		return LibVLC.media_player_play(mediaPlayer);
+	}
+
+	public function stop():Void
+	{
+		if (mediaPlayer != null)
+			LibVLC.media_player_stop(mediaPlayer);
 	}
 
 	public function pause():Void
@@ -210,6 +219,8 @@ class MediaPlayer
 			LibVLC.media_player_stop(mediaPlayer);
 			LibVLC.media_player_release(mediaPlayer);
 		}
+
+		events = null;
 
 		onOpening = null;
 		onPlaying = null;

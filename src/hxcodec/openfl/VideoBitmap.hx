@@ -150,9 +150,9 @@ class VideoBitmap extends Bitmap
 	// Declarations
 	private var oldTime:Float = 0;
 	private var deltaTime:Float = 0;
+	private var events:Array<Bool>;
 	private var texture:Texture;
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
-	private var events:Array<Bool> = [];
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
@@ -162,6 +162,7 @@ class VideoBitmap extends Bitmap
 	{
 		super(bitmapData, AUTO, true);
 
+		events = [];
 		for (i in 0...8)
 			events[i] = false;
 
@@ -217,6 +218,12 @@ class VideoBitmap extends Bitmap
 		return LibVLC.media_player_play(mediaPlayer);
 	}
 
+	public function stop():Void
+	{
+		if (mediaPlayer != null)
+			LibVLC.media_player_stop(mediaPlayer);
+	}
+
 	public function pause():Void
 	{
 		if (mediaPlayer != null)
@@ -256,6 +263,8 @@ class VideoBitmap extends Bitmap
 			texture.dispose();
 			texture = null;
 		}
+
+		events = null;
 
 		onOpening = null;
 		onPlaying = null;

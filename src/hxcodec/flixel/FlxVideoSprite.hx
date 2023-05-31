@@ -61,6 +61,12 @@ class FlxVideoSprite extends FlxSprite
 			return -1;
 	}
 
+	public function stop():Void
+	{
+		if (bitmap != null)
+			bitmap.stop();
+	}
+
 	public function pause():Void
 	{
 		if (bitmap != null)
