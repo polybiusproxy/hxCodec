@@ -33,17 +33,19 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 {
 	VideoBitmap_obj *self = reinterpret_cast<VideoBitmap_obj *>(*data);
 
-	unsigned _w = (*width);
-	unsigned _h = (*height);
+	unsigned formatWidth = (*width);
+	unsigned formatHeight = (*height);
 
-	(*pitches) = _w * 4;
-	(*lines) = _h;
+	(*pitches) = formatWidth * 4;
+	(*lines) = formatHeight;
 
 	memcpy(chroma, "RV32", 4);
 
-	self->videoWidth = _w;
-	self->videoHeight = _h;
+	self->videoWidth = formatWidth;
+	self->videoHeight = formatHeight;
+
 	self->events[8] = true;
+
 	return 1;
 }
 
@@ -590,6 +592,8 @@ class VideoBitmap extends Bitmap
 			@:privateAccess
 			if (bitmapData != null && texture != null && texture.__width == videoWidth && texture.__height == videoHeight)
 				return;
+
+			pixels = untyped __cpp__('new unsigned char[videoWidth * videoHeight * 4]');
 
 			if (bitmapData != null)
 				bitmapData.dispose();
