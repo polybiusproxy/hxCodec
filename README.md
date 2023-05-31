@@ -31,44 +31,10 @@ A Haxe library which adds native video playback on [HaxeFlixel](https://haxeflix
     <haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
     ```
 
-## Additional Setup
-
-<details>
-    <summary>Linux</summary>
-	
-In order to build a application with the library, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
-```bash
-sudo apt-get install libvlc-dev libvlccore-dev 
-```
-</details>
-
-<details>
-    <summary>Android</summary>
-	
-**Currently `hxCodec` can load videos only from internal / external storage (not from the application's storage).**
-In order for this to work on Android, you will need a library called [extension-androidtools](https://github.com/MAJigsaw77/extension-androidtools).
-
-To install it, enter the following in a terminal:
-```bash
-haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
-```
-
-Next, add this into ***project.xml***
-```xml
-<haxelib name="extension-androidtools" if="android" />
-```
-
-You can choose whether you want to use after you import this in your code.
-
-```haxe
-import android.content.Context;
-```
-
-* From internal storage: `Context.getFilesDir()` or `Context.getCacheDir()`<br />
-* From external storage: `Context.getExternalFilesDir()` or `Context.getExternalCacheDir()`.
-
-You will also have to put the location manually in the paths and to copy that video to the respective path.
-</details>
+3. In order to build a application with the library on ***Linux***, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
+    ```bash
+    sudo apt-get install libvlc-dev libvlccore-dev 
+    ```
 
 ## Usage Example
 
