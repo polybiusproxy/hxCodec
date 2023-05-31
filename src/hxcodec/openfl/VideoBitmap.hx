@@ -43,13 +43,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 
 	self->videoWidth = _w;
 	self->videoHeight = _h;
-
 	self->events[8] = true;
-
-	if (self->pixels != nullptr)
-		free(self->pixels);
-
-	self->pixels = new unsigned char[_w *_h * 4];
 	return 1;
 }
 
