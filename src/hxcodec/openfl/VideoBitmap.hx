@@ -25,8 +25,6 @@ using StringTools;
 @:headerInclude('android/log.h')
 #end
 @:headerInclude('stdio.h')
-@:headerInclude('stdlib.h')
-@:headerInclude('stdarg.h')
 @:cppNamespaceCode('
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
@@ -141,7 +139,7 @@ class VideoBitmap extends Bitmap
 	public var onEncounteredError(default, null):Event<Void->Void>;
 	public var onForward(default, null):Event<Void->Void>;
 	public var onBackward(default, null):Event<Void->Void>;
-	public var onTextureSetup(default, null):Event<Void->Void>;
+	public var onFormatSetup(default, null):Event<Void->Void>;
 
 	// Declarations
 	private var oldTime:Float = 0;
@@ -169,7 +167,7 @@ class VideoBitmap extends Bitmap
 		onEncounteredError = new Event<Void->Void>();
 		onForward = new Event<Void->Void>();
 		onBackward = new Event<Void->Void>();
-		onTextureSetup = new Event<Void->Void>();
+		onFormatSetup = new Event<Void->Void>();
 
 		#if windows
 		untyped __cpp__('char const *argv[] = { "--reset-config", "--reset-plugins-cache" }');
@@ -267,7 +265,7 @@ class VideoBitmap extends Bitmap
 		onEncounteredError = null;
 		onForward = null;
 		onBackward = null;
-		onTextureSetup = null;
+		onFormatSetup = null;
 
 		videoWidth = 0;
 		videoHeight = 0;
@@ -600,8 +598,8 @@ class VideoBitmap extends Bitmap
 			bitmapData = BitmapData.fromTexture(texture);
 			smoothing = true;
 
-			if (onTextureSetup != null)
-				onTextureSetup.dispatch();
+			if (onFormatSetup != null)
+				onFormatSetup.dispatch();
 		}
 	}
 

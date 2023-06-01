@@ -24,8 +24,6 @@ using StringTools;
 @:headerInclude('android/log.h')
 #end
 @:headerInclude('stdio.h')
-@:headerInclude('stdlib.h')
-@:headerInclude('stdarg.h')
 @:cppNamespaceCode('
 static void callbacks(const libvlc_event_t *event, void *data)
 {
