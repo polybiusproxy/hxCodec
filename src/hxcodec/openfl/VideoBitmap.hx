@@ -12,7 +12,6 @@ import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.Texture;
-import openfl.utils.ByteArray;
 
 using StringTools;
 
@@ -492,7 +491,7 @@ class VideoBitmap extends Bitmap
 			{
 				final bytes:BytesData = cpp.Pointer.fromRaw(pixels).toUnmanagedArray(Std.int(videoWidth * videoHeight * 4));
 				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
-					texture.uploadFromByteArray(ByteArray.fromBytesData(bytes), 0);
+					texture.uploadFromByteArray(bytes, 0);
 
 				__setRenderDirty();
 			}
