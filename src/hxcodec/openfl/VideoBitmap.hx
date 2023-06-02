@@ -36,14 +36,17 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	(*pitches) = formatWidth * 4;
 	(*lines) = formatHeight;
 
-	memcpy(chroma, "RGBA", 4);
+	memcpy(chroma, "RV32", 4);
 
 	self->videoWidth = formatWidth;
 	self->videoHeight = formatHeight;
-	self->pixels = new unsigned char[formatWidth * formatHeight * 4];
 
 	self->events[8] = true;
 
+	if (self->pixels != nullptr)
+		delete[] self->pixels;
+
+	self->pixels = new unsigned char[formatWidth * formatHeight * 4];
 	return 1;
 }
 
@@ -485,13 +488,14 @@ class VideoBitmap extends Bitmap
 			else
 				return;
 
-			if (texture != null && pixels != null)
+			if (pixels != null)
 			{
-				final bytes:BytesData = cpp.Pointer.fromRaw(pixels).toUnmanagedArray(Std.int(videoWidth * videoHeight * 4));
-				if (bytes.length >= Std.int(videoWidth * videoHeight * 4))
-					texture.uploadFromByteArray(bytes, 0);
-
-				__setRenderDirty();
+				final pixeldata:BytesData = cpp.Pointer.fromRaw(pixels).toUnmanagedArray(Std.int(videoWidth * videoHeight * 4));
+				if (texture != null && pixeldata.length >= Std.int(videoWidth * videoHeight * 4))
+				{
+					texture.uploadFromByteArray(pixeldata, 0);
+					__setRenderDirty();
+				}
 			}
 		}
 	}
