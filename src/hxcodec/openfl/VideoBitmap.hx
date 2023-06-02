@@ -142,7 +142,7 @@ class VideoBitmap extends Bitmap
 	public var onEncounteredError(default, null):Event<Void->Void>;
 	public var onForward(default, null):Event<Void->Void>;
 	public var onBackward(default, null):Event<Void->Void>;
-	public var onFormatSetup(default, null):Event<Void->Void>;
+	public var onTextureSetup(default, null):Event<Void->Void>;
 
 	// Declarations
 	private var oldTime:Float = 0;
@@ -170,7 +170,7 @@ class VideoBitmap extends Bitmap
 		onEncounteredError = new Event<Void->Void>();
 		onForward = new Event<Void->Void>();
 		onBackward = new Event<Void->Void>();
-		onFormatSetup = new Event<Void->Void>();
+		onTextureSetup = new Event<Void->Void>();
 
 		#if windows
 		untyped __cpp__('char const *argv[] = { "--reset-config", "--reset-plugins-cache" }');
@@ -268,7 +268,7 @@ class VideoBitmap extends Bitmap
 		onEncounteredError = null;
 		onForward = null;
 		onBackward = null;
-		onFormatSetup = null;
+		onTextureSetup = null;
 
 		videoWidth = 0;
 		videoHeight = 0;
@@ -488,12 +488,12 @@ class VideoBitmap extends Bitmap
 			else
 				return;
 
-			if (pixels != null)
+			if (pixels != null && texture != null)
 			{
-				final pixeldata:BytesData = cpp.Pointer.fromRaw(pixels).toUnmanagedArray(Std.int(videoWidth * videoHeight * 4));
-				if (texture != null && pixeldata.length >= Std.int(videoWidth * videoHeight * 4))
+				final pixelsData:BytesData = cpp.Pointer.fromRaw(pixels).toUnmanagedArray(Std.int(videoWidth * videoHeight * 4));
+				if (pixelsData.length >= Std.int(videoWidth * videoHeight * 4))
 				{
-					texture.uploadFromByteArray(pixeldata, 0);
+					texture.uploadFromByteArray(pixelsData, 0);
 					__setRenderDirty();
 				}
 			}
@@ -602,8 +602,8 @@ class VideoBitmap extends Bitmap
 			bitmapData = BitmapData.fromTexture(texture);
 			smoothing = true;
 
-			if (onFormatSetup != null)
-				onFormatSetup.dispatch();
+			if (onTextureSetup != null)
+				onTextureSetup.dispatch();
 		}
 	}
 
