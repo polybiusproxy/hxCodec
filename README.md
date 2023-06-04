@@ -50,10 +50,10 @@ Check out the [Samples Folder](samples/) for examples on how to use this library
 
 ## Credits
 
-| Avatar | Username | Involvement |
+| Avatar | UserName | Involvement |
 | ------ | -------- | ----------- |
-| ![](https://avatars.githubusercontent.com/u/47796739?s=64) | [PolybiusProxy](https://github.com/polybiusproxy) | Creator of **hxCodec**.
-| ![](https://avatars.githubusercontent.com/u/1677550?s=64) | [Datee](https://github.com/datee) | Creator of **HaxeVLC**.
-| ![](https://avatars.githubusercontent.com/u/77043862?s=64) | [MAJigsaw](https://github.com/MAJigsaw77) | Programmer, Android & Linux support.
-| ![](https://avatars.githubusercontent.com/u/4635334?s=64) | [MasterEric](https://github.com/EliteMasterEric) | Additional Programmer.
+| ![](https://avatars.githubusercontent.com/u/47796739?s=64) | [polybiusproxy](https://github.com/polybiusproxy) | Creator of **hxCodec**.
+| ![](https://avatars.githubusercontent.com/u/1677550?s=64) | [datee](https://github.com/datee) | Creator of **HaxeVLC**.
+| ![](https://avatars.githubusercontent.com/u/77043862?s=64) | [MAJigsaw77](https://github.com/MAJigsaw77) | Programmer, Android & Linux support.
+| ![](https://avatars.githubusercontent.com/u/4635334?s=64) | [EliteMasterEric](https://github.com/EliteMasterEric) | Additional Programmer.
 | ![](https://avatars.githubusercontent.com/u/84131849?s=64) | [RapperGF](https://github.com/RapperGF) | Rendering Overhaul & Testing.
