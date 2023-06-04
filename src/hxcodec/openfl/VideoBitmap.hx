@@ -16,7 +16,6 @@ import openfl.display3D.textures.Texture;
 using StringTools;
 
 /**
- * ...
  * @author Mihai Alexandru (M.A. Jigsaw).
  *
  * This class lets you to use LibVLC externs as a bitmap that you can displaylist along other items.
@@ -147,7 +146,7 @@ class VideoBitmap extends Bitmap
 	// Declarations
 	private var oldTime:Float = 0;
 	private var deltaTime:Float = 0;
-	private var events:Array<Bool> = [];
+	private var events:Array<Bool>;
 	private var texture:Texture;
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
@@ -159,6 +158,7 @@ class VideoBitmap extends Bitmap
 	{
 		super(bitmapData, AUTO, true);
 
+		events = new Array<Bool>();
 		for (i in 0...8)
 			events[i] = false;
 
@@ -201,15 +201,19 @@ class VideoBitmap extends Bitmap
 		else
 			return -1;
 
-		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
+		LibVLC.media_add_option(mediaItem, shouldLoop ? "input-repeat=65535" : "input-repeat=0");
+
+		if (mediaPlayer != null)
+			LibVLC.media_player_set_media(mediaPlayer, mediaItem);
+		else
+			mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
+
+		LibVLC.media_release(mediaItem);
 
 		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), null);
 		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
 
 		attachEvents();
-
-		LibVLC.media_add_option(mediaItem, shouldLoop ? "input-repeat=65535" : "input-repeat=0");
-		LibVLC.media_release(mediaItem);
 
 		return LibVLC.media_player_play(mediaPlayer);
 	}
@@ -260,19 +264,21 @@ class VideoBitmap extends Bitmap
 			texture = null;
 		}
 
-		onOpening = null;
-		onPlaying = null;
-		onStopped = null;
-		onPaused = null;
-		onEndReached = null;
-		onEncounteredError = null;
-		onForward = null;
-		onBackward = null;
-		onTextureSetup = null;
-
 		videoWidth = 0;
 		videoHeight = 0;
 		pixels = null;
+
+		// events.splice(0, events.length);
+
+		onOpening.removeAll();
+		onPlaying.removeAll();
+		onStopped.removeAll();
+		onPaused.removeAll();
+		onEndReached.removeAll();
+		onEncounteredError.removeAll();
+		onForward.removeAll();
+		onBackward.removeAll();
+		onTextureSetup.removeAll();
 
 		if (instance != null)
 		{
@@ -490,10 +496,11 @@ class VideoBitmap extends Bitmap
 
 			if (pixels != null && texture != null)
 			{
-				final pixelsData:BytesData = cpp.Pointer.fromRaw(pixels).toUnmanagedArray(Std.int(videoWidth * videoHeight * 4));
+				final pixelsData:BytesData = cpp.Pointer.fromRaw(pixels).toUnmanagedArray(videoWidth * videoHeight * 4);
 				if (pixelsData.length >= Std.int(videoWidth * videoHeight * 4))
 				{
 					texture.uploadFromByteArray(pixelsData, 0);
+
 					__setRenderDirty();
 				}
 			}
@@ -527,61 +534,53 @@ class VideoBitmap extends Bitmap
 	// Internal Methods
 	@:noCompletion private function checkEvents():Void
 	{
-	 	// `for` takes much more time comparing to this.
+		// `for` takes much more time comparing to this.
 		if (events[0])
 		{
 			events[0] = false;
-			if (onOpening != null)
-				onOpening.dispatch();
+			onOpening.dispatch();
 		}
 
 		if (events[1])
 		{
 			events[1] = false;
-			if (onPlaying != null)
-				onPlaying.dispatch();
+			onPlaying.dispatch();
 		}
 
 		if (events[2])
 		{
 			events[2] = false;
-			if (onStopped != null)
-				onStopped.dispatch();
+			onStopped.dispatch();
 		}
 
 		if (events[3])
 		{
 			events[3] = false;
-			if (onPaused != null)
-				onPaused.dispatch();
+			onPaused.dispatch();
 		}
 
 		if (events[4])
 		{
 			events[4] = false;
-			if (onEndReached != null)
-				onEndReached.dispatch();
+			onEndReached.dispatch();
 		}
 
 		if (events[5])
 		{
 			events[5] = false;
-			if (onEncounteredError != null)
-				onEncounteredError.dispatch();
+			onEncounteredError.dispatch();
 		}
 
 		if (events[6])
 		{
 			events[6] = false;
-			if (onForward != null)
-				onForward.dispatch();
+			onForward.dispatch();
 		}
 
 		if (events[7])
 		{
 			events[7] = false;
-			if (onBackward != null)
-				onBackward.dispatch();
+			onBackward.dispatch();
 		}
 
 		if (events[8])
@@ -602,14 +601,13 @@ class VideoBitmap extends Bitmap
 			bitmapData = BitmapData.fromTexture(texture);
 			smoothing = true;
 
-			if (onTextureSetup != null)
-				onTextureSetup.dispatch();
+			onTextureSetup.dispatch();
 		}
 	}
 
 	@:noCompletion private function attachEvents():Void
 	{
-		if (mediaPlayer == null)
+		if (mediaPlayer == null || eventManager != null)
 			return;
 
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);

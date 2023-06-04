@@ -12,7 +12,6 @@ import lime.app.Application;
 using StringTools;
 
 /**
- * ...
  * @author Mihai Alexandru (M.A. Jigsaw).
  *
  * This class lets you to use LibVLC externs on a separated window which can display a video.
@@ -110,7 +109,7 @@ class MediaPlayer
 	public var onBackward(default, null):Event<Void->Void>;
 
 	// Declarations
-	private var events:Array<Bool> = [];
+	private var events:Array<Bool>;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
 	private var mediaItem:cpp.RawPointer<LibVLC_Media_T>;
@@ -118,6 +117,7 @@ class MediaPlayer
 
 	public function new():Void
 	{
+		events = new Array<Bool>();
 		for (i in 0...7)
 			events[i] = false;
 
@@ -159,13 +159,16 @@ class MediaPlayer
 		else
 			return -1;
 
-		mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
-
-		attachEvents();
-
 		LibVLC.media_add_option(mediaItem, shouldLoop ? "input-repeat=65535" : "input-repeat=0");
 
+		if (mediaPlayer != null)
+			LibVLC.media_player_set_media(mediaPlayer, mediaItem);
+		else
+			mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
+
 		LibVLC.media_release(mediaItem);
+
+		attachEvents();
 
 		#if windows
 		LibVLC.media_player_set_hwnd(mediaPlayer, untyped __cpp__('GetActiveWindow()'));
@@ -217,14 +220,17 @@ class MediaPlayer
 			LibVLC.media_player_release(mediaPlayer);
 		}
 
-		onOpening = null;
-		onPlaying = null;
-		onStopped = null;
-		onPaused = null;
-		onEndReached = null;
-		onEncounteredError = null;
-		onForward = null;
-		onBackward = null;
+		// events.splice(0, events.length);
+
+		onOpening.removeAll();
+		onPlaying.removeAll();
+		onStopped.removeAll();
+		onPaused.removeAll();
+		onEndReached.removeAll();
+		onEncounteredError.removeAll();
+		onForward.removeAll();
+		onBackward.removeAll();
+		onTextureSetup.removeAll();
 
 		if (instance != null)
 		{
@@ -428,67 +434,59 @@ class MediaPlayer
 	// Internal Methods
 	@:noCompletion private function checkEvents():Void
 	{
-	 	// `for` takes much time comparing this.
+		// `for` takes much more time comparing to this.
 		if (events[0])
 		{
 			events[0] = false;
-			if (onOpening != null)
-				onOpening.dispatch();
+			onOpening.dispatch();
 		}
 
 		if (events[1])
 		{
 			events[1] = false;
-			if (onPlaying != null)
-				onPlaying.dispatch();
+			onPlaying.dispatch();
 		}
 
 		if (events[2])
 		{
 			events[2] = false;
-			if (onStopped != null)
-				onStopped.dispatch();
+			onStopped.dispatch();
 		}
 
 		if (events[3])
 		{
 			events[3] = false;
-			if (onPaused != null)
-				onPaused.dispatch();
+			onPaused.dispatch();
 		}
 
 		if (events[4])
 		{
 			events[4] = false;
-			if (onEndReached != null)
-				onEndReached.dispatch();
+			onEndReached.dispatch();
 		}
 
 		if (events[5])
 		{
 			events[5] = false;
-			if (onEncounteredError != null)
-				onEncounteredError.dispatch();
+			onEncounteredError.dispatch();
 		}
 
 		if (events[6])
 		{
 			events[6] = false;
-			if (onForward != null)
-				onForward.dispatch();
+			onForward.dispatch();
 		}
 
 		if (events[7])
 		{
 			events[7] = false;
-			if (onBackward != null)
-				onBackward.dispatch();
+			onBackward.dispatch();
 		}
 	}
 
 	@:noCompletion private function attachEvents():Void
 	{
-		if (mediaPlayer == null)
+		if (mediaPlayer == null || eventManager != null)
 			return;
 
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
