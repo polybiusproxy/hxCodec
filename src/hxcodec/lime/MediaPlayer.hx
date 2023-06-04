@@ -230,7 +230,6 @@ class MediaPlayer
 		onEncounteredError.removeAll();
 		onForward.removeAll();
 		onBackward.removeAll();
-		onTextureSetup.removeAll();
 
 		if (instance != null)
 		{
