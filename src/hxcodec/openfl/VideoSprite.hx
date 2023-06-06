@@ -77,7 +77,7 @@ class VideoSprite extends Sprite
 		for (child in __children)
 			child.__enterFrame(deltaTime);
 
-		if (autoResize && (bitmap != null && bitmap.bitmapData != null && contains(bitmap)))
+		if (autoResize && contains(bitmap))
 		{
 			var aspectRatio:Float = bitmap.videoWidth / bitmap.videoHeight;
 
