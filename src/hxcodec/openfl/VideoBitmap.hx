@@ -513,30 +513,6 @@ class VideoBitmap extends Bitmap
 		}
 	}
 
-	@:noCompletion private override function set_height(value:Float):Float
-	{
-		if (bitmapData != null)
-			scaleY = value / bitmapData.height;
-		else if (videoHeight > 0)
-			scaleY = value / videoHeight;
-		else
-			scaleY = 1;
-
-		return value;
-	}
-
-	@:noCompletion private override function set_width(value:Float):Float
-	{
-		if (bitmapData != null)
-			scaleX = value / bitmapData.width;
-		else if (videoWidth > 0)
-			scaleX = value / videoWidth;
-		else
-			scaleX = 1;
-
-		return value;
-	}
-
 	// Internal Methods
 	@:noCompletion private function checkEvents():Void
 	{
