@@ -597,7 +597,7 @@ class VideoBitmap extends Bitmap
 			if (texture != null)
 				texture.dispose();
 
-			texture = Lib.current.stage.context3D.createRectangleRectangleTexture(videoWidth, videoHeight, BGRA, true);
+			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
 			bitmapData = BitmapData.fromTexture(texture);
 			smoothing = true;
 
