@@ -42,6 +42,6 @@
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
 	<!-- LibVLC Logging for hxCodec -->
-	<haxedef name="HXC_LIBVLC_LOGGING" if="debug" />-->
+	<haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
 
 </project>

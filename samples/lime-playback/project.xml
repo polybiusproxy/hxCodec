@@ -10,5 +10,8 @@
 	<haxelib name="hxCodec" if="windows || linux || android" />
 	
 	<assets path="Assets" rename="assets" />
+
+	<!-- LibVLC Logging for hxCodec -->
+	<haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
 	
 </project>
