@@ -40,7 +40,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->videoWidth = formatWidth;
 	self->videoHeight = formatHeight;
 
-	self->events[8] = true;
+	self->events[9] = true;
 
 	if (self->pixels != nullptr)
 		delete[] self->pixels;
@@ -85,6 +85,9 @@ static void callbacks(const libvlc_event_t *event, void *data)
 			break;
 		case libvlc_MediaPlayerBackward:
 			self->events[7] = true;
+			break;
+		case libvlc_MediaPlayerMediaChanged:
+			self->events[8] = true;
 			break;
 	}
 }
@@ -141,6 +144,7 @@ class VideoBitmap extends Bitmap
 	public var onEncounteredError(default, null):Event<Void->Void>;
 	public var onForward(default, null):Event<Void->Void>;
 	public var onBackward(default, null):Event<Void->Void>;
+	public var onMediaChanged(default, null):Event<Void->Void>;
 	public var onTextureSetup(default, null):Event<Void->Void>;
 
 	// Declarations
@@ -159,7 +163,7 @@ class VideoBitmap extends Bitmap
 		super(bitmapData, AUTO, true);
 
 		events = new Array<Bool>();
-		for (i in 0...8)
+		for (i in 0...9)
 			events[i] = false;
 
 		onOpening = new Event<Void->Void>();
@@ -170,6 +174,7 @@ class VideoBitmap extends Bitmap
 		onEncounteredError = new Event<Void->Void>();
 		onForward = new Event<Void->Void>();
 		onBackward = new Event<Void->Void>();
+		onMediaChanged = new Event<Void->Void
 		onTextureSetup = new Event<Void->Void>();
 
 		#if windows
@@ -278,6 +283,7 @@ class VideoBitmap extends Bitmap
 		onEncounteredError.removeAll();
 		onForward.removeAll();
 		onBackward.removeAll();
+		onMediaChanged.removeAll();
 		onTextureSetup.removeAll();
 
 		if (instance != null)
@@ -586,6 +592,12 @@ class VideoBitmap extends Bitmap
 		if (events[8])
 		{
 			events[8] = false;
+			onMediaChanged.dispatch();
+		}
+
+		if (events[9])
+		{
+			events[9] = false;
 
 			@:privateAccess
 			if (bitmapData != null && texture != null && texture.__width == videoWidth && texture.__height == videoHeight)
@@ -620,6 +632,7 @@ class VideoBitmap extends Bitmap
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerMediaChanged, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 	}
 
 	@:noCompletion private function detachEvents():Void
@@ -635,5 +648,6 @@ class VideoBitmap extends Bitmap
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerMediaChanged, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 	}
 }

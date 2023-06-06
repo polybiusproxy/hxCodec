@@ -54,6 +54,9 @@ static void callbacks(const libvlc_event_t *event, void *data)
 		case libvlc_MediaPlayerBackward:
 			self->events[7] = true;
 			break;
+		case libvlc_MediaPlayerMediaChanged:
+			self->events[8] = true;
+			break;
 	}
 }
 
@@ -107,6 +110,7 @@ class MediaPlayer
 	public var onEncounteredError(default, null):Event<Void->Void>;
 	public var onForward(default, null):Event<Void->Void>;
 	public var onBackward(default, null):Event<Void->Void>;
+	public var onMediaChanged(default, null):Event<Void->Void>;
 
 	// Declarations
 	private var events:Array<Bool>;
@@ -118,7 +122,7 @@ class MediaPlayer
 	public function new():Void
 	{
 		events = new Array<Bool>();
-		for (i in 0...7)
+		for (i in 0...8)
 			events[i] = false;
 
 		onOpening = new Event<Void->Void>();
@@ -129,6 +133,7 @@ class MediaPlayer
 		onEncounteredError = new Event<Void->Void>();
 		onForward = new Event<Void->Void>();
 		onBackward = new Event<Void->Void>();
+		onMediaChanged = new Event<Void->Void>();
 
 		#if windows
 		untyped __cpp__('char const *argv[] = { "--reset-config", "--reset-plugins-cache" }');
@@ -230,6 +235,7 @@ class MediaPlayer
 		onEncounteredError.removeAll();
 		onForward.removeAll();
 		onBackward.removeAll();
+		onMediaChanged.removeAll();
 
 		if (instance != null)
 		{
@@ -481,6 +487,12 @@ class MediaPlayer
 			events[7] = false;
 			onBackward.dispatch();
 		}
+
+		if (events[8])
+		{
+			events[8] = false;
+			onMediaChanged.dispatch();
+		}
 	}
 
 	@:noCompletion private function attachEvents():Void
@@ -498,6 +510,7 @@ class MediaPlayer
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_attach(eventManager, LibVLC_MediaPlayerMediaChanged, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 	}
 
 	@:noCompletion private function detachEvents():Void
@@ -513,5 +526,6 @@ class MediaPlayer
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerEncounteredError, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerForward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerBackward, untyped __cpp__('callbacks'), untyped __cpp__('this'));
+		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerMediaChanged, untyped __cpp__('callbacks'), untyped __cpp__('this'));
 	}
 }
