@@ -14,7 +14,6 @@ class VideoSprite extends Sprite
 	// Variables
 	public var bitmap(default, null):VideoBitmap;
 	public var autoResize:Bool = true;
-	public var maintainAspectRatio:Bool = true;
 
 	public function new():Void
 	{
