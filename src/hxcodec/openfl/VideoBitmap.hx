@@ -11,7 +11,7 @@ import lime.app.Event;
 import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.display3D.textures.Texture;
+import openfl.display3D.textures.RectangleTexture;
 
 using StringTools;
 
@@ -147,7 +147,7 @@ class VideoBitmap extends Bitmap
 	private var oldTime:Float = 0;
 	private var deltaTime:Float = 0;
 	private var events:Array<Bool>;
-	private var texture:Texture;
+	private var texture:RectangleTexture;
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
@@ -597,7 +597,7 @@ class VideoBitmap extends Bitmap
 			if (texture != null)
 				texture.dispose();
 
-			texture = Lib.current.stage.context3D.createTexture(videoWidth, videoHeight, BGRA, true);
+			texture = Lib.current.stage.context3D.createRectangleRectangleTexture(videoWidth, videoHeight, BGRA, true);
 			bitmapData = BitmapData.fromTexture(texture);
 			smoothing = true;
 
