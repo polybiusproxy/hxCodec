@@ -13,8 +13,6 @@ import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display3D.textures.RectangleTexture;
 
-using StringTools;
-
 /**
  * @author Mihai Alexandru (M.A. Jigsaw).
  *
@@ -194,7 +192,7 @@ class VideoBitmap extends Bitmap
 	// Methods
 	public function play(location:String, shouldLoop:Bool = false):Int
 	{
-		if (location != null && location.contains('://'))
+		if (location != null && location.indexOf('://') != -1)
 			mediaItem = LibVLC.media_new_location(instance, location);
 		else if (location != null)
 		{
