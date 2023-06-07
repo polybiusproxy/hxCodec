@@ -23,6 +23,7 @@ using StringTools;
 #if android
 @:headerInclude('android/log.h')
 #end
+@:headerInclude('stdint.h')
 @:headerInclude('stdio.h')
 @:cppNamespaceCode('
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
@@ -45,7 +46,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	if (self->pixels != nullptr)
 		delete[] self->pixels;
 
-	self->pixels = new unsigned char[formatWidth * formatHeight * 4];
+	self->pixels = new uint8_t[formatWidth * formatHeight * 4];
 	return 1;
 }
 
@@ -503,12 +504,11 @@ class VideoBitmap extends Bitmap
 			if (pixels != null && texture != null)
 			{
 				final pixelsData:BytesData = cpp.Pointer.fromRaw(pixels).toUnmanagedArray(videoWidth * videoHeight * 4);
-				if (pixelsData.length >= Std.int(videoWidth * videoHeight * 4))
-				{
+
+				if (pixelsData.length >= videoWidth * videoHeight * 4)
 					texture.uploadFromByteArray(pixelsData, 0);
 
-					__setRenderDirty();
-				}
+				__setRenderDirty();
 			}
 		}
 	}
