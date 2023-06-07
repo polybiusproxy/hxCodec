@@ -34,7 +34,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	(*pitches) = formatWidth * 4;
 	(*lines) = formatHeight;
 
-	memcpy(chroma, "RV32", 4);
+	strcpy(chroma, "RV32");
 
 	self->videoWidth = formatWidth;
 	self->videoHeight = formatHeight;
