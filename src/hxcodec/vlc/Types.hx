@@ -136,5 +136,8 @@ typedef LibVLC_Audio_Pause_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, pts
 typedef LibVLC_Audio_Resume_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, pts:cpp.Int64) -> Void>;
 typedef LibVLC_Audio_Flush_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>, pts:cpp.Int64) -> Void>;
 typedef LibVLC_Audio_Drain_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>) -> Void>;
-typedef LibVLC_Audio_Setup_CB = cpp.Callable<(data:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.CharStar, rate:cpp.RawPointer<UInt>, channels:cpp.RawPointer<UInt>) -> Int>;
+
+typedef LibVLC_Audio_Setup_CB = cpp.Callable<(data:cpp.RawPointer<cpp.RawPointer<cpp.Void>>, chroma:cpp.CharStar, rate:cpp.RawPointer<UInt>,
+		channels:cpp.RawPointer<UInt>) -> Int>;
+
 typedef LibVLC_Audio_Cleanup_CB = cpp.Callable<(data:cpp.RawPointer<cpp.Void>) -> Void>;
