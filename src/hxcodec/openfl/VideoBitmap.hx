@@ -500,14 +500,9 @@ class VideoBitmap extends Bitmap
 				return;
 
 			if (pixels != null && texture != null)
-			{
-				final pixelsData:BytesData = cpp.Pointer.fromRaw(pixels).toUnmanagedArray(videoWidth * videoHeight * 4);
+				texture.uploadFromByteArray(cpp.Pointer.fromRaw(pixels).toUnmanagedArray(videoWidth * videoHeight * 4), 0);
 
-				if (pixelsData.length >= videoWidth * videoHeight * 4)
-					texture.uploadFromByteArray(pixelsData, 0);
-
-				__setRenderDirty();
-			}
+			__setRenderDirty();
 		}
 	}
 
