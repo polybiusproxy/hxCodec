@@ -1,11 +1,11 @@
 package hxcodec.flixel;
 
 import flixel.FlxG;
-import hxcodec.openfl.VideoBitmap;
+import hxcodec.openfl.Video;
 import openfl.events.Event;
 import sys.FileSystem;
 
-class FlxVideo extends VideoBitmap
+class FlxVideo extends Video
 {
 	// Variables
 	public var pauseMusic:Bool = false;

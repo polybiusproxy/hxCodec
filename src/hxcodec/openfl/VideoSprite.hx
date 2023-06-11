@@ -2,7 +2,7 @@ package hxcodec.openfl;
 
 import openfl.Lib;
 import openfl.display.Sprite;
-import hxcodec.openfl.VideoBitmap;
+import hxcodec.openfl.Video;
 import sys.FileSystem;
 
 /**
@@ -11,14 +11,14 @@ import sys.FileSystem;
 class VideoSprite extends Sprite
 {
 	// Variables
-	public var bitmap(default, null):VideoBitmap;
+	public var bitmap(default, null):Video;
 	public var autoResize:Bool = true;
 
 	public function new():Void
 	{
 		super();
 
-		bitmap = new VideoBitmap();
+		bitmap = new Video();
 		addChild(bitmap);
 	}
 

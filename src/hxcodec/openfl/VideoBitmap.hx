@@ -25,7 +25,7 @@ import openfl.display3D.textures.RectangleTexture;
 @:cppNamespaceCode('
 static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigned *height, unsigned *pitches, unsigned *lines)
 {
-	VideoBitmap_obj *self = reinterpret_cast<VideoBitmap_obj *>(*data);
+	Video_obj *self = reinterpret_cast<Video_obj *>(*data);
 
 	unsigned formatWidth = (*width);
 	unsigned formatHeight = (*height);
@@ -48,14 +48,14 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 
 static void *lock(void *data, void **p_pixels)
 {
-	VideoBitmap_obj *self = reinterpret_cast<VideoBitmap_obj *>(data);
+	Video_obj *self = reinterpret_cast<Video_obj *>(data);
 	*p_pixels = self->pixels;
 	return nullptr; // picture identifier, not needed here
 }
 
 static void callbacks(const libvlc_event_t *event, void *data)
 {
-	VideoBitmap_obj *self = reinterpret_cast<VideoBitmap_obj *>(data);
+	Video_obj *self = reinterpret_cast<Video_obj *>(data);
 
 	switch (event->type)
 	{
@@ -91,7 +91,7 @@ static void callbacks(const libvlc_event_t *event, void *data)
 
 static void logging(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
 {
-	VideoBitmap_obj *self = reinterpret_cast<VideoBitmap_obj *>(data);
+	Video_obj *self = reinterpret_cast<Video_obj *>(data);
 
 	#ifdef __ANDROID__
 	switch (level)
@@ -113,7 +113,7 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 	vprintf(fmt, args);
 	#endif
 }')
-class VideoBitmap extends Bitmap
+class Video extends Bitmap
 {
 	// Variables
 	public var videoWidth(default, null):UInt = 0;

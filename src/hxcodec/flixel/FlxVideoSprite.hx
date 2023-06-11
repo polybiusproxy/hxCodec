@@ -3,7 +3,7 @@ package hxcodec.flixel;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
-import hxcodec.openfl.VideoBitmap;
+import hxcodec.openfl.Video;
 import sys.FileSystem;
 
 /**
@@ -13,7 +13,7 @@ class FlxVideoSprite extends FlxSprite
 {
 	// Variables
 	public var pauseMusic:Bool = false;
-	public var bitmap(default, null):VideoBitmap;
+	public var bitmap(default, null):Video;
 
 	public function new(x:Float = 0, y:Float = 0):Void
 	{
@@ -21,7 +21,7 @@ class FlxVideoSprite extends FlxSprite
 
 		makeGraphic(1, 1, FlxColor.TRANSPARENT);
 
-		bitmap = new VideoBitmap();
+		bitmap = new Video();
 		bitmap.alpha = 0;
 		bitmap.onOpening.add(function()
 		{
