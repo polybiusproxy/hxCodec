@@ -3,7 +3,6 @@ package hxcodec.openfl;
 #if (!(windows || linux || android) && macro)
 #error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Linux/Android and getting this message, please contact us."
 #end
-import haxe.io.BytesData;
 import haxe.io.Path;
 import hxcodec.vlc.LibVLC;
 import hxcodec.vlc.Types;
@@ -38,7 +37,6 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 
 	self->videoWidth = formatWidth;
 	self->videoHeight = formatHeight;
-
 	self->events[9] = true;
 
 	if (self->pixels != nullptr)
@@ -499,7 +497,7 @@ class VideoBitmap extends Bitmap
 			else
 				return;
 
-			if (pixels != null && texture != null)
+			if (texture != null && pixels != null)
 				texture.uploadFromByteArray(cpp.Pointer.fromRaw(pixels).toUnmanagedArray(videoWidth * videoHeight * 4), 0);
 
 			__setRenderDirty();
