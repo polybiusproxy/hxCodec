@@ -266,7 +266,7 @@ class Video extends Bitmap
 
 		videoWidth = 0;
 		videoHeight = 0;
-		pixels = untyped __cpp__('NULL');
+		pixels = null;
 
 		// events.splice(0, events.length);
 
@@ -289,10 +289,10 @@ class Video extends Bitmap
 			LibVLC.release(instance);
 		}
 
-		eventManager = untyped __cpp__('NULL');
-		mediaPlayer = untyped __cpp__('NULL');
-		mediaItem = untyped __cpp__('NULL');
-		instance = untyped __cpp__('NULL');
+		eventManager = null;
+		mediaPlayer = null;
+		mediaItem = null;
+		instance = null;
 	}
 
 	// Get & Set Methods

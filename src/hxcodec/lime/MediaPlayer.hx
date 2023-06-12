@@ -241,10 +241,10 @@ class MediaPlayer
 			LibVLC.release(instance);
 		}
 
-		eventManager = untyped __cpp__('NULL');
-		mediaPlayer = untyped __cpp__('NULL');
-		mediaItem = untyped __cpp__('NULL');
-		instance = untyped __cpp__('NULL');
+		eventManager = null;
+		mediaPlayer = null;
+		mediaItem = null;
+		instance = null;
 	}
 
 	// Get & Set Methods
