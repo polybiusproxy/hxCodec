@@ -162,7 +162,7 @@ class MediaPlayer
 
 		LibVLC.media_add_option(mediaItem, shouldLoop ? "input-repeat=65535" : "input-repeat=0");
 
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.media_player_set_media(mediaPlayer, mediaItem);
 		else
 			mediaPlayer = LibVLC.media_player_new_from_media(mediaItem);
@@ -183,25 +183,25 @@ class MediaPlayer
 
 	public function stop():Void
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.media_player_stop(mediaPlayer);
 	}
 
 	public function pause():Void
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.media_player_set_pause(mediaPlayer, 1);
 	}
 
 	public function resume():Void
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.media_player_set_pause(mediaPlayer, 0);
 	}
 
 	public function togglePaused():Void
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.media_player_pause(mediaPlayer);
 	}
 
@@ -215,7 +215,7 @@ class MediaPlayer
 	{
 		detachEvents();
 
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 		{
 			LibVLC.media_player_stop(mediaPlayer);
 			LibVLC.media_player_release(mediaPlayer);
@@ -233,7 +233,7 @@ class MediaPlayer
 		onBackward.removeAll();
 		onMediaChanged.removeAll();
 
-		if (instance != untyped __cpp__('NULL'))
+		if (instance != null)
 		{
 			#if HXC_LIBVLC_LOGGING
 			LibVLC.log_unset(instance);
@@ -250,7 +250,7 @@ class MediaPlayer
 	// Get & Set Methods
 	@:noCompletion private function get_time():Int
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 		{
 			#if (haxe >= "4.3.0")
 			return LibVLC.media_player_get_time(mediaPlayer).toInt();
@@ -264,7 +264,7 @@ class MediaPlayer
 
 	@:noCompletion private function set_time(value:Int):Int
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.media_player_set_time(mediaPlayer, value);
 
 		return value;
@@ -272,7 +272,7 @@ class MediaPlayer
 
 	@:noCompletion private function get_position():Single
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			return LibVLC.media_player_get_position(mediaPlayer);
 
 		return -1;
@@ -280,7 +280,7 @@ class MediaPlayer
 
 	@:noCompletion private function set_position(value:Single):Single
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.media_player_set_position(mediaPlayer, value);
 
 		return value;
@@ -288,7 +288,7 @@ class MediaPlayer
 
 	@:noCompletion private function get_length():Int
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 		{
 			#if (haxe >= "4.3.0")
 			return LibVLC.media_player_get_length(mediaPlayer).toInt();
@@ -302,7 +302,7 @@ class MediaPlayer
 
 	@:noCompletion private function get_duration():Int
 	{
-		if (mediaItem != untyped __cpp__('NULL'))
+		if (mediaItem != null)
 		{
 			#if (haxe >= "4.3.0")
 			return LibVLC.media_get_duration(mediaItem).toInt();
@@ -316,7 +316,7 @@ class MediaPlayer
 
 	@:noCompletion private function get_mrl():String
 	{
-		if (mediaItem != untyped __cpp__('NULL'))
+		if (mediaItem != null)
 			return cast(LibVLC.media_get_mrl(mediaItem), String);
 
 		return null;
@@ -324,7 +324,7 @@ class MediaPlayer
 
 	@:noCompletion private function get_volume():Int
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			return LibVLC.audio_get_volume(mediaPlayer);
 
 		return -1;
@@ -332,7 +332,7 @@ class MediaPlayer
 
 	@:noCompletion private function set_volume(value:Int):Int
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.audio_set_volume(mediaPlayer, value);
 
 		return value;
@@ -340,7 +340,7 @@ class MediaPlayer
 
 	@:noCompletion private function get_channel():Int
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			return LibVLC.audio_get_channel(mediaPlayer);
 
 		return -1;
@@ -348,7 +348,7 @@ class MediaPlayer
 
 	@:noCompletion private function set_channel(value:Int):Int
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.audio_set_channel(mediaPlayer, value);
 
 		return value;
@@ -356,7 +356,7 @@ class MediaPlayer
 
 	@:noCompletion private function get_delay():Int
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 		{
 			#if (haxe >= "4.3.0")
 			return LibVLC.audio_get_delay(mediaPlayer).toInt();
@@ -370,7 +370,7 @@ class MediaPlayer
 
 	@:noCompletion private function set_delay(value:Int):Int
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.audio_set_delay(mediaPlayer, value);
 
 		return value;
@@ -378,7 +378,7 @@ class MediaPlayer
 
 	@:noCompletion private function get_rate():Single
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			return LibVLC.media_player_get_rate(mediaPlayer);
 
 		return -1;
@@ -386,7 +386,7 @@ class MediaPlayer
 
 	@:noCompletion private function set_rate(value:Single):Single
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.media_player_set_rate(mediaPlayer, value);
 
 		return value;
@@ -394,7 +394,7 @@ class MediaPlayer
 
 	@:noCompletion private function get_isPlaying():Bool
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			return LibVLC.media_player_is_playing(mediaPlayer);
 
 		return false;
@@ -402,7 +402,7 @@ class MediaPlayer
 
 	@:noCompletion private function get_isSeekable():Bool
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			return LibVLC.media_player_is_seekable(mediaPlayer);
 
 		return false;
@@ -410,7 +410,7 @@ class MediaPlayer
 
 	@:noCompletion private function get_canPause():Bool
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			return LibVLC.media_player_can_pause(mediaPlayer);
 
 		return false;
@@ -418,7 +418,7 @@ class MediaPlayer
 
 	@:noCompletion function get_mute():Bool
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			return LibVLC.audio_get_mute(mediaPlayer) > 0;
 
 		return false;
@@ -426,7 +426,7 @@ class MediaPlayer
 
 	@:noCompletion function set_mute(value:Bool):Bool
 	{
-		if (mediaPlayer != untyped __cpp__('NULL'))
+		if (mediaPlayer != null)
 			LibVLC.audio_set_mute(mediaPlayer, value);
 
 		return value;
@@ -493,7 +493,7 @@ class MediaPlayer
 
 	@:noCompletion private function attachEvents():Void
 	{
-		if (mediaPlayer == untyped __cpp__('NULL') || eventManager != untyped __cpp__('NULL'))
+		if (mediaPlayer == null || eventManager != null)
 			return;
 
 		eventManager = LibVLC.media_player_event_manager(mediaPlayer);
@@ -511,7 +511,7 @@ class MediaPlayer
 
 	@:noCompletion private function detachEvents():Void
 	{
-		if (eventManager == untyped __cpp__('NULL'))
+		if (eventManager == null)
 			return;
 
 		LibVLC.event_detach(eventManager, LibVLC_MediaPlayerOpening, untyped __cpp__('callbacks'), untyped __cpp__('this'));
