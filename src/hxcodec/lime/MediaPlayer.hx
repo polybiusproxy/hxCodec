@@ -140,7 +140,7 @@ class MediaPlayer
 		#end
 
 		#if HXC_LIBVLC_LOGGING
-		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('this'));
+		LibVLC.log_set(instance, untyped __cpp__('logging'), untyped __cpp__('NULL'));
 		#end
 	}
 
