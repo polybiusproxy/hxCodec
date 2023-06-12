@@ -40,7 +40,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 	self->events[9] = true;
 
 	if (self->pixels != NULL)
-		delete[] self->pixels;
+		delete self->pixels;
 
 	self->pixels = new uint8_t[formatWidth * formatHeight * 4];
 	return 1;
