@@ -60,8 +60,6 @@ static void callbacks(const libvlc_event_t *event, void *data)
 
 static void logging(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
 {
-	MediaPlayer_obj *self = reinterpret_cast<MediaPlayer_obj *>(data);
-
 	#ifdef __ANDROID__
 	switch (level)
 	{

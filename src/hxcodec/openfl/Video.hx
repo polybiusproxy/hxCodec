@@ -91,8 +91,6 @@ static void callbacks(const libvlc_event_t *event, void *data)
 
 static void logging(void *data, int level, const libvlc_log_t *ctx, const char *fmt, va_list args)
 {
-	Video_obj *self = reinterpret_cast<Video_obj *>(data);
-
 	#ifdef __ANDROID__
 	switch (level)
 	{
