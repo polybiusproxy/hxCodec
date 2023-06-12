@@ -266,7 +266,6 @@ class Video extends Bitmap
 
 		videoWidth = 0;
 		videoHeight = 0;
-		pixels = null;
 
 		// events.splice(0, events.length);
 
