@@ -221,7 +221,7 @@ class MediaPlayer
 			LibVLC.media_player_release(mediaPlayer);
 		}
 
-		// events.splice(0, events.length);
+		events.splice(0, events.length);
 
 		onOpening.removeAll();
 		onPlaying.removeAll();

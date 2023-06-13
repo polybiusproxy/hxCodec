@@ -210,8 +210,8 @@ class Video extends Bitmap
 
 		LibVLC.media_release(mediaItem);
 
-		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), null);
-		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), null, null, untyped __cpp__('this'));
+		LibVLC.video_set_format_callbacks(mediaPlayer, untyped __cpp__('format_setup'), untyped __cpp__('NULL'));
+		LibVLC.video_set_callbacks(mediaPlayer, untyped __cpp__('lock'), untyped __cpp__('NULL'), untyped __cpp__('NULL'), untyped __cpp__('this'));
 
 		attachEvents();
 
@@ -267,7 +267,7 @@ class Video extends Bitmap
 		videoWidth = 0;
 		videoHeight = 0;
 
-		// events.splice(0, events.length);
+		events.splice(0, events.length);
 
 		onOpening.removeAll();
 		onPlaying.removeAll();
