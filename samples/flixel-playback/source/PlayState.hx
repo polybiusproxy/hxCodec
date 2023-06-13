@@ -1,7 +1,5 @@
 package;
 
-import flixel.FlxG;
-import flixel.text.FlxText;
 import flixel.FlxState;
 import hxcodec.flixel.FlxVideo;
 
