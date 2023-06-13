@@ -11,8 +11,8 @@ import sys.FileSystem;
 class VideoSprite extends Sprite
 {
 	// Variables
-	public var bitmap(default, null):Video;
 	public var autoResize:Bool = true;
+	public var bitmap(default, null):Video;
 
 	public function new():Void
 	{
