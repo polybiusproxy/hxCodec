@@ -46,7 +46,7 @@ Check out the [Samples Folder](samples/) for examples on how to use this library
 
 ![](https://github.com/videolan/vlc/blob/master/share/icons/256x256/vlc.png)
 
-**libVLC** is the engine of **VLC** released under the **LGPLv2 License** (or later). Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.
+[***libVLC***](https://www.videolan.org/vlc/libvlc.html) is the engine of **VLC** released under the **LGPLv2 License** (or later). Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.
 
 ## Credits
 
