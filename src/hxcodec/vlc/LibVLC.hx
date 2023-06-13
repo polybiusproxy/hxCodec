@@ -16,12 +16,6 @@ extern class LibVLC
 	@:native("libvlc_release")
 	static function release(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
 
-	@:native("libvlc_get_version")
-	static function get_version():cpp.ConstCharStar;
-
-	@:native("libvlc_get_compiler")
-	static function get_compiler():cpp.ConstCharStar;
-
 	@:native("libvlc_event_attach")
 	static function event_attach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_Type, f_callback:LibVLC_Callback_T,
 		user_data:cpp.RawPointer<cpp.Void>):Int;
@@ -44,9 +38,6 @@ extern class LibVLC
 
 	@:native("libvlc_media_add_option")
 	static function media_add_option(p_md:cpp.RawPointer<LibVLC_Media_T>, psz_options:cpp.ConstCharStar):Void;
-
-	@:native("libvlc_media_add_option_flag")
-	static function media_add_option_flag(p_md:cpp.RawPointer<LibVLC_Media_T>, psz_options:cpp.ConstCharStar, i_flags:UInt):Void;
 
 	@:native("libvlc_media_release")
 	static function media_release(p_md:cpp.RawPointer<LibVLC_Media_T>):Void;
@@ -135,16 +126,6 @@ extern class LibVLC
 
 	@:native('libvlc_media_player_get_hwnd')
 	static function media_player_get_hwnd(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.RawPointer<cpp.Void>;
-
-	@:native('libvlc_media_player_set_android_context')
-	static function media_player_set_android_context(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>, p_awindow_handler:cpp.RawPointer<cpp.Void>):Void;
-
-	@:native("libvlc_audio_set_callbacks")
-	static function audio_set_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, play:LibVLC_Audio_Play_CB, pause:LibVLC_Audio_Pause_CB,
-		resume:LibVLC_Audio_Resume_CB, flush:LibVLC_Audio_Flush_CB, drain:LibVLC_Audio_Drain_CB, opaque:cpp.RawPointer<cpp.Void>):Void;
-
-	@:native("libvlc_audio_set_format_callbacks")
-	static function audio_set_format_callbacks(mp:cpp.RawPointer<LibVLC_MediaPlayer_T>, setup:LibVLC_Audio_Setup_CB, cleanup:LibVLC_Audio_Cleanup_CB):Void;
 
 	@:native("libvlc_audio_get_delay")
 	static function audio_get_delay(p_mi:cpp.RawPointer<LibVLC_MediaPlayer_T>):cpp.Int64;
