@@ -114,8 +114,8 @@ static void logging(void *data, int level, const libvlc_log_t *ctx, const char *
 class Video extends Bitmap
 {
 	// Variables
-	public var videoWidth(default, null):UInt = 0;
-	public var videoHeight(default, null):UInt = 0;
+	public var videoWidth(default, null):Int = 0;
+	public var videoHeight(default, null):Int = 0;
 	public var time(get, set):Int;
 	public var position(get, set):Single;
 	public var length(get, never):Int;
