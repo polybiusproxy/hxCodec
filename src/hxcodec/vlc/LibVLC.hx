@@ -16,6 +16,9 @@ extern class LibVLC
 	@:native("libvlc_release")
 	static function release(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
 
+	@:native("libvlc_free")
+	static function free(ptr:cpp.RawPointer<cpp.Void>):Void;
+
 	@:native("libvlc_event_attach")
 	static function event_attach(p_event_manager:cpp.RawPointer<LibVLC_EventManager_T>, i_event_type:LibVLC_Event_Type, f_callback:LibVLC_Callback_T,
 		user_data:cpp.RawPointer<cpp.Void>):Int;
