@@ -12,8 +12,8 @@
 		"android"
 	],
 	"description": "Haxe library for native video playback on HaxeFlixel and OpenFL.",
-	"version": "2.7.0",
-	"releasenote": "Add skip keys, fix some issues with VideoSprite, bug fixes and more.",
+	"version": "3.0.0",
+	"releasenote": "Updated LibVLC, Fixed Linux support, remade / polished source code and more.",
 	"contributors": [
 		"polybiusproxy"
 	],
