@@ -13,7 +13,7 @@
 	],
 	"description": "Haxe library for native video playback on HaxeFlixel and OpenFL.",
 	"version": "3.0.0",
-	"releasenote": "Updated LibVLC, Fixed Linux support, remade / polished source code and more.",
+	"releasenote": "Updated LibVLC, Fixed Linux support, Remade / Polished source code and more.",
 	"contributors": [
 		"polybiusproxy"
 	],
