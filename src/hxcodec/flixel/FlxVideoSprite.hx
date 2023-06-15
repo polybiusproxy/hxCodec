@@ -12,7 +12,9 @@ import sys.FileSystem;
 class FlxVideoSprite extends FlxSprite
 {
 	// Variables
+	#if FLX_SOUND_SYSTEM
 	public var pauseMusic:Bool = false;
+	#end
 	public var bitmap(default, null):Video;
 
 	public function new(x:Float = 0, y:Float = 0):Void
