@@ -2,94 +2,43 @@
 
 ![](https://img.shields.io/github/repo-size/polybiusproxy/hxCodec) ![](https://badgen.net/github/open-issues/polybiusproxy/hxCodec) ![](https://badgen.net/badge/license/MPL2.0/green)
 
-A library which adds native video support on HaxeFlixel.
+A Haxe library which adds native video playback on [HaxeFlixel](https://haxeflixel.com) and [OpenFL](https://www.openfl.org).
 
---------------------------
+`hxCodec` is powered by [libVLC](https://www.videolan.org/vlc/libvlc.html).
 
-Using [libVLC](https://www.videolan.org/vlc/libvlc.html), hxCodec allows to play hundreds of video codecs.
-          
 **[Click here to check the roadmap](https://github.com/polybiusproxy/hxCodec/projects/1)**
-
---------------------------
 
 ## Instructions
 
-### 1. Install the library
-Install the latest stable version of `hxCodec` by running the following Haxelib command:
-```
-haxelib install hxCodec
-```
+1. Install the latest stable version of `hxCodec` by running the following haxelib command.
+    ```bash
+    haxelib install hxCodec
+    ```
 
-You can also install it through Git to get the latest changes:
-```
-haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
-```
+    You can also install it through `Git` to get the latest changes.
+    ```bash
+    haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
+    ```
 
-### 2. Modify Project.xml
-Add this code in the Project.xml file:
-```xml
-<haxelib name="hxCodec" if="desktop || android" />
-```
+2. Add this code in the ***project.xml*** file.
+    ```xml
+    <haxelib name="hxCodec" if="windows || linux || android" />
+    ```
 
-**OPTIONAL: If you want debug traces in your console when compiling in debug mode, add this:**
-```xml
-<!-- Show debug traces for hxCodec -->
-<haxedef name="HXC_DEBUG_TRACE" if="debug" />
-```
+    **OPTIONAL: Some defines you can add to your project**
+    ```xml
+    <!-- LibVLC Logging for hxCodec -->
+    <haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
+    ```
 
---------------------------
+3. In order to build a application with the library on ***Linux***, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
+    ```bash
+    sudo apt-get install libvlc-dev libvlccore-dev 
+    ```
 
-## Playing videos
+## Usage Example
 
-You can play videos in just 2 lines of code:
-```hx
-var video:hxcodec.flixel.VideoHandler = new hxcodec.flixel.VideoHandler();
-video.playVideo('assets/video.mp4');
-```
-
---------------------------
-
-## Building
-
-### Windows and MacOS
-
-You don't need any special instructions in order to build for Windows or MacOS.
-Just run the `lime build windows` / `lime build mac` command and the library will be building with your game.
-
-### Linux
-
-In order to build a application with the library, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
-
-Example with APT:
-```bash
-sudo apt-get install libvlc-dev libvlccore-dev 
-```
-
-### Android
-
-**Currently, hxCodec can load videos only from internal / external storage (not from the application storage).**
-In order for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
-
-To install it, enter the following in a terminal:
-```
-haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
-```
-
-Next, add this into `Project.xml`
-```xml
-<haxelib name="extension-androidtools" if="android" />
-```
-
-You can choose whether you want to use after you import this in your code.
-
-```haxe
-import android.content.Context;
-```
-
-* From internal storage: `Context.getFilesDir()` or `Context.getCacheDir()`<br />
-* From external storage: `Context.getExternalFilesDir()` or `Context.getExternalCacheDir()`.
-
-You will also have to put the location manually in the paths and to copy that video to the respective path.
+Check out the [Samples Folder](samples/) for examples on how to use this library.
 
 ## Licensing
 
@@ -97,12 +46,14 @@ You will also have to put the location manually in the paths and to copy that vi
 
 ![](https://github.com/videolan/vlc/blob/master/share/icons/256x256/vlc.png)
 
-**libVLC** is the engine of **VLC** released under the **LGPLv2 License** (or later). Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.
+[***libVLC***](https://www.videolan.org/vlc/libvlc.html) is the engine of **VLC** released under the **LGPLv2 License** (or later). Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.
 
 ## Credits
 
-- [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
-- [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Jigsaw](https://github.com/MAJigsaw77) - Programmer, Android & Linux support.
-- [BushTrain](https://github.com/BushTrain460615) - macOS support.
-- The contributors.
+| Avatar | UserName | Involvement |
+| ------ | -------- | ----------- |
+| ![](https://avatars.githubusercontent.com/u/47796739?s=64) | [polybiusproxy](https://github.com/polybiusproxy) | Creator of **hxCodec**.
+| ![](https://avatars.githubusercontent.com/u/1677550?s=64) | [datee](https://github.com/datee) | Creator of **HaxeVLC**.
+| ![](https://avatars.githubusercontent.com/u/77043862?s=64) | [MAJigsaw77](https://github.com/MAJigsaw77) | Programmer, Android & Linux support.
+| ![](https://avatars.githubusercontent.com/u/4635334?s=64) | [EliteMasterEric](https://github.com/EliteMasterEric) | Additional Programmer.
+| ![](https://avatars.githubusercontent.com/u/84131849?s=64) | [RapperGF](https://github.com/RapperGF) | Rendering Overhaul & Testing.

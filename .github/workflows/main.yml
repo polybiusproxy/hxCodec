@@ -1,7 +1,7 @@
 name: Testing
 on:
   push:
-    branches: [ main ]
+    branches: [main, develop]
   workflow_dispatch:
 jobs:
   Job:
@@ -9,7 +9,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [windows-latest, ubuntu-latest]
+        sample: [flixel-playback, lime-playback, openfl-playback]
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -31,16 +32,12 @@ jobs:
           haxelib install lime --quiet
           haxelib install openfl --quiet
           haxelib install flixel --quiet
-          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git --quiet
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec.git ${{github.ref_name}} --quiet
 
       - name: Building Windows
         if: matrix.os == 'windows-latest'
-        run: cd sample && haxelib run lime build windows -debug
-
-      - name: Building Mac
-        if: matrix.os == 'macos-latest'
-        run: cd sample && haxelib run lime build mac -debug
+        run: cd samples/${{matrix.sample}} && haxelib run lime build windows -debug
 
       - name: Building Linux
         if: matrix.os == 'ubuntu-latest'
-        run: cd sample && haxelib run lime build linux -debug
+        run: cd samples/${{matrix.sample}} && haxelib run lime build linux -debug

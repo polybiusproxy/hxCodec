@@ -8,14 +8,14 @@
 		"haxeflixel",
 		"openfl",
 		"windows",
-		"mac",
 		"linux",
 		"android"
 	],
-	"description": "Haxe library for native video support on HaxeFlixel.",
-	"version": "2.6.1",
-	"releasenote": "Add skip keys, fix some issues with VideoSprite, bug fixes and more.",
+	"description": "Haxe library for native video playback on HaxeFlixel and OpenFL.",
+	"version": "3.0.0",
+	"releasenote": "Updated LibVLC, Fixed Linux support, Remade / Polished source code and more.",
 	"contributors": [
 		"polybiusproxy"
-	]
+	],
+	"classPath":"src"
 }
