@@ -37,6 +37,7 @@ static unsigned format_setup(void **data, char *chroma, unsigned *width, unsigne
 
 	self->videoWidth = formatWidth;
 	self->videoHeight = formatHeight;
+
 	self->events[9] = true;
 
 	if (self->pixels != NULL)
@@ -266,6 +267,7 @@ class Video extends Bitmap
 
 		videoWidth = 0;
 		videoHeight = 0;
+		pixels = null;
 
 		events.splice(0, events.length);
 
