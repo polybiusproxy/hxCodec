@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+#<?xml version="1.0" encoding="UTF-8"?>
 <extension>
 
-	<template path="project/vlc/dll/Windows" rename="" if="windows" />
+	<assets path="project/vlc/dll/Windows" rename="" if="windows" />
 
 	<section if="android">
 		<ndll name="c++_shared" dir="project/vlc/lib" />
