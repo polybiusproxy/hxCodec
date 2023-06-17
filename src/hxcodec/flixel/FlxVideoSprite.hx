@@ -12,9 +12,6 @@ import sys.FileSystem;
 class FlxVideoSprite extends FlxSprite
 {
 	// Variables
-	#if FLX_SOUND_SYSTEM
-	public var pauseMusic:Bool = false;
-	#end
 	public var bitmap(default, null):Video;
 
 	public function new(x:Float = 0, y:Float = 0):Void
@@ -38,11 +35,6 @@ class FlxVideoSprite extends FlxSprite
 	// Methods
 	public function play(location:String, shouldLoop:Bool = false):Int
 	{
-		#if FLX_SOUND_SYSTEM
-		if (FlxG.sound.music != null && pauseMusic)
-			FlxG.sound.music.pause();
-		#end
-
 		if (FlxG.autoPause)
 		{
 			if (!FlxG.signals.focusGained.has(resume))
@@ -99,11 +91,6 @@ class FlxVideoSprite extends FlxSprite
 
 	override public function destroy():Void
 	{
-		#if FLX_SOUND_SYSTEM
-		if (FlxG.sound.music != null && pauseMusic)
-			FlxG.sound.music.resume();
-		#end
-
 		if (FlxG.autoPause)
 		{
 			if (FlxG.signals.focusGained.has(resume))

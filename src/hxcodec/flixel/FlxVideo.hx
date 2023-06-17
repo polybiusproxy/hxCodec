@@ -8,7 +8,6 @@ import sys.FileSystem;
 class FlxVideo extends Video
 {
 	// Variables
-	public var pauseMusic:Bool = false;
 	public var autoResize:Bool = true;
 
 	public function new():Void
@@ -27,13 +26,6 @@ class FlxVideo extends Video
 
 	override public function play(location:String, shouldLoop:Bool = false):Int
 	{
-		#if FLX_SOUND_SYSTEM
-		if (FlxG.sound.music != null && pauseMusic)
-			FlxG.sound.music.pause();
-		#end
-
-		FlxG.stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-
 		if (FlxG.autoPause)
 		{
 			if (!FlxG.signals.focusGained.has(resume))
@@ -43,6 +35,8 @@ class FlxVideo extends Video
 				FlxG.signals.focusLost.add(pause);
 		}
 
+		FlxG.stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+
 		if (FileSystem.exists(Sys.getCwd() + location))
 			return super.play(Sys.getCwd() + location, shouldLoop);
 		else
@@ -51,11 +45,6 @@ class FlxVideo extends Video
 
 	override public function dispose():Void
 	{
-		#if FLX_SOUND_SYSTEM
-		if (FlxG.sound.music != null && pauseMusic)
-			FlxG.sound.music.resume();
-		#end
-
 		if (FlxG.autoPause)
 		{
 			if (FlxG.signals.focusGained.has(resume))
