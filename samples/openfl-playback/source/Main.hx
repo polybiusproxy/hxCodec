@@ -18,7 +18,7 @@ class Main extends Sprite
 
 		video.play(Sys.getCwd() + 'assets/video.mp4');
 
-		stage.addEventListener(Event.ENTER_FRAME, stage_onActivate);
+		stage.addEventListener(Event.ENTER_FRAME, stage_onEnterFrame);
 		stage.addEventListener(Event.ACTIVATE, stage_onActivate);
 		stage.addEventListener(Event.DEACTIVATE, stage_onDeactivate);
 	}
