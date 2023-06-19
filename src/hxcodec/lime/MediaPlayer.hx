@@ -205,7 +205,7 @@ class MediaPlayer
 			LibVLC.media_player_pause(mediaPlayer);
 	}
 
-	public function update():Void
+	public function update(deltaTime:Int):Void
 	{
 		if (events.contains(true))
 			checkEvents();

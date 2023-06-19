@@ -13,9 +13,6 @@ class Main extends Application
 		player.onEndReached.add(player.dispose);
 		player.play(Sys.getCwd() + 'assets/video.mp4');
 
-		onUpdate.add(function(elapsed:Int)
-		{
-			player.update();
-		});
+		onUpdate.add(player.update);
 	}
 }
