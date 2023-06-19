@@ -328,7 +328,7 @@ typedef struct libvlc_media_slave_t
     unsigned int                    i_priority;
 } libvlc_media_slave_t;
 
-#ifndef HX_WINDOWS
+#ifndef _MSC_VER
 /**
  * Callback prototype to open a custom bitstream input media.
  *
@@ -449,7 +449,7 @@ LIBVLC_API libvlc_media_t *libvlc_media_new_fd(
                                    libvlc_instance_t *p_instance,
                                    int fd );
 
-#ifndef HX_WINDOWS
+#ifndef _MSC_VER
 /**
  * Create a media with custom callbacks to read the data from.
  *
