@@ -13,10 +13,8 @@
 	<target id="haxe">
 		<section if="windows">
 			<section if="HXCPP_M64">
-				<libpath name="${haxelib:hxCodec}/project/vlc/lib/Windows" />
-
-				<lib name="libvlc.lib" />
-				<lib name="libvlccore.lib" />
+				<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlc.lib" />
+				<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlccore.lib" />
 			</section>
 		</section>
 
