@@ -37,7 +37,7 @@ class Main extends Sprite
 		{
 			// stage is taller than video
 			video.width = stage.stageWidth;
-			Video.height = stage.stageWidth * (1 / aspectRatio);
+			video.height = stage.stageWidth * (1 / aspectRatio);
 		}
 
 		video.x = (stage.stageWidth - video.width) / 2;
