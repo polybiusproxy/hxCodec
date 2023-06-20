@@ -132,13 +132,11 @@ class MediaPlayer
 		onMediaChanged = new Event<Void->Void>();
 
 		#if windows
-		untyped __cpp__('const char *argv[] = { "--ignore-config", "--reset-plugins-cache" }');
+		untyped __cpp__('const char *argv[] = { "--reset-config", "--reset-plugins-cache" }');
 
 		instance = LibVLC.create(2, untyped __cpp__('argv'));
 		#else
-		untyped __cpp__('const char *argv[] = { "--ignore-config" }');
-
-		instance = LibVLC.create(1, untyped __cpp__('argv'));
+		instance = LibVLC.create(0, untyped __cpp__('NULL'));
 		#end
 
 		#if HXC_LIBVLC_LOGGING
