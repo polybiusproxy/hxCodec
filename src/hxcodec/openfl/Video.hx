@@ -173,12 +173,14 @@ class Video extends Bitmap
 		onMediaChanged = new Event<Void->Void>();
 		onTextureSetup = new Event<Void->Void>();
 
-		#if !android
-		untyped __cpp__('char const *argv[] = { "--ignore-config", "--reset-plugins-cache" }');
+		#if windows
+		untyped __cpp__('const char *argv[] = { "--ignore-config", "--reset-plugins-cache" }');
 
 		instance = LibVLC.create(2, untyped __cpp__('argv'));
 		#else
-		instance = LibVLC.create(0, untyped __cpp__('NULL'));
+		untyped __cpp__('const char *argv[] = { "--ignore-config" }');
+
+		instance = LibVLC.create(1, untyped __cpp__('argv'));
 		#end
 
 		#if HXC_LIBVLC_LOGGING
