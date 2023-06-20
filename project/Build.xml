@@ -24,8 +24,6 @@
 		</section>
 
 		<section if="android">
-			<lib name="-llog" />
-
 			<lib name="${haxelib:hxCodec}/project/vlc/lib/Android/libvlc-64.so" if="HXCPP_ARM64" />
 			<lib name="${haxelib:hxCodec}/project/vlc/lib/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
 			<lib name="${haxelib:hxCodec}/project/vlc/lib/Android/libvlc-x86.so" if="HXCPP_X86" />
