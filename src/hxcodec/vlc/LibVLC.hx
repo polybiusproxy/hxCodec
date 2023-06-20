@@ -11,7 +11,7 @@ import hxcodec.vlc.Types;
 extern class LibVLC
 {
 	@:native("libvlc_new")
-	static function create(argc:Int, argv:cpp.ConstCharStarConstStar):cpp.RawPointer<LibVLC_Instance_T>;
+	static function create(argc:Int, argv:cpp.ConstChar):cpp.RawPointer<LibVLC_Instance_T>;
 
 	@:native("libvlc_release")
 	static function release(p_instance:cpp.RawPointer<LibVLC_Instance_T>):Void;
