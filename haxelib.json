@@ -1,7 +1,7 @@
 {
 	"name": "hxCodec",
 	"url": "https://github.com/polybiusproxy/hxCodec",
-	"license": "Mozilla Public License 2.0",
+	"license": "Public",
 	"tags": [
 		"libvlc",
 		"video",
@@ -14,7 +14,7 @@
 	],
 	"description": "Haxe library for native video playback on HaxeFlixel and OpenFL.",
 	"version": "3.0.1",
-	"releasenote": "Fixed compile issues on Windows, added more instructions for linux and removed useless code",
+	"releasenote": "Fixed compile issues on Windows, added more instructions for Linux and removed useless code",
 	"contributors": [
 		"polybiusproxy"
 	],
