@@ -31,10 +31,19 @@ A Haxe library which adds native video playback on [HaxeFlixel](https://haxeflix
     <haxedef name="HXC_LIBVLC_LOGGING" if="debug" />
     ```
 
-3. In order to build a application with the library on ***Linux***, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
-    ```bash
-    sudo apt-get install libvlc-dev libvlccore-dev 
-    ```
+## Linux Specific Instructions
+
+In order to build a application with the library on ***Linux***, you **have to install** `libvlc` and `libvlccore` from your distro's package manager.
+
+### Debian based distributions:
+```bash
+sudo apt-get install libvlc-dev libvlccore-dev 
+```
+
+### Arch based distributions:
+```bash
+sudo pacman -S vlc
+```
 
 ## Usage Example
 
@@ -57,3 +66,4 @@ Check out the [Samples Folder](samples/) for examples on how to use this library
 | ![](https://avatars.githubusercontent.com/u/77043862?s=64) | [MAJigsaw77](https://github.com/MAJigsaw77) | Programmer, Android & Linux support.
 | ![](https://avatars.githubusercontent.com/u/4635334?s=64) | [EliteMasterEric](https://github.com/EliteMasterEric) | Additional Programmer.
 | ![](https://avatars.githubusercontent.com/u/84131849?s=64) | [RapperGF](https://github.com/RapperGF) | Rendering Overhaul & Testing.
+| ![](https://avatars.githubusercontent.com/u/49110074?s=64) | [swordcube](https://github.com/swordcube) | Testing Linux Support.
