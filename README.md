@@ -35,12 +35,12 @@ A Haxe library which adds native video playback on [HaxeFlixel](https://haxeflix
 
 In order to build a application with the library on ***Linux***, you **have to install** `libvlc` and `libvlccore` from your distro's package manager.
 
-### Debian/Ubuntu example:
+### Debian based distributions:
 ```bash
 sudo apt-get install libvlc-dev libvlccore-dev 
 ```
 
-### Arch Linux example:
+### Arch based distributions:
 ```bash
 sudo pacman -S vlc
 ```
