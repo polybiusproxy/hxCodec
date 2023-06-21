@@ -13,8 +13,8 @@
 		"android"
 	],
 	"description": "Haxe library for native video playback on HaxeFlixel and OpenFL.",
-	"version": "3.0.0",
-	"releasenote": "Updated LibVLC, fixed Linux support, remade/polished source code and more.",
+	"version": "3.0.1",
+	"releasenote": "Fixed compile issues on Windows, added more instructions for linux and removed useless code",
 	"contributors": [
 		"polybiusproxy"
 	],
