@@ -50,10 +50,11 @@ sudo pacman -S vlc
 Check out the [Samples Folder](samples/) for examples on how to use this library.
 
 ## Licensing
+**hxCodec** is made available under the **Mozilla Public License 2.0\***. Check [LICENSE](./LICENSE) for more information.
 
-**hxCodec** is made available under the **Mozilla Public License 2.0**. Check [LICENSE](./LICENSE) for more information.
+\*Haxelib does not support MPL2.0; therefore, regardless of what Haxelib reports, this library's license is still **MPL2.0**.
 
-![](https://github.com/videolan/vlc/blob/master/share/icons/256x256/vlc.png)
+![](https://raw.githubusercontent.com/videolan/vlc/master/share/icons/256x256/vlc.png)
 
 [***libVLC***](https://www.videolan.org/vlc/libvlc.html) is the engine of **VLC** released under the **LGPLv2 License** (or later). Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.
 
