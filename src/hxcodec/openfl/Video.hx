@@ -1,7 +1,7 @@
 package hxcodec.openfl;
 
-#if (!(windows || linux || android) && macro)
-#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Linux/Android and getting this message, please contact us."
+#if (!(desktop || android) && macro)
+#error "The current target platform isn't supported by hxCodec. If you're targeting Windows/Mac/Linux/Android and getting this message, please contact us."
 #end
 import haxe.io.Path;
 import hxcodec.vlc.LibVLC;
@@ -172,6 +172,11 @@ class Video extends Bitmap
 		onBackward = new Event<Void->Void>();
 		onMediaChanged = new Event<Void->Void>();
 		onTextureSetup = new Event<Void->Void>();
+
+		#if mac
+		if (Sys.getEnv("VLC_PLUGIN_PATH") != null)
+			Sys.putEnv("VLC_PLUGIN_PATH", Path.normalize(Sys.getCwd() + '../MacOS/plugins');
+		#end
 
 		#if windows
 		untyped __cpp__('const char *argv[] = { "--reset-plugins-cache" }');
