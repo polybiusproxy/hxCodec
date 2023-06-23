@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension xmlns="https://lime.openfl.org/project/1.0.4" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://lime.openfl.org/project/1.0.4 https://lime.openfl.org/xsd/project-1.0.4.xsd">
 
-	<assets path="project/vlc/dll/Windows" rename="" if="windows" />
+	<assets path="project/vlc/dll/Windows" rename="" if="windows" /> 
+	<assets path="iproject/vlc/dll/Mac" rename="../MacOS" if="mac" />
 
 	<section if="android">
 		<ndll name="c++_shared" dir="project/vlc/lib" />
