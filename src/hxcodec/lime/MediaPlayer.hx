@@ -132,11 +132,11 @@ class MediaPlayer
 		onMediaChanged = new Event<Void->Void>();
 
 		#if mac
-		if (Sys.getEnv("VLC_PLUGIN_PATH") != null)
+		if (Sys.getEnv("VLC_PLUGIN_PATH") == null)
 			Sys.putEnv("VLC_PLUGIN_PATH", Path.normalize(Sys.getCwd() + '../MacOS/plugins'));
 		#end
 
-		#if windows
+		#if (windows || mac)
 		untyped __cpp__('const char *argv[] = { "--reset-plugins-cache" }');
 
 		instance = LibVLC.create(1, untyped __cpp__('argv'));
