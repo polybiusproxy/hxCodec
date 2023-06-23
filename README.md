@@ -22,7 +22,7 @@ A Haxe library which adds native video playback on [HaxeFlixel](https://haxeflix
 
 2. Add this code in the ***project.xml*** file.
     ```xml
-    <haxelib name="hxCodec" if="windows || linux || android" />
+    <haxelib name="hxCodec" if="desktop || android" />
     ```
 
     **OPTIONAL: Some defines you can add to your project**
@@ -44,8 +44,6 @@ sudo apt-get install libvlc-dev libvlccore-dev
 ```bash
 sudo pacman -S vlc 
 ```
-## Macos Specific Instruction 
-You have to download and run this [script](https://gist.github.com/JonnycatMeow/757b5b22583b916813a45fd55a69f3f4) & watch this [tutorial](https://streamable.com/tazpyy) to see how to set it up 
 
 ## Usage Example
 
