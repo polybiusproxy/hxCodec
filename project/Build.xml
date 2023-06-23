@@ -19,8 +19,8 @@
 		</section>
 
 		<section if="macos">
-			<lib name="${haxelib:hxCodec}/project/vlc/dll/Mac/lib/libvlc.dylib"/> 
-			<lib name="${haxelib:hxCodec}/project/vlc/dll/Mac/lib/libvlccore.dylib"/>
+			<lib name="${haxelib:hxCodec}/project/vlc/lib/Mac/libvlc.dylib" /> 
+			<lib name="${haxelib:hxCodec}/project/vlc/lib/Mac/libvlccore.dylib" />
 		</section> 
 
 		<section if="linux">
