@@ -174,8 +174,7 @@ class Video extends Bitmap
 		onTextureSetup = new Event<Void->Void>();
 
 		#if mac
-		if (Sys.getEnv("VLC_PLUGIN_PATH") == null)
-			Sys.putEnv("VLC_PLUGIN_PATH", Path.normalize(Sys.getCwd() + '../MacOS/plugins'));
+		Sys.putEnv("VLC_PLUGIN_PATH", Path.normalize(Sys.getCwd() + '../MacOS/plugins'));
 		#end
 
 		#if (windows || mac)
