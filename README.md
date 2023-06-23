@@ -70,4 +70,4 @@ Check out the [Samples Folder](samples/) for examples on how to use this library
 | ![](https://avatars.githubusercontent.com/u/4635334?s=64) | [EliteMasterEric](https://github.com/EliteMasterEric) | Additional Programmer.
 | ![](https://avatars.githubusercontent.com/u/84131849?s=64) | [RapperGF](https://github.com/RapperGF) | Rendering Overhaul & Testing.
 | ![](https://avatars.githubusercontent.com/u/49110074?s=64) | [swordcube](https://github.com/swordcube) | Testing Linux Support. 
-| ![](https://avatars.githubusercontent.com/u/107599365?v=4) | [Jonnycat](https://github.com/JonnycatMeow) | Mac Support.
+| ![](https://avatars.githubusercontent.com/u/107599365?v=64) | [Jonnycat](https://github.com/JonnycatMeow) | Mac Support.
