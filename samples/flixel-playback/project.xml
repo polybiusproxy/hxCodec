@@ -43,7 +43,7 @@ desktopdesktopdesktop<?xml version="1.0" encoding="utf-8"?>
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
-	<haxelib name="hxCodec" if="windows || linux || android" />
+	<haxelib name="hxCodec" if="desktop || android" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

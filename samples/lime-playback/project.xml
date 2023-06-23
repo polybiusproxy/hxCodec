@@ -7,7 +7,7 @@ desktopdesktopdesktop<?xml version="1.0" encoding="utf-8"?>
 	<source path="Source" />
 	
 	<haxelib name="lime" />
-	<haxelib name="hxCodec" if="windows || linux || android" />
+	<haxelib name="hxCodec" if="desktop || android" />
 	
 	<assets path="Assets" rename="assets" />
 
