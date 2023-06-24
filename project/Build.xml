@@ -11,6 +11,8 @@
 	</files>
 
 	<target id="haxe">
+		<vflag name="-rpath" value="@executable_path/lib/" if="macos" />
+
 		<section if="windows">
 			<section if="HXCPP_M64">
 				<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlc.lib" />
@@ -19,7 +21,6 @@
 		</section>
 
 		<section if="macos"> 
-		    <vflag name="-rpath" value="@executable_path/lib/"/> <!--makes the path for the lib folder-->
 			<lib name="${haxelib:hxCodec}/project/vlc/dll/MacOS/lib/libvlc.dylib" /> 
 			<lib name="${haxelib:hxCodec}/project/vlc/dll/MacOS/lib/libvlccore.dylib" />
 		</section> 
