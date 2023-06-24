@@ -18,7 +18,8 @@
 			</section>
 		</section>
 
-		<section if="macos">
+		<section if="macos"> 
+		    <vflag name="-rpath" value="@executable_path/lib/"/> <!--makes the path for the lib folder-->
 			<lib name="${haxelib:hxCodec}/project/vlc/dll/MacOS/libvlc.dylib" /> 
 			<lib name="${haxelib:hxCodec}/project/vlc/dll/MacOS/libvlccore.dylib" />
 		</section> 
