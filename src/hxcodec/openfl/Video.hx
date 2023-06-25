@@ -178,9 +178,9 @@ class Video extends Bitmap
 		#end
 
 		#if (windows || mac)
-		untyped __cpp__('const char *argv[] = { "--reset-plugins-cache" }');
+		untyped __cpp__('const char *argv[] = { "--reset-config", "--reset-plugins-cache" }');
 
-		instance = LibVLC.create(1, untyped __cpp__('argv'));
+		instance = LibVLC.create(2, untyped __cpp__('argv'));
 		#else
 		instance = LibVLC.create(0, untyped __cpp__('NULL'));
 		#end
