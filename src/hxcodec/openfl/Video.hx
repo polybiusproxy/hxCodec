@@ -269,22 +269,9 @@ class Video extends Bitmap
 			texture = null;
 		}
 
-		videoWidth = 0;
-		videoHeight = 0;
 		pixels = null;
 
 		events.splice(0, events.length);
-
-		onOpening.removeAll();
-		onPlaying.removeAll();
-		onStopped.removeAll();
-		onPaused.removeAll();
-		onEndReached.removeAll();
-		onEncounteredError.removeAll();
-		onForward.removeAll();
-		onBackward.removeAll();
-		onMediaChanged.removeAll();
-		onTextureSetup.removeAll();
 
 		if (instance != null)
 		{

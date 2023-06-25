@@ -227,16 +227,6 @@ class MediaPlayer
 
 		events.splice(0, events.length);
 
-		onOpening.removeAll();
-		onPlaying.removeAll();
-		onStopped.removeAll();
-		onPaused.removeAll();
-		onEndReached.removeAll();
-		onEncounteredError.removeAll();
-		onForward.removeAll();
-		onBackward.removeAll();
-		onMediaChanged.removeAll();
-
 		if (instance != null)
 		{
 			#if HXC_LIBVLC_LOGGING
