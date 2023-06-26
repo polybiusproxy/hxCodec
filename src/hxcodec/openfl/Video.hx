@@ -269,6 +269,8 @@ class Video extends Bitmap
 			texture = null;
 		}
 
+		videoWidth = 0;
+		videoHeight = 0;
 		pixels = null;
 
 		events.splice(0, events.length);
@@ -556,8 +558,7 @@ class Video extends Bitmap
 		{
 			events[9] = false;
 
-			@:privateAccess
-			if (bitmapData != null && texture != null && texture.__width == videoWidth && texture.__height == videoHeight)
+			if (bitmapData != null && bitmapData.width == videoWidth && bitmapData.height == videoHeight)
 				return;
 
 			if (bitmapData != null)
