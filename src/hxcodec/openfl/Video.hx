@@ -558,7 +558,7 @@ class Video extends Bitmap
 		{
 			events[9] = false;
 
-			if (bitmapData != null && bitmapData.width == videoWidth && bitmapData.height == videoHeight)
+			if ((bitmapData != null && bitmapData.width == videoWidth && bitmapData.height == videoHeight) && texture != null)
 				return;
 
 			if (bitmapData != null)
