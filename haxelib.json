@@ -14,7 +14,7 @@
 	],
 	"description": "Haxe library for native video playback on HaxeFlixel and OpenFL.",
 	"version": "3.0.2",
-	"releasenote": "Added MacOS Support back and Fixed potential crashes on Windows.",
+	"releasenote": "Added macOS support back and fixed potential crashes on Windows.",
 	"contributors": [
 		"polybiusproxy"
 	],
