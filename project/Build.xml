@@ -3,11 +3,11 @@
 	<pragma once="true" />
 
 	<files id="haxe">
-		<compilerflag value="-I${haxelib:hxCodec}/project/vlc/include" unless="linux" />
+		<compilerflag value="-I${HXCODEC_PATH}project/vlc/include" unless="linux" />
 	</files>
 
 	<files id="__main__">
-		<compilerflag value="-I${haxelib:hxCodec}/project/vlc/include" unless="linux" />
+		<compilerflag value="-I${HXCODEC_PATH}project/vlc/include" unless="linux" />
 	</files>
 
 	<target id="haxe">
@@ -15,15 +15,15 @@
 
 		<section if="windows">
 			<section if="HXCPP_M64">
-				<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlc.lib" />
-				<lib name="${haxelib:hxCodec}/project/vlc/lib/Windows/libvlccore.lib" />
+				<lib name="${HXCODEC_PATH}project/vlc/lib/Windows/libvlc.lib" />
+				<lib name="${HXCODEC_PATH}project/vlc/lib/Windows/libvlccore.lib" />
 			</section>
 		</section>
 
-		<section if="macos"> 
-			<lib name="${haxelib:hxCodec}/project/vlc/dll/MacOS/lib/libvlc.dylib" /> 
-			<lib name="${haxelib:hxCodec}/project/vlc/dll/MacOS/lib/libvlccore.dylib" />
-		</section> 
+		<section if="macos">
+			<lib name="${HXCODEC_PATH}project/vlc/dll/MacOS/lib/libvlc.dylib" />
+			<lib name="${HXCODEC_PATH}project/vlc/dll/MacOS/lib/libvlccore.dylib" />
+		</section>
 
 		<section if="linux">
 			<lib name="-lvlc" />
@@ -31,10 +31,10 @@
 		</section>
 
 		<section if="android">
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Android/libvlc-64.so" if="HXCPP_ARM64" />
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Android/libvlc-x86.so" if="HXCPP_X86" />
-			<lib name="${haxelib:hxCodec}/project/vlc/lib/Android/libvlc-x86_64.so" if="HXCPP_X86_64" />
+			<lib name="${HXCODEC_PATH}project/vlc/lib/Android/libvlc-64.so" if="HXCPP_ARM64" />
+			<lib name="${HXCODEC_PATH}project/vlc/lib/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
+			<lib name="${HXCODEC_PATH}project/vlc/lib/Android/libvlc-x86.so" if="HXCPP_X86" />
+			<lib name="${HXCODEC_PATH}project/vlc/lib/Android/libvlc-x86_64.so" if="HXCPP_X86_64" />
 		</section>
 	</target>
 </xml>
