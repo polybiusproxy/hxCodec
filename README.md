@@ -69,11 +69,3 @@ therefore, regardless of what Haxelib reports, this library's license is still *
 | ![](https://avatars.githubusercontent.com/u/84131849?s=64) | [RapperGF](https://github.com/RapperGF) | Rendering Overhaul & Testing.
 | ![](https://avatars.githubusercontent.com/u/49110074?s=64) | [swordcube](https://github.com/swordcube) | Testing Linux Support. 
 | ![](https://avatars.githubusercontent.com/u/107599365?v=64) | [Jonnycat](https://github.com/JonnycatMeow) | MacOS Support.
-
-## Special Thanks
-
-<p align="center">
-  <a href="https://github.com/polybiusproxy/hxCodec/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=polybiusproxy/hxCodec" />
-  </a>
-</p>
