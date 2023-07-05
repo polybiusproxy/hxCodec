@@ -261,12 +261,6 @@ class Video extends Bitmap
 			bitmapData = null;
 		}
 
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
-
 		videoWidth = 0;
 		videoHeight = 0;
 		pixels = null;
