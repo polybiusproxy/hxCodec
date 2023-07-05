@@ -7,10 +7,9 @@ import haxe.io.Path;
 import hxcodec.vlc.LibVLC;
 import hxcodec.vlc.Types;
 import lime.app.Event;
-import openfl.Lib;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.display3D.textures.RectangleTexture;
+import openfl.Lib;
 
 /**
  * @author Mihai Alexandru (M.A. Jigsaw).
@@ -147,7 +146,6 @@ class Video extends Bitmap
 	private var oldTime:Float = 0;
 	private var deltaTime:Float = 0;
 	private var events:Array<Bool>;
-	private var texture:RectangleTexture;
 	private var pixels:cpp.RawPointer<cpp.UInt8>;
 	private var instance:cpp.RawPointer<LibVLC_Instance_T>;
 	private var mediaPlayer:cpp.RawPointer<LibVLC_MediaPlayer_T>;
@@ -465,8 +463,12 @@ class Video extends Bitmap
 			else
 				return;
 
-			if (texture != null && pixels != null)
-				texture.uploadFromByteArray(cpp.Pointer.fromRaw(pixels).toUnmanagedArray(videoWidth * videoHeight * 4), 0);
+			if (bitmapData != null && pixels != null)
+			{
+				bitmapData.lock();
+				bitmapData.setPixels(bitmapData.rect, cpp.Pointer.fromRaw(pixels).toUnmanagedArray(videoWidth * videoHeight * 4));
+				bitmapData.unlock();
+			}
 
 			__setRenderDirty();
 		}
@@ -534,17 +536,14 @@ class Video extends Bitmap
 		{
 			events[9] = false;
 
-			if ((bitmapData != null && bitmapData.width == videoWidth && bitmapData.height == videoHeight) && texture != null)
+			if (bitmapData != null && bitmapData.width == videoWidth && bitmapData.height == videoHeight)
 				return;
 
 			if (bitmapData != null)
 				bitmapData.dispose();
 
-			if (texture != null)
-				texture.dispose();
+			bitmapData = new BitmapData(videoWidth, videoHeight, true, 0);
 
-			texture = Lib.current.stage.context3D.createRectangleTexture(videoWidth, videoHeight, BGRA, true);
-			bitmapData = BitmapData.fromTexture(texture);
 			smoothing = true;
 
 			onTextureSetup.dispatch();
