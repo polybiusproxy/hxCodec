@@ -66,7 +66,14 @@ therefore, regardless of what Haxelib reports, this library's license is still *
 | ![](https://avatars.githubusercontent.com/u/47796739?s=64) | [polybiusproxy](https://github.com/polybiusproxy) | Creator of **hxCodec**.
 | ![](https://avatars.githubusercontent.com/u/1677550?s=64) | [datee](https://github.com/datee) | Creator of **HaxeVLC**.
 | ![](https://avatars.githubusercontent.com/u/77043862?s=64) | [MAJigsaw77](https://github.com/MAJigsaw77) | Programmer, Android & Linux support.
-| ![](https://avatars.githubusercontent.com/u/4635334?s=64) | [EliteMasterEric](https://github.com/EliteMasterEric) | Additional Programmer.
 | ![](https://avatars.githubusercontent.com/u/84131849?s=64) | [RapperGF](https://github.com/RapperGF) | Rendering Overhaul & Testing.
 | ![](https://avatars.githubusercontent.com/u/49110074?s=64) | [swordcube](https://github.com/swordcube) | Testing Linux Support. 
 | ![](https://avatars.githubusercontent.com/u/107599365?v=64) | [Jonnycat](https://github.com/JonnycatMeow) | MacOS Support.
+
+## Special Thanks
+
+<p align="center">
+  <a href="https://github.com/polybiusproxy/hxCodec/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=polybiusproxy/hxCodec" />
+  </a>
+</p>
