@@ -11,26 +11,26 @@ import flixel.addons.display.FlxBackdrop;
  */
 class FlxVideoBackdrop extends FlxBackdrop
 {
-	// Variables
-    public var bitmap(default, null):Video;
+        // Variables
+        public var bitmap(default, null):Video;
 
 	public function new(x:Float = 0, y:Float = 0, repeatAxes:FlxAxes = XY):Void
-    {
-        super(null, repeatAxes);
-        setPosition(x, y);
-        visible = false;
-
-		bitmap = new Video();
-		bitmap.alpha = 0;
-		bitmap.onOpening.add(function()
         {
-            visible = true;
-			#if FLX_SOUND_SYSTEM
-			bitmap.volume = Std.int((FlxG.sound.muted ? 0 : 1) * (FlxG.sound.volume * 100));
-			#end
-		});
-		bitmap.onTextureSetup.add(() -> loadGraphic(bitmap.bitmapData));
-		FlxG.game.addChild(bitmap);
+                super(null, repeatAxes);
+                setPosition(x, y);
+                visible = false;
+
+	        bitmap = new Video();
+	        bitmap.alpha = 0;
+	        bitmap.onOpening.add(function()
+                {
+                      visible = true;
+		      #if FLX_SOUND_SYSTEM
+		      bitmap.volume = Std.int((FlxG.sound.muted ? 0 : 1) * (FlxG.sound.volume * 100));
+		      #end
+	        });
+	        bitmap.onTextureSetup.add(() -> loadGraphic(bitmap.bitmapData));
+	        FlxG.game.addChild(bitmap);
 	}
 
 	// Methods
@@ -90,17 +90,17 @@ class FlxVideoBackdrop extends FlxBackdrop
 		super.update(elapsed);
 	}
 
-    override function kill():Void
-    {
-        pause();
-        super.kill();
-    }
+        override function kill():Void
+        {
+                pause();
+                super.kill();
+        }
 
-    override function revive():Void
-    {
-        super.revive();
-        resume();
-    }
+        override function revive():Void
+        {
+                super.revive();
+                resume();
+        }
 
 	override public function destroy():Void
 	{
