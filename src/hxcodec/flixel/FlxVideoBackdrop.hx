@@ -12,7 +12,7 @@ import flixel.addons.display.FlxBackdrop;
 class FlxVideoBackdrop extends FlxBackdrop
 {
 	// Variables
-	public var bitmap(default, null):Video;
+    public var bitmap(default, null):Video;
 
 	public function new(x:Float = 0, y:Float = 0, repeatAxes:FlxAxes = XY):Void
     {
