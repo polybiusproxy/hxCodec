@@ -135,12 +135,12 @@ class MediaPlayer
 		Sys.putEnv("VLC_PLUGIN_PATH", Path.directory(Sys.programPath()) + '/plugins');
 		#end
 
-		#if (windows || mac)
-		untyped __cpp__('const char *argv[] = { "--reset-config", "--reset-plugins-cache" }');
-
-		instance = LibVLC.create(2, untyped __cpp__('argv'));
+		#if desktop
+		untyped __cpp__('const char *argv[] = { "--reset-config", "--reset-plugins-cache", "--no-lua" }');
+		instance = LibVLC.create(3, untyped __cpp__('argv'));
 		#else
-		instance = LibVLC.create(0, untyped __cpp__('NULL'));
+		untyped __cpp__('const char *argv[] = { "--no-lua" }');
+		instance = LibVLC.create(1, untyped __cpp__('argv'));
 		#end
 
 		#if HXC_LIBVLC_LOGGING
