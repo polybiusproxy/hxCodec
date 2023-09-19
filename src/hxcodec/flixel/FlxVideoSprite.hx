@@ -1,10 +1,12 @@
 package hxcodec.flixel;
 
+#if flixel
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
-import hxcodec.openfl.Video;
+
 import sys.FileSystem;
+import hxcodec.openfl.Video;
 
 /**
  * This class allows you to play videos using sprites (FlxSprite).
@@ -89,6 +91,18 @@ class FlxVideoSprite extends FlxSprite
 		super.update(elapsed);
 	}
 
+	override public function kill():Void
+	{
+		pause();
+		super.kill();
+	}
+
+	override public function kill():Void
+	{
+		super.revive();
+		resume();
+	}
+
 	override public function destroy():Void
 	{
 		if (FlxG.autoPause)
@@ -111,3 +125,4 @@ class FlxVideoSprite extends FlxSprite
 		super.destroy();
 	}
 }
+#end
