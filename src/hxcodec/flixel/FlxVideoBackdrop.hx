@@ -1,10 +1,16 @@
 package hxcodec.flixel;
 
-import sys.FileSystem;
-import hxcodec.openfl.Video;
+#if flixel
+#if (!flixel_addons && macro)
+#error 'Your project must use flixel-addons in order to use this class.'
+#end
+	
 import flixel.FlxG;
 import flixel.util.FlxAxes;
 import flixel.addons.display.FlxBackdrop;
+
+import sys.FileSystem;
+import hxcodec.openfl.Video;
 
 /**
  * This class allows you to play videos as `FlxBackdrop`s.
@@ -124,3 +130,4 @@ class FlxVideoBackdrop extends FlxBackdrop
 		super.destroy();
 	}
 }
+#end
