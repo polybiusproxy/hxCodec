@@ -97,7 +97,7 @@ class FlxVideoSprite extends FlxSprite
 		super.kill();
 	}
 
-	override public function kill():Void
+	override public function revive():Void
 	{
 		super.revive();
 		resume();
