@@ -1,5 +1,6 @@
 package hxcodec.flixel;
 
+#if flixel
 import flixel.FlxG;
 import hxcodec.openfl.Video;
 import openfl.events.Event;
@@ -87,3 +88,4 @@ class FlxVideo extends Video
 		#end
 	}
 }
+#end
