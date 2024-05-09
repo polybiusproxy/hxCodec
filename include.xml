@@ -9,6 +9,20 @@
 		<ndll name="vlc" dir="project/vlc/lib" />
 	</section>
 
+	<section if="ios">
+        	<dependency name="CFNetwork.framework" />
+        	<dependency name="CoreFoundation.framework" />
+        	<dependency name="CoreMedia.framework" />
+        	<dependency name="CoreText.framework" />
+       		<dependency name="CoreVideo.framework" />
+        	<dependency name="Security.framework" />
+        	<dependency name="VideoToolbox.framework" />
+        	<dependency name="CoreImage.framework" />
+
+        	<dependency name="libbz2.tbd" />
+        	<dependency name="libiconv.tbd" />
+    	</section>
+
 	<source path="src" />
 
 </extension>
