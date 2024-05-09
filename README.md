@@ -22,7 +22,7 @@ A Haxe library which adds native video playback on [HaxeFlixel](https://haxeflix
 
 2. Add this code in the ***project.xml*** file.
     ```xml
-    <haxelib name="hxCodec" if="desktop || android" />
+    <haxelib name="hxCodec" if="desktop || mobile" />
     ```
 
     **OPTIONAL: Some defines you can add to your project**
