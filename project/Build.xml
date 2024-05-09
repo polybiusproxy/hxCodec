@@ -39,6 +39,7 @@
                     <vflag name="-framework" value="Security" />
                     <vflag name="-framework" value="VideoToolbox" />
                     <vflag name="-framework" value="CoreImage" />
+                    <lib name="${haxelib:hxvlc}/project/vlc/lib/iOS/libvlc.a" />
                 </section>
 
 		<section if="android">
