@@ -70,4 +70,3 @@ Check out the [Samples Folder](samples/) for examples on how to use this library
 | ![](https://avatars.githubusercontent.com/u/49110074?s=64) | [swordcube](https://github.com/swordcube) | Testing Linux support
 | ![](https://avatars.githubusercontent.com/u/107599365?v=64) | [Jonnycat](https://github.com/JonnycatMeow) | macOS support
 | ![](https://avatars.githubusercontent.com/u/103241885?s=64) | [FutureDorito](https://github.com/Futuredorito) | iOS support
-| ![](https://avatars.githubusercontent.com/u/82843871?s=64) | [mcagabe19](https://github.com/mcagabe19) | iOS support
